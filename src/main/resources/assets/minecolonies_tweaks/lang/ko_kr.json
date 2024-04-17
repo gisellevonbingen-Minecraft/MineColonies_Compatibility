@@ -1,0 +1,8 @@
+{
+	"minecolonies_tweaks.custom_tooltype.gun": "총",
+	"minecolonies_compatibility.job.gunner": "거너",
+	"minecolonies_compatibility:gunner.job.desc": "강력한 원거리 공격이 가능하지만, 근접전은 약합니다.",
+	"minecolonies_compatibility:gunner.skills.desc": "skills.desc",
+	"minecolonies_compatibility.ie_bullet": "총알",
+	"minecolonies_compatibility.ie_bullet.desc": "Immersive Engineering 모드 총알"
+}

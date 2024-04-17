@@ -1,0 +1,179 @@
+buildscript {
+    repositories {
+        maven { url = "https://maven.minecraftforge.net" }
+        maven { url = "https://repo.spongepowered.org/maven" }
+    }
+    dependencies {
+        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
+        classpath "org.spongepowered:mixingradle:0.7.+"
+    }
+}
+
+plugins {
+    id "net.minecraftforge.gradle" version "5.1.+"
+}
+
+apply plugin: "java"
+apply plugin: "maven-publish"
+apply plugin: "org.spongepowered.mixin"
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+archivesBaseName = rootProject.archives_base_name
+version = "${rootProject.mc_version}-${rootProject.mod_version}"
+group = rootProject.maven_group
+
+sourceSets.main.resources { srcDir "src/generated/resources" }
+
+minecraft {
+    mappings channel: "official", version: "${mc_version}"
+
+    runs {
+        configureEach {
+            workingDirectory project.file("run")
+
+            property "forge.logging.markers", "REGISTRIES"
+            property "forge.logging.console.level", "debug"
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            taskName "forge_client"
+
+            property "forge.enabledGameTestNamespaces", "${mod_id}"
+        }
+
+        server {
+            taskName "forge_server"
+
+            property "forge.enabledGameTestNamespaces", "${mod_id}"
+        }
+
+        gameTestServer {
+            taskName "forge_game_test_server"
+
+            property "forge.enabledGameTestNamespaces", "${mod_id}"
+        }
+
+        data {
+            taskName "forge_data"
+
+            args "--mod", "${mod_id}", "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/")
+        }
+    }
+}
+
+repositories {
+	maven {
+		name "JEI"
+		url "https://dvs1.progwml6.com/files/maven"
+	}
+	maven {
+		name "ModMaven"
+		url "https://modmaven.dev"
+	}
+	maven {
+		name "CurseForge"
+		url "https://www.cursemaven.com"
+	}
+	maven {
+		name "MineColonies"
+		url "https://ldtteam.jfrog.io/ldtteam/modding"
+	}
+	maven {
+		name "LocalMaven"
+		url uri("${projectDir}/libs")
+	}
+	flatDir {
+		name "LocalFlatDir"
+		dir "${projectDir}/libs"
+	}
+}
+
+dependencies {
+    // Mod
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_api_version}"
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+
+    // Required
+    implementation fg.deobf("com.ldtteam:minecolonies:${minecolonies_version}")
+    implementation fg.deobf("com.ldtteam:structurize:${structurize_version}")
+    implementation fg.deobf("com.ldtteam:multi-piston:${multipiston_version}")
+    implementation fg.deobf("com.ldtteam:domum_ornamentum:${domumornamentum_version}:universal")
+    implementation fg.deobf("com.ldtteam:blockui:${blockui_version}")
+    implementation fg.deobf("blank:MineColonies_Tweaks-${mc_version}:libs")
+
+    // Optional
+    implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${mc_version}-${immersive_engineering_version}")
+
+    // Runtiem Only
+    runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.mixin.refmap.json"
+    config "${mod_id}.mixin.common.json"
+    config "${mod_id}.mixin.client.json"
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
+	options.release = 17
+}
+
+java {
+	withSourcesJar()
+}
+
+def resourceTargets = ["META-INF/mods.toml", "*.json"]
+def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
+def replaceProperties = [mc_version: mc_version,
+	mod_id: mod_id, mod_version: mod_version, mod_name: mod_name, mod_description: mod_description, mod_license: mod_license, mod_homepage: mod_homepage, mod_source: mod_source, mod_issues: mod_issues,
+	forge_api_version: forge_api_version, forge_loader_version: forge_loader_version,
+	minecolonies_version: minecolonies_version
+]
+
+processResources {
+	inputs.properties replaceProperties
+	replaceProperties.put "project", project
+
+	filesMatching(resourceTargets) {
+		expand replaceProperties
+	}
+
+	intoTargets.each { target ->
+		if (file(target).exists()) {
+			copy {
+				from(sourceSets.main.resources) {
+					include resourceTargets
+					expand replaceProperties
+				}
+				into target
+			}
+		}
+	}
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "${mod_id}",
+                "Specification-Vendor"    : "gisellevonbingen",
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : "gisellevonbingen",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+jar.finalizedBy("reobfJar")

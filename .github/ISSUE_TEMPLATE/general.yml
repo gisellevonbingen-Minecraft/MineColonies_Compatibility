@@ -1,0 +1,9 @@
+name: General
+description: 'General issue'
+assignees: gisellevonbingen
+labels: []
+body:
+  - type: textarea
+    attributes:
+      label: The details
+      

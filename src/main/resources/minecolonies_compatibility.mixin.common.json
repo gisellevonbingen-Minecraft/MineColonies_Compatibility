@@ -1,0 +1,16 @@
+{
+	"required": true,
+	"package": "steve_gall.minecolonies_compatibility.core.common.mixin",
+	"minVersion": "0.8.5",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"minecolonies.AbstractEntityAIBasicMixin",
+		"minecolonies.AttackMoveAIAccessor",
+		"minecolonies.AttackMoveAIMixin",
+		"minecolonies.JobEntryMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"refmap": "${mod_id}.mixin.refmap.json"
+}

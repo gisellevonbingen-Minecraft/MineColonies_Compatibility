@@ -1,0 +1,42 @@
+modLoader="javafml"
+loaderVersion="[${forge_loader_version},)"
+license="${mod_license}"
+issueTrackerURL="${mod_issues}"
+
+[[mods]]
+    modId="${mod_id}"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    displayURL="${mod_homepage}"
+    authors="gisellevonbingen, supernova0102"
+    logoFile="icon.png"
+    description='''${mod_description}'''
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[${mc_version}]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="forge"
+    mandatory=true
+    versionRange="[${forge_api_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecolonies"
+    mandatory=true
+    versionRange="[${minecolonies_version},)"
+    ordering="AFTER"
+    side="BOTH"
+    
+[[dependencies.${mod_id}]]
+    modId="minecolonies_tweaks"
+    mandatory=true
+    versionRange="[1.0,)"
+    ordering="AFTER"
+    side="BOTH"
+    

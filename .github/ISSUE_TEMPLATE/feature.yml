@@ -1,0 +1,15 @@
+name: Feature
+description: 'Request feature'
+assignees: gisellevonbingen
+title: "[Feature]: "
+labels: "type: enhancement"
+body:
+  - type: textarea
+    attributes:
+      label: Cause for request
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Request details
+      

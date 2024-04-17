@@ -1,0 +1,38 @@
+name: Bug
+description: 'Report bug'
+assignees: gisellevonbingen
+title: "[Bug]: "
+labels: "type: bug"
+body:
+  - type: input
+    attributes:
+      label: Minecraft Version
+      placeholder: e.g. 1.19.2
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Mod Loader and Version
+      placeholder: e.g. Forge-43.2.0, Fabric-0.68.0
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Ad Astra! Version
+      placeholder: e.g. 1.11.9
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Addon Mod Version (This Mod)
+      placeholder: e.g. 1.3
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: The details
+      description: Reproduce Steps, Crash Report (full copy or url from [gist](https://gist.github.com/) or [pastebin](https://pastebin.com/)), etc.
+      placeholder: |
+        1. Reproduce Steps
+        2. Crash Report
+        3. ETC.

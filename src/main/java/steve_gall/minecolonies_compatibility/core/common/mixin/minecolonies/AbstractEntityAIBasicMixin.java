@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.minecolonies.api.util.ItemStackUtils;
-import com.minecolonies.core.entity.ai.basic.AbstractEntityAIBasic;
+import com.minecolonies.core.entity.ai.workers.AbstractEntityAIBasic;
 
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;

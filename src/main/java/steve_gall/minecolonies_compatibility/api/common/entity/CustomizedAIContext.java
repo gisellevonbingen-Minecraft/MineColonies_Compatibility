@@ -3,7 +3,7 @@ package steve_gall.minecolonies_compatibility.api.common.entity;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-import com.minecolonies.core.entity.ai.basic.AbstractEntityAIBasic;
+import com.minecolonies.core.entity.ai.workers.AbstractEntityAIBasic;
 
 import net.minecraft.world.item.ItemStack;
 

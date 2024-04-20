@@ -4,13 +4,13 @@ import static com.minecolonies.api.util.constant.GuardConstants.EXP_PER_MOB_DEAT
 import static com.minecolonies.api.util.constant.StatisticsConstants.MOBS_KILLED;
 import static com.minecolonies.api.util.constant.StatisticsConstants.MOB_KILLED;
 import static com.minecolonies.core.colony.buildings.modules.BuildingModules.STATS_MODULE;
-import static com.minecolonies.core.entity.ai.citizen.guard.AbstractEntityAIGuard.PATROL_DEVIATION_RAID_POINT;
+import static com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard.PATROL_DEVIATION_RAID_POINT;
 
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
 import com.minecolonies.core.colony.jobs.AbstractJobGuard;
-import com.minecolonies.core.entity.ai.citizen.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.ai.combat.CombatUtils;
+import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 
 import net.minecraft.network.chat.contents.TranslatableContents;

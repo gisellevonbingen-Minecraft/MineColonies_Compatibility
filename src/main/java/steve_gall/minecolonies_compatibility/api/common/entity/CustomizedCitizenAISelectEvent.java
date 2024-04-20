@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.citizens.event.AbstractCitizenEvent;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-import com.minecolonies.core.entity.ai.basic.AbstractEntityAIBasic;
+import com.minecolonies.core.entity.ai.workers.AbstractEntityAIBasic;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;

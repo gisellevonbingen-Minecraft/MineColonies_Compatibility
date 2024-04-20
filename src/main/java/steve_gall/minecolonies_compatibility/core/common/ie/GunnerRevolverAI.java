@@ -190,7 +190,7 @@ public class GunnerRevolverAI extends CustomizedCitizenAIGuard
 		var inventory = user.getItemHandlerCitizen();
 		var bulletSlot = this.getBulletSlot(inventory);
 		var weapon = context.getWeapon();
-		var level = user.getLevel();
+		var level = user.level();
 
 		ItemStack bullet = null;
 		IBullet bulletType = null;
@@ -238,7 +238,7 @@ public class GunnerRevolverAI extends CustomizedCitizenAIGuard
 		}
 		else
 		{
-			level.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.NOTE_BLOCK_HAT, SoundSource.PLAYERS, 1.0F, 1.0F);
+			level.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.NOTE_BLOCK_HAT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 		}
 
 		if (config.needReload.get().booleanValue())
@@ -322,7 +322,7 @@ public class GunnerRevolverAI extends CustomizedCitizenAIGuard
 	public boolean isReloadComplete(@NotNull AbstractEntityCitizen user)
 	{
 		var reloadDuration = this.getConfig().reloadDuration.get().longValue();
-		return user.getLevel().getGameTime() >= this.getOrEmptyTag(user).getLong("reloadStarted") + reloadDuration;
+		return user.level().getGameTime() >= this.getOrEmptyTag(user).getLong("reloadStarted") + reloadDuration;
 	}
 
 	public boolean isReloading(@NotNull AbstractEntityCitizen user)
@@ -332,7 +332,7 @@ public class GunnerRevolverAI extends CustomizedCitizenAIGuard
 
 	public void startReload(@NotNull AbstractEntityCitizen user)
 	{
-		this.getOrCreateTag(user).putLong("reloadStarted", user.getLevel().getGameTime());
+		this.getOrCreateTag(user).putLong("reloadStarted", user.level().getGameTime());
 	}
 
 	public void stopReload(@NotNull AbstractEntityCitizen user)

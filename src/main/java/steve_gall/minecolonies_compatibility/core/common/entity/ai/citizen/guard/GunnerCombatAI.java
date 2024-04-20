@@ -65,7 +65,7 @@ public class GunnerCombatAI<J extends AbstractJobGuard<J>, B extends AbstractBui
 
 	private AbstractPathJob createPathJob(LivingEntity target, EntityCitizen user)
 	{
-		var level = user.getLevel();
+		var level = user.level();
 		var userPos = user.blockPosition();
 		var targetPos = target.blockPosition();
 

@@ -36,7 +36,7 @@ issueTrackerURL="${mod_issues}"
 [[dependencies.${mod_id}]]
     modId="minecolonies_tweaks"
     mandatory=true
-    versionRange="[1.0,)"
+    versionRange="[${minecolonies_tweaks_version},)"
     ordering="AFTER"
     side="BOTH"
     

@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.api.common.entity;
+package steve_gall.minecolonies_compatibility.api.common.entity.ai;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -15,11 +15,11 @@ public class CustomizedAIContext
 	private final AbstractEntityAIBasic<?, ?> parentAI;
 	private final int weaponSlot;
 
-	public CustomizedAIContext(@NotNull CustomizedCitizenAISelectEvent e)
+	public CustomizedAIContext(@NotNull AbstractEntityCitizen user, @NotNull AbstractEntityAIBasic<?, ?> parentAI, int weaponSlot)
 	{
-		this.user = e.getUser();
-		this.parentAI = e.getParentAI();
-		this.weaponSlot = e.getWeaponSlot();
+		this.user = user;
+		this.parentAI = parentAI;
+		this.weaponSlot = weaponSlot;
 	}
 
 	@NotNull

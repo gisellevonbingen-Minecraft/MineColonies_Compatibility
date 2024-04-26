@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.core.common.entity.ai.citizen.guard;
+package steve_gall.minecolonies_compatibility.core.common.entity.ai.guard;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,8 +10,8 @@ import com.minecolonies.core.entity.citizen.EntityCitizen;
 import com.minecolonies.core.entity.pathfinding.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobWalkRandomEdge;
 
-import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;
-import steve_gall.minecolonies_compatibility.core.common.colony.jobs.JobGunner;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
+import steve_gall.minecolonies_compatibility.core.common.colony.job.JobGunner;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
 public class EntityAIGunner extends AbstractEntityAIGuard<JobGunner, AbstractBuildingGuards> implements ICustomizableEntityAI

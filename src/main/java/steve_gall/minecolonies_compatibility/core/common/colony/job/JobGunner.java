@@ -1,11 +1,11 @@
-package steve_gall.minecolonies_compatibility.core.common.colony.jobs;
+package steve_gall.minecolonies_compatibility.core.common.colony.job;
 
 import com.minecolonies.api.client.render.modeltype.ModModelTypes;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.core.colony.jobs.AbstractJobGuard;
 
 import net.minecraft.resources.ResourceLocation;
-import steve_gall.minecolonies_compatibility.core.common.entity.ai.citizen.guard.EntityAIGunner;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.EntityAIGunner;
 
 public class JobGunner extends AbstractJobGuard<JobGunner>
 {

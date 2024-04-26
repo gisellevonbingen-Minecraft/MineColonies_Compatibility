@@ -22,8 +22,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedCitizenAIAttack;
-import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableAttackMoveAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAttack;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableAttackMoveAI;
 
 @Mixin(value = AttackMoveAI.class, remap = false)
 public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends TargetAI<T>
@@ -46,7 +46,7 @@ public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends Targe
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
 				if (!attack.canTryMoveToAttack(parentAI.getAIContext()))
 				{
@@ -66,7 +66,7 @@ public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends Targe
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
 				if (attack.canTryAttack(parentAI.getAIContext()))
 				{
@@ -87,7 +87,7 @@ public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends Targe
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
 				cir.setReturnValue(attack.canAttack(parentAI.getAIContext(), this.target));
 			}
@@ -107,7 +107,7 @@ public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends Targe
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
 				attack.doAttack(parentAI.getAIContext(), target);
 
@@ -134,7 +134,7 @@ public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends Targe
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
 				var attackDelay = attack.getAttackDelay(parentAI.getAIContext(), this.target);
 				cir.setReturnValue(Math.max(attackDelay, GuardConstants.PHYSICAL_ATTACK_DELAY_MIN));
@@ -155,7 +155,7 @@ public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends Targe
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
 				cir.setReturnValue(attack.getAttackDistance(parentAI.getAIContext(), this.target));
 			}
@@ -176,7 +176,7 @@ public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends Targe
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
 				var speed = attack.getCombatMovementSpeed(parentAI.getAIContext());
 				var min = MinecoloniesAdvancedPathNavigate.MIN_SPEED_ALLOWED;

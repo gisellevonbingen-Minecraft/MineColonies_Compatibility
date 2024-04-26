@@ -2,13 +2,13 @@ package steve_gall.minecolonies_compatibility.core.common.entity;
 
 import org.jetbrains.annotations.Nullable;
 
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedAIContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedCitizenAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 
 public interface AbstractEntityAIBasicExtension
 {
 	@Nullable
-	default CustomizedCitizenAI minecolonies_compatibility$getSelectedAI()
+	default CustomizedAI minecolonies_compatibility$getSelectedAI()
 	{
 		return null;
 	}

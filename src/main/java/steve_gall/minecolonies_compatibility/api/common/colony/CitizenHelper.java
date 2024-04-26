@@ -9,6 +9,7 @@ import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.colony.requestsystem.request.IRequest;
 import com.minecolonies.api.util.InventoryUtils;
+import com.minecolonies.api.util.constant.ToolLevelConstants;
 import com.minecolonies.api.util.constant.ToolType;
 
 public class CitizenHelper
@@ -17,7 +18,7 @@ public class CitizenHelper
 	{
 		var inventory = citizen.getInventory();
 		var maxToolLevel = citizen.getWorkBuilding().getMaxToolLevel();
-		return InventoryUtils.getFirstSlotOfItemHandlerContainingTool(inventory, toolType, 0, maxToolLevel);
+		return InventoryUtils.getFirstSlotOfItemHandlerContainingTool(inventory, toolType, ToolLevelConstants.TOOL_LEVEL_WOOD_OR_GOLD, maxToolLevel);
 	}
 
 	public static JobEntry getJobEntry(@NotNull ICitizenData citizen)

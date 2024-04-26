@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.core.common.ie;
+package steve_gall.minecolonies_compatibility.core.common.module.ie;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,24 +21,30 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import steve_gall.minecolonies_compatibility.api.common.buildings.BuildingHelper;
+import steve_gall.minecolonies_compatibility.api.common.building.BuildingHelper;
 import steve_gall.minecolonies_compatibility.api.common.colony.CitizenHelper;
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedAIContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.guard.CustomizedCitizenAIGuard;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGuard;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
-import steve_gall.minecolonies_compatibility.core.common.ie.IEConfig.JobConfig.GunnerRevolverConfig;
 import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
+import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
+import steve_gall.minecolonies_compatibility.core.common.module.ie.IEConfig.JobConfig.GunnerRevolverConfig;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 
-public class GunnerRevolverAI extends CustomizedCitizenAIGuard
+public class GunnerRevolverAI extends CustomizedAIGuard
 {
-	public static final GunnerRevolverAI INSTANCE = new GunnerRevolverAI();
 	public static final String TAG_KEY = MineColoniesCompatibility.rl("ie_gunner_revolver").toString();
 
 	public GunnerRevolverAI()
 	{
 
+	}
+
+	@Override
+	public boolean test(@NotNull CustomizedAIContext context)
+	{
+		return CitizenHelper.getJobEntry(context.getUser().getCitizenData()) == ModJobs.GUNNER.get() && context.getWeapon().getItem() instanceof RevolverItem;
 	}
 
 	public int getBulletSlot(@NotNull IItemHandler inventory)

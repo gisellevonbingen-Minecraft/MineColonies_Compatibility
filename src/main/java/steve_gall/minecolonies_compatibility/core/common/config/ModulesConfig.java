@@ -1,7 +1,7 @@
 package steve_gall.minecolonies_compatibility.core.common.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import steve_gall.minecolonies_compatibility.core.common.ie.IEConfig;
+import steve_gall.minecolonies_compatibility.core.common.module.ie.IEConfig;
 
 public class ModulesConfig
 {

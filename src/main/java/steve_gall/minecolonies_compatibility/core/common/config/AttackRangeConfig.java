@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import steve_gall.minecolonies_compatibility.api.common.buildings.BuildingHelper;
+import steve_gall.minecolonies_compatibility.api.common.building.BuildingHelper;
 
 public class AttackRangeConfig
 {

@@ -1,10 +1,10 @@
-package steve_gall.minecolonies_compatibility.core.common;
+package steve_gall.minecolonies_compatibility.core.common.module;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import steve_gall.minecolonies_compatibility.core.common.ie.IEModule;
+import steve_gall.minecolonies_compatibility.core.common.module.ie.IEModule;
 
 public class ModuleManager
 {

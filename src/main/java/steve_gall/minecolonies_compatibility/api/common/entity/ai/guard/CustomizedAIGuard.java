@@ -1,13 +1,13 @@
-package steve_gall.minecolonies_compatibility.api.common.entity.guard;
+package steve_gall.minecolonies_compatibility.api.common.entity.ai.guard;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedCitizenAIAttack;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAttack;
 
-public abstract class CustomizedCitizenAIGuard extends CustomizedCitizenAIAttack
+public abstract class CustomizedAIGuard extends CustomizedAIAttack
 {
 	@NotNull
 	public abstract GuardType getGuardType();

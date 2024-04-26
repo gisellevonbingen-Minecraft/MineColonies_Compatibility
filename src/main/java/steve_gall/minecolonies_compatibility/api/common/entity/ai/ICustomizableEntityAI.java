@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.api.common.entity;
+package steve_gall.minecolonies_compatibility.api.common.entity.ai;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +13,7 @@ public interface ICustomizableEntityAI
 	ToolType getHandToolType();
 
 	@Nullable
-	default CustomizedCitizenAI getSelectedAI()
+	default CustomizedAI getSelectedAI()
 	{
 		return ((AbstractEntityAIBasicExtension) this).minecolonies_compatibility$getSelectedAI();
 	}

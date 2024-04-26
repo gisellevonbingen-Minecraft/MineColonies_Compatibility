@@ -13,11 +13,6 @@ public abstract class CustomizedCitizenAI
 {
 	public static final String PERSISTENT_TAG_KEY = MineColoniesCompatibility.rl("customized_citizen_ai").toString();
 
-	public void atBuildingActions(@NotNull CustomizedAIContext context)
-	{
-
-	}
-
 	public boolean canDump(@NotNull CustomizedAIContext context, int slot, @NotNull ItemStack stackToDup)
 	{
 		return true;

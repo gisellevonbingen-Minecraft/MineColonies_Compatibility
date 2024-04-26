@@ -1,21 +1,68 @@
 package steve_gall.minecolonies_compatibility.core.common.mixin.minecolonies;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.minecolonies.api.util.ItemStackUtils;
+import com.minecolonies.core.colony.buildings.AbstractBuilding;
+import com.minecolonies.core.colony.jobs.AbstractJob;
+import com.minecolonies.core.entity.ai.workers.AbstractAISkeleton;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIBasic;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
+import steve_gall.minecolonies_compatibility.api.common.colony.CitizenHelper;
+import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedAIContext;
+import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedCitizenAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedCitizenAISelectEvent;
 import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;
+import steve_gall.minecolonies_compatibility.core.common.entity.AbstractEntityAIBasicExtension;
 
 @Mixin(value = AbstractEntityAIBasic.class, remap = false)
-public class AbstractEntityAIBasicMixin
+public class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B extends AbstractBuilding> extends AbstractAISkeleton<J> implements AbstractEntityAIBasicExtension
 {
 	@Shadow
 	private int slotAt = 0;
+
+	@Unique
+	private CustomizedCitizenAI minecolonies_compatibility$selectedAI;
+	@Unique
+	private CustomizedAIContext minecolonies_compatibility$aiContext;
+
+	protected AbstractEntityAIBasicMixin(@NotNull J job)
+	{
+		super(job);
+	}
+
+	@Override
+	public void minecolonies_compatibility$onTick()
+	{
+		if (this instanceof ICustomizableEntityAI self)
+		{
+			var worker = this.worker;
+			var toolSlot = CitizenHelper.getMaxLevelToolSlot(worker.getCitizenData(), self.getHandToolType());
+			var event = CustomizedCitizenAISelectEvent.of(worker, (AbstractEntityAIBasic<?, ?>) (Object) this, toolSlot);
+			this.minecolonies_compatibility$selectedAI = event.post();
+
+			if (this.minecolonies_compatibility$selectedAI != null)
+			{
+				this.minecolonies_compatibility$aiContext = new CustomizedAIContext(event);
+				worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, this.minecolonies_compatibility$aiContext.getWeaponSlot());
+			}
+			else
+			{
+				this.minecolonies_compatibility$aiContext = null;
+				worker.getCitizenItemHandler().removeHeldItem();
+			}
+
+		}
+
+	}
 
 	@Redirect(method = "dumpOneMoreSlot", at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/util/ItemStackUtils;isEmpty(Lnet/minecraft/world/item/ItemStack;)Z"))
 	private boolean dumpOneMoreSlot_isEmpty(ItemStack stackToDump)
@@ -48,6 +95,20 @@ public class AbstractEntityAIBasicMixin
 		}
 
 		return false;
+	}
+
+	@Override
+	@Nullable
+	public CustomizedCitizenAI minecolonies_compatibility$getSelectedAI()
+	{
+		return this.minecolonies_compatibility$selectedAI;
+	}
+
+	@Override
+	@Nullable
+	public CustomizedAIContext minecolonies_compatibility$getAIContext()
+	{
+		return this.minecolonies_compatibility$aiContext;
 	}
 
 }

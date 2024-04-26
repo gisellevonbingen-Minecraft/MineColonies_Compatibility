@@ -1,18 +1,20 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.citizen.guard;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
+import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 import com.minecolonies.core.entity.pathfinding.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobWalkRandomEdge;
 
-import steve_gall.minecolonies_compatibility.api.common.entity.guard.CustomizableEntityAIGuard;
+import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;
 import steve_gall.minecolonies_compatibility.core.common.colony.jobs.JobGunner;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
-public class EntityAIGunner extends CustomizableEntityAIGuard<JobGunner, AbstractBuildingGuards>
+public class EntityAIGunner extends AbstractEntityAIGuard<JobGunner, AbstractBuildingGuards> implements ICustomizableEntityAI
 {
 	public EntityAIGunner(@NotNull JobGunner job)
 	{
@@ -23,6 +25,7 @@ public class EntityAIGunner extends CustomizableEntityAIGuard<JobGunner, Abstrac
 	}
 
 	@Override
+	@Nullable
 	public ToolType getHandToolType()
 	{
 		return ModToolTypes.GUN.getToolType();

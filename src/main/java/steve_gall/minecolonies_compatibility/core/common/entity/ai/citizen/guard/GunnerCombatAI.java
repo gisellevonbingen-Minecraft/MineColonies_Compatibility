@@ -10,6 +10,7 @@ import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
 import com.minecolonies.core.colony.jobs.AbstractJobGuard;
+import com.minecolonies.core.entity.ai.citizen.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 import com.minecolonies.core.entity.pathfinding.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.entity.pathfinding.pathjobs.AbstractPathJob;
@@ -20,10 +21,10 @@ import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobMoveToLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import steve_gall.minecolonies_compatibility.api.common.entity.guard.CustomizableCitizenAttackMoveAIGuard;
-import steve_gall.minecolonies_compatibility.api.common.entity.guard.CustomizableEntityAIGuard;
+import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.guard.CustomizableCitizenAISimpleGuard;
 
-public class GunnerCombatAI<J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends CustomizableCitizenAttackMoveAIGuard<CustomizableEntityAIGuard<J, B>, J, B>
+public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizableEntityAI, J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends CustomizableCitizenAISimpleGuard<T, J, B>
 {
 	/**
 	 * Visible combat icon
@@ -32,7 +33,7 @@ public class GunnerCombatAI<J extends AbstractJobGuard<J>, B extends AbstractBui
 
 	private final PathingOptions combatPathingOptions;
 
-	public GunnerCombatAI(EntityCitizen owner, ITickRateStateMachine<?> stateMachine, CustomizableEntityAIGuard<J, B> parentAI)
+	public GunnerCombatAI(EntityCitizen owner, ITickRateStateMachine<?> stateMachine, T parentAI)
 	{
 		super(owner, stateMachine, parentAI);
 
@@ -55,7 +56,7 @@ public class GunnerCombatAI<J extends AbstractJobGuard<J>, B extends AbstractBui
 
 	@Override
 	@Nullable
-	protected PathResult<?> createPathResult(LivingEntity target, EntityCitizen user, double speed)
+	public PathResult<?> createPathResult(LivingEntity target, EntityCitizen user, double speed)
 	{
 		var job = this.createPathJob(target, user);
 		var pathResult = ((MinecoloniesAdvancedPathNavigate) user.getNavigation()).setPathJob(job, null, speed, true);

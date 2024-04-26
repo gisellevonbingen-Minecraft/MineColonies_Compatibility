@@ -6,29 +6,31 @@ import static com.minecolonies.api.util.constant.StatisticsConstants.MOB_KILLED;
 import static com.minecolonies.core.colony.buildings.modules.BuildingModules.STATS_MODULE;
 import static com.minecolonies.core.entity.ai.citizen.guard.AbstractEntityAIGuard.PATROL_DEVIATION_RAID_POINT;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
 import com.minecolonies.core.colony.jobs.AbstractJobGuard;
 import com.minecolonies.core.entity.ai.citizen.guard.AbstractEntityAIGuard;
+import com.minecolonies.core.entity.ai.combat.AttackMoveAI;
 import com.minecolonies.core.entity.ai.combat.CombatUtils;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.LivingEntity;
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizableCitizenAttackMoveAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableAttackMoveAI;
 import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;
 
-public abstract class CustomizableCitizenAttackMoveAIGuard<T extends AbstractEntityAIGuard<J, B> & ICustomizableEntityAI, J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends CustomizableCitizenAttackMoveAI<T>
+public abstract class CustomizableCitizenAISimpleGuard<T extends AbstractEntityAIGuard<J, B> & ICustomizableEntityAI, J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends AttackMoveAI<EntityCitizen> implements ICustomizableAttackMoveAI<T, EntityCitizen>
 {
-	public CustomizableCitizenAttackMoveAIGuard(EntityCitizen owner, ITickRateStateMachine<?> stateMachine, T parentAI)
-	{
-		super(owner, stateMachine, parentAI);
-	}
+	@NotNull
+	private final T parentAI;
 
-	@Override
-	protected boolean isWithinPersecutionDistance(LivingEntity target)
+	public CustomizableCitizenAISimpleGuard(EntityCitizen owner, ITickRateStateMachine<?> stateMachine, @NotNull T parentAI)
 	{
-		return this.getParentAI().isWithinPersecutionDistance(target.blockPosition(), this.getAttackDistance());
+		super(owner, stateMachine);
+
+		this.parentAI = parentAI;
 	}
 
 	@Override
@@ -75,6 +77,13 @@ public abstract class CustomizableCitizenAttackMoveAIGuard<T extends AbstractEnt
 	protected void onTargetChange()
 	{
 		CombatUtils.notifyGuardsOfTarget(this.user, this.target, PATROL_DEVIATION_RAID_POINT);
+	}
+
+	@Override
+	@NotNull
+	public T getParentAI()
+	{
+		return this.parentAI;
 	}
 
 }

@@ -1,0 +1,26 @@
+package steve_gall.minecolonies_compatibility.core.common.mixin.minecolonies;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.minecolonies.core.entity.ai.basic.AbstractEntityAIFight;
+
+import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedCitizenAIAttack;
+import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;
+
+@Mixin(value = AbstractEntityAIFight.class, remap = false)
+public class AbstractEntityAIFightMixin
+{
+	@Inject(method = "atBuildingActions", at = @At(value = "TAIL"), cancellable = true)
+	private void atBuildingActions(CallbackInfo ci)
+	{
+		if (this instanceof ICustomizableEntityAI self && self.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+		{
+			attack.atBuildingActions(self.getAIContext());
+		}
+
+	}
+
+}

@@ -6,6 +6,11 @@ import net.minecraft.world.entity.LivingEntity;
 
 public abstract class CustomizedCitizenAIAttack extends CustomizedCitizenAI
 {
+	public void atBuildingActions(@NotNull CustomizedAIContext context)
+	{
+
+	}
+
 	/**
 	 * The target maybe not be specified.
 	 *

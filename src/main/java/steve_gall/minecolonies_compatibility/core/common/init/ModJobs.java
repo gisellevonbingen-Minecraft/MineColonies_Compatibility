@@ -8,7 +8,7 @@ import com.minecolonies.core.colony.jobs.views.DefaultJobView;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_compatibility.core.common.colony.jobs.JobGunner;
+import steve_gall.minecolonies_compatibility.core.common.colony.job.JobGunner;
 import steve_gall.minecolonies_tweaks.api.registries.DeferredRegisterHelper;
 
 public class ModJobs

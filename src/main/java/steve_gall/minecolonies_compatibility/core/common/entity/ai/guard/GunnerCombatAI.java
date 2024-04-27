@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.core.common.entity.ai.citizen.guard;
+package steve_gall.minecolonies_compatibility.core.common.entity.ai.guard;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -21,10 +21,10 @@ import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobMoveToLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;
-import steve_gall.minecolonies_compatibility.api.common.entity.guard.CustomizableCitizenAISimpleGuard;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizableAISimpleGuard;
 
-public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizableEntityAI, J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends CustomizableCitizenAISimpleGuard<T, J, B>
+public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizableEntityAI, J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends CustomizableAISimpleGuard<T, J, B>
 {
 	/**
 	 * Visible combat icon

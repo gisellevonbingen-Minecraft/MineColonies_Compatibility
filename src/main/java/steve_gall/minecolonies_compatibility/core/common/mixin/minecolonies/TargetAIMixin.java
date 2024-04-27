@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.core.entity.ai.combat.TargetAI;
 
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedCitizenAIAttack;
-import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableAttackMoveAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAttack;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableAttackMoveAI;
 
 @Mixin(value = TargetAI.class, remap = false)
 public class TargetAIMixin
@@ -20,7 +20,7 @@ public class TargetAIMixin
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
 				cir.setReturnValue(attack.getHorizontalSearchRange(parentAI.getAIContext()));
 			}
@@ -40,7 +40,7 @@ public class TargetAIMixin
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI.getSelectedAI() instanceof CustomizedCitizenAIAttack attack)
+			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
 				cir.setReturnValue(attack.getVerticalSearchRange(parentAI.getAIContext()));
 			}

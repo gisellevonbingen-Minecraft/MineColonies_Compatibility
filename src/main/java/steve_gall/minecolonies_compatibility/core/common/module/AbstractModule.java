@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.core.common;
+package steve_gall.minecolonies_compatibility.core.common.module;
 
 import net.minecraftforge.fml.ModList;
 
@@ -8,9 +8,14 @@ public abstract class AbstractModule
 
 	public abstract String getModId();
 
+	protected boolean canLoad()
+	{
+		return ModList.get().isLoaded(this.getModId());
+	}
+
 	public void tryLoad()
 	{
-		if (ModList.get().isLoaded(this.getModId()))
+		if (this.canLoad())
 		{
 			this.isLoaded = true;
 			this.onLoad();

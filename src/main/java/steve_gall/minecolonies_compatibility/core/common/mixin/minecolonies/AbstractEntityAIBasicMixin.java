@@ -17,10 +17,9 @@ import com.minecolonies.core.entity.ai.basic.AbstractEntityAIBasic;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.colony.CitizenHelper;
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedAIContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedCitizenAI;
-import steve_gall.minecolonies_compatibility.api.common.entity.CustomizedCitizenAISelectEvent;
-import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
 import steve_gall.minecolonies_compatibility.core.common.entity.AbstractEntityAIBasicExtension;
 
 @Mixin(value = AbstractEntityAIBasic.class, remap = false)
@@ -30,7 +29,7 @@ public class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B extends A
 	private int slotAt = 0;
 
 	@Unique
-	private CustomizedCitizenAI minecolonies_compatibility$selectedAI;
+	private CustomizedAI minecolonies_compatibility$selectedAI;
 	@Unique
 	private CustomizedAIContext minecolonies_compatibility$aiContext;
 
@@ -46,12 +45,12 @@ public class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B extends A
 		{
 			var worker = this.worker;
 			var toolSlot = CitizenHelper.getMaxLevelToolSlot(worker.getCitizenData(), self.getHandToolType());
-			var event = CustomizedCitizenAISelectEvent.of(worker, (AbstractEntityAIBasic<?, ?>) (Object) this, toolSlot);
-			this.minecolonies_compatibility$selectedAI = event.post();
+			var context = new CustomizedAIContext(worker, (AbstractEntityAIBasic<?, ?>) (Object) this, toolSlot);
+			this.minecolonies_compatibility$selectedAI = CustomizedAI.select(context);
 
 			if (this.minecolonies_compatibility$selectedAI != null)
 			{
-				this.minecolonies_compatibility$aiContext = new CustomizedAIContext(event);
+				this.minecolonies_compatibility$aiContext = context;
 				worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, this.minecolonies_compatibility$aiContext.getWeaponSlot());
 			}
 			else
@@ -99,7 +98,7 @@ public class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B extends A
 
 	@Override
 	@Nullable
-	public CustomizedCitizenAI minecolonies_compatibility$getSelectedAI()
+	public CustomizedAI minecolonies_compatibility$getSelectedAI()
 	{
 		return this.minecolonies_compatibility$selectedAI;
 	}

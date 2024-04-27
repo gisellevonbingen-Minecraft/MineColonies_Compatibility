@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.core.common.ie;
+package steve_gall.minecolonies_compatibility.core.common.module.ie;
 
 public enum BulletMode
 {

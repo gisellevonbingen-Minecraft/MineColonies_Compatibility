@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.api.common.entity.guard;
+package steve_gall.minecolonies_compatibility.api.common.entity.ai.guard;
 
 import static com.minecolonies.api.util.constant.GuardConstants.EXP_PER_MOB_DEATH;
 import static com.minecolonies.api.util.constant.StatisticsConstants.MOBS_KILLED;
@@ -18,15 +18,15 @@ import com.minecolonies.core.entity.citizen.EntityCitizen;
 
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.entity.LivingEntity;
-import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableAttackMoveAI;
-import steve_gall.minecolonies_compatibility.api.common.entity.ICustomizableEntityAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableAttackMoveAI;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
 
-public abstract class CustomizableCitizenAISimpleGuard<T extends AbstractEntityAIGuard<J, B> & ICustomizableEntityAI, J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends AttackMoveAI<EntityCitizen> implements ICustomizableAttackMoveAI<T, EntityCitizen>
+public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<J, B> & ICustomizableEntityAI, J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends AttackMoveAI<EntityCitizen> implements ICustomizableAttackMoveAI<T, EntityCitizen>
 {
 	@NotNull
 	private final T parentAI;
 
-	public CustomizableCitizenAISimpleGuard(EntityCitizen owner, ITickRateStateMachine<?> stateMachine, @NotNull T parentAI)
+	public CustomizableAISimpleGuard(EntityCitizen owner, ITickRateStateMachine<?> stateMachine, @NotNull T parentAI)
 	{
 		super(owner, stateMachine);
 

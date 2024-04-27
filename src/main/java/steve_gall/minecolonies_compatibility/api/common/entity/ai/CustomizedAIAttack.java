@@ -1,10 +1,10 @@
-package steve_gall.minecolonies_compatibility.api.common.entity;
+package steve_gall.minecolonies_compatibility.api.common.entity.ai;
 
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.entity.LivingEntity;
 
-public abstract class CustomizedCitizenAIAttack extends CustomizedCitizenAI
+public abstract class CustomizedAIAttack extends CustomizedAI
 {
 	public void atBuildingActions(@NotNull CustomizedAIContext context)
 	{

@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.api.common.entity;
+package steve_gall.minecolonies_compatibility.api.common.entity.ai;
 
 import org.jetbrains.annotations.Nullable;
 

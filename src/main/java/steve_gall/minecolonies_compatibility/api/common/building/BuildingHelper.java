@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.api.common.buildings;
+package steve_gall.minecolonies_compatibility.api.common.building;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

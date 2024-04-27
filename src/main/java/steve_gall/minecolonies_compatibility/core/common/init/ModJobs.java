@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.colony.job.JobGunner;
+import steve_gall.minecolonies_compatibility.core.common.colony.job.JobOrchardist;
 import steve_gall.minecolonies_tweaks.api.registries.DeferredRegisterHelper;
 
 public class ModJobs
@@ -18,6 +19,11 @@ public class ModJobs
 	public static final RegistryObject<JobEntry> GUNNER = register("gunner", builder ->
 	{
 		builder.setJobProducer(JobGunner::new);
+		builder.setJobViewProducer(() -> DefaultJobView::new);
+	});
+	public static final RegistryObject<JobEntry> ORCHARDIST = register("orchardist", builder ->
+	{
+		builder.setJobProducer(JobOrchardist::new);
 		builder.setJobViewProducer(() -> DefaultJobView::new);
 	});
 

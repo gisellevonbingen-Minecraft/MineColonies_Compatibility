@@ -4,5 +4,9 @@
 	"minecolonies_compatibility:gunner.job.desc": "강력한 원거리 공격이 가능하지만, 근접전은 약합니다.",
 	"minecolonies_compatibility:gunner.skills.desc": "skills.desc",
 	"minecolonies_compatibility.ie_bullet": "총알",
-	"minecolonies_compatibility.ie_bullet.desc": "Immersive Engineering 모드 총알"
+	"minecolonies_compatibility.ie_bullet.desc": "Immersive Engineering 모드 총알",
+	
+	"minecolonies_compatibility.job.orchardist": "과수재배꾼",
+	"minecolonies_compatibility:orchardist.job.desc": "과일, 나무에 열린 작물을 수확합니다.",
+	"minecolonies_compatibility:orchardist.skills.desc": "수확 속도와 걷는 속도에 영향을 미칩니다."
 }

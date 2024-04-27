@@ -4,5 +4,9 @@
 	"minecolonies_compatibility:gunner.job.desc": "Distance fighter, deals high damage, but has low survival chance in close combat.",
 	"minecolonies_compatibility:gunner.skills.desc": "Affects speed, accuracy, range, and damage output.",
 	"minecolonies_compatibility.ie_bullet": "Bullets",
-	"minecolonies_compatibility.ie_bullet.desc": "Immersive Engineering's Bullets"
+	"minecolonies_compatibility.ie_bullet.desc": "Immersive Engineering's Bullets",
+	
+	"minecolonies_compatibility.job.orchardist": "Orchardist",
+	"minecolonies_compatibility:orchardist.job.desc": "Harvests fruits, leaf crops hanging at tree.",
+	"minecolonies_compatibility:orchardist.skills.desc": "Affects harvesting and walking speed."
 }

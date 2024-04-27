@@ -14,10 +14,15 @@ public class MineColoniesCompatibilityConfigServer
 		SPEC = common.getRight();
 	}
 
+	public final JobConfig jobs;
 	public final ModulesConfig modules;
 
 	public MineColoniesCompatibilityConfigServer(ForgeConfigSpec.Builder builder)
 	{
+		builder.push("jobs");
+		this.jobs = new JobConfig(builder);
+		builder.pop();
+
 		builder.push("modules");
 		this.modules = new ModulesConfig(builder);
 		builder.pop();

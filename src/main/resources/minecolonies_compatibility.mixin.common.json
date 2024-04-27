@@ -8,6 +8,8 @@
 		"minecolonies.AbstractEntityAIBasicMixin",
 		"minecolonies.AbstractEntityAIFightMixin",
 		"minecolonies.AttackMoveAIMixin",
+		"minecolonies.BuildingEntryMixin",
+		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.JobEntryMixin",
 		"minecolonies.TargetAIMixin"
 	],

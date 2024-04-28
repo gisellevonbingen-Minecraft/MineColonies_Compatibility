@@ -33,8 +33,8 @@ public class MineColoniesCompatibility
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MineColoniesCompatibilityConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
-		ModJobs.REGISTER.register(fml_bus);
 		ModGuardTypes.REGISTER.register(fml_bus);
+		ModJobs.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
@@ -46,6 +46,7 @@ public class MineColoniesCompatibility
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
 		ModBuildings.guardTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_TOWER_WORK);
+		ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.ORCHARDIST_WORK);
 	}
 
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)

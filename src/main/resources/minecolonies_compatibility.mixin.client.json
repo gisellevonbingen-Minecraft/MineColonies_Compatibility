@@ -3,7 +3,10 @@
 	"package": "steve_gall.minecolonies_compatibility.core.client.mixin",
 	"minVersion": "0.8.5",
 	"compatibilityLevel": "JAVA_17",
-	"client": [],
+	"client": [
+		"minecolonies.AbstractModuleWindowMixin",
+		"minecolonies.SettingsModuleViewMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	},

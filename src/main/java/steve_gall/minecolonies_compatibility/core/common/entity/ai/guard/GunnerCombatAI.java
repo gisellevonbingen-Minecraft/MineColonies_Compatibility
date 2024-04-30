@@ -4,19 +4,20 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
 import com.minecolonies.api.entity.citizen.VisibleCitizenStatus;
-import com.minecolonies.api.entity.pathfinding.PathResult;
-import com.minecolonies.api.entity.pathfinding.PathingOptions;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
 import com.minecolonies.core.colony.jobs.AbstractJobGuard;
 import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
-import com.minecolonies.core.entity.pathfinding.MinecoloniesAdvancedPathNavigate;
+import com.minecolonies.core.entity.pathfinding.PathfindingUtils;
+import com.minecolonies.core.entity.pathfinding.PathingOptions;
+import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.entity.pathfinding.pathjobs.AbstractPathJob;
 import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobCanSee;
 import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobMoveAwayFromLocation;
 import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobMoveToLocation;
+import com.minecolonies.core.entity.pathfinding.pathresults.PathResult;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -54,9 +55,10 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 		this.user.getCitizenData().setVisibleStatus(ARCHER_COMBAT);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	@Nullable
-	public PathResult<?> createPathResult(LivingEntity target, EntityCitizen user, double speed)
+	public PathResult createPathResult(LivingEntity target, EntityCitizen user, double speed)
 	{
 		var job = this.createPathJob(target, user);
 		var pathResult = ((MinecoloniesAdvancedPathNavigate) user.getNavigation()).setPathJob(job, null, speed, true);
@@ -72,11 +74,11 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 
 		if (BlockPosUtil.getDistanceSquared(targetPos, userPos) <= 4.0D)
 		{
-			return new PathJobMoveAwayFromLocation(level, AbstractPathJob.prepareStart(target), targetPos, 7, (int) user.getAttribute(Attributes.FOLLOW_RANGE).getValue(), user);
+			return new PathJobMoveAwayFromLocation(level, PathfindingUtils.prepareStart(target), targetPos, 7, (int) user.getAttribute(Attributes.FOLLOW_RANGE).getValue(), user);
 		}
 		else if (BlockPosUtil.getDistance2D(targetPos, userPos) >= 20.0D)
 		{
-			return new PathJobMoveToLocation(level, AbstractPathJob.prepareStart(user), targetPos, 200, user);
+			return new PathJobMoveToLocation(level, PathfindingUtils.prepareStart(user), targetPos, 200, user);
 		}
 		else
 		{

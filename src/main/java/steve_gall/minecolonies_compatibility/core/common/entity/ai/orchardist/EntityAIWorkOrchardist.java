@@ -1,7 +1,5 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist;
 
-import static com.minecolonies.api.util.constant.CitizenConstants.BLOCK_BREAK_SOUND_RANGE;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,11 +12,13 @@ import com.minecolonies.api.colony.requestsystem.requestable.StackList;
 import com.minecolonies.api.entity.ai.statemachine.AITarget;
 import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
+import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.entity.citizen.VisibleCitizenStatus;
 import com.minecolonies.api.items.ModItems;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.Tuple;
+import com.minecolonies.api.util.constant.CitizenConstants;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.StatisticsConstants;
 import com.minecolonies.api.util.constant.ToolType;
@@ -29,8 +29,8 @@ import com.minecolonies.core.colony.buildings.modules.settings.BoolSetting;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingFarmer;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingLumberjack;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
-import com.minecolonies.core.entity.pathfinding.MinecoloniesAdvancedPathNavigate;
-import com.minecolonies.core.entity.pathfinding.pathjobs.AbstractPathJob;
+import com.minecolonies.core.entity.pathfinding.PathfindingUtils;
+import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.network.messages.client.CompostParticleMessage;
 
 import net.minecraft.resources.ResourceLocation;
@@ -62,7 +62,6 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 	@Nullable
 	private FruitPathResult pathResult;
-	private int searchIncrement = 0;
 	private long nextSearchDelay = -1L;
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
@@ -85,7 +84,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 	{
 		if (this.nextSearchDelay > 0)
 		{
-			this.nextSearchDelay--;
+			this.nextSearchDelay -= AbstractEntityCitizen.ENTITY_AI_TICKRATE;
 		}
 
 		super.tick();
@@ -176,9 +175,9 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 			this.job.setFruit(null);
 			this.worker.getCitizenData().setVisibleStatus(SEARCH);
 			this.pathResult = this.creatNewPath();
+			return this.getState();
 		}
-
-		if (this.pathResult.isDone())
+		else if (this.pathResult.isDone())
 		{
 			return this.onPathDone();
 		}
@@ -195,7 +194,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		var worker = this.worker;
 		var building = this.building;
 
-		var start = AbstractPathJob.prepareStart(worker);
+		var start = PathfindingUtils.prepareStart(worker);
 		var buildingPos = building.getPosition();
 		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.orchardist;
 		PathJobFindFruit job = null;
@@ -206,12 +205,12 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 			var endPos = building.getEndRestriction();
 			var furthestPos = BlockPosUtil.getFurthestCorner(start, startPos, endPos);
 
-			job = new PathJobFindFruit(level, start, buildingPos, startPos, endPos, furthestPos, worker);
+			job = new PathJobFindFruit(level, start, startPos, endPos, furthestPos, worker);
 		}
 		else
 		{
-			var current = config.searchRangeStart.get().intValue() + this.searchIncrement;
-			job = new PathJobFindFruit(level, start, buildingPos, current, worker);
+			var range = config.searchRange.get().intValue();
+			job = new PathJobFindFruit(level, start, buildingPos, range, worker);
 		}
 
 		job.vertialRange = config.searchVerticalRange.get().intValue();
@@ -221,35 +220,17 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 	private IAIState onPathDone()
 	{
-		var building = this.building;
 		var fruit = this.pathResult.fruit;
 		this.pathResult = null;
 
 		if (fruit == null)
 		{
 			var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.orchardist;
-			var start = config.searchRangeStart.get().intValue();
-			var limit = config.searchRangeLimit.get().intValue();
-			var current = start + this.searchIncrement;
-
-			if (!building.shouldRestrict() && current < limit)
-			{
-				var increment = config.searchRangeIncrement.get().intValue();
-				this.searchIncrement = Math.min(this.searchIncrement + increment, limit - start);
-				this.setDelay(config.searchdelayBeforeIncrement.get().intValue());
-				return this.getState();
-			}
-			else
-			{
-				this.searchIncrement = 0;
-				this.nextSearchDelay = config.searchDelayAfterNotFound.get().intValue();
-				return AIWorkerState.INVENTORY_FULL;
-			}
-
+			this.nextSearchDelay = config.searchDelayAfterNotFound.get().intValue();
+			return AIWorkerState.INVENTORY_FULL;
 		}
 		else
 		{
-			this.searchIncrement = 0;
 			this.job.setFruit(fruit);
 			return OrchardistAIState.HARVEST;
 		}
@@ -281,12 +262,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 			return OrchardistAIState.SEARCH;
 		}
 
-		if (this.walkToBlock(position))
-		{
-			return this.getState();
-		}
-
-		if (this.hasNotDelayed(this.getLevelDelay()))
+		if (this.walkToBlock(position) || this.hasNotDelayed(this.getLevelDelay()))
 		{
 			return this.getState();
 		}
@@ -313,7 +289,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 				if (block.isBonemealSuccess(level, level.random, position, state))
 				{
-					Network.getNetwork().sendToPosition(new CompostParticleMessage(position), new PacketDistributor.TargetPoint(position.getX(), position.getY(), position.getZ(), BLOCK_BREAK_SOUND_RANGE, level.dimension()));
+					Network.getNetwork().sendToPosition(new CompostParticleMessage(position), new PacketDistributor.TargetPoint(position.getX(), position.getY(), position.getZ(), CitizenConstants.BLOCK_BREAK_SOUND_RANGE, level.dimension()));
 
 					if (level instanceof ServerLevel serverLevel)
 					{

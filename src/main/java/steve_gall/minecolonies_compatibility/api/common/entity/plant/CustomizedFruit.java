@@ -6,10 +6,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class CustomizedFruit
 {
@@ -21,15 +18,15 @@ public abstract class CustomizedFruit
 	}
 
 	@Nullable
-	public static CustomizedFruit select(@NotNull BlockState state)
+	public static CustomizedFruit select(@NotNull PlantBlockContext context)
 	{
-		return REGISTRY.stream().filter(it -> it.test(state)).findFirst().orElse(null);
+		return REGISTRY.stream().filter(it -> it.test(context)).findFirst().orElse(null);
 	}
 
-	public abstract boolean test(@NotNull BlockState state);
+	public abstract boolean test(@NotNull PlantBlockContext context);
 
-	public abstract boolean canHarvest(@NotNull BlockState state);
+	public abstract boolean canHarvest(@NotNull PlantBlockContext context);
 
 	@NotNull
-	public abstract List<ItemStack> harvest(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos position);
+	public abstract List<ItemStack> harvest(@NotNull PlantBlockContext context);
 }

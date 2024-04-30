@@ -11,10 +11,9 @@ import com.minecolonies.api.util.BlockPosUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 
 public class Fruit
 {
@@ -32,7 +31,7 @@ public class Fruit
 	private BlockPos position;
 
 	@Nullable
-	private BlockState state;
+	private PlantBlockContext context;
 
 	@Nullable
 	private CustomizedFruit fruit;
@@ -54,22 +53,23 @@ public class Fruit
 
 	private void update(LevelReader level)
 	{
-		this.state = level.getBlockState(this.getPosition());
+		var position = this.getPosition();
+		this.context = new PlantBlockContext(level, position, level.getBlockState(position));
 	}
 
 	public boolean updateAndIsValid(@NotNull LevelReader level)
 	{
 		this.update(level);
 
-		var state = this.getState();
+		var context = this.getContext();
 		var fruit = this.getFruit();
 
-		if (fruit != null && fruit.test(state))
+		if (fruit != null && fruit.test(context))
 		{
 			return true;
 		}
 
-		this.fruit = CustomizedFruit.select(state);
+		this.fruit = CustomizedFruit.select(context);
 		return this.fruit != null;
 	}
 
@@ -79,8 +79,7 @@ public class Fruit
 
 		if (fruit != null)
 		{
-			var state = this.getState();
-			return fruit.canHarvest(state);
+			return fruit.canHarvest(this.getContext());
 		}
 		else
 		{
@@ -89,15 +88,13 @@ public class Fruit
 
 	}
 
-	public List<ItemStack> harvest(@NotNull Level level)
+	public List<ItemStack> harvest()
 	{
 		var fruit = this.fruit;
 
 		if (fruit != null)
 		{
-			var position = this.getPosition();
-			var state = this.getState();
-			return fruit.harvest(state, level, position);
+			return fruit.harvest(this.getContext());
 		}
 		else
 		{
@@ -112,9 +109,10 @@ public class Fruit
 		return this.position;
 	}
 
-	public BlockState getState()
+	@Nullable
+	public PlantBlockContext getContext()
 	{
-		return this.state;
+		return this.context;
 	}
 
 	@Nullable

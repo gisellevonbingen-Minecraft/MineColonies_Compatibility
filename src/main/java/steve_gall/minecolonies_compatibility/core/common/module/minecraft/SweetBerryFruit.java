@@ -5,38 +5,47 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SweetBerryBushBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 
 public class SweetBerryFruit extends CustomizedFruit
 {
 	@Override
-	public boolean test(@NotNull BlockState state)
+	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return state.getBlock() instanceof SweetBerryBushBlock;
+		return context.getState().getBlock() instanceof SweetBerryBushBlock;
 	}
 
 	@Override
-	public boolean canHarvest(@NotNull BlockState state)
+	public boolean canHarvest(@NotNull PlantBlockContext context)
 	{
+		var state = context.getState();
 		return state.getBlock() instanceof SweetBerryBushBlock block && state.getValue(SweetBerryBushBlock.AGE) > 1;
 	}
 
 	@Override
 	@NotNull
-	public List<ItemStack> harvest(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos position)
+	public List<ItemStack> harvest(@NotNull PlantBlockContext context)
 	{
-		var age = state.getValue(SweetBerryBushBlock.AGE);
-		var count = 1 + level.random.nextInt(2) + (age == SweetBerryBushBlock.MAX_AGE ? 1 : 0);
-		level.setBlock(position, state.setValue(SweetBerryBushBlock.AGE, 1), Block.UPDATE_CLIENTS);
+		if (context.getLevel() instanceof ServerLevel level)
+		{
+			var state = context.getState();
+			var age = state.getValue(SweetBerryBushBlock.AGE);
+			var count = 1 + level.random.nextInt(2) + (age == SweetBerryBushBlock.MAX_AGE ? 1 : 0);
+			level.setBlock(context.getPosition(), state.setValue(SweetBerryBushBlock.AGE, 1), Block.UPDATE_CLIENTS);
 
-		return Collections.singletonList(new ItemStack(Items.SWEET_BERRIES, count));
+			return Collections.singletonList(new ItemStack(Items.SWEET_BERRIES, count));
+		}
+		else
+		{
+			return Collections.emptyList();
+		}
+
 	}
 
 }

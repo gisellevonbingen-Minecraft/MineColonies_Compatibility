@@ -51,6 +51,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 {
 	public static final VisibleCitizenStatus SEARCH = new VisibleCitizenStatus(new ResourceLocation(Constants.MOD_ID, "textures/icons/work/lumberjack_search.png"), "com.minecolonies.gui.visiblestatus.lumberjack_search");
 
+	public static final double XP_PER_HARVEST = 0.5D;
 	public static final ISettingKey<BoolSetting> FERTILIZE = BuildingFarmer.FERTILIZE;
 	public static final List<Item> COMPOST_ITEMS = Arrays.asList(ModItems.compost, Items.BONE_MEAL);
 
@@ -190,9 +191,9 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 	private FruitPathResult creatNewPath()
 	{
+		var level = this.world;
 		var worker = this.worker;
 		var building = this.building;
-		var level = worker.getLevel();
 
 		var start = AbstractPathJob.prepareStart(worker);
 		var buildingPos = building.getPosition();
@@ -285,6 +286,11 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 			return this.getState();
 		}
 
+		if (this.hasNotDelayed(this.getLevelDelay()))
+		{
+			return this.getState();
+		}
+
 		if (!fruit.updateAndIsValid(level))
 		{
 			return OrchardistAIState.SEARCH;
@@ -292,25 +298,31 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 		var inventory = worker.getInventoryCitizen();
 		var hand = worker.getUsedItemHand();
+		var state = fruit.getContext().getState();
 
 		if (!fruit.canHarvest())
 		{
-			if (fruit.getState().getBlock() instanceof BonemealableBlock block)
+			if (state.getBlock() instanceof BonemealableBlock block && block.isValidBonemealTarget(level, position, state, level.isClientSide))
 			{
 				if (!InventoryUtils.shrinkItemCountInItemHandler(inventory, EntityAIWorkOrchardist::isCompost))
 				{
 					return OrchardistAIState.SEARCH;
 				}
 
-				Network.getNetwork().sendToPosition(new CompostParticleMessage(position.above()), new PacketDistributor.TargetPoint(position.getX(), position.getY(), position.getZ(), BLOCK_BREAK_SOUND_RANGE, level.dimension()));
 				worker.swing(hand);
 
-				if (level instanceof ServerLevel serverLevel)
+				if (block.isBonemealSuccess(level, level.random, position, state))
 				{
-					block.performBonemeal(serverLevel, serverLevel.random, fruit.getPosition(), fruit.getState());
+					Network.getNetwork().sendToPosition(new CompostParticleMessage(position), new PacketDistributor.TargetPoint(position.getX(), position.getY(), position.getZ(), BLOCK_BREAK_SOUND_RANGE, level.dimension()));
+
+					if (level instanceof ServerLevel serverLevel)
+					{
+						block.performBonemeal(serverLevel, serverLevel.random, position, state);
+					}
+
+					return this.getState();
 				}
 
-				return this.getState();
 			}
 			else
 			{
@@ -319,7 +331,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 		}
 
-		var drops = fruit.harvest(level);
+		var drops = fruit.harvest();
 
 		for (var stack : drops)
 		{
@@ -328,13 +340,15 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 		worker.swing(hand);
 		worker.getCitizenItemHandler().damageItemInHand(hand, 1);
-		worker.getCitizenExperienceHandler().addExperience(XP_PER_BLOCK);
+
+		var colony = worker.getCitizenColonyHandler().getColony();
+		colony.getStatisticsManager().increment(StatisticsConstants.CROPS_HARVESTED, colony.getDay());
+		worker.getCitizenExperienceHandler().addExperience(XP_PER_HARVEST);
 
 		this.incrementActionsDone();
 		worker.decreaseSaturationForContinuousAction();
 
 		this.onBlockDropReception(drops);
-		this.setDelay(this.getLevelDelay());
 
 		return OrchardistAIState.SEARCH;
 	}

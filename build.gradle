@@ -142,7 +142,7 @@ def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/productio
 def replaceProperties = [mc_version: mc_version,
 	mod_id: mod_id, mod_version: mod_version, mod_name: mod_name, mod_description: mod_description, mod_license: mod_license, mod_homepage: mod_homepage, mod_source: mod_source, mod_issues: mod_issues,
 	forge_api_version: forge_api_version, forge_loader_version: forge_loader_version,
-	minecolonies_version: minecolonies_version
+	minecolonies_version: minecolonies_version, minecolonies_tweaks_version: minecolonies_tweaks_version
 ]
 
 processResources {

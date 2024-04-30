@@ -66,26 +66,28 @@ public class PathJobFindFruit extends AbstractPathJob
 	private boolean findFruitAtNode(@NotNull MNode n)
 	{
 		var pPos = n.parent.pos;
-		var nPos = n.pos;
+		var nx = n.pos.getX();
+		var ny = n.pos.getY();
+		var nz = n.pos.getZ();
 
-		if (nPos.getX() == pPos.getX())
+		if (nx == pPos.getX())
 		{
-			var dz = nPos.getZ() > pPos.getZ() ? 1 : -1;
-			return this.findFruitAtXZ(nPos.offset(0, 0, dz)) || this.findFruitAtXZ(nPos.offset(-1, 0, 0)) || this.findFruitAtXZ(nPos.offset(1, 0, 0));
+			var dz = nz > pPos.getZ() ? 1 : -1;
+			return this.findFruitAtXZ(nx, ny, nz + dz) || this.findFruitAtXZ(nx - 1, ny, nz) || this.findFruitAtXZ(nx + 1, ny, nz);
 		}
 		else
 		{
-			var dx = nPos.getX() > pPos.getX() ? 1 : -1;
-			return this.findFruitAtXZ(nPos.offset(dx, 0, 0)) || this.findFruitAtXZ(nPos.offset(0, 0, -1)) || this.findFruitAtXZ(nPos.offset(0, 0, 1));
+			var dx = nx > pPos.getX() ? 1 : -1;
+			return this.findFruitAtXZ(nx + dx, ny, nz) || this.findFruitAtXZ(nx, ny, nz - 1) || this.findFruitAtXZ(nx, ny, nz + 1);
 		}
 
 	}
 
-	private boolean findFruitAtXZ(@NotNull BlockPos pos)
+	private boolean findFruitAtXZ(int x, int y, int z)
 	{
 		for (var i = 0; i <= this.vertialRange; i++)
 		{
-			if (this.findFruitAt(pos.offset(0, i, 0)))
+			if (this.findFruitAt(x, y + i, z))
 			{
 				return true;
 			}
@@ -95,9 +97,9 @@ public class PathJobFindFruit extends AbstractPathJob
 		return false;
 	}
 
-	private boolean findFruitAt(@NotNull BlockPos pos)
+	private boolean findFruitAt(int x, int y, int z)
 	{
-		var fruit = new Fruit(pos);
+		var fruit = new Fruit(new BlockPos(x, y, z));
 
 		if (this.test(fruit))
 		{

@@ -1,12 +1,11 @@
 package steve_gall.minecolonies_compatibility.core.common.colony.job;
 
-import static com.minecolonies.api.util.constant.CitizenConstants.SKILL_BONUS_ADD;
-
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.client.render.modeltype.ModModelTypes;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
+import com.minecolonies.api.util.constant.CitizenConstants;
 import com.minecolonies.core.colony.buildings.modules.WorkerBuildingModule;
 import com.minecolonies.core.colony.jobs.AbstractJob;
 import com.minecolonies.core.util.AttributeModifierUtils;
@@ -43,8 +42,21 @@ public class JobOrchardist extends AbstractJob<EntityAIWorkOrchardist, JobOrchar
 		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.orchardist;
 		var module = (WorkerBuildingModule) this.getWorkModule();
 		var amount = citizen.getCitizenSkillHandler().getLevel(module.getSecondarySkill()) * config.moveSpeedBonusPerSkillLevel.get().doubleValue();
-		var speedModifier = new AttributeModifier(SKILL_BONUS_ADD, amount, AttributeModifier.Operation.ADDITION);
+		var speedModifier = new AttributeModifier(CitizenConstants.SKILL_BONUS_ADD, amount, AttributeModifier.Operation.ADDITION);
 		AttributeModifierUtils.addModifier(worker, speedModifier, Attributes.MOVEMENT_SPEED);
+	}
+
+	@Override
+	public void onRemoval()
+	{
+		this.getCitizen().getEntity().ifPresent(this::onRemoval);
+
+		super.onRemoval();
+	}
+
+	private void onRemoval(AbstractEntityCitizen worker)
+	{
+		AttributeModifierUtils.removeModifier(worker, CitizenConstants.SKILL_BONUS_ADD, Attributes.MOVEMENT_SPEED);
 	}
 
 	@Override

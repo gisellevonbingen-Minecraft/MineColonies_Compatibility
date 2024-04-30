@@ -1,15 +1,12 @@
 package steve_gall.minecolonies_compatibility.api.common.entity.ai.guard;
 
-import static com.minecolonies.api.util.constant.GuardConstants.EXP_PER_MOB_DEATH;
-import static com.minecolonies.api.util.constant.StatisticsConstants.MOBS_KILLED;
-import static com.minecolonies.api.util.constant.StatisticsConstants.MOB_KILLED;
-import static com.minecolonies.core.colony.buildings.modules.BuildingModules.STATS_MODULE;
-import static com.minecolonies.core.entity.ai.citizen.guard.AbstractEntityAIGuard.PATROL_DEVIATION_RAID_POINT;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
+import com.minecolonies.api.util.constant.GuardConstants;
+import com.minecolonies.api.util.constant.StatisticsConstants;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
+import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 import com.minecolonies.core.colony.jobs.AbstractJobGuard;
 import com.minecolonies.core.entity.ai.citizen.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.ai.combat.AttackMoveAI;
@@ -57,12 +54,12 @@ public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<
 		var user = this.user;
 
 		parentAI.incrementActionsDoneAndDecSaturation();
-		user.getCitizenExperienceHandler().addExperience(EXP_PER_MOB_DEATH);
-		user.getCitizenColonyHandler().getColony().getStatisticsManager().increment(MOBS_KILLED, user.getCitizenColonyHandler().getColony().getDay());
+		user.getCitizenExperienceHandler().addExperience(GuardConstants.EXP_PER_MOB_DEATH);
+		user.getCitizenColonyHandler().getColony().getStatisticsManager().increment(StatisticsConstants.MOB_KILLED, user.getCitizenColonyHandler().getColony().getDay());
 
 		if (entity.getType().getDescription().getContents() instanceof TranslatableContents translatableContents)
 		{
-			parentAI.building.getModule(STATS_MODULE).increment(MOB_KILLED + ";" + translatableContents.getKey());
+			parentAI.building.getModule(BuildingModules.STATS_MODULE).increment(StatisticsConstants.MOB_KILLED + ";" + translatableContents.getKey());
 		}
 
 	}
@@ -76,7 +73,7 @@ public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<
 	@Override
 	protected void onTargetChange()
 	{
-		CombatUtils.notifyGuardsOfTarget(this.user, this.target, PATROL_DEVIATION_RAID_POINT);
+		CombatUtils.notifyGuardsOfTarget(this.user, this.target, AbstractEntityAIGuard.PATROL_DEVIATION_RAID_POINT);
 	}
 
 	@Override

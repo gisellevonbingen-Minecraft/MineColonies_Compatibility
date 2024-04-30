@@ -5,13 +5,15 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"minecolonies.AbstractAISkeletonMixin",
+		"minecolonies.AbstractAssignedCitizenModuleMixin",
 		"minecolonies.AbstractEntityAIBasicMixin",
 		"minecolonies.AbstractEntityAIFightMixin",
 		"minecolonies.AttackMoveAIMixin",
 		"minecolonies.BuildingEntryMixin",
 		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.JobEntryMixin",
-		"minecolonies.TargetAIMixin"
+		"minecolonies.TargetAIMixin",
+		"minecolonies.WorkerBuildingModuleViewMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

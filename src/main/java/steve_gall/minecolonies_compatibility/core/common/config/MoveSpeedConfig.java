@@ -1,8 +1,5 @@
 package steve_gall.minecolonies_compatibility.core.common.config;
 
-import static com.minecolonies.core.entity.pathfinding.MinecoloniesAdvancedPathNavigate.MAX_SPEED_ALLOWED;
-import static com.minecolonies.core.entity.pathfinding.MinecoloniesAdvancedPathNavigate.MIN_SPEED_ALLOWED;
-
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.core.entity.pathfinding.MinecoloniesAdvancedPathNavigate;
 
@@ -18,7 +15,7 @@ public class MoveSpeedConfig
 
 	public MoveSpeedConfig(ForgeConfigSpec.Builder builder, DefaultValues defaultValues)
 	{
-		this.base = builder.defineInRange("base", defaultValues.base(), MIN_SPEED_ALLOWED, MAX_SPEED_ALLOWED);
+		this.base = builder.defineInRange("base", defaultValues.base(), MinecoloniesAdvancedPathNavigate.MIN_SPEED_ALLOWED, MinecoloniesAdvancedPathNavigate.MAX_SPEED_ALLOWED);
 		this.increasePerSkillLevel = builder.defineInRange("increasePerSkillLevel", defaultValues.increasePerSkillLevel(), 0, 24.0D);
 		this.increasePerBuildingLevel = builder.defineInRange("increasePerBuildingLevel", defaultValues.increasePerBuildingLevel(), 0, 24.0D);
 	}

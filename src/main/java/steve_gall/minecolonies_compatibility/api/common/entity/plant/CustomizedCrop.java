@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class CustomizedCrop
@@ -21,33 +20,46 @@ public abstract class CustomizedCrop
 	}
 
 	@Nullable
-	public static CustomizedCrop selectBySeed(@NotNull ItemStack seedStack)
+	public static CustomizedCrop selectBySeed(@NotNull PlantSeedContext context)
 	{
-		return REGISTRY.stream().filter(it -> it.isSeed(seedStack)).findFirst().orElse(null);
+		return REGISTRY.stream().filter(it -> it.isSeed(context)).findFirst().orElse(null);
 	}
 
 	@Nullable
-	public static CustomizedCrop selectByCrop(@NotNull BlockState cropState)
+	public static CustomizedCrop selectByCrop(@NotNull PlantBlockContext context)
 	{
-		return REGISTRY.stream().filter(it -> it.isCrop(cropState)).findFirst().orElse(null);
+		return REGISTRY.stream().filter(it -> it.isCrop(context)).findFirst().orElse(null);
 	}
 
 	@Nullable
-	public abstract BlockState getPlantState(@NotNull ItemStack seedStack, @NotNull Level level, @NotNull BlockPos plantPosition);
+	public abstract BlockState getPlantState(@NotNull PlantSeedContext context);
 
-	public abstract boolean isSeed(@NotNull ItemStack seedStack);
+	public abstract boolean isSeed(@NotNull PlantSeedContext context);
 
-	public abstract boolean isCrop(@NotNull BlockState cropState);
-
-	public boolean hasSpecialHarvestPosition(@NotNull BlockState cropState, @NotNull Level level, @NotNull BlockPos plantPosition)
-	{
-		return false;
-	}
+	public abstract boolean isCrop(@NotNull PlantBlockContext context);
 
 	@Nullable
-	public BlockPos getSpecialHarvestPosition(@NotNull BlockState cropState, @NotNull Level level, @NotNull BlockPos plantPosition)
+	public SpecialHarvestPositionFunction getSpecialHarvestPosition(@NotNull PlantBlockContext context)
 	{
 		return null;
+	}
+
+	@Nullable
+	public SpecialHarvestMethodFunction getSpecialHarvestMethod(@NotNull PlantBlockContext context)
+	{
+		return null;
+	}
+
+	public interface SpecialHarvestPositionFunction
+	{
+		@Nullable
+		BlockPos apply(@NotNull PlantBlockContext context);
+	}
+
+	public interface SpecialHarvestMethodFunction
+	{
+		@NotNull
+		List<ItemStack> harvest(@NotNull PlantBlockContext context);
 	}
 
 }

@@ -1,7 +1,6 @@
 package steve_gall.minecolonies_compatibility.core.common.module.farmersdelight;
 
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedCrop;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.core.common.module.AbstractModule;
 
 public class FarmersDelightModule extends AbstractModule
@@ -15,8 +14,7 @@ public class FarmersDelightModule extends AbstractModule
 	@Override
 	protected void onLoad()
 	{
-		CustomizedCrop.register(new BuddingTomatoCrop());
-		CustomizedFruit.register(new TomatoVineFruit());
+		CustomizedCrop.register(new TomatoCrop());
 	}
 
 }

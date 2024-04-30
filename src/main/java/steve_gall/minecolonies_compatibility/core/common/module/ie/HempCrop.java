@@ -8,44 +8,44 @@ import blusunrize.immersiveengineering.common.items.IESeedItem;
 import blusunrize.immersiveengineering.common.register.IEBlocks;
 import blusunrize.immersiveengineering.common.register.IEItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedCrop;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantSeedContext;
 
 public class HempCrop extends CustomizedCrop
 {
 	@Override
-	public boolean isSeed(@NotNull ItemStack seedStack)
+	public boolean isSeed(@NotNull PlantSeedContext context)
 	{
-		return seedStack.getItem() == IEItems.Misc.HEMP_SEEDS.get();
+		return context.getSeed().getItem() == IEItems.Misc.HEMP_SEEDS.get();
 	}
 
 	@Override
-	public boolean isCrop(@NotNull BlockState cropState)
+	public boolean isCrop(@NotNull PlantBlockContext context)
 	{
-		return cropState.getBlock() == IEBlocks.Misc.HEMP_PLANT.get();
+		return context.getState().getBlock() == IEBlocks.Misc.HEMP_PLANT.get();
 	}
 
 	@Override
 	@Nullable
-	public BlockState getPlantState(@NotNull ItemStack seedStack, @NotNull Level level, @NotNull BlockPos plantPosition)
+	public BlockState getPlantState(@NotNull PlantSeedContext context)
 	{
-		return ((IESeedItem) seedStack.getItem()).getPlant(level, plantPosition);
+		return ((IESeedItem) context.getSeed().getItem()).getPlant(context.getLevel(), context.getPosition());
 	}
 
 	@Override
-	public boolean hasSpecialHarvestPosition(@NotNull BlockState cropState, @NotNull Level level, @NotNull BlockPos plantPosition)
+	@Nullable
+	public SpecialHarvestPositionFunction getSpecialHarvestPosition(@NotNull PlantBlockContext context)
 	{
-		return true;
+		return this::getHarvestPosition;
 	}
 
 	@Nullable
-	@Override
-	public BlockPos getSpecialHarvestPosition(@NotNull BlockState cropState, @NotNull Level level, @NotNull BlockPos plantPosition)
+	private BlockPos getHarvestPosition(@NotNull PlantBlockContext context)
 	{
-		var topPos = plantPosition.above();
-		var topState = level.getBlockState(topPos);
+		var topPos = context.getPosition().above();
+		var topState = context.getLevel().getBlockState(topPos);
 
 		if (topState.getBlock() instanceof HempBlock && topState.getValue(HempBlock.TOP))
 		{

@@ -123,7 +123,7 @@ public class PathJobFindFruit extends AbstractPathJob
 			}
 
 		}
-		else if (!(fruit.getState().getBlock() instanceof BonemealableBlock))
+		else if (!(fruit.getContext().getState().getBlock() instanceof BonemealableBlock))
 		{
 			return false;
 		}

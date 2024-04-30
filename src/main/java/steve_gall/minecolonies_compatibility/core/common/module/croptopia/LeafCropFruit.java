@@ -1,50 +1,43 @@
 package steve_gall.minecolonies_compatibility.core.common.module.croptopia;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.epherical.croptopia.blocks.LeafCropBlock;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 
 public class LeafCropFruit extends CustomizedFruit
 {
 	@Override
-	public boolean test(@NotNull BlockState state)
+	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return state.getBlock() instanceof LeafCropBlock;
+		return context.getState().getBlock() instanceof LeafCropBlock;
 	}
 
 	@Override
-	public boolean canHarvest(@NotNull BlockState state)
+	public boolean canHarvest(@NotNull PlantBlockContext context)
 	{
-		return state.getBlock() instanceof LeafCropBlock block && state.getValue(LeafCropBlock.AGE) == block.getMaxAge();
+		var state = context.getState();
+		return state.getBlock() instanceof LeafCropBlock block && block.isMaxAge(state);
 	}
 
 	@Override
 	@NotNull
-	public List<ItemStack> harvest(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos position)
+	public List<ItemStack> harvest(@NotNull PlantBlockContext context)
 	{
-		if (state.getBlock() instanceof LeafCropBlock block)
+		if (context.getLevel() instanceof LevelWriter level)
 		{
-			level.setBlock(position, block.getStateForAge(0), Block.UPDATE_CLIENTS);
-
-			if (level instanceof ServerLevel serverLevel)
-			{
-				return Block.getDrops(state, serverLevel, position, null);
-			}
-
+			var newState = ((LeafCropBlock) context.getState().getBlock()).getStateForAge(0);
+			level.setBlock(context.getPosition(), newState, Block.UPDATE_CLIENTS);
 		}
 
-		return Collections.emptyList();
+		return context.getDrops();
 	}
 
 }

@@ -107,6 +107,11 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 
 			if (method != null)
 			{
+				if (!this.holdEfficientTool(state, position))
+				{
+					return false;
+				}
+
 				if (this.hasNotDelayed(this.getBlockMiningDelay(state, position)))
 				{
 					return false;

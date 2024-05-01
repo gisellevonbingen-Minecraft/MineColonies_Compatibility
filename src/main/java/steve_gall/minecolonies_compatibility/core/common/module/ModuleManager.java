@@ -9,6 +9,7 @@ import steve_gall.minecolonies_compatibility.core.common.module.farmersdelight.F
 import steve_gall.minecolonies_compatibility.core.common.module.ie.IEModule;
 import steve_gall.minecolonies_compatibility.core.common.module.minecraft.MinecraftModule;
 import steve_gall.minecolonies_compatibility.core.common.module.pamhc2trees.PamsHarvestCraft2TreesModule;
+import steve_gall.minecolonies_compatibility.core.common.module.thermal.ThermalModule;
 
 public class ModuleManager
 {
@@ -22,6 +23,7 @@ public class ModuleManager
 	public static final CroptopiaModule CROPTOPIA;
 	public static final PamsHarvestCraft2TreesModule PHC2TREES;
 	public static final FarmersDelightModule FARMERSDELIGHT;
+	public static final ThermalModule THERMAL;
 
 	static
 	{
@@ -31,6 +33,7 @@ public class ModuleManager
 		modules.add(CROPTOPIA = new CroptopiaModule());
 		modules.add(PHC2TREES = new PamsHarvestCraft2TreesModule());
 		modules.add(FARMERSDELIGHT = new FarmersDelightModule());
+		modules.add(THERMAL = new ThermalModule());
 
 		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();

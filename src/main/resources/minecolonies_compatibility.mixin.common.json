@@ -13,7 +13,9 @@
 		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.JobEntryMixin",
 		"minecolonies.TargetAIMixin",
-		"minecolonies.WorkerBuildingModuleViewMixin"
+		"minecolonies.WorkerBuildingModuleViewMixin",
+		
+		"thermal.CropBlockCoFHAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

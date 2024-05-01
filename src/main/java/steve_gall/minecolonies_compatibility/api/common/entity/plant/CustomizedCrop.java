@@ -32,11 +32,20 @@ public abstract class CustomizedCrop
 	}
 
 	@Nullable
-	public abstract BlockState getPlantState(@NotNull PlantSeedContext context);
+	public BlockState getPlantState(@NotNull PlantSeedContext context)
+	{
+		return null;
+	}
 
-	public abstract boolean isSeed(@NotNull PlantSeedContext context);
+	public boolean isSeed(@NotNull PlantSeedContext context)
+	{
+		return false;
+	}
 
-	public abstract boolean isCrop(@NotNull PlantBlockContext context);
+	public boolean isCrop(@NotNull PlantBlockContext context)
+	{
+		return false;
+	}
 
 	@Nullable
 	public SpecialHarvestPositionFunction getSpecialHarvestPosition(@NotNull PlantBlockContext context)

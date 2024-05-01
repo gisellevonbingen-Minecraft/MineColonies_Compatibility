@@ -18,7 +18,7 @@ public class OrchardistConfig
 
 	public OrchardistConfig(ForgeConfigSpec.Builder builder)
 	{
-		this.searchRange = builder.defineInRange("searchRange", 120, 0, 120);
+		this.searchRange = builder.defineInRange("searchRange", 120, 0, 240);
 		this.searchVerticalRange = builder.defineInRange("searchVerticalRange", 10, 0, 20);
 		this.searchDelayAfterNotFound = builder.defineInRange("searchDelayAfterNotFound", 400, 0, Integer.MAX_VALUE);
 

@@ -54,9 +54,10 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 		this.user.getCitizenData().setVisibleStatus(ARCHER_COMBAT);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	@Nullable
-	public PathResult<?> createPathResult(LivingEntity target, EntityCitizen user, double speed)
+	public PathResult createPathResult(LivingEntity target, EntityCitizen user, double speed)
 	{
 		var job = this.createPathJob(target, user);
 		var pathResult = ((MinecoloniesAdvancedPathNavigate) user.getNavigation()).setPathJob(job, null, speed, true);

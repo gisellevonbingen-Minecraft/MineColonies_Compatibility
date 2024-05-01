@@ -9,11 +9,9 @@ import com.minecolonies.core.entity.pathfinding.pathjobs.AbstractPathJob;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist.Fruit;
 
 public class PathJobFindFruit extends AbstractPathJob
@@ -27,7 +25,7 @@ public class PathJobFindFruit extends AbstractPathJob
 	public int vertialRange = 10;
 	public boolean needHarvestable = true;
 
-	public PathJobFindFruit(Level world, @NotNull BlockPos start, BlockPos home, int range, LivingEntity entity)
+	public PathJobFindFruit(Level world, @NotNull BlockPos start, BlockPos home, int range, Mob entity)
 	{
 		super(world, start, start, range, new FruitPathResult(), entity);
 		this.hutLocation = home;
@@ -35,7 +33,7 @@ public class PathJobFindFruit extends AbstractPathJob
 		this.boxCenter = null;
 	}
 
-	public PathJobFindFruit(Level world, @NotNull BlockPos start, BlockPos home, BlockPos startRestriction, BlockPos endRestriction, BlockPos furthestRestriction, LivingEntity entity)
+	public PathJobFindFruit(Level world, @NotNull BlockPos start, BlockPos home, BlockPos startRestriction, BlockPos endRestriction, BlockPos furthestRestriction, Mob entity)
 	{
 		super(world, start, startRestriction, endRestriction, (int) Math.sqrt(BlockPosUtil.getDistanceSquared2D(home, furthestRestriction) * 1.5D), AREA_SHRINK, false, new FruitPathResult(), entity, AbstractAdvancedPathNavigate.RestrictionType.XZ);
 		this.hutLocation = home;
@@ -137,12 +135,6 @@ public class PathJobFindFruit extends AbstractPathJob
 	protected double getNodeResultScore(MNode n)
 	{
 		return 0;
-	}
-
-	@Override
-	protected boolean isPassable(@NotNull BlockState block, BlockPos pos, MNode parent, boolean head)
-	{
-		return super.isPassable(block, pos, parent, head) || (block.is(BlockTags.LEAVES) && this.isInRestrictedArea(pos));
 	}
 
 }

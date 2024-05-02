@@ -22,7 +22,7 @@ issueTrackerURL="${mod_issues}"
 [[dependencies.${mod_id}]]
     modId="forge"
     mandatory=true
-    versionRange="[${forge_api_version},)"
+    versionRange="${forge_api_version_range}"
     ordering="NONE"
     side="BOTH"
 

@@ -111,6 +111,8 @@ dependencies {
 
     // Optional
     implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    implementation fg.deobf("curse.maven:curios-309927:${curios_file}")
+    implementation fg.deobf("curse.maven:patchouli-306770:${patchouli_file}")
     implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${mc_version}-${immersive_engineering_version}")
     implementation fg.deobf("curse.maven:croptopia-415438:${croptopia_file}")
     implementation fg.deobf("curse.maven:pams-harvestcraft-2-trees-365460:${pamhc2trees_file}")
@@ -118,6 +120,7 @@ dependencies {
     implementation fg.deobf("curse.maven:cofh-core-69162:${thermal_core_file}")
     implementation fg.deobf("curse.maven:thermal-foundation-222880:${thermal_foundation_file}")
     implementation fg.deobf("curse.maven:thermal-cultivation-271835:${thermal_cultivation_file}")
+    implementation fg.deobf("curse.maven:ars-nouveau-401955:${ars_nouveau_file}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

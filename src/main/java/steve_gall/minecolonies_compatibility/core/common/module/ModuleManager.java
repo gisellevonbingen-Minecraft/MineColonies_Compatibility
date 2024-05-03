@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import steve_gall.minecolonies_compatibility.core.common.module.ars_nouveau.ArsNouveauModule;
 import steve_gall.minecolonies_compatibility.core.common.module.croptopia.CroptopiaModule;
 import steve_gall.minecolonies_compatibility.core.common.module.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.core.common.module.ie.IEModule;
@@ -24,6 +25,7 @@ public class ModuleManager
 	public static final PamsHarvestCraft2TreesModule PHC2TREES;
 	public static final FarmersDelightModule FARMERSDELIGHT;
 	public static final ThermalModule THERMAL;
+	public static final ArsNouveauModule ARS_NOUVEAU;
 
 	static
 	{
@@ -34,6 +36,7 @@ public class ModuleManager
 		modules.add(PHC2TREES = new PamsHarvestCraft2TreesModule());
 		modules.add(FARMERSDELIGHT = new FarmersDelightModule());
 		modules.add(THERMAL = new ThermalModule());
+		modules.add(ARS_NOUVEAU = new ArsNouveauModule());
 
 		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();

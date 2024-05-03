@@ -6,6 +6,7 @@ import java.util.List;
 
 import steve_gall.minecolonies_compatibility.core.common.module.ars_nouveau.ArsNouveauModule;
 import steve_gall.minecolonies_compatibility.core.common.module.croptopia.CroptopiaModule;
+import steve_gall.minecolonies_compatibility.core.common.module.delightful.DelightfulModule;
 import steve_gall.minecolonies_compatibility.core.common.module.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.core.common.module.ie.IEModule;
 import steve_gall.minecolonies_compatibility.core.common.module.minecraft.MinecraftModule;
@@ -24,6 +25,7 @@ public class ModuleManager
 	public static final CroptopiaModule CROPTOPIA;
 	public static final PamsHarvestCraft2TreesModule PHC2TREES;
 	public static final FarmersDelightModule FARMERSDELIGHT;
+	public static final DelightfulModule DELIGHTFUL;
 	public static final ThermalModule THERMAL;
 	public static final ArsNouveauModule ARS_NOUVEAU;
 
@@ -35,6 +37,7 @@ public class ModuleManager
 		modules.add(CROPTOPIA = new CroptopiaModule());
 		modules.add(PHC2TREES = new PamsHarvestCraft2TreesModule());
 		modules.add(FARMERSDELIGHT = new FarmersDelightModule());
+		modules.add(DELIGHTFUL = new DelightfulModule());
 		modules.add(THERMAL = new ThermalModule());
 		modules.add(ARS_NOUVEAU = new ArsNouveauModule());
 

@@ -15,31 +15,31 @@ import steve_gall.minecolonies_compatibility.core.common.module.thermal.ThermalM
 
 public class ModuleManager
 {
-	public static final List<AbstractModule> MODULES;
+	public static final List<OptionalModule> MODULES;
 	private static boolean INITIALIZED;
-	private static final List<AbstractModule> _LOADED_MODULES;
-	public static final List<AbstractModule> LOADED_MODULES;
+	private static final List<OptionalModule> _LOADED_MODULES;
+	public static final List<OptionalModule> LOADED_MODULES;
 
-	public static final MinecraftModule MINECRAFT;
-	public static final IEModule IE;
-	public static final CroptopiaModule CROPTOPIA;
-	public static final PamsHarvestCraft2TreesModule PHC2TREES;
-	public static final FarmersDelightModule FARMERSDELIGHT;
-	public static final DelightfulModule DELIGHTFUL;
-	public static final ThermalModule THERMAL;
-	public static final ArsNouveauModule ARS_NOUVEAU;
+	public static final OptionalModule MINECRAFT;
+	public static final OptionalModule IE;
+	public static final OptionalModule CROPTOPIA;
+	public static final OptionalModule PHC2TREES;
+	public static final OptionalModule FARMERSDELIGHT;
+	public static final OptionalModule DELIGHTFUL;
+	public static final OptionalModule THERMAL;
+	public static final OptionalModule ARS_NOUVEAU;
 
 	static
 	{
-		var modules = new ArrayList<AbstractModule>();
-		modules.add(MINECRAFT = new MinecraftModule());
-		modules.add(IE = new IEModule());
-		modules.add(CROPTOPIA = new CroptopiaModule());
-		modules.add(PHC2TREES = new PamsHarvestCraft2TreesModule());
-		modules.add(FARMERSDELIGHT = new FarmersDelightModule());
-		modules.add(DELIGHTFUL = new DelightfulModule());
-		modules.add(THERMAL = new ThermalModule());
-		modules.add(ARS_NOUVEAU = new ArsNouveauModule());
+		var modules = new ArrayList<OptionalModule>();
+		modules.add(MINECRAFT = new OptionalModule("minecraft", () -> MinecraftModule::onLoad));
+		modules.add(IE = new OptionalModule("immersiveengineering", () -> IEModule::onLoad));
+		modules.add(CROPTOPIA = new OptionalModule("croptopia", () -> CroptopiaModule::onLoad));
+		modules.add(PHC2TREES = new OptionalModule("pamhc2trees", () -> PamsHarvestCraft2TreesModule::onLoad));
+		modules.add(FARMERSDELIGHT = new OptionalModule("farmersdelight", () -> FarmersDelightModule::onLoad));
+		modules.add(DELIGHTFUL = new OptionalModule("delightful", () -> DelightfulModule::onLoad));
+		modules.add(THERMAL = new OptionalModule("thermal", () -> ThermalModule::onLoad));
+		modules.add(ARS_NOUVEAU = new OptionalModule("ars_nouveau", () -> ArsNouveauModule::onLoad));
 
 		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();

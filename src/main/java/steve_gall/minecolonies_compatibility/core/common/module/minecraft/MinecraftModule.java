@@ -1,24 +1,10 @@
 package steve_gall.minecolonies_compatibility.core.common.module.minecraft;
 
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
-import steve_gall.minecolonies_compatibility.core.common.module.AbstractModule;
 
-public class MinecraftModule extends AbstractModule
+public class MinecraftModule
 {
-	@Override
-	public String getModId()
-	{
-		return "minecraft";
-	}
-
-	@Override
-	protected boolean canLoad()
-	{
-		return true;
-	}
-
-	@Override
-	protected void onLoad()
+	public static void onLoad()
 	{
 		CustomizedFruit.register(new SweetBerryFruit());
 	}

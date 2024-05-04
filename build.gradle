@@ -119,6 +119,7 @@ dependencies {
     implementation fg.deobf("curse.maven:epherolib-885449:${epherolib_file}")
     implementation fg.deobf("curse.maven:pams-harvestcraft-2-trees-365460:${pamhc2trees_file}")
     implementation fg.deobf("curse.maven:farmers-delight-398521:${farmers_delight_file}")
+    implementation fg.deobf("curse.maven:fruits-delight-943774:${delight_fruits_file}")
     implementation fg.deobf("curse.maven:delightful-637529:${delightful_file}")
     implementation fg.deobf("curse.maven:cofh-core-69162:${thermal_core_file}")
     implementation fg.deobf("curse.maven:thermal-foundation-222880:${thermal_foundation_file}")

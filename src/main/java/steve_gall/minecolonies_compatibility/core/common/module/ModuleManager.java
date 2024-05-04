@@ -11,6 +11,7 @@ import steve_gall.minecolonies_compatibility.core.common.module.farmersdelight.F
 import steve_gall.minecolonies_compatibility.core.common.module.ie.IEModule;
 import steve_gall.minecolonies_compatibility.core.common.module.minecraft.MinecraftModule;
 import steve_gall.minecolonies_compatibility.core.common.module.pamhc2trees.PamsHarvestCraft2TreesModule;
+import steve_gall.minecolonies_compatibility.core.common.module.polymorph.PolymorphModule;
 import steve_gall.minecolonies_compatibility.core.common.module.thermal.ThermalModule;
 
 public class ModuleManager
@@ -28,6 +29,7 @@ public class ModuleManager
 	public static final OptionalModule DELIGHTFUL;
 	public static final OptionalModule THERMAL;
 	public static final OptionalModule ARS_NOUVEAU;
+	public static final OptionalModule POLYMORPH;
 
 	static
 	{
@@ -40,6 +42,7 @@ public class ModuleManager
 		modules.add(DELIGHTFUL = new OptionalModule("delightful", () -> DelightfulModule::onLoad));
 		modules.add(THERMAL = new OptionalModule("thermal", () -> ThermalModule::onLoad));
 		modules.add(ARS_NOUVEAU = new OptionalModule("ars_nouveau", () -> ArsNouveauModule::onLoad));
+		modules.add(POLYMORPH = new OptionalModule("polymorph", () -> PolymorphModule::onLoad));
 
 		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();

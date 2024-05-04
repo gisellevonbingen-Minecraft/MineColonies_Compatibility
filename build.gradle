@@ -114,6 +114,7 @@ dependencies {
     implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
     implementation fg.deobf("curse.maven:curios-309927:${curios_file}")
     implementation fg.deobf("curse.maven:patchouli-306770:${patchouli_file}")
+    implementation fg.deobf("curse.maven:polymorph-388800:${polymorph_file}")
     implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${mc_version}-${immersive_engineering_version}")
     implementation fg.deobf("curse.maven:croptopia-415438:${croptopia_file}")
     implementation fg.deobf("curse.maven:epherolib-885449:${epherolib_file}")

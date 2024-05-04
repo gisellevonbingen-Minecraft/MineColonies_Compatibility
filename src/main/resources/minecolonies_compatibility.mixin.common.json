@@ -10,6 +10,7 @@
 		"minecolonies.AbstractEntityAIFightMixin",
 		"minecolonies.AttackMoveAIMixin",
 		"minecolonies.BuildingEntryMixin",
+		"minecolonies.ContainerCraftingMixin",
 		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.JobEntryMixin",
 		"minecolonies.TargetAIMixin",

@@ -13,6 +13,7 @@
 		"minecolonies.ContainerCraftingMixin",
 		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.JobEntryMixin",
+		"minecolonies.PrivateCraftingTeachingTransferHandlerMixin",
 		"minecolonies.TargetAIMixin",
 		"minecolonies.WorkerBuildingModuleViewMixin",
 		

@@ -115,4 +115,9 @@ public class PolymorphModule
 		PolymorphApi.common().getPacketDistributor().sendRecipesListS2C(player, pairs, selected);
 	}
 
+	public static void sendHighlightRecipe(ServerPlayer player, ResourceLocation recipeId)
+	{
+		PolymorphApi.common().getPacketDistributor().sendHighlightRecipeS2C(player, recipeId);
+	}
+
 }

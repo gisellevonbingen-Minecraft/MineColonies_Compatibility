@@ -19,6 +19,7 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.module.ModuleManager;
+import steve_gall.minecolonies_compatibility.core.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeRegisterEvent;
 
 @Mod(MineColoniesCompatibility.MOD_ID)
@@ -26,6 +27,8 @@ public class MineColoniesCompatibility
 {
 	public static final String MOD_ID = "minecolonies_compatibility";
 	public static final Logger LOGGER = LogManager.getLogger();
+
+	private static NetworkChannel NETWORK;
 
 	public MineColoniesCompatibility()
 	{
@@ -40,6 +43,7 @@ public class MineColoniesCompatibility
 		var forge_bus = MinecraftForge.EVENT_BUS;
 		forge_bus.addListener(this::onCustomToolTypeRegister);
 
+		NETWORK = new NetworkChannel("main");
 		ModuleManager.initialize();
 	}
 
@@ -52,6 +56,11 @@ public class MineColoniesCompatibility
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)
 	{
 		e.register(ModToolTypes.GUN);
+	}
+
+	public static NetworkChannel network()
+	{
+		return NETWORK;
 	}
 
 	public static ResourceLocation rl(String path)

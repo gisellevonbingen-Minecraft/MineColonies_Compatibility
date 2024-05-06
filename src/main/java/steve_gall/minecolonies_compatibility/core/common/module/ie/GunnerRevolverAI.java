@@ -144,7 +144,7 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 	{
 		var user = context.getUser();
 
-		if (user.distanceTo(target) <= 2.0D)
+		if (user.distanceTo(target) <= GuardConstants.MAX_DISTANCE_FOR_ATTACK)
 		{
 			return true;
 		}

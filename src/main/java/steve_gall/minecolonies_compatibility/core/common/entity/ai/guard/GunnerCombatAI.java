@@ -50,6 +50,8 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 	@Override
 	protected void doAttack(LivingEntity target)
 	{
+		this.user.getNavigation().stop();
+
 		super.doAttack(target);
 
 		this.user.getCitizenData().setVisibleStatus(ARCHER_COMBAT);

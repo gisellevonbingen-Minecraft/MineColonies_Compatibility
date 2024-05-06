@@ -13,6 +13,7 @@ import steve_gall.minecolonies_compatibility.core.common.module.ie.IEModule;
 import steve_gall.minecolonies_compatibility.core.common.module.minecraft.MinecraftModule;
 import steve_gall.minecolonies_compatibility.core.common.module.pamhc2trees.PamsHarvestCraft2TreesModule;
 import steve_gall.minecolonies_compatibility.core.common.module.polymorph.PolymorphModule;
+import steve_gall.minecolonies_compatibility.core.common.module.regions_unexplored.RegionsUnexploredModule;
 import steve_gall.minecolonies_compatibility.core.common.module.thermal.ThermalModule;
 
 public class ModuleManager
@@ -32,6 +33,7 @@ public class ModuleManager
 	public static final OptionalModule ARS_NOUVEAU;
 	public static final OptionalModule POLYMORPH;
 	public static final OptionalModule BLUE_SKIES;
+	public static final OptionalModule REGIONS_UNEXPLORED;
 
 	static
 	{
@@ -46,6 +48,7 @@ public class ModuleManager
 		modules.add(ARS_NOUVEAU = new OptionalModule("ars_nouveau", () -> ArsNouveauModule::onLoad));
 		modules.add(POLYMORPH = new OptionalModule("polymorph", () -> PolymorphModule::onLoad));
 		modules.add(BLUE_SKIES = new OptionalModule("blue_skies", () -> BlueSkiesModule::onLoad));
+		modules.add(REGIONS_UNEXPLORED = new OptionalModule("regions_unexplored", () -> RegionsUnexploredModule::onLoad));
 
 		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();

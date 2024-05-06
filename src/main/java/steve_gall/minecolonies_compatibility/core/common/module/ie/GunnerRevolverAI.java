@@ -273,14 +273,32 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 	@Override
 	public double getAttackDistance(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
 	{
+		var config = this.getConfig();
 		var user = context.getUser();
-		return this.getConfig().attackRange.apply(user, this.getSecondarySkillLevel(user), target);
+		var weapon = context.getWeapon();
+		var distance = config.attackRange.apply(user, this.getSecondarySkillLevel(user), target);
+
+		if (weapon.getItem() instanceof RevolverItem item && item.canZoom(weapon, null))
+		{
+			distance *= config.scopeRangeMultiplier.get().doubleValue();
+		}
+
+		return distance;
 	}
 
 	@Override
 	public int getHorizontalSearchRange(@NotNull CustomizedAIContext context)
 	{
-		return this.getConfig().searchRange.horizontal.get().intValue();
+		var config = this.getConfig();
+		var weapon = context.getWeapon();
+		var range = config.searchRange.horizontal.get().doubleValue();
+
+		if (weapon.getItem() instanceof RevolverItem item && item.canZoom(weapon, null))
+		{
+			range *= config.scopeRangeMultiplier.get().doubleValue();
+		}
+
+		return (int) range;
 	}
 
 	@Override

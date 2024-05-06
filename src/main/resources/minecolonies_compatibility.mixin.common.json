@@ -17,6 +17,8 @@
 		"minecolonies.TargetAIMixin",
 		"minecolonies.WorkerBuildingModuleViewMixin",
 		
+		"blue_skies.BrewberryBushBlockAccessor",
+		
 		"thermal.CropBlockCoFHAccessor"
 	],
 	"injectors": {

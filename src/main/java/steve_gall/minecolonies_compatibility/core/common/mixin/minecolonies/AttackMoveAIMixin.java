@@ -121,6 +121,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 				var user = this.user;
 				target.setLastHurtByMob(user);
 				user.swing(InteractionHand.MAIN_HAND);
+				user.getNavigation().stop();
 
 				if (user instanceof EntityCitizen citizen)
 				{

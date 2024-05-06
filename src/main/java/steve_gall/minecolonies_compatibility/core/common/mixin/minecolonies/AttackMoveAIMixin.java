@@ -208,9 +208,9 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 		{
 			var parentAI = self.getParentAI();
 
-			if (parentAI instanceof AbstractEntityAIGuard<?, ?> guard)
+			if (parentAI instanceof AbstractEntityAIGuard<?, ?> guard && parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
-				return guard.isWithinPersecutionDistance(target.blockPosition(), this.getAttackDistance());
+				return guard.isWithinPersecutionDistance(target.blockPosition(), attack.getAttackDistance(parentAI.getAIContext(), target));
 			}
 
 		}

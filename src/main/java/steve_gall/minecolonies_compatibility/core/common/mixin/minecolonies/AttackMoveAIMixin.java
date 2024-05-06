@@ -4,9 +4,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.minecolonies.api.entity.ai.combat.CombatAIStates;
 import com.minecolonies.api.entity.ai.combat.threat.IThreatTableEntity;
 import com.minecolonies.api.entity.ai.statemachine.states.IState;
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
@@ -26,7 +28,7 @@ import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAt
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableAttackMoveAI;
 
 @Mixin(value = AttackMoveAI.class, remap = false)
-public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends TargetAI<T>
+public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends TargetAI<T>
 {
 	public AttackMoveAIMixin(T user, int targetFrequency, ITickRateStateMachine<?> stateMachine)
 	{
@@ -34,50 +36,55 @@ public class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> extends Targe
 	}
 
 	@Shadow
-	private double getAttackDistance()
-	{
-		throw new AssertionError();
-	}
+	public abstract double getAttackDistance();
 
-	@Inject(method = "move", at = @At(value = "HEAD"), cancellable = true)
-	private void move(CallbackInfoReturnable<IState> cir)
+	@Inject(method = "move", at = @At(value = "RETURN"), cancellable = true)
+	private void move_return(CallbackInfoReturnable<IState> cir)
 	{
-		if (this instanceof ICustomizableAttackMoveAI<?, ?> self)
+		if (cir.getReturnValue() == CombatAIStates.NO_TARGET)
 		{
-			var parentAI = self.getParentAI();
-
-			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
+			if (this.target != null)
 			{
-				if (!attack.canTryMoveToAttack(parentAI.getAIContext()))
-				{
-					cir.setReturnValue(null);
-				}
-
+				cir.setReturnValue(null);
 			}
 
 		}
 
 	}
 
-	@Inject(method = "tryAttack", at = @At(value = "HEAD"), cancellable = true)
-	private void tryAttack(CallbackInfoReturnable<IState> cir)
+	@Inject(method = "tryAttack", at = @At(value = "RETURN"), cancellable = true)
+	private void tryAttack_return(CallbackInfoReturnable<IState> cir)
 	{
-		if (this instanceof ICustomizableAttackMoveAI<?, ?> self)
+		if (cir.getReturnValue() == CombatAIStates.NO_TARGET)
+		{
+			if (this.target != null)
+			{
+				cir.setReturnValue(null);
+			}
+
+		}
+
+	}
+
+	@Redirect(method = "move", at = @At(value = "INVOKE", target = "checkForTarget"))
+	private boolean move_checkForTarget(AttackMoveAI<T> ai)
+	{
+		if (!this.checkForTarget())
+		{
+			return false;
+		}
+		else if (this instanceof ICustomizableAttackMoveAI<?, ?> self)
 		{
 			var parentAI = self.getParentAI();
 
 			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
-				if (attack.canTryAttack(parentAI.getAIContext()))
-				{
-					return;
-				}
-
+				return attack.canAttack(parentAI.getAIContext(), this.target);
 			}
 
-			cir.setReturnValue(null);
 		}
 
+		return true;
 	}
 
 	@Inject(method = "canAttack", at = @At(value = "HEAD"), cancellable = true)

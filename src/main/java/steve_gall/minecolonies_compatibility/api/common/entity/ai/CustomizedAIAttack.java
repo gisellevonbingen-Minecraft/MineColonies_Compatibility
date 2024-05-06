@@ -12,26 +12,6 @@ public abstract class CustomizedAIAttack extends CustomizedAI
 	}
 
 	/**
-	 * The target maybe not be specified.
-	 *
-	 * @return Whether citizen can try attack
-	 */
-	public boolean canTryAttack(@NotNull CustomizedAIContext context)
-	{
-		return true;
-	}
-
-	/**
-	 * The target maybe not be specified.
-	 *
-	 * @return Whether citizen can try attack
-	 */
-	public boolean canTryMoveToAttack(@NotNull CustomizedAIContext context)
-	{
-		return true;
-	}
-
-	/**
 	 *
 	 * @return Whether citizen is ready to attack the target
 	 */

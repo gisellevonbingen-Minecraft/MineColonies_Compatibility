@@ -6,7 +6,9 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.InventoryUtils;
+import com.minecolonies.api.util.constant.GuardConstants;
 import com.minecolonies.core.colony.buildings.modules.settings.GuardTaskSetting;
+import com.minecolonies.core.util.NamedDamageSource;
 
 import blusunrize.immersiveengineering.api.tool.BulletHandler.IBullet;
 import blusunrize.immersiveengineering.common.items.BulletItem;
@@ -136,11 +138,15 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 	}
 
 	@Override
-	public boolean canTryAttack(@NotNull CustomizedAIContext context)
+	public boolean canAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
 	{
 		var user = context.getUser();
 
-		if (!this.checkBullets(user))
+		if (user.distanceTo(target) <= 2.0D)
+		{
+			return true;
+		}
+		else if (!this.checkBullets(user))
 		{
 			return false;
 		}
@@ -168,20 +174,7 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 
 		}
 
-		return super.canTryAttack(context);
-	}
-
-	@Override
-	public boolean canTryMoveToAttack(@NotNull CustomizedAIContext context)
-	{
-		var user = context.getUser();
-
-		if (!this.checkBullets(user))
-		{
-			return false;
-		}
-
-		return super.canTryMoveToAttack(context);
+		return super.canAttack(context, target);
 	}
 
 	@Override
@@ -191,65 +184,79 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 		var bulletMode = config.bulletMode.get();
 
 		var user = context.getUser();
-		user.getNavigation().stop();
-
 		var inventory = user.getItemHandlerCitizen();
 		var bulletSlot = this.getBulletSlot(inventory);
 		var weapon = context.getWeapon();
 		var level = user.getLevel();
 
-		ItemStack bullet = null;
-		IBullet bulletType = null;
-
-		if (bulletMode.canUse() && bulletSlot > -1)
+		if (user.distanceTo(target) <= GuardConstants.MAX_DISTANCE_FOR_ATTACK)
 		{
-			bullet = inventory.extractItem(bulletSlot, 1, false);
-			bulletType = ((BulletItem) bullet.getItem()).getType();
-		}
-		else if (bulletMode.canDefault())
-		{
-			bullet = ItemStack.EMPTY.copy();
-			bulletType = DefaultBullet.INSTANCE;
-			DefaultBullet.putDamage(bullet, config.defaultBulletDamage.apply(user, this.getPrimarySkillLevel(user)));
-		}
+			var melee = RevolverItem.getUpgradeValue_d(weapon, "melee");
+			var damage = 1.0F;
 
-		if (bulletType != null && bullet != null)
-		{
-			var noise = RevolverItem.fireProjectile(level, user, weapon, bulletType, bullet);
-			var casing = bulletType.getCasing(bullet).copy();
-
-			if (!casing.isEmpty())
+			if (melee != 0.0D)
 			{
-				var result = ItemHandlerHelper.insertItem(inventory, casing, false);
-
-				if (!result.isEmpty())
-				{
-					BehaviorUtils.throwItem(user, result.copy(), user.position());
-				}
-
+				damage += (float) melee;
 			}
 
-			if (config.occurNoise.get().booleanValue())
-			{
-				Utils.attractEnemies(user, 64.0F * noise);
-
-				if (noise > 0.2F)
-				{
-					GameEvent eventTriggered = noise > 0.5F ? GameEvent.EXPLODE : GameEvent.PROJECTILE_SHOOT;
-					level.gameEvent(eventTriggered, user.position(), GameEvent.Context.of(user));
-				}
-
-			}
-
+			var source = new NamedDamageSource(user.getName().getString(), user);
+			target.hurt(source, damage);
 		}
 		else
 		{
-			level.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.NOTE_BLOCK_HAT, SoundSource.PLAYERS, 1.0F, 1.0F);
-		}
+			ItemStack bullet = null;
+			IBullet bulletType = null;
 
-		if (config.needReload.get().booleanValue())
-		{
-			this.setBulletCount(user, this.getBulletCount(user) - 1);
+			if (bulletMode.canUse() && bulletSlot > -1)
+			{
+				bullet = inventory.extractItem(bulletSlot, 1, false);
+				bulletType = ((BulletItem) bullet.getItem()).getType();
+			}
+			else if (bulletMode.canDefault())
+			{
+				bullet = ItemStack.EMPTY.copy();
+				bulletType = DefaultBullet.INSTANCE;
+				DefaultBullet.putDamage(bullet, config.defaultBulletDamage.apply(user, this.getPrimarySkillLevel(user)));
+			}
+
+			if (bulletType != null && bullet != null)
+			{
+				var noise = RevolverItem.fireProjectile(level, user, weapon, bulletType, bullet);
+				var casing = bulletType.getCasing(bullet).copy();
+
+				if (!casing.isEmpty())
+				{
+					var result = ItemHandlerHelper.insertItem(inventory, casing, false);
+
+					if (!result.isEmpty())
+					{
+						BehaviorUtils.throwItem(user, result.copy(), user.position());
+					}
+
+				}
+
+				if (config.occurNoise.get().booleanValue())
+				{
+					Utils.attractEnemies(user, 64.0F * noise);
+
+					if (noise > 0.2F)
+					{
+						GameEvent eventTriggered = noise > 0.5F ? GameEvent.EXPLODE : GameEvent.PROJECTILE_SHOOT;
+						level.gameEvent(eventTriggered, user.position(), GameEvent.Context.of(user));
+					}
+
+				}
+
+			}
+			else
+			{
+				level.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.NOTE_BLOCK_HAT, SoundSource.PLAYERS, 1.0F, 1.0F);
+			}
+
+			if (config.needReload.get().booleanValue())
+			{
+				this.setBulletCount(user, this.getBulletCount(user) - 1);
+			}
 		}
 
 	}

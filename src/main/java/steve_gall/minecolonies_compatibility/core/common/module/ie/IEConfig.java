@@ -82,7 +82,7 @@ public class IEConfig extends AbstractModuleConfig
 						.base(10.0D).increasePerSkillLevel(0.3D).increasePerBuildingLevel(1.0D).maximum(24.0D)//
 						.bonusOnGuard(10.0D).yDifferenceCorrection(true));
 				builder.pop();
-				
+
 				builder.comment("If revolver has 'Precision Scope', search/attack range will be multiply this");
 				this.scopeRangeMultiplier = builder.defineInRange("scopeRangeMultiplier", 1.25D, 1.00D, 2.50D);
 

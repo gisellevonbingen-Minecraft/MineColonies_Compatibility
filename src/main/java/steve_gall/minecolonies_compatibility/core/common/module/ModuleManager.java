@@ -6,6 +6,7 @@ import java.util.List;
 
 import steve_gall.minecolonies_compatibility.core.common.module.ars_nouveau.ArsNouveauModule;
 import steve_gall.minecolonies_compatibility.core.common.module.blue_skies.BlueSkiesModule;
+import steve_gall.minecolonies_compatibility.core.common.module.cobblemon.CobblemonModule;
 import steve_gall.minecolonies_compatibility.core.common.module.croptopia.CroptopiaModule;
 import steve_gall.minecolonies_compatibility.core.common.module.delightful.DelightfulModule;
 import steve_gall.minecolonies_compatibility.core.common.module.farmersdelight.FarmersDelightModule;
@@ -34,6 +35,7 @@ public class ModuleManager
 	public static final OptionalModule POLYMORPH;
 	public static final OptionalModule BLUE_SKIES;
 	public static final OptionalModule REGIONS_UNEXPLORED;
+	public static final OptionalModule COBBLEMON;
 
 	static
 	{
@@ -49,6 +51,7 @@ public class ModuleManager
 		modules.add(POLYMORPH = new OptionalModule("polymorph", () -> PolymorphModule::onLoad));
 		modules.add(BLUE_SKIES = new OptionalModule("blue_skies", () -> BlueSkiesModule::onLoad));
 		modules.add(REGIONS_UNEXPLORED = new OptionalModule("regions_unexplored", () -> RegionsUnexploredModule::onLoad));
+		modules.add(COBBLEMON = new OptionalModule("cobblemon", () -> CobblemonModule::onLoad));
 
 		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();

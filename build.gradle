@@ -88,6 +88,10 @@ repositories {
 		url "https://ldtteam.jfrog.io/ldtteam/modding"
 	}
 	maven {
+		name "Kotlin for Forge"
+		url "https://thedarkcolour.github.io/KotlinForForge"
+	}
+	maven {
 		name "LocalMaven"
 		url uri("${projectDir}/libs")
 	}
@@ -112,6 +116,8 @@ dependencies {
 
     // Optional
     implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    implementation fg.deobf("curse.maven:architectury-api-419699:${architectury_api_file}")
+    implementation "thedarkcolour:kotlinforforge:${kotlin_for_forge_version}"
     implementation fg.deobf("curse.maven:curios-309927:${curios_file}")
     implementation fg.deobf("curse.maven:patchouli-306770:${patchouli_file}")
     implementation fg.deobf("curse.maven:polymorph-388800:${polymorph_file}")
@@ -129,6 +135,7 @@ dependencies {
     implementation fg.deobf("curse.maven:structure-gel-api-378802:${structure_gel_api_file}")
     implementation fg.deobf("curse.maven:regions-unexplored-659110:${regions_unexplored_file}")
     implementation fg.deobf("curse.maven:terrablender-563928:${terrablender_file}")
+    implementation fg.deobf("curse.maven:cobblemon-687131:${cobblemon_file}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

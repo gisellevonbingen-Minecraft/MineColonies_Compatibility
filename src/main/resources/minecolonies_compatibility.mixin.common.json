@@ -19,6 +19,8 @@
 		
 		"blue_skies.BrewberryBushBlockAccessor",
 		
+		"cobblemon.BerryBlockAccessor",
+		
 		"thermal.CropBlockCoFHAccessor"
 	],
 	"injectors": {

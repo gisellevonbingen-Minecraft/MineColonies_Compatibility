@@ -9,9 +9,9 @@ import net.minecraft.world.level.ItemLike;
 @Mixin(value = CropBlockCoFH.class, remap = false)
 public interface CropBlockCoFHAccessor
 {
-	@Invoker("getCropItem")
+	@Invoker(value = "getCropItem", remap = false)
 	ItemLike invokeGetCropItem();
 
-	@Invoker("getPostHarvestAge")
+	@Invoker(value = "getPostHarvestAge", remap = false)
 	int invokeGetPostHarvestAge();
 }

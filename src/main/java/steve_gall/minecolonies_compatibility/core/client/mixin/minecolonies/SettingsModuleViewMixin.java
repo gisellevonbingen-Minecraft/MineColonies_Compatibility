@@ -23,7 +23,7 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 public abstract class SettingsModuleViewMixin extends AbstractBuildingModuleView
 {
 	@SuppressWarnings("rawtypes")
-	@Inject(method = "getSettingsToShow", at = @At(value = "RETURN"), cancellable = true)
+	@Inject(method = "getSettingsToShow", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void getSettingsToShow(CallbackInfoReturnable<List<ISettingKey<? extends ISetting>>> cir)
 	{
 		if (this.buildingView.getBuildingType() == ModBuildings.lumberjack.get())

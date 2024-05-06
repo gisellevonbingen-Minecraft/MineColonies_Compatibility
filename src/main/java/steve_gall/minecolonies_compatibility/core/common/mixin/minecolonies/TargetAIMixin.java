@@ -11,9 +11,9 @@ import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAt
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableAttackMoveAI;
 
 @Mixin(value = TargetAI.class, remap = false)
-public class TargetAIMixin
+public abstract class TargetAIMixin
 {
-	@Inject(method = "getSearchRange", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "getSearchRange", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void getSearchRange(CallbackInfoReturnable<Integer> cir)
 	{
 		if (this instanceof ICustomizableAttackMoveAI<?, ?> self)
@@ -33,7 +33,7 @@ public class TargetAIMixin
 
 	}
 
-	@Inject(method = "getYSearchRange", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "getYSearchRange", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void getYSearchRange(CallbackInfoReturnable<Integer> cir)
 	{
 		if (this instanceof ICustomizableAttackMoveAI<?, ?> self)

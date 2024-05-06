@@ -13,7 +13,7 @@ import com.minecolonies.core.colony.buildings.moduleviews.WorkerBuildingModuleVi
 @Mixin(value = WorkerBuildingModuleView.class, remap = false)
 public abstract class WorkerBuildingModuleViewMixin extends AbstractBuildingModuleView implements IAssignmentModuleView
 {
-	@Inject(method = "isFull", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "isFull", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void isFull(CallbackInfoReturnable<Boolean> cir)
 	{
 		if (this.buildingView.getBuildingType() == ModBuildings.lumberjack.get())

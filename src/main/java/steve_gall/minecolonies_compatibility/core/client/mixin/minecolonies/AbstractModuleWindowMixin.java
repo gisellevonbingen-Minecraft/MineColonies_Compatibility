@@ -15,12 +15,12 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 
 @Mixin(value = AbstractModuleWindow.class, remap = false)
-public class AbstractModuleWindowMixin
+public abstract class AbstractModuleWindowMixin
 {
-	@Shadow
+	@Shadow(remap = false)
 	private IBuildingView buildingView;
 
-	@Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/colony/buildings/modules/IBuildingModuleView;isPageVisible()Z"))
+	@Redirect(method = "<init>", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/colony/buildings/modules/IBuildingModuleView;isPageVisible()Z"))
 	public boolean init_isPageVisible(IBuildingModuleView moduleView)
 	{
 		if (this.buildingView.getBuildingType() == ModBuildings.lumberjack.get())

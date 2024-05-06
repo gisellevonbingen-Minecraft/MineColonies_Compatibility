@@ -11,9 +11,9 @@ import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAt
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
 
 @Mixin(value = AbstractEntityAIFight.class, remap = false)
-public class AbstractEntityAIFightMixin
+public abstract class AbstractEntityAIFightMixin
 {
-	@Inject(method = "atBuildingActions", at = @At(value = "TAIL"), cancellable = true)
+	@Inject(method = "atBuildingActions", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void atBuildingActions(CallbackInfo ci)
 	{
 		if (this instanceof ICustomizableEntityAI self && self.getSelectedAI() instanceof CustomizedAIAttack attack)

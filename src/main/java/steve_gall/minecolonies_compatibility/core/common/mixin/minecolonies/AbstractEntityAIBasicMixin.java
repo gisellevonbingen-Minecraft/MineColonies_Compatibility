@@ -23,9 +23,9 @@ import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableE
 import steve_gall.minecolonies_compatibility.core.common.entity.AbstractEntityAIBasicExtension;
 
 @Mixin(value = AbstractEntityAIBasic.class, remap = false)
-public class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B extends AbstractBuilding> extends AbstractAISkeleton<J> implements AbstractEntityAIBasicExtension
+public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B extends AbstractBuilding> extends AbstractAISkeleton<J> implements AbstractEntityAIBasicExtension
 {
-	@Shadow
+	@Shadow(remap = false)
 	private int slotAt = 0;
 
 	@Unique
@@ -63,7 +63,7 @@ public class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B extends A
 
 	}
 
-	@Redirect(method = "dumpOneMoreSlot", at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/util/ItemStackUtils;isEmpty(Lnet/minecraft/world/item/ItemStack;)Z"))
+	@Redirect(method = "dumpOneMoreSlot", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/util/ItemStackUtils;isEmpty(Lnet/minecraft/world/item/ItemStack;)Z"))
 	private boolean dumpOneMoreSlot_isEmpty(ItemStack stackToDump)
 	{
 		var empty = ItemStackUtils.isEmpty(stackToDump);

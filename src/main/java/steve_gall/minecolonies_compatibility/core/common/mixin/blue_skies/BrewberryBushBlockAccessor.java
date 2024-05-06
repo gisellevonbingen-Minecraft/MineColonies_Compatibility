@@ -13,6 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(value = BrewberryBushBlock.class, remap = false)
 public interface BrewberryBushBlockAccessor
 {
-	@Invoker("getBerry")
+	@Invoker(value = "getBerry", remap = false)
 	ItemStack invokeGetBerry(Level level, BlockState state, BlockPos pos);
 }

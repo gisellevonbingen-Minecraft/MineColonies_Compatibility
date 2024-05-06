@@ -35,10 +35,10 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 		super(user, targetFrequency, stateMachine);
 	}
 
-	@Shadow
+	@Shadow(remap = false)
 	public abstract double getAttackDistance();
 
-	@Inject(method = "move", at = @At(value = "RETURN"), cancellable = true)
+	@Inject(method = "move", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void move_return(CallbackInfoReturnable<IState> cir)
 	{
 		if (cir.getReturnValue() == CombatAIStates.NO_TARGET)
@@ -52,7 +52,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 
 	}
 
-	@Inject(method = "tryAttack", at = @At(value = "RETURN"), cancellable = true)
+	@Inject(method = "tryAttack", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void tryAttack_return(CallbackInfoReturnable<IState> cir)
 	{
 		if (cir.getReturnValue() == CombatAIStates.NO_TARGET)
@@ -66,7 +66,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 
 	}
 
-	@Redirect(method = "move", at = @At(value = "INVOKE", target = "checkForTarget"))
+	@Redirect(method = "move", remap = false, at = @At(value = "INVOKE", target = "checkForTarget"))
 	private boolean move_checkForTarget(AttackMoveAI<T> ai)
 	{
 		if (!this.checkForTarget())
@@ -87,7 +87,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 		return true;
 	}
 
-	@Inject(method = "canAttack", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "canAttack", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void canAttack(CallbackInfoReturnable<Boolean> cir)
 	{
 		if (this instanceof ICustomizableAttackMoveAI<?, ?> self)
@@ -107,7 +107,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 
 	}
 
-	@Inject(method = "doAttack", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "doAttack", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void doAttack(LivingEntity target, CallbackInfo ci)
 	{
 		if (this instanceof ICustomizableAttackMoveAI<?, ?> self)
@@ -134,7 +134,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 
 	}
 
-	@Inject(method = "getAttackDelay", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "getAttackDelay", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void getAttackDelay(CallbackInfoReturnable<Integer> cir)
 	{
 		if (this instanceof ICustomizableAttackMoveAI<?, ?> self)
@@ -155,7 +155,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 
 	}
 
-	@Inject(method = "getAttackDistance", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "getAttackDistance", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void getAttackDistance(CallbackInfoReturnable<Double> cir)
 	{
 		if (this instanceof ICustomizableAttackMoveAI<?, ?> self)
@@ -176,7 +176,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 	}
 
 	@SuppressWarnings("unchecked")
-	@Inject(method = "moveInAttackPosition", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "moveInAttackPosition", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void moveInAttackPosition(LivingEntity target, CallbackInfoReturnable<PathResult<?>> cir)
 	{
 		if (this instanceof ICustomizableAttackMoveAI<?, ?> self)

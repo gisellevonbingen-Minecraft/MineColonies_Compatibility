@@ -32,7 +32,7 @@ import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantSeedCo
 public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<JobFarmer, BuildingFarmer>
 {
 	@Nullable
-	@Shadow
+	@Shadow(remap = false)
 	private BlockPos prevPos;
 
 	public EntityAIWorkFarmerMixin(@NotNull JobFarmer job)
@@ -40,7 +40,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		super(job);
 	}
 
-	@Inject(method = "plantCrop", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "plantCrop", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void plantCrop(ItemStack stack, @NotNull BlockPos position, CallbackInfoReturnable<Boolean> cir)
 	{
 		if (stack == null || stack.isEmpty())
@@ -103,7 +103,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 
 	}
 
-	@Inject(method = "findHarvestableSurface", at = @At(value = "RETURN"), cancellable = true)
+	@Inject(method = "findHarvestableSurface", remap = false, at = @At(value = "RETURN"), cancellable = true)
 	private void findHarvestableSurface(@NotNull BlockPos position, CallbackInfoReturnable<BlockPos> cir)
 	{
 		if (position == null)
@@ -144,7 +144,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 
 	}
 
-	@Redirect(method = "harvestIfAble", at = @At(value = "INVOKE", target = "mineBlock(Lnet/minecraft/core/BlockPos;)Z"))
+	@Redirect(method = "harvestIfAble", remap = false, at = @At(value = "INVOKE", target = "mineBlock(Lnet/minecraft/core/BlockPos;)Z"))
 	private boolean harvestIfAble_mineBlock(EntityAIWorkFarmer self, BlockPos position)
 	{
 		var worker = this.worker;
@@ -193,7 +193,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		return this.mineBlock(position);
 	}
 
-	@ModifyVariable(method = "getSurfacePos(Lnet/minecraft/core/BlockPos;Ljava/lang/Integer;)Lnet/minecraft/core/BlockPos;", at = @At("STORE"), ordinal = 0)
+	@ModifyVariable(method = "getSurfacePos(Lnet/minecraft/core/BlockPos;Ljava/lang/Integer;)Lnet/minecraft/core/BlockPos;", remap = false, at = @At("STORE"), ordinal = 0)
 	private Block getSurfacePos(Block curBlock)
 	{
 		if (curBlock instanceof StemGrownBlock)

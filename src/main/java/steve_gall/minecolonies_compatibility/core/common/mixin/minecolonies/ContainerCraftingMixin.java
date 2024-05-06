@@ -25,13 +25,13 @@ import steve_gall.minecolonies_compatibility.core.common.module.polymorph.Polymo
 @Mixin(value = ContainerCrafting.class, remap = false)
 public abstract class ContainerCraftingMixin extends AbstractContainerMenu
 {
-	@Shadow
+	@Shadow(remap = false)
 	private Level world;
-	@Shadow
+	@Shadow(remap = false)
 	private Inventory inv;
-	@Shadow
+	@Shadow(remap = false)
 	private CraftingContainer craftMatrix;
-	@Shadow
+	@Shadow(remap = false)
 	private Slot craftResultSlot;
 
 	protected ContainerCraftingMixin(MenuType<?> p_38851_, int p_38852_)
@@ -39,7 +39,7 @@ public abstract class ContainerCraftingMixin extends AbstractContainerMenu
 		super(p_38851_, p_38852_);
 	}
 
-	@Inject(method = "slotsChanged", at = @At(value = "TAIL"), cancellable = true, remap = true)
+	@Inject(method = "slotsChanged", remap = true, at = @At(value = "TAIL"), cancellable = true)
 	private void slotsChanged(Container inventoryIn, CallbackInfo ci)
 	{
 		if (!this.world.isClientSide && ModuleManager.POLYMORPH.isLoaded())

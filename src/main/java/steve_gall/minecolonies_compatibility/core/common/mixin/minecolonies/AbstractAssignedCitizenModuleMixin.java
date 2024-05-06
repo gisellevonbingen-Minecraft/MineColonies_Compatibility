@@ -13,7 +13,7 @@ import com.minecolonies.core.colony.buildings.modules.AbstractAssignedCitizenMod
 @Mixin(value = AbstractAssignedCitizenModule.class, remap = false)
 public abstract class AbstractAssignedCitizenModuleMixin extends AbstractBuildingModule implements IAssignsCitizen
 {
-	@Inject(method = "isFull", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "isFull", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void isFull(CallbackInfoReturnable<Boolean> cir)
 	{
 		if (this.building.getBuildingType() == ModBuildings.lumberjack.get())

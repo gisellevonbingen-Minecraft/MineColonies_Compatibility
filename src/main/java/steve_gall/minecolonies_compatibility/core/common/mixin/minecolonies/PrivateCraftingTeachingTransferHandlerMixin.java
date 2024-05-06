@@ -20,9 +20,9 @@ import steve_gall.minecolonies_compatibility.core.common.module.ModuleManager;
 import steve_gall.minecolonies_compatibility.core.common.network.message.CPolymorphTeachResultItemMessage;
 
 @Mixin(value = PrivateCraftingTeachingTransferHandler.class, remap = false)
-public class PrivateCraftingTeachingTransferHandlerMixin
+public abstract class PrivateCraftingTeachingTransferHandlerMixin
 {
-	@Inject(method = "transferRecipe", at = @At(value = "TAIL"), cancellable = true)
+	@Inject(method = "transferRecipe", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void transferRecipe(@NotNull ContainerCrafting craftingGUIBuilding, @NotNull CraftingRecipe recipe, @NotNull IRecipeSlotsView recipeSlots, @NotNull Player player, boolean maxTransfer, boolean doTransfer, CallbackInfoReturnable<IRecipeTransferError> cir)
 	{
 		if (doTransfer && ModuleManager.POLYMORPH.isLoaded())

@@ -15,9 +15,9 @@ import net.minecraft.core.BlockPos;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 
 @Mixin(value = BuildingEntry.class, remap = false)
-public class BuildingEntryMixin
+public abstract class BuildingEntryMixin
 {
-	@Inject(method = "produceBuilding", at = @At(value = "TAIL"), cancellable = true)
+	@Inject(method = "produceBuilding", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void produceBuilding(BlockPos position, IColony colony, CallbackInfoReturnable<IBuilding> cir)
 	{
 		var building = cir.getReturnValue();

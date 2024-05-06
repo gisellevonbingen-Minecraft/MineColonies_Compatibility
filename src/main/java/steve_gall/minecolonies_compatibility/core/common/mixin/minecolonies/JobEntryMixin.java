@@ -13,12 +13,12 @@ import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
 @Mixin(value = JobEntry.class, remap = false)
-public class JobEntryMixin
+public abstract class JobEntryMixin
 {
 	@Unique
 	private Optional<String> minecolonies_compatibility$translationKey = null;
 
-	@Inject(method = "getTranslationKey", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "getTranslationKey", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void getTranslationKey(CallbackInfoReturnable<String> cir)
 	{
 		if (this.minecolonies_compatibility$translationKey == null)

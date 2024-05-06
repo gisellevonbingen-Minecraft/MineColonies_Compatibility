@@ -10,9 +10,9 @@ import com.minecolonies.core.entity.ai.basic.AbstractAISkeleton;
 import steve_gall.minecolonies_compatibility.core.common.entity.AbstractEntityAIBasicExtension;
 
 @Mixin(value = AbstractAISkeleton.class, remap = false)
-public class AbstractAISkeletonMixin
+public abstract class AbstractAISkeletonMixin
 {
-	@Inject(method = "tick", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "tick", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void tick(CallbackInfo ci)
 	{
 		if (this instanceof AbstractEntityAIBasicExtension extension)

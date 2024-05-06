@@ -41,7 +41,6 @@ public class CraftingWindowRecipeData extends StackRecipeData
 		{
 			if (level.getPlayerByUUID(uuid) instanceof ServerPlayer player && player.containerMenu instanceof ContainerCrafting crafting)
 			{
-				crafting.setData(1, 0);
 				crafting.craftResult.setItem(0, craftingRecipe.assemble(crafting.craftMatrix, crafting.getWorldObj().registryAccess()));
 				PolymorphApi.common().getPacketDistributor().sendHighlightRecipeS2C(player, id);
 			}

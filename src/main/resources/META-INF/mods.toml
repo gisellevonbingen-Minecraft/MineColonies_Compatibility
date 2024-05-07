@@ -32,11 +32,10 @@ issueTrackerURL="${mod_issues}"
     versionRange="[${minecolonies_version},)"
     ordering="AFTER"
     side="BOTH"
-    
+
 [[dependencies.${mod_id}]]
     modId="minecolonies_tweaks"
     mandatory=true
     versionRange="[${minecolonies_tweaks_version},)"
     ordering="AFTER"
     side="BOTH"
-    

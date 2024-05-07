@@ -27,11 +27,10 @@ license="TEST"
     versionRange="[0.0,)"
     ordering="AFTER"
     side="BOTH"
-    
+
 [[dependencies.testmod]]
     modId="minecolonies_tweaks"
     mandatory=true
     versionRange="[0.0,)"
     ordering="AFTER"
     side="BOTH"
-    

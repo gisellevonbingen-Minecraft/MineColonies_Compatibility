@@ -71,30 +71,30 @@ minecraft {
 }
 
 repositories {
-	maven {
-		name "JEI"
-		url "https://dvs1.progwml6.com/files/maven"
-	}
-	maven {
-		name "ModMaven"
-		url "https://modmaven.dev"
-	}
-	maven {
-		name "CurseForge"
-		url "https://www.cursemaven.com"
-	}
-	maven {
-		name "MineColonies"
-		url "https://ldtteam.jfrog.io/ldtteam/modding"
-	}
-	maven {
-		name "LocalMaven"
-		url uri("${projectDir}/libs")
-	}
-	flatDir {
-		name "LocalFlatDir"
-		dir "${projectDir}/libs"
-	}
+    maven {
+        name "JEI"
+        url "https://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        name "ModMaven"
+        url "https://modmaven.dev"
+    }
+    maven {
+        name "CurseForge"
+        url "https://www.cursemaven.com"
+    }
+    maven {
+        name "MineColonies"
+        url "https://ldtteam.jfrog.io/ldtteam/modding"
+    }
+    maven {
+        name "LocalMaven"
+        url uri("${projectDir}/libs")
+    }
+    flatDir {
+        name "LocalFlatDir"
+        dir "${projectDir}/libs"
+    }
 }
 
 dependencies {
@@ -141,41 +141,41 @@ mixin {
 }
 
 tasks.withType(JavaCompile) {
-	options.encoding = "UTF-8"
-	options.release = 17
+    options.encoding = "UTF-8"
+    options.release = 17
 }
 
 java {
-	withSourcesJar()
+    withSourcesJar()
 }
 
 def resourceTargets = ["META-INF/mods.toml", "*.json"]
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
 def replaceProperties = [mc_version: mc_version,
-	mod_id: mod_id, mod_version: mod_version, mod_name: mod_name, mod_description: mod_description, mod_license: mod_license, mod_homepage: mod_homepage, mod_source: mod_source, mod_issues: mod_issues,
-	forge_api_version: forge_api_version, forge_loader_version: forge_loader_version,
-	minecolonies_version: minecolonies_version, minecolonies_tweaks_version: minecolonies_tweaks_version
+    mod_id: mod_id, mod_version: mod_version, mod_name: mod_name, mod_description: mod_description, mod_license: mod_license, mod_homepage: mod_homepage, mod_source: mod_source, mod_issues: mod_issues,
+    forge_api_version: forge_api_version, forge_loader_version: forge_loader_version,
+    minecolonies_version: minecolonies_version, minecolonies_tweaks_version: minecolonies_tweaks_version
 ]
 
 processResources {
-	inputs.properties replaceProperties
-	replaceProperties.put "project", project
+    inputs.properties replaceProperties
+    replaceProperties.put "project", project
 
-	filesMatching(resourceTargets) {
-		expand replaceProperties
-	}
+    filesMatching(resourceTargets) {
+        expand replaceProperties
+    }
 
-	intoTargets.each { target ->
-		if (file(target).exists()) {
-			copy {
-				from(sourceSets.main.resources) {
-					include resourceTargets
-					expand replaceProperties
-				}
-				into target
-			}
-		}
-	}
+    intoTargets.each { target ->
+        if (file(target).exists()) {
+            copy {
+                from(sourceSets.main.resources) {
+                    include resourceTargets
+                    expand replaceProperties
+                }
+                into target
+            }
+        }
+    }
 }
 
 jar {

@@ -1,0 +1,37 @@
+modLoader="javafml"
+loaderVersion="[0,)"
+license="TEST"
+
+[[mods]]
+    modId="testmod"
+    version="0"
+    displayName="TEST"
+
+[[dependencies.testmod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[0.0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.testmod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[0.0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.testmod]]
+    modId="minecolonies"
+    mandatory=true
+    versionRange="[0.0,)"
+    ordering="AFTER"
+    side="BOTH"
+    
+[[dependencies.testmod]]
+    modId="minecolonies_tweaks"
+    mandatory=true
+    versionRange="[0.0,)"
+    ordering="AFTER"
+    side="BOTH"
+    

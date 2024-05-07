@@ -39,6 +39,10 @@ minecraft {
             mods {
                 "${mod_id}" {
                     source sourceSets.main
+                }
+            }
+            mods {
+                "testmod" {
                     source sourceSets.test
                 }
             }
@@ -47,25 +51,25 @@ minecraft {
         client {
             taskName "forge_client"
 
-            property "forge.enabledGameTestNamespaces", "${mod_id}"
+            property "forge.enabledGameTestNamespaces", "${mod_id}, testmod"
         }
 
         server {
             taskName "forge_server"
 
-            property "forge.enabledGameTestNamespaces", "${mod_id}"
+            property "forge.enabledGameTestNamespaces", "${mod_id}, testmod"
         }
 
         gameTestServer {
             taskName "forge_game_test_server"
 
-            property "forge.enabledGameTestNamespaces", "${mod_id}"
+            property "forge.enabledGameTestNamespaces", "${mod_id}, testmod"
         }
 
         data {
             taskName "forge_data"
 
-            args "--mod", "${mod_id}", "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/")
+            args "--mod", "${mod_id}, testmod", "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/")
         }
     }
 }

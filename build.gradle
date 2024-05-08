@@ -144,6 +144,8 @@ dependencies {
     implementation fg.deobf("curse.maven:aether-255308:${aether_file}")
     implementation fg.deobf("curse.maven:cyclic-239286:${cyclic_file}")
     implementation fg.deobf("curse.maven:flib-661261:${flib_file}")
+    implementation fg.deobf("curse.maven:lets-do-vinery-704465:${lets_do_vinery_file}")
+    implementation fg.deobf("curse.maven:do-api-864599:${lets_do_api_file}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

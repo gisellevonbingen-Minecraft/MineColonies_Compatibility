@@ -17,6 +17,7 @@ import steve_gall.minecolonies_compatibility.core.common.module.pamhc2trees.Pams
 import steve_gall.minecolonies_compatibility.core.common.module.polymorph.PolymorphModule;
 import steve_gall.minecolonies_compatibility.core.common.module.regions_unexplored.RegionsUnexploredModule;
 import steve_gall.minecolonies_compatibility.core.common.module.thermal.ThermalModule;
+import steve_gall.minecolonies_compatibility.core.common.module.vinery.VineryModule;
 
 public class ModuleManager
 {
@@ -38,6 +39,7 @@ public class ModuleManager
 	public static final OptionalModule REGIONS_UNEXPLORED;
 	public static final OptionalModule AETHER;
 	public static final OptionalModule CYCLIC;
+	public static final OptionalModule VINERY;
 
 	static
 	{
@@ -55,6 +57,7 @@ public class ModuleManager
 		modules.add(REGIONS_UNEXPLORED = new OptionalModule("regions_unexplored", () -> RegionsUnexploredModule::onLoad));
 		modules.add(AETHER = new OptionalModule("aether", () -> AetherModule::onLoad));
 		modules.add(CYCLIC = new OptionalModule("cyclic", () -> CyclicModule::onLoad));
+		modules.add(VINERY = new OptionalModule("vinery", () -> VineryModule::onLoad));
 
 		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();

@@ -21,6 +21,8 @@
 		
 		"cobblemon.BerryBlockAccessor",
 		
+		"cyclic.AppleCropBlockAccessor",
+		
 		"thermal.CropBlockCoFHAccessor"
 	],
 	"injectors": {

@@ -257,6 +257,7 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 			{
 				this.setBulletCount(user, this.getBulletCount(user) - 1);
 			}
+
 		}
 
 	}

@@ -10,9 +10,9 @@ import com.mrbysco.oreberriesreplanted.block.OreBerryBushBlock;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.core.common.mixin.oreberries.OreBerryBushBlockAccessor;
 
 public class OreBerryFruit extends CustomizedFruit

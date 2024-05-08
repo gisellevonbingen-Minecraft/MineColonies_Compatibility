@@ -18,11 +18,8 @@
 		"minecolonies.WorkerBuildingModuleViewMixin",
 		
 		"blue_skies.BrewberryBushBlockAccessor",
-		
 		"cyclic.AppleCropBlockAccessor",
-		
 		"oreberries.OreBerryBushBlockAccessor",
-		
 		"thermal.CropBlockCoFHAccessor"
 	],
 	"injectors": {

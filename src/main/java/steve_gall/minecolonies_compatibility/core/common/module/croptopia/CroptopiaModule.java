@@ -1,6 +1,6 @@
 package steve_gall.minecolonies_compatibility.core.common.module.croptopia;
 
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 
 public class CroptopiaModule
 {

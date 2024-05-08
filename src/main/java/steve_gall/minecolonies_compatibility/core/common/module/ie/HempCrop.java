@@ -10,9 +10,9 @@ import blusunrize.immersiveengineering.common.register.IEBlocks;
 import blusunrize.immersiveengineering.common.register.IEItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedCrop;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantSeedContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantSeedContext;
 
 public class HempCrop extends CustomizedCrop
 {

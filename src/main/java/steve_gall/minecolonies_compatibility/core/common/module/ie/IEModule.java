@@ -4,7 +4,7 @@ import blusunrize.immersiveengineering.api.tool.BulletHandler;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedCrop;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.RequestableObjectRegistry;
 
 public class IEModule

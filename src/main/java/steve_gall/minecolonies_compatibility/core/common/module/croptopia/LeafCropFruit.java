@@ -9,9 +9,9 @@ import com.epherical.croptopia.blocks.LeafCropBlock;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class LeafCropFruit extends CustomizedFruit
 {

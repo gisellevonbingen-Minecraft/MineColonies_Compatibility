@@ -12,9 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedCrop;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
+import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.core.common.mixin.thermal.CropBlockCoFHAccessor;
 
 public class PerennialCrop extends CustomizedCrop

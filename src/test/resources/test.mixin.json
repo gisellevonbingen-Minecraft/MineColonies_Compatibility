@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "test.mixin",
+	"minVersion": "0.8.5",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"common.forge.ConfigValueMixin",
+		"common.forge.ForgeConfigSpecAccessor"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

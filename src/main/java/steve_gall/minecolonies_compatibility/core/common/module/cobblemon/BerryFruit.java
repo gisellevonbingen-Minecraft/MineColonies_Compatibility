@@ -12,9 +12,9 @@ import com.cobblemon.mod.common.block.entity.BerryBlockEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.core.common.mixin.cobblemon.BerryBlockAccessor;
 
 public class BerryFruit extends CustomizedFruit

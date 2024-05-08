@@ -10,9 +10,9 @@ import com.legacy.blue_skies.blocks.natural.BrewberryBushBlock;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.core.common.mixin.blue_skies.BrewberryBushBlockAccessor;
 
 public class BrewBerryFruit extends CustomizedFruit

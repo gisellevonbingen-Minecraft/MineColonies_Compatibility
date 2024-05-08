@@ -1,14 +1,19 @@
 package steve_gall.minecolonies_compatibility.core.common.module.delightful;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import net.brnbrd.delightful.common.block.DelightfulBlocks;
+import net.brnbrd.delightful.common.block.SalmonberryBushBlock;
+import net.brnbrd.delightful.common.item.DelightfulItems;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
+import net.minecraft.world.level.block.Block;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class SalmonberryFruit extends CustomizedFruit
 {
@@ -21,13 +26,26 @@ public class SalmonberryFruit extends CustomizedFruit
 	@Override
 	public boolean canHarvest(@NotNull PlantBlockContext context)
 	{
-		return SalmonberryCrop.canHarvest(context);
+		return context.getState().getValue(SalmonberryBushBlock.AGE) > 2;
 	}
 
 	@Override
 	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
-		return SalmonberryCrop.harvest(context, harvester);
-	}
+		var state = context.getState();
 
+		if (context.getLevel() instanceof ServerLevel level)
+		{
+			var flag = ((SalmonberryBushBlock) state.getBlock()).isMaxAge(state);
+			var count = flag ? 2 + level.random.nextInt(2) : 1;
+			level.setBlock(context.getPosition(), state.setValue(SalmonberryBushBlock.AGE, 1), Block.UPDATE_CLIENTS);
+
+			return Collections.singletonList(new ItemStack(DelightfulItems.SALMONBERRIES.get(), count));
+		}
+		else
+		{
+			return Collections.emptyList();
+		}
+
+	}
 }

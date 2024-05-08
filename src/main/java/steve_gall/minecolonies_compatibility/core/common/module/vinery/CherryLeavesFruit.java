@@ -10,9 +10,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import satisfyu.vinery.block.CherryLeaves;
 import satisfyu.vinery.registry.ObjectRegistry;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class CherryLeavesFruit extends CustomizedFruit
 {

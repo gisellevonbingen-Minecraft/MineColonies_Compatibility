@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.api.common.entity.plant;
+package steve_gall.minecolonies_compatibility.api.common.plant;
 
 import java.util.Collections;
 import java.util.List;

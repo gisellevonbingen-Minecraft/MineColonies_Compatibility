@@ -26,10 +26,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.StemGrownBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedCrop;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantSeedContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
+import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.PlantSeedContext;
 
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
 public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<JobFarmer, BuildingFarmer>

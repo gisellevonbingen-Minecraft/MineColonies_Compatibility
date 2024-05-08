@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.core.common.module;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 import steve_gall.minecolonies_compatibility.core.common.module.aether.AetherModule;
 import steve_gall.minecolonies_compatibility.core.common.module.ars_nouveau.ArsNouveauModule;
@@ -14,6 +15,7 @@ import steve_gall.minecolonies_compatibility.core.common.module.delightful.Delig
 import steve_gall.minecolonies_compatibility.core.common.module.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.core.common.module.ie.IEModule;
 import steve_gall.minecolonies_compatibility.core.common.module.minecraft.MinecraftModule;
+import steve_gall.minecolonies_compatibility.core.common.module.oreberries.OreberriesModule;
 import steve_gall.minecolonies_compatibility.core.common.module.pamhc2trees.PamsHarvestCraft2TreesModule;
 import steve_gall.minecolonies_compatibility.core.common.module.polymorph.PolymorphModule;
 import steve_gall.minecolonies_compatibility.core.common.module.regions_unexplored.RegionsUnexploredModule;
@@ -23,53 +25,45 @@ import steve_gall.minecolonies_compatibility.core.common.module.vinery.VineryMod
 
 public class ModuleManager
 {
+	private static final List<OptionalModule> _MODULES;
 	public static final List<OptionalModule> MODULES;
 	private static boolean INITIALIZED;
 	private static final List<OptionalModule> _LOADED_MODULES;
 	public static final List<OptionalModule> LOADED_MODULES;
 
-	public static final OptionalModule MINECRAFT;
-	public static final OptionalModule IE;
-	public static final OptionalModule CROPTOPIA;
-	public static final OptionalModule PHC2TREES;
-	public static final OptionalModule FARMERSDELIGHT;
-	public static final OptionalModule DELIGHTFUL;
-	public static final OptionalModule THERMAL;
-	public static final OptionalModule ARS_NOUVEAU;
-	public static final OptionalModule POLYMORPH;
-	public static final OptionalModule BLUE_SKIES;
-	public static final OptionalModule REGIONS_UNEXPLORED;
-	public static final OptionalModule AETHER;
-	public static final OptionalModule CYCLIC;
-	public static final OptionalModule VINERY;
-	public static final OptionalModule UNDERGARDEN;
-
-	public static final OptionalModule COBBLEMON;
-
 	static
 	{
-		var modules = new ArrayList<OptionalModule>();
-		modules.add(MINECRAFT = new OptionalModule("minecraft", () -> MinecraftModule::onLoad));
-		modules.add(IE = new OptionalModule("immersiveengineering", () -> IEModule::onLoad));
-		modules.add(CROPTOPIA = new OptionalModule("croptopia", () -> CroptopiaModule::onLoad));
-		modules.add(PHC2TREES = new OptionalModule("pamhc2trees", () -> PamsHarvestCraft2TreesModule::onLoad));
-		modules.add(FARMERSDELIGHT = new OptionalModule("farmersdelight", () -> FarmersDelightModule::onLoad));
-		modules.add(DELIGHTFUL = new OptionalModule("delightful", () -> DelightfulModule::onLoad));
-		modules.add(THERMAL = new OptionalModule("thermal", () -> ThermalModule::onLoad));
-		modules.add(ARS_NOUVEAU = new OptionalModule("ars_nouveau", () -> ArsNouveauModule::onLoad));
-		modules.add(POLYMORPH = new OptionalModule("polymorph", () -> PolymorphModule::onLoad));
-		modules.add(BLUE_SKIES = new OptionalModule("blue_skies", () -> BlueSkiesModule::onLoad));
-		modules.add(REGIONS_UNEXPLORED = new OptionalModule("regions_unexplored", () -> RegionsUnexploredModule::onLoad));
-		modules.add(AETHER = new OptionalModule("aether", () -> AetherModule::onLoad));
-		modules.add(CYCLIC = new OptionalModule("cyclic", () -> CyclicModule::onLoad));
-		modules.add(VINERY = new OptionalModule("vinery", () -> VineryModule::onLoad));
-		modules.add(UNDERGARDEN = new OptionalModule("undergarden", () -> UndergardenModule::onLoad));
+		_MODULES = new ArrayList<>();
+		MODULES = Collections.unmodifiableList(_MODULES);
 
-		modules.add(COBBLEMON = new OptionalModule("cobblemon", () -> CobblemonModule::onLoad));
-
-		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();
 		LOADED_MODULES = Collections.unmodifiableList(_LOADED_MODULES);
+	}
+
+	public static final OptionalModule MINECRAFT = register("minecraft", () -> MinecraftModule::onLoad);
+	public static final OptionalModule AETHER = register("aether", () -> AetherModule::onLoad);
+	public static final OptionalModule ARS_NOUVEAU = register("ars_nouveau", () -> ArsNouveauModule::onLoad);
+	public static final OptionalModule BLUE_SKIES = register("blue_skies", () -> BlueSkiesModule::onLoad);
+	public static final OptionalModule CROPTOPIA = register("croptopia", () -> CroptopiaModule::onLoad);
+	public static final OptionalModule CYCLIC = register("cyclic", () -> CyclicModule::onLoad);
+	public static final OptionalModule DELIGHTFUL = register("delightful", () -> DelightfulModule::onLoad);
+	public static final OptionalModule FARMERSDELIGHT = register("farmersdelight", () -> FarmersDelightModule::onLoad);
+	public static final OptionalModule IE = register("immersiveengineering", () -> IEModule::onLoad);
+	public static final OptionalModule OREBERRIES = register("oreberriesreplanted", () -> OreberriesModule::onLoad);
+	public static final OptionalModule PHC2TREES = register("pamhc2trees", () -> PamsHarvestCraft2TreesModule::onLoad);
+	public static final OptionalModule POLYMORPH = register("polymorph", () -> PolymorphModule::onLoad);
+	public static final OptionalModule REGIONS_UNEXPLORED = register("regions_unexplored", () -> RegionsUnexploredModule::onLoad);
+	public static final OptionalModule THERMAL = register("thermal", () -> ThermalModule::onLoad);
+	public static final OptionalModule UNDERGARDEN = register("undergarden", () -> UndergardenModule::onLoad);
+	public static final OptionalModule VINERY = register("vinery", () -> VineryModule::onLoad);
+
+	public static final OptionalModule COBBLEMON = register("cobblemon", () -> CobblemonModule::onLoad);
+
+	private static OptionalModule register(String modid, Supplier<Runnable> initializer)
+	{
+		var module = new OptionalModule(modid, initializer);
+		_MODULES.add(module);
+		return module;
 	}
 
 	public static boolean isInitialized()

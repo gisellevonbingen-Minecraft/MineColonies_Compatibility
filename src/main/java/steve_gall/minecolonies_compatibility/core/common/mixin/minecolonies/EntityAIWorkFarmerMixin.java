@@ -17,6 +17,8 @@ import com.minecolonies.core.entity.ai.basic.AbstractEntityAICrafting;
 import com.minecolonies.core.entity.ai.citizen.farmer.EntityAIWorkFarmer;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -173,6 +175,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 				var hand = worker.getUsedItemHand();
 				var harvester = new HarvesterContext(worker, inventory.getHeldItem(hand));
 				var drops = this.increaseBlockDrops(method.harvest(context, harvester));
+				level.playSound(null, position, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
 
 				for (var stack : drops)
 				{

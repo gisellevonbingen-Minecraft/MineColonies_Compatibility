@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.IPlantable;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedCrop;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantSeedContext;
 
@@ -65,7 +66,7 @@ public class SalmonberryCrop extends CustomizedCrop
 		return context.getState().getValue(SalmonberryBushBlock.AGE) > 2;
 	}
 
-	public static List<ItemStack> harvest(PlantBlockContext context)
+	public static List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
 		var state = context.getState();
 

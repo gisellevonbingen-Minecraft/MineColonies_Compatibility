@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 
 public class SourceBerryFruit extends CustomizedFruit
@@ -29,7 +30,7 @@ public class SourceBerryFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context)
+	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
 		if (context.getLevel() instanceof ServerLevel level)
 		{

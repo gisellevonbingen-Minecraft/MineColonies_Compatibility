@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedCrop;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantSeedContext;
 import vectorwing.farmersdelight.common.block.TomatoVineBlock;
@@ -86,7 +87,7 @@ public class TomatoCrop extends CustomizedCrop
 		return null;
 	}
 
-	private List<ItemStack> harvestVines(@NotNull PlantBlockContext context)
+	private List<ItemStack> harvestVines(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
 		if (context.getLevel() instanceof ServerLevel level)
 		{

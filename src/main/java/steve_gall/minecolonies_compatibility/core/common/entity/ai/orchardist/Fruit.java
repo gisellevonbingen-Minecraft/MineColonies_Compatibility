@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 
 public class Fruit
@@ -88,13 +89,13 @@ public class Fruit
 
 	}
 
-	public List<ItemStack> harvest()
+	public List<ItemStack> harvest(@NotNull HarvesterContext harvester)
 	{
 		var fruit = this.fruit;
 
 		if (fruit != null)
 		{
-			return fruit.harvest(this.getContext());
+			return fruit.harvest(this.getContext(), harvester);
 		}
 		else
 		{

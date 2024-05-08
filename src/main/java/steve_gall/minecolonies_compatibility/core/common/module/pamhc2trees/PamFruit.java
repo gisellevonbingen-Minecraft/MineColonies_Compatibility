@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 
 public class PamFruit extends CustomizedFruit
@@ -45,7 +46,7 @@ public class PamFruit extends CustomizedFruit
 
 	@Override
 	@NotNull
-	public List<ItemStack> harvest(@NotNull PlantBlockContext context)
+	public List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
 		if (context.getLevel() instanceof LevelWriter level)
 		{
@@ -53,7 +54,7 @@ public class PamFruit extends CustomizedFruit
 			level.setBlock(context.getPosition(), newState, Block.UPDATE_CLIENTS);
 		}
 
-		return context.getDrops();
+		return context.getDrops(null);
 	}
 
 }

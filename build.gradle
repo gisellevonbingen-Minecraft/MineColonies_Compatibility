@@ -35,6 +35,7 @@ minecraft {
 
             property "forge.logging.markers", "REGISTRIES"
             property "forge.logging.console.level", "debug"
+            arg "-mixin.config=test.mixin.json"
 
             mods {
                 "${mod_id}" {
@@ -132,6 +133,7 @@ dependencies {
     implementation fg.deobf("curse.maven:structure-gel-api-378802:${structure_gel_api_file}")
     implementation fg.deobf("curse.maven:regions-unexplored-659110:${regions_unexplored_file}")
     implementation fg.deobf("curse.maven:terrablender-563928:${terrablender_file}")
+    implementation fg.deobf("curse.maven:aether-255308:${aether_file}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

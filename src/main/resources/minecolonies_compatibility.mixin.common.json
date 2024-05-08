@@ -19,6 +19,8 @@
 		
 		"blue_skies.BrewberryBushBlockAccessor",
 		
+		"cyclic.AppleCropBlockAccessor",
+		
 		"thermal.CropBlockCoFHAccessor"
 	],
 	"injectors": {

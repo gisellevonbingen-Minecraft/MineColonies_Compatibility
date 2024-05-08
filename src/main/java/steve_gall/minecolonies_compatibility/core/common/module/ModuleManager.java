@@ -8,6 +8,7 @@ import steve_gall.minecolonies_compatibility.core.common.module.aether.AetherMod
 import steve_gall.minecolonies_compatibility.core.common.module.ars_nouveau.ArsNouveauModule;
 import steve_gall.minecolonies_compatibility.core.common.module.blue_skies.BlueSkiesModule;
 import steve_gall.minecolonies_compatibility.core.common.module.croptopia.CroptopiaModule;
+import steve_gall.minecolonies_compatibility.core.common.module.cyclic.CyclicModule;
 import steve_gall.minecolonies_compatibility.core.common.module.delightful.DelightfulModule;
 import steve_gall.minecolonies_compatibility.core.common.module.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.core.common.module.ie.IEModule;
@@ -36,6 +37,7 @@ public class ModuleManager
 	public static final OptionalModule BLUE_SKIES;
 	public static final OptionalModule REGIONS_UNEXPLORED;
 	public static final OptionalModule AETHER;
+	public static final OptionalModule CYCLIC;
 
 	static
 	{
@@ -52,6 +54,7 @@ public class ModuleManager
 		modules.add(BLUE_SKIES = new OptionalModule("blue_skies", () -> BlueSkiesModule::onLoad));
 		modules.add(REGIONS_UNEXPLORED = new OptionalModule("regions_unexplored", () -> RegionsUnexploredModule::onLoad));
 		modules.add(AETHER = new OptionalModule("aether", () -> AetherModule::onLoad));
+		modules.add(CYCLIC = new OptionalModule("cyclic", () -> CyclicModule::onLoad));
 
 		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();

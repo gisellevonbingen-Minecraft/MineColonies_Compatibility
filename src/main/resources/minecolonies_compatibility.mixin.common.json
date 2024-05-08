@@ -21,6 +21,8 @@
 		
 		"cyclic.AppleCropBlockAccessor",
 		
+		"oreberries.OreBerryBushBlockAccessor",
+		
 		"thermal.CropBlockCoFHAccessor"
 	],
 	"injectors": {

@@ -13,6 +13,7 @@ import steve_gall.minecolonies_compatibility.core.common.module.delightful.Delig
 import steve_gall.minecolonies_compatibility.core.common.module.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.core.common.module.ie.IEModule;
 import steve_gall.minecolonies_compatibility.core.common.module.minecraft.MinecraftModule;
+import steve_gall.minecolonies_compatibility.core.common.module.oreberries.OreberriesModule;
 import steve_gall.minecolonies_compatibility.core.common.module.pamhc2trees.PamsHarvestCraft2TreesModule;
 import steve_gall.minecolonies_compatibility.core.common.module.polymorph.PolymorphModule;
 import steve_gall.minecolonies_compatibility.core.common.module.regions_unexplored.RegionsUnexploredModule;
@@ -42,6 +43,7 @@ public class ModuleManager
 	public static final OptionalModule CYCLIC;
 	public static final OptionalModule VINERY;
 	public static final OptionalModule UNDERGARDEN;
+	public static final OptionalModule OREBERRIES;
 
 	static
 	{
@@ -61,6 +63,7 @@ public class ModuleManager
 		modules.add(CYCLIC = new OptionalModule("cyclic", () -> CyclicModule::onLoad));
 		modules.add(VINERY = new OptionalModule("vinery", () -> VineryModule::onLoad));
 		modules.add(UNDERGARDEN = new OptionalModule("undergarden", () -> UndergardenModule::onLoad));
+		modules.add(OREBERRIES = new OptionalModule("oreberriesreplanted", () -> OreberriesModule::onLoad));
 
 		MODULES = Collections.unmodifiableList(modules);
 		_LOADED_MODULES = new ArrayList<>();

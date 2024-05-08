@@ -264,15 +264,13 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		{
 			return OrchardistAIState.SEARCH;
 		}
-
-		if (this.walkToBlock(position) || this.hasNotDelayed(this.getLevelDelay()))
-		{
-			return this.getState();
-		}
-
-		if (!fruit.updateAndIsValid(level))
+		else if (!fruit.updateAndIsValid(level))
 		{
 			return OrchardistAIState.SEARCH;
+		}
+		else if (this.walkToBlock(position) || this.hasNotDelayed(this.getLevelDelay()))
+		{
+			return this.getState();
 		}
 
 		var inventory = worker.getInventoryCitizen();

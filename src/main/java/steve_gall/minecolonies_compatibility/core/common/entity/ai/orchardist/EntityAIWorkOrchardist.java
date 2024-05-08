@@ -35,6 +35,8 @@ import com.minecolonies.core.network.messages.client.CompostParticleMessage;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -310,6 +312,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 		var harvester = new HarvesterContext(worker, inventory.getHeldItem(hand));
 		var drops = fruit.harvest(harvester);
+		level.playSound(null, position, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
 
 		for (var stack : drops)
 		{

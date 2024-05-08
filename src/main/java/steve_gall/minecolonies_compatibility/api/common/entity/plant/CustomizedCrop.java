@@ -68,7 +68,7 @@ public abstract class CustomizedCrop
 	public interface SpecialHarvestMethodFunction
 	{
 		@NotNull
-		List<ItemStack> harvest(@NotNull PlantBlockContext context);
+		List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester);
 	}
 
 }

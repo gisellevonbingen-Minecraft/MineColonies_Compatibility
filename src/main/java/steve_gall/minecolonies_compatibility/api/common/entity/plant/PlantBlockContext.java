@@ -4,9 +4,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -24,11 +26,28 @@ public class PlantBlockContext extends PlantPositonContext
 	}
 
 	@NotNull
-	public List<ItemStack> getDrops()
+	public List<ItemStack> getDrops(@Nullable HarvesterContext harvester)
+	{
+		LivingEntity entity = null;
+		ItemStack tool = ItemStack.EMPTY;
+
+		if (harvester != null)
+		{
+			entity = harvester.getEntity();
+			tool = harvester.getTool();
+		}
+
+		return this.getDrops(entity, tool);
+	}
+
+	@NotNull
+	public List<ItemStack> getDrops(@Nullable LivingEntity entity, @NotNull ItemStack tool)
 	{
 		if (this.getLevel() instanceof ServerLevel level)
 		{
-			return Block.getDrops(this.getState(), level, this.getPosition(), null);
+			var state = this.getState();
+			var position = this.getPosition();
+			return Block.getDrops(state, level, position, null, entity, tool);
 		}
 		else
 		{

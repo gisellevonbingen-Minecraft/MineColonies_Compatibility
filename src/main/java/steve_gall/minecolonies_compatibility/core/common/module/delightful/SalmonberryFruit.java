@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import net.brnbrd.delightful.common.block.DelightfulBlocks;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 
 public class SalmonberryFruit extends CustomizedFruit
@@ -24,9 +25,9 @@ public class SalmonberryFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context)
+	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
-		return SalmonberryCrop.harvest(context);
+		return SalmonberryCrop.harvest(context, harvester);
 	}
 
 }

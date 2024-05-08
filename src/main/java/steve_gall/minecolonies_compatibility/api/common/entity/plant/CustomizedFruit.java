@@ -28,5 +28,5 @@ public abstract class CustomizedFruit
 	public abstract boolean canHarvest(@NotNull PlantBlockContext context);
 
 	@NotNull
-	public abstract List<ItemStack> harvest(@NotNull PlantBlockContext context);
+	public abstract List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester);
 }

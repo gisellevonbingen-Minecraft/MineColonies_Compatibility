@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.StemGrownBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedCrop;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantSeedContext;
 
@@ -168,9 +169,10 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 					return false;
 				}
 
-				var drops = this.increaseBlockDrops(method.harvest(context));
 				var inventory = worker.getInventoryCitizen();
 				var hand = worker.getUsedItemHand();
+				var harvester = new HarvesterContext(worker, inventory.getHeldItem(hand));
+				var drops = this.increaseBlockDrops(method.harvest(context, harvester));
 
 				for (var stack : drops)
 				{

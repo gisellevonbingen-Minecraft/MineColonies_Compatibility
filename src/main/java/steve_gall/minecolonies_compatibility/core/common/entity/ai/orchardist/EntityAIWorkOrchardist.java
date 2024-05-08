@@ -41,6 +41,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.colony.CitizenHelper;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.core.common.colony.job.JobOrchardist;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.pathfinding.FruitPathResult;
@@ -306,7 +307,8 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 		}
 
-		var drops = fruit.harvest();
+		var harvester = new HarvesterContext(worker, inventory.getHeldItem(hand));
+		var drops = fruit.harvest(harvester);
 
 		for (var stack : drops)
 		{

@@ -11,6 +11,7 @@ import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.regions_unexplored.world.level.block.leaves.AppleLeavesBlock;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.entity.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.plant.PlantBlockContext;
 
 public class AppleLeavesFruit extends CustomizedFruit
@@ -28,7 +29,7 @@ public class AppleLeavesFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context)
+	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
 		if (context.getLevel() instanceof LevelWriter level)
 		{

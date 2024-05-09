@@ -29,6 +29,12 @@ public class LeafCropFruit extends CustomizedFruit
 	}
 
 	@Override
+	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
+	{
+		return true;
+	}
+
+	@Override
 	@NotNull
 	public List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{

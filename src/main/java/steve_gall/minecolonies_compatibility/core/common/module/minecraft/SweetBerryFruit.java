@@ -26,8 +26,13 @@ public class SweetBerryFruit extends CustomizedFruit
 	@Override
 	public boolean canHarvest(@NotNull PlantBlockContext context)
 	{
-		var state = context.getState();
-		return state.getBlock() instanceof SweetBerryBushBlock block && state.getValue(SweetBerryBushBlock.AGE) > 1;
+		return context.getState().getValue(SweetBerryBushBlock.AGE) > 1;
+	}
+
+	@Override
+	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
+	{
+		return context.getState().getValue(SweetBerryBushBlock.AGE) == SweetBerryBushBlock.MAX_AGE;
 	}
 
 	@Override

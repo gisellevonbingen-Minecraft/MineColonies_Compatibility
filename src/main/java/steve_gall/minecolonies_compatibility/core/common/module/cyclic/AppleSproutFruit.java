@@ -32,11 +32,17 @@ public class AppleSproutFruit extends CustomizedFruit
 	}
 
 	@Override
+	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
+	{
+		return true;
+	}
+
+	@Override
 	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
 		var block = context.getState().getBlock();
 		// For apply fortune
-		// https://github.com/Lothrazar/Cyclic/blob/trunk/1.19.2/src/main/resources/data/cyclic/loot_tables/blocks/apple_sprout.json
+		// https://github.com/Lothrazar/Cyclic/blob/trunk/1.20.1/src/main/resources/data/cyclic/loot_tables/blocks/apple_sprout.json
 		var drops = new ArrayList<>(context.getDrops(harvester));
 		var canReplant = false;
 

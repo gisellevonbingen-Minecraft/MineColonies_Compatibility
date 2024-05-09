@@ -29,6 +29,12 @@ public class SalmonBerryFruit extends CustomizedFruit
 	}
 
 	@Override
+	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
+	{
+		return context.getState().getValue(SalmonBerryBushBlock.AGE) == SalmonBerryBushBlock.MAX_AGE;
+	}
+
+	@Override
 	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
 		var state = context.getState();

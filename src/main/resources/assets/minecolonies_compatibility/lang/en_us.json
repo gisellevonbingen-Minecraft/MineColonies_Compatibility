@@ -8,5 +8,7 @@
 	
 	"minecolonies_compatibility.job.orchardist": "Orchardist",
 	"minecolonies_compatibility:orchardist.job.desc": "Harvests fruits, leaf crops hanging at tree.",
-	"minecolonies_compatibility:orchardist.skills.desc": "Affects harvesting and walking speed."
+	"minecolonies_compatibility:orchardist.skills.desc": "Affects harvesting and walking speed.",
+	
+	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "Harvest Only Max Age"
 }

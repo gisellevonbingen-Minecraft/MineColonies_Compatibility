@@ -30,12 +30,18 @@ public class SalmonberryFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
+	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
 	{
 		var state = context.getState();
+		return ((SalmonberryBushBlock) state.getBlock()).isMaxAge(state);
+	}
 
+	@Override
+	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
+	{
 		if (context.getLevel() instanceof ServerLevel level)
 		{
+			var state = context.getState();
 			var flag = ((SalmonberryBushBlock) state.getBlock()).isMaxAge(state);
 			var count = flag ? 2 + level.random.nextInt(2) : 1;
 			level.setBlock(context.getPosition(), state.setValue(SalmonberryBushBlock.AGE, 1), Block.UPDATE_CLIENTS);

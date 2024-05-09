@@ -26,6 +26,7 @@ import com.minecolonies.api.util.constant.translation.RequestSystemTranslationCo
 import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 import com.minecolonies.core.colony.buildings.modules.settings.BoolSetting;
+import com.minecolonies.core.colony.buildings.modules.settings.SettingKey;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingFarmer;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingLumberjack;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
@@ -45,6 +46,7 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.colony.job.JobOrchardist;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.pathfinding.FruitPathResult;
@@ -56,6 +58,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 	public static final double XP_PER_HARVEST = 0.5D;
 	public static final ISettingKey<BoolSetting> FERTILIZE = BuildingFarmer.FERTILIZE;
+	public static final ISettingKey<BoolSetting> NEED_MAX_HARVEST = new SettingKey<>(BoolSetting.class, MineColoniesCompatibility.rl("need_max_harvest"));
 	public static final List<Item> COMPOST_ITEMS = Arrays.asList(ModItems.compost, Items.BONE_MEAL);
 
 	public static boolean isCompost(ItemStack stack)
@@ -218,6 +221,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 		job.vertialRange = config.searchVerticalRange.get().intValue();
 		job.needHarvestable = InventoryUtils.getItemCountInItemHandler(worker.getInventoryCitizen(), EntityAIWorkOrchardist::isCompost) == 0;
+		job.needMaxHarvest = building.getSetting(NEED_MAX_HARVEST).getValue().booleanValue();
 		return (FruitPathResult) ((MinecoloniesAdvancedPathNavigate) worker.getNavigation()).setPathJob(job, null, 1.0D, true);
 	}
 
@@ -277,7 +281,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		var hand = worker.getUsedItemHand();
 		var state = fruit.getContext().getState();
 
-		if (!fruit.canHarvest())
+		if (!fruit.canHarvest(building.getSetting(NEED_MAX_HARVEST).getValue().booleanValue()))
 		{
 			if (state.getBlock() instanceof BonemealableBlock block && block.isValidBonemealTarget(level, position, state, level.isClientSide))
 			{

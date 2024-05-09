@@ -47,7 +47,7 @@ public class BlueBerryFruit extends CustomizedFruit
 			level.setBlock(context.getPosition(), newState, Block.UPDATE_ALL);
 		}
 
-		return context.getDrops(null);
+		return context.getDrops(harvester.getEntity(), ItemStack.EMPTY);
 	}
 
 }

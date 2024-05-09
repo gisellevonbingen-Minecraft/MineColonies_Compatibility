@@ -301,9 +301,9 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 						block.performBonemeal(serverLevel, serverLevel.random, position, state);
 					}
 
-					return this.getState();
 				}
 
+				return this.getState();
 			}
 			else
 			{

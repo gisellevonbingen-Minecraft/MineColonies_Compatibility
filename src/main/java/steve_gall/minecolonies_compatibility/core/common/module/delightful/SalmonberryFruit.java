@@ -43,7 +43,7 @@ public class SalmonberryFruit extends CustomizedFruit
 		{
 			var state = context.getState();
 			var flag = ((SalmonberryBushBlock) state.getBlock()).isMaxAge(state);
-			var count = flag ? 2 + level.random.nextInt(2) : 1;
+			var count = flag ? (2 + level.random.nextInt(2)) : 1;
 			level.setBlock(context.getPosition(), state.setValue(SalmonberryBushBlock.AGE, 1), Block.UPDATE_CLIENTS);
 
 			return Collections.singletonList(new ItemStack(DelightfulItems.SALMONBERRIES.get(), count));

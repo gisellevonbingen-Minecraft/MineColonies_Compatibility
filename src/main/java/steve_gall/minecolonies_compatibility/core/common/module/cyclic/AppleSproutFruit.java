@@ -32,6 +32,12 @@ public class AppleSproutFruit extends CustomizedFruit
 	}
 
 	@Override
+	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
+	{
+		return true;
+	}
+
+	@Override
 	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
 		var block = context.getState().getBlock();

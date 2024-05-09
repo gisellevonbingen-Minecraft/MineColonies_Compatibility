@@ -24,6 +24,7 @@ public class PathJobFindFruit extends AbstractPathJob
 
 	public int vertialRange = 10;
 	public boolean needHarvestable = true;
+	public boolean needMaxHarvest = true;
 
 	public PathJobFindFruit(Level world, @NotNull BlockPos start, BlockPos home, int range, Mob entity)
 	{
@@ -114,21 +115,15 @@ public class PathJobFindFruit extends AbstractPathJob
 		{
 			return false;
 		}
-
-		if (this.needHarvestable)
+		else if (this.needHarvestable)
 		{
-			if (!fruit.canHarvest())
-			{
-				return false;
-			}
-
+			return fruit.canHarvest(this.needMaxHarvest);
 		}
-		else if (!(fruit.getContext().getState().getBlock() instanceof BonemealableBlock))
+		else
 		{
-			return false;
+			return fruit.getContext().getState().getBlock() instanceof BonemealableBlock;
 		}
 
-		return true;
 	}
 
 	@Override

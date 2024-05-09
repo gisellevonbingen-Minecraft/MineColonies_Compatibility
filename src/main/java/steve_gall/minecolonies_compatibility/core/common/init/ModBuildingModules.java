@@ -28,7 +28,8 @@ public class ModBuildingModules
 	public static final BuildingEntry.ModuleProducer<WorkerBuildingModule, WorkerBuildingModuleView> ORCHARDIST_WORK = new BuildingEntry.ModuleProducer<>("orchardist_work", () -> new WorkerBuildingModule(ModJobs.ORCHARDIST.get(), Skill.Stamina, Skill.Focus, false, b -> 1), () -> WorkerBuildingModuleView::new);
 
 	public static final List<Pair<ISettingKey<?>, ISetting<?>>> ORCHARDIST_SETTINGS = Arrays.asList(//
-			Pair.of(EntityAIWorkOrchardist.FERTILIZE, new BoolSetting(true))//
+			Pair.of(EntityAIWorkOrchardist.FERTILIZE, new BoolSetting(true)), //
+			Pair.of(EntityAIWorkOrchardist.NEED_MAX_HARVEST, new BoolSetting(true))//
 	);
 	public static final List<ModuleProducer<?, ?>> ORCHARDIST_BAN_MODULES = Arrays.asList(//
 			BuildingModules.FORESTER_CRAFT, //

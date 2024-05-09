@@ -31,6 +31,12 @@ public class OreBerryFruit extends CustomizedFruit
 	}
 
 	@Override
+	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
+	{
+		return true;
+	}
+
+	@Override
 	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
 		if (context.getLevel() instanceof ServerLevel level)

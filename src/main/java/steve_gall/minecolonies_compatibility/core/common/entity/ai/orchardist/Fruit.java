@@ -74,19 +74,23 @@ public class Fruit
 		return this.fruit != null;
 	}
 
-	public boolean canHarvest()
+	public boolean canHarvest(boolean needMaxHarvest)
 	{
 		var fruit = this.fruit;
 
-		if (fruit != null)
-		{
-			return fruit.canHarvest(this.getContext());
-		}
-		else
+		if (fruit == null)
 		{
 			return false;
 		}
 
+		var context = this.getContext();
+
+		if (!fruit.canHarvest(context))
+		{
+			return false;
+		}
+
+		return !needMaxHarvest || fruit.isMaxHarvest(context);
 	}
 
 	public List<ItemStack> harvest(@NotNull HarvesterContext harvester)

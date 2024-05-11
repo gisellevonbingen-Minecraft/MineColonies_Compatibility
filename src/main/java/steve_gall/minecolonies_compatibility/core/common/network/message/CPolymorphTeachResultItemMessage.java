@@ -6,9 +6,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
-import steve_gall.minecolonies_compatibility.core.common.module.ModuleManager;
-import steve_gall.minecolonies_compatibility.core.common.module.polymorph.PolymorphModule;
 import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
+import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
+import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphModule;
 
 public class CPolymorphTeachResultItemMessage extends AbstractMessage
 {

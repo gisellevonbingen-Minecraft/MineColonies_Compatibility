@@ -1,11 +1,10 @@
 package steve_gall.minecolonies_compatibility.module.common.ie;
 
-import blusunrize.immersiveengineering.api.tool.BulletHandler;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.RequestableObjectRegistry;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.DeliverableObjectRegistry;
 
 public class IEModule
 {
@@ -20,8 +19,7 @@ public class IEModule
 
 	private static void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
-		RequestableObjectRegistry.register(Bullet.ID, Bullet::serialize, Bullet::deserialize);
-		BulletHandler.registerBullet(DefaultBullet.ID, DefaultBullet.INSTANCE);
+		DeliverableObjectRegistry.INSTANCE.register(Bullet.ID, Bullet::serialize, Bullet::deserialize);
 	}
 
 }

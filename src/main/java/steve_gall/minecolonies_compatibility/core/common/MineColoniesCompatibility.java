@@ -18,8 +18,8 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules
 import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
-import steve_gall.minecolonies_compatibility.core.common.module.ModuleManager;
 import steve_gall.minecolonies_compatibility.core.common.network.NetworkChannel;
+import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeRegisterEvent;
 
 @Mod(MineColoniesCompatibility.MOD_ID)

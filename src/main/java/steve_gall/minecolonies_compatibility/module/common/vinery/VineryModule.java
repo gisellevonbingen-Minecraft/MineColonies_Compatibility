@@ -1,0 +1,15 @@
+package steve_gall.minecolonies_compatibility.module.common.vinery;
+
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+
+public class VineryModule
+{
+	public static void onLoad()
+	{
+		CustomizedFruit.register(new AppleLeavesFruit());
+		CustomizedFruit.register(new CherryLeavesFruit());
+		CustomizedFruit.register(new GrapeBushFruit());
+		CustomizedFruit.register(new GrapeVineFruit());
+	}
+
+}

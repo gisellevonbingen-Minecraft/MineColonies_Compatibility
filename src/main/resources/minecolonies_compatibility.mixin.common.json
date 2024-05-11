@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "steve_gall.minecolonies_compatibility.core.common.mixin",
+	"package": "steve_gall.minecolonies_compatibility.mixin.common",
 	"minVersion": "0.8.5",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [

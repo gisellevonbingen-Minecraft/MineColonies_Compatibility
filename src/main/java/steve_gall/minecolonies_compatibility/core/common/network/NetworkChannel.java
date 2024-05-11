@@ -10,7 +10,7 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_compatibility.core.common.network.message.CPolymorphTeachResultItemMessage;
+import steve_gall.minecolonies_compatibility.core.common.network.message.PolymorphTeachResultItemMessage;
 
 public class NetworkChannel
 {
@@ -23,7 +23,7 @@ public class NetworkChannel
 		this.rawChannel = NetworkRegistry.newSimpleChannel(MineColoniesCompatibility.rl(channelName), () -> modVersion, str -> str.equals(modVersion), str -> str.equals(modVersion));
 		this.idx = new AtomicInteger();
 
-		this.registerMessage(CPolymorphTeachResultItemMessage.class, CPolymorphTeachResultItemMessage::new);
+		this.registerMessage(PolymorphTeachResultItemMessage.class, PolymorphTeachResultItemMessage::new);
 	}
 
 	public void sendToServer(AbstractMessage message)

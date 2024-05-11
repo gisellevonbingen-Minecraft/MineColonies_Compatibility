@@ -10,12 +10,12 @@ import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphModule;
 
-public class CPolymorphTeachResultItemMessage extends AbstractMessage
+public class PolymorphTeachResultItemMessage extends AbstractMessage
 {
 	private final ResourceLocation recipeId;
 	private final ItemStack reuslt;
 
-	public CPolymorphTeachResultItemMessage(ResourceLocation recipeId, ItemStack result)
+	public PolymorphTeachResultItemMessage(ResourceLocation recipeId, ItemStack result)
 	{
 		super();
 
@@ -23,7 +23,7 @@ public class CPolymorphTeachResultItemMessage extends AbstractMessage
 		this.reuslt = result;
 	}
 
-	public CPolymorphTeachResultItemMessage(FriendlyByteBuf buffer)
+	public PolymorphTeachResultItemMessage(FriendlyByteBuf buffer)
 	{
 		super(buffer);
 

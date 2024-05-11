@@ -16,7 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_compatibility.core.common.network.message.CPolymorphTeachResultItemMessage;
+import steve_gall.minecolonies_compatibility.core.common.network.message.PolymorphTeachResultItemMessage;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 
 @Mixin(value = PrivateCraftingTeachingTransferHandler.class, remap = false)
@@ -28,7 +28,7 @@ public abstract class PrivateCraftingTeachingTransferHandlerMixin
 		if (doTransfer && ModuleManager.POLYMORPH.isLoaded())
 		{
 			var output = recipeSlots.getSlotViews(RecipeIngredientRole.OUTPUT).get(0).getItemStacks().findAny().orElse(ItemStack.EMPTY);
-			MineColoniesCompatibility.network().sendToServer(new CPolymorphTeachResultItemMessage(recipe.getId(), output));
+			MineColoniesCompatibility.network().sendToServer(new PolymorphTeachResultItemMessage(recipe.getId(), output));
 		}
 
 	}

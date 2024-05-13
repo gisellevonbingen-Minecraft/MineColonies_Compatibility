@@ -31,7 +31,7 @@ public class BerryFruit extends CustomizedFruit
 		var state = context.getState();
 		return ((BerryBlockAccessor) state.getBlock()).invokeIsMaxAage(state);
 	}
-	
+
 	@Override
 	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
 	{

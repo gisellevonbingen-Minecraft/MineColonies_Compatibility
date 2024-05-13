@@ -10,6 +10,8 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptMessage;
+import steve_gall.minecolonies_compatibility.core.common.network.message.JEIRecipeTransferMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.PolymorphTeachResultItemMessage;
 
 public class NetworkChannel
@@ -24,6 +26,8 @@ public class NetworkChannel
 		this.idx = new AtomicInteger();
 
 		this.registerMessage(PolymorphTeachResultItemMessage.class, PolymorphTeachResultItemMessage::new);
+		this.registerMessage(JEIGhostAcceptMessage.class, JEIGhostAcceptMessage::new);
+		this.registerMessage(JEIRecipeTransferMessage.class, JEIRecipeTransferMessage::new);
 	}
 
 	public void sendToServer(AbstractMessage message)

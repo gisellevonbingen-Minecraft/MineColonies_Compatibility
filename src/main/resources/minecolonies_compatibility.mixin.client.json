@@ -5,7 +5,9 @@
 	"compatibilityLevel": "JAVA_17",
 	"client": [
 		"minecolonies.AbstractModuleWindowMixin",
-		"minecolonies.SettingsModuleViewMixin"
+		"minecolonies.SettingsModuleViewMixin",
+		
+		"blockui.ViewMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

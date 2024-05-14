@@ -42,6 +42,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
@@ -206,11 +207,8 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 		if (building.shouldRestrict())
 		{
-			var startPos = building.getStartRestriction();
-			var endPos = building.getEndRestriction();
-			var furthestPos = BlockPosUtil.getFurthestCorner(start, startPos, endPos);
-
-			job = new PathJobFindFruit(level, start, buildingPos, startPos, endPos, furthestPos, worker);
+			var restrictionBox = BoundingBox.fromCorners(building.getStartRestriction(), building.getEndRestriction());
+			job = new PathJobFindFruit(level, start, restrictionBox, worker);
 		}
 		else
 		{

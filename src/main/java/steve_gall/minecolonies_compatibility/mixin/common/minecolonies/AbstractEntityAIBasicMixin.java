@@ -16,17 +16,17 @@ import com.minecolonies.core.entity.ai.workers.AbstractEntityAIBasic;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_compatibility.api.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
+import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.core.common.entity.AbstractEntityAIBasicExtension;
 
 @Mixin(value = AbstractEntityAIBasic.class, remap = false)
 public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B extends AbstractBuilding> extends AbstractAISkeleton<J> implements AbstractEntityAIBasicExtension
 {
 	@Shadow(remap = false)
-	private int slotAt = 0;
+	private int slotAt;
 
 	@Unique
 	private CustomizedAI minecolonies_compatibility$selectedAI;

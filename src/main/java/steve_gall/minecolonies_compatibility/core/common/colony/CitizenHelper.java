@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.api.common.colony;
+package steve_gall.minecolonies_compatibility.core.common.colony;
 
 import java.util.function.Predicate;
 

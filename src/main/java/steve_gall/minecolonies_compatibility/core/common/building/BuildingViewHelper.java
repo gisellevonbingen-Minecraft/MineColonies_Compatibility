@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.api.common.building;
+package steve_gall.minecolonies_compatibility.core.common.building;
 
 import java.util.Collections;
 import java.util.List;

@@ -15,7 +15,7 @@ import com.minecolonies.api.colony.buildings.modules.settings.ISettingKey;
 import com.minecolonies.core.colony.buildings.moduleviews.SettingsModuleView;
 import com.mojang.datafixers.util.Pair;
 
-import steve_gall.minecolonies_compatibility.api.common.building.BuildingViewHelper;
+import steve_gall.minecolonies_compatibility.core.common.building.BuildingViewHelper;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 

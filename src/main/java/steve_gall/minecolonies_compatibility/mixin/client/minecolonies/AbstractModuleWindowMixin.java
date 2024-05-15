@@ -10,7 +10,7 @@ import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
 
-import steve_gall.minecolonies_compatibility.api.common.building.BuildingViewHelper;
+import steve_gall.minecolonies_compatibility.core.common.building.BuildingViewHelper;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 

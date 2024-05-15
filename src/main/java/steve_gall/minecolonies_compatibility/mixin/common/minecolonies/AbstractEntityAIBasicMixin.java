@@ -26,7 +26,7 @@ import steve_gall.minecolonies_compatibility.core.common.entity.AbstractEntityAI
 public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B extends AbstractBuilding> extends AbstractAISkeleton<J> implements AbstractEntityAIBasicExtension
 {
 	@Shadow(remap = false)
-	private int slotAt = 0;
+	private int slotAt;
 
 	@Unique
 	private CustomizedAI minecolonies_compatibility$selectedAI;

@@ -11,8 +11,8 @@ import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedP
 import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobWalkRandomEdge;
 
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
-import steve_gall.minecolonies_compatibility.core.common.colony.job.JobGunner;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
+import steve_gall.minecolonies_compatibility.core.common.job.JobGunner;
 
 public class EntityAIGunner extends AbstractEntityAIGuard<JobGunner, AbstractBuildingGuards> implements ICustomizableEntityAI
 {

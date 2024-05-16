@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.core.common.colony.job;
+package steve_gall.minecolonies_compatibility.core.common.job;
 
 import org.jetbrains.annotations.Nullable;
 

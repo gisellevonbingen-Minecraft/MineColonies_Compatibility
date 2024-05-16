@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public interface ICraftingRecipeStorage extends ICustomizedRecipeStorage
+public interface ISecondaryRollableRecipeStorage extends ICustomizedRecipeStorage
 {
 	@NotNull
 	default List<ItemStack> rollSecondaryOutputs(@NotNull LootContext context)

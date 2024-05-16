@@ -1,7 +1,5 @@
 package steve_gall.minecolonies_compatibility.core.common.network.message;
 
-import java.util.function.Consumer;
-
 import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
@@ -59,49 +57,35 @@ public abstract class BuildingModuleMessage extends AbstractMessage
 		buffer.writeInt(this.moduleId);
 	}
 
-	protected void handle(Consumer<IBuildingModule> conumser)
+	public IBuildingModule getModule()
 	{
 		var colony = IColonyManager.getInstance().getColonyByDimension(this.coloyId, this.dimensionId);
 
 		if (colony == null)
 		{
-			return;
+			return null;
 		}
 
 		var building = colony.getBuildingManager().getBuilding(this.buildingId);
 
 		if (building == null)
 		{
-			return;
+			return null;
 		}
 
-		var module = building.getModule(this.moduleId);
-
-		if (module == null)
-		{
-			return;
-		}
-
-		conumser.accept(module);
+		return building.getModule(this.moduleId);
 	}
 
-	protected void handleView(Consumer<IBuildingModuleView> conumser)
+	public IBuildingModuleView getModuleView()
 	{
 		var building = IColonyManager.getInstance().getBuildingView(this.dimensionId, this.buildingId);
 
 		if (building == null)
 		{
-			return;
+			return null;
 		}
 
-		var module = building.getModuleView(this.moduleId);
-
-		if (module == null)
-		{
-			return;
-		}
-
-		conumser.accept(module);
+		return building.getModuleView(this.moduleId);
 	}
 
 	public ResourceKey<Level> getDimensionId()

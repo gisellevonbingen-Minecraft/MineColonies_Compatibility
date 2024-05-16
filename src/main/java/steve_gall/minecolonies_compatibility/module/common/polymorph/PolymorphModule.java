@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 
 public class PolymorphModule
 {
@@ -105,7 +106,7 @@ public class PolymorphModule
 			var stack = tuple.getB();
 			pairs.add(new RecipePair(id, stack));
 
-			if (ItemStack.matches(current, stack))
+			if (ItemStackHelper.equals(current, stack))
 			{
 				selected = id;
 			}

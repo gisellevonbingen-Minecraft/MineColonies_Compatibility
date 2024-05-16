@@ -4,15 +4,12 @@ import java.util.Collections;
 import java.util.List;
 
 import com.minecolonies.api.crafting.IGenericRecipe;
-import com.minecolonies.core.colony.buildings.modules.AbstractCraftingBuildingModule;
 
 import net.minecraft.network.chat.Component;
 
-public interface ICustomGenericRecipe extends IGenericRecipe
+public interface IRecipeSlotTooltipableGenericRecipe extends IGenericRecipe
 {
-	boolean test(AbstractCraftingBuildingModule module);
-
-	default List<Component> getOutputToolTip(int outputIndex)
+	default List<Component> getRecipeSlotToolTip(RecipeSlotRole role, int index)
 	{
 		return Collections.emptyList();
 	}

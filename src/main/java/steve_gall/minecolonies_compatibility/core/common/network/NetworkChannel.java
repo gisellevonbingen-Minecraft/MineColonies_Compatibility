@@ -13,6 +13,7 @@ import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibili
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIRecipeTransferMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.PolymorphTeachResultItemMessage;
+import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuNewResultMessage;
 
 public class NetworkChannel
 {
@@ -25,6 +26,7 @@ public class NetworkChannel
 		this.rawChannel = NetworkRegistry.newSimpleChannel(MineColoniesCompatibility.rl(channelName), () -> modVersion, str -> str.equals(modVersion), str -> str.equals(modVersion));
 		this.idx = new AtomicInteger();
 
+		this.registerMessage(TeachRecipeMenuNewResultMessage.class, TeachRecipeMenuNewResultMessage::new);
 		this.registerMessage(PolymorphTeachResultItemMessage.class, PolymorphTeachResultItemMessage::new);
 		this.registerMessage(JEIGhostAcceptMessage.class, JEIGhostAcceptMessage::new);
 		this.registerMessage(JEIRecipeTransferMessage.class, JEIRecipeTransferMessage::new);

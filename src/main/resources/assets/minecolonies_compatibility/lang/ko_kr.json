@@ -1,5 +1,7 @@
 {
 	"minecolonies_tweaks.custom_tooltype.gun": "총",
+	"minecolonies_tweaks.custom_tooltype.knife": "식칼",
+	
 	"minecolonies_compatibility.job.gunner": "거너",
 	"minecolonies_compatibility:gunner.job.desc": "강력한 원거리 공격이 가능하지만, 근접전은 약합니다.",
 	"minecolonies_compatibility:gunner.skills.desc": "skills.desc",
@@ -10,5 +12,22 @@
 	"minecolonies_compatibility:orchardist.job.desc": "과일, 나무에 열린 작물을 수확합니다.",
 	"minecolonies_compatibility:orchardist.skills.desc": "수확 속도와 걷는 속도에 영향을 미칩니다.",
 	
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "최대 성장만 수확"
+	"minecolonies_compatibility.job.farmers_cook": "파머스 요리사",
+	"minecolonies_compatibility:farmers_cook.job.desc": "Farmer's Delight 모드의 조리용 냄비를 사용한 요리를 하며, 시민들에게 음식을 나눠줍니다.",
+	"minecolonies_compatibility:farmers_cook.skills.desc": "요리 속도에 영향을 줍니다.",
+	
+	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "최대 성장만 수확",
+	
+	"minecolonies_compatibility.jei.unsupported_tool": "지원되지 않는 도구",
+	
+	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cutting_knife": "식칼로 써는 제작법\n(Farmer's Delight 호환)",
+	"minecolonies_compatibility.gui.farmers_cutting_knife": "식칼로 써는 제작법",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cooking": "냄비로 조리하는 제작법\n(Farmer's Delight 호환)",
+	"minecolonies_compatibility.gui.farmers_cooking": "냄비로 조리하는 제작법",
+	
+	"minecolonies_compatibility.interaction.no_farmers_cooking_recipe": "제 건물에 냄비로 조리하는 제작법이 등록되어있지 않아요! 일할 수 있도록 등록해주세요!",
+	"minecolonies_compatibility.interaction.no_cutting_board": "제 건물에 도마가 없어요! 사용할 수 있도록 설치해주세요!",
+	"minecolonies_compatibility.interaction.no_heated_cooking_pot": "제 건물에 달궈진 조리용 냄비가 없어요! 조리용 냄비와 그 아래에 열원을 설치해주세요!",
+	
+	"com.minecolonies.coremod.jei.farmers_cook": "Farmer's Delight 모드의 조리용 냄비를 사용한 요리를 하며, 시민들에게 음식을 나눠줍니다."
 }

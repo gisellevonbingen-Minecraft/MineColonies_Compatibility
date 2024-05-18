@@ -1,0 +1,22 @@
+{
+	"type": "farmersdelight:cutting",
+	"ingredients": [
+		{
+			"item": "minecraft:water_bucket"
+		}
+	],
+	"result": [
+		{
+			"item": "minecraft:iron_ingot",
+			"count": 3
+		},
+		{
+			"item": "minecraft:iron_nugget",
+			"count": 1,
+			"chance": 0.5
+		}
+	],
+	"tool": {
+		"tag": "forge:tools/knives"
+	}
+}

@@ -1,5 +1,7 @@
 {
 	"minecolonies_tweaks.custom_tooltype.gun": "Gun",
+	"minecolonies_tweaks.custom_tooltype.knife": "Knife",
+	
 	"minecolonies_compatibility.job.gunner": "Gunner",
 	"minecolonies_compatibility:gunner.job.desc": "Distance fighter, deals high damage, but has low survival chance in close combat.",
 	"minecolonies_compatibility:gunner.skills.desc": "Affects speed, accuracy, range, and damage output.",
@@ -10,5 +12,22 @@
 	"minecolonies_compatibility:orchardist.job.desc": "Harvests fruits, leaf crops hanging at tree.",
 	"minecolonies_compatibility:orchardist.skills.desc": "Affects harvesting and walking speed.",
 	
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "Harvest Only Max Age"
+	"minecolonies_compatibility.job.farmers_cook": "Farmer's Cook",
+	"minecolonies_compatibility:farmers_cook.job.desc": "Cooks using Farmer's Delight mod's Cooking Pot and hands out food to colonists.",
+	"minecolonies_compatibility:farmers_cook.skills.desc": "Affects cooking speed.",
+	
+	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "Harvest Only Max Age",
+	
+	"minecolonies_compatibility.jei.unsupported_tool": "Unsupported Tool",
+	
+	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cutting_knife": "Cutting Recipes with Knife\n(Farmer's Delight Compatibility)",
+	"minecolonies_compatibility.gui.farmers_cutting_knife": "Cutting Recipes with Knife",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cooking": "Cooking Recipes with Cooking Pot\n(Farmer's Delight Compatibility)",
+	"minecolonies_compatibility.gui.farmers_cooking": "Cooking Recipes with Pot",
+	
+	"minecolonies_compatibility.interaction.no_farmers_cooking_recipe": "My work hut doesn't register any Cooking Recipe! Please register it so I have some I can work!",
+	"minecolonies_compatibility.interaction.no_cutting_board": "My work hut doesn't have any Cutting Board! Please place it so I have some I can use!",
+	"minecolonies_compatibility.interaction.no_heated_cooking_pot": "My work hut doesn't have any heated Cooking Pot! Please place Cooking Pot and place heat source under it!",
+	
+	"com.minecolonies.coremod.jei.farmers_cook": "Cooks using Farmer's Delight mod's Cooking Pot and hands out food to colonists."
 }

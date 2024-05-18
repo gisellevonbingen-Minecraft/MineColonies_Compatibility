@@ -34,7 +34,6 @@ public abstract class WindowListRecipes1Mixin
 		return minecolonies_compatibility$this$0;
 	}
 
-	// Tooltip cache timing was changed
 	@Inject(method = "updateElement", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void updateElement(int index, Pane rowPane, CallbackInfo ci) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
 	{

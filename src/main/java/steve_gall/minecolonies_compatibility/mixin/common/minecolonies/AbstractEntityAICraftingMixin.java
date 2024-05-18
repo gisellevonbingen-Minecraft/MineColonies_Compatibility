@@ -41,9 +41,10 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 	{
 		var recipeStorage = this.currentRecipeStorage;
 
-		if (this.building.getCraftingModuleForRecipe(recipeStorage.getToken()) instanceof IModuleWithExternalWorkingBlocks module && module.testIntermediate(recipeStorage.getIntermediate()))
+		if (this.building.getCraftingModuleForRecipe(recipeStorage.getToken()) instanceof IModuleWithExternalWorkingBlocks module && module.isIntermediate(recipeStorage.getIntermediate()))
 		{
-			var pos = module.findWorkingBlock(this.world);
+			module.requestFindWorkingBlocks(this.worker);
+			var pos = module.getWorkingBlocks(this.world).findAny().orElse(null);
 
 			if (pos != null)
 			{

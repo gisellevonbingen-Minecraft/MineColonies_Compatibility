@@ -6,7 +6,10 @@
 	"client": [
 		"minecolonies.AbstractModuleWindowMixin",
 		"minecolonies.SettingsModuleViewMixin",
+		"minecolonies.WindowListRecipes1Mixin",
+		"minecolonies.WindowListRecipesAcccessor",
 		
+		"blockui.ItemIconMixin",
 		"blockui.ViewMixin"
 	],
 	"injectors": {

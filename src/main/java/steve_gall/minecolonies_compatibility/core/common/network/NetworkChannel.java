@@ -10,6 +10,8 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.network.message.FarmersTeachCookingOpenMessage;
+import steve_gall.minecolonies_compatibility.core.common.network.message.FarmersTeachCuttingOpenMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIRecipeTransferMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.PolymorphTeachResultItemMessage;
@@ -30,6 +32,8 @@ public class NetworkChannel
 		this.registerMessage(PolymorphTeachResultItemMessage.class, PolymorphTeachResultItemMessage::new);
 		this.registerMessage(JEIGhostAcceptMessage.class, JEIGhostAcceptMessage::new);
 		this.registerMessage(JEIRecipeTransferMessage.class, JEIRecipeTransferMessage::new);
+		this.registerMessage(FarmersTeachCuttingOpenMessage.class, FarmersTeachCuttingOpenMessage::new);
+		this.registerMessage(FarmersTeachCookingOpenMessage.class, FarmersTeachCookingOpenMessage::new);
 	}
 
 	public void sendToServer(AbstractMessage message)

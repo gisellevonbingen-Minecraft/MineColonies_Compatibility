@@ -5,4 +5,5 @@ import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeData;
 public class ModToolTypes
 {
 	public static final CustomToolTypeData GUN = new CustomToolTypeData.Builder("gun").build();
+	public static final CustomToolTypeData KNIFE = new CustomToolTypeData.Builder("knife").build();
 }

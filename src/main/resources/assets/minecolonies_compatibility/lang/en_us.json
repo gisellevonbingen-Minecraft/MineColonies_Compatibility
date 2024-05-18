@@ -20,9 +20,9 @@
 	
 	"minecolonies_compatibility.jei.unsupported_tool": "Unsupported Tool",
 	
-	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cutting_knife": "Cutting Recipes with Knife\n(Farmer's Delight Compatibility)",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cutting_knife": "Cutting Recipes with Knife",
 	"minecolonies_compatibility.gui.farmers_cutting_knife": "Cutting Recipes with Knife",
-	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cooking": "Cooking Recipes with Cooking Pot\n(Farmer's Delight Compatibility)",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cooking": "Cooking Recipes with Cooking Pot",
 	"minecolonies_compatibility.gui.farmers_cooking": "Cooking Recipes with Pot",
 	
 	"minecolonies_compatibility.interaction.no_farmers_cooking_recipe": "My work hut doesn't register any Cooking Recipe! Please register it so I have some I can work!",

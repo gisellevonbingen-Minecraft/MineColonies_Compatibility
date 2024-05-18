@@ -20,9 +20,9 @@
 	
 	"minecolonies_compatibility.jei.unsupported_tool": "지원되지 않는 도구",
 	
-	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cutting_knife": "식칼로 써는 제작법\n(Farmer's Delight 호환)",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cutting_knife": "식칼로 써는 제작법",
 	"minecolonies_compatibility.gui.farmers_cutting_knife": "식칼로 써는 제작법",
-	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cooking": "냄비로 조리하는 제작법\n(Farmer's Delight 호환)",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cooking": "냄비로 조리하는 제작법",
 	"minecolonies_compatibility.gui.farmers_cooking": "냄비로 조리하는 제작법",
 	
 	"minecolonies_compatibility.interaction.no_farmers_cooking_recipe": "제 건물에 냄비로 조리하는 제작법이 등록되어있지 않아요! 일할 수 있도록 등록해주세요!",

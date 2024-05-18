@@ -6,49 +6,57 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.modules.IModuleWithExternalBlocks;
+import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
 
 public interface IModuleWithExternalWorkingBlocks extends IModuleWithExternalBlocks
 {
-	boolean unRegister(@Nullable BlockPos pos);
+	@NotNull
+	PathJobFindWorkingBlocks<?> createWorkingBlocksFindPath(@Nullable AbstractEntityCitizen citizen);
+
+	/**
+	 *
+	 * @param citizen
+	 * @return true if finding path
+	 */
+	boolean requestFindWorkingBlocks(@Nullable AbstractEntityCitizen citizen);
+
+	boolean addWorkingBlock(@Nullable BlockPos pos);
+
+	boolean removeWorkingBlock(@Nullable BlockPos pos);
 
 	@NotNull
 	Component getWorkingBlockNotFoundMessage();
 
-	@Nullable
-	default BlockPos findWorkingBlock(@NotNull LevelReader level)
-	{
-		return this.findWorkingBlocks(level).findAny().orElse(null);
-	}
-
 	@NotNull
-	default Stream<BlockPos> findWorkingBlocks(@NotNull LevelReader level)
+	default Stream<BlockPos> getWorkingBlocks(@NotNull LevelReader level)
 	{
 		return this.getRegisteredBlocks().stream().filter(pos ->
 		{
 			var state = level.getBlockState(pos);
 
-			if (this.testWorking(level, pos, state))
+			if (this.isWorkingBlock(level, pos, state))
 			{
 				return true;
 			}
 
-			this.unRegister(pos);
+			this.removeWorkingBlock(pos);
 			return false;
 		});
 	}
 
-	default boolean testWorking(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
+	default boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
 	{
-		return this.testIntermediate(state.getBlock());
+		return this.isIntermediate(state.getBlock());
 	}
 
-	boolean testIntermediate(@NotNull Block block);
+	boolean isIntermediate(@NotNull Block block);
 
 	@NotNull
 	default BlockPos getWalkingPosition(@NotNull LevelReader level, @NotNull BlockPos pos)

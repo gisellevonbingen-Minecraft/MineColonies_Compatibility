@@ -34,7 +34,7 @@ public abstract class WindowListRecipes1Mixin
 		return minecolonies_compatibility$this$0;
 	}
 
-	@Inject(method = "updateElement", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "updateElement", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void updateElement(int index, Pane rowPane, CallbackInfo ci) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
 	{
 		if (ModuleManager.FARMERSDELIGHT.isLoaded())

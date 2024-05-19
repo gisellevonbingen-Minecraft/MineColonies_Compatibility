@@ -20,8 +20,8 @@ import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.CitizenConstants;
 import com.minecolonies.api.util.constant.Constants;
+import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.StatisticsConstants;
-import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.api.util.constant.translation.RequestSystemTranslationConstants;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
@@ -156,10 +156,8 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 	 *
 	 * @return false if we have the tool
 	 */
-	private boolean equipTool()
+	private boolean equipTool(IToolType toolType)
 	{
-		var toolType = ToolType.SHEARS;
-
 		if (this.checkForToolOrWeapon(toolType))
 		{
 			return true;
@@ -172,11 +170,6 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 	private IAIState search()
 	{
-		if (this.equipTool())
-		{
-			return AIWorkerState.IDLE;
-		}
-
 		if (this.pathResult == null)
 		{
 			this.job.setFruit(null);
@@ -244,11 +237,6 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 	private IAIState harvest()
 	{
-		if (this.equipTool())
-		{
-			return AIWorkerState.IDLE;
-		}
-
 		var level = this.world;
 		var worker = this.worker;
 		var building = this.building;
@@ -269,6 +257,10 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		else if (!fruit.updateAndIsValid(level))
 		{
 			return OrchardistAIState.SEARCH;
+		}
+		else if (this.equipTool(fruit.getFruit().getToolType()))
+		{
+			return AIWorkerState.START_WORKING;
 		}
 		else if (this.walkToBlock(position) || this.hasNotDelayed(this.getLevelDelay()))
 		{

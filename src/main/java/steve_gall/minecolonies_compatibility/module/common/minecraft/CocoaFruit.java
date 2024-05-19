@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.util.constant.ToolType;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CocoaBlock;
@@ -29,6 +32,12 @@ public class CocoaFruit extends CustomizedFruit
 	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
 	{
 		return true;
+	}
+
+	@Override
+	public IToolType getToolType()
+	{
+		return ToolType.AXE;
 	}
 
 	@Override

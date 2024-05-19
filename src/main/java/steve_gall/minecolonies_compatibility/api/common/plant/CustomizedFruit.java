@@ -6,7 +6,12 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelWriter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class CustomizedFruit
 {
@@ -31,4 +36,36 @@ public abstract class CustomizedFruit
 
 	@NotNull
 	public abstract List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester);
+
+	protected void replant(@NotNull PlantBlockContext context, @NotNull List<ItemStack> drops, BlockState replantState)
+	{
+		var block = context.getState().getBlock();
+		var canReplant = false;
+
+		for (int i = 0; i < drops.size(); i++)
+		{
+			var stack = drops.get(i);
+
+			if (stack.getItem() instanceof BlockItem item && item.getBlock() == block)
+			{
+				canReplant = true;
+				stack.shrink(1);
+
+				if (stack.isEmpty())
+				{
+					drops.remove(i);
+				}
+
+				break;
+			}
+
+		}
+
+		if (context.getLevel() instanceof LevelWriter level)
+		{
+			level.setBlock(context.getPosition(), canReplant ? replantState : Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+		}
+
+	}
+
 }

@@ -7,6 +7,7 @@ public class MinecraftModule
 	public static void onLoad()
 	{
 		CustomizedFruit.register(new SweetBerryFruit());
+		CustomizedFruit.register(new CocoaFruit());
 	}
 
 }

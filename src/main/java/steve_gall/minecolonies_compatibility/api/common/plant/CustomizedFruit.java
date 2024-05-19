@@ -6,6 +6,9 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.util.constant.ToolType;
+
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelWriter;
@@ -36,6 +39,11 @@ public abstract class CustomizedFruit
 
 	@NotNull
 	public abstract List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester);
+
+	public IToolType getToolType()
+	{
+		return ToolType.SHEARS;
+	}
 
 	protected void replant(@NotNull PlantBlockContext context, @NotNull List<ItemStack> drops, BlockState replantState)
 	{

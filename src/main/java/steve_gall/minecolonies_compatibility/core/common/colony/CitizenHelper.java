@@ -9,12 +9,12 @@ import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.colony.requestsystem.request.IRequest;
 import com.minecolonies.api.util.InventoryUtils;
+import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolLevelConstants;
-import com.minecolonies.api.util.constant.ToolType;
 
 public class CitizenHelper
 {
-	public static int getMaxLevelToolSlot(@NotNull ICitizenData citizen, @NotNull ToolType toolType)
+	public static int getMaxLevelToolSlot(@NotNull ICitizenData citizen, @NotNull IToolType toolType)
 	{
 		var inventory = citizen.getInventory();
 		var maxToolLevel = citizen.getWorkBuilding().getMaxToolLevel();

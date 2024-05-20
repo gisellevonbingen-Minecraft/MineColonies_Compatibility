@@ -7,9 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.util.BlockPosUtil;
+import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -91,6 +95,18 @@ public class Fruit
 		}
 
 		return !needMaxHarvest || fruit.isMaxHarvest(context);
+	}
+
+	public IToolType getToolType()
+	{
+		var fruit = this.fruit;
+		return fruit != null ? fruit.getHarvestToolType(this.getContext()) : ToolType.NONE;
+	}
+
+	public SoundEvent getSound()
+	{
+		var fruit = this.fruit;
+		return fruit != null ? fruit.getHarvestSound(this.getContext()) : SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES;
 	}
 
 	public List<ItemStack> harvest(@NotNull HarvesterContext harvester)

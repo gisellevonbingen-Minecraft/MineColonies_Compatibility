@@ -8,6 +8,7 @@ public class MinecraftModule
 	{
 		CustomizedFruit.register(new SweetBerryFruit());
 		CustomizedFruit.register(new CocoaFruit());
+		CustomizedFruit.register(new CaveVinesFruit());
 	}
 
 }

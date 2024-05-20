@@ -9,6 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelWriter;
@@ -40,9 +42,16 @@ public abstract class CustomizedFruit
 	@NotNull
 	public abstract List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester);
 
-	public IToolType getToolType()
+	@NotNull
+	public IToolType getHarvestToolType(@NotNull PlantBlockContext context)
 	{
 		return ToolType.SHEARS;
+	}
+
+	@NotNull
+	public SoundEvent getHarvestSound(@NotNull PlantBlockContext context)
+	{
+		return SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES;
 	}
 
 	protected void replant(@NotNull PlantBlockContext context, @NotNull List<ItemStack> drops, BlockState replantState)

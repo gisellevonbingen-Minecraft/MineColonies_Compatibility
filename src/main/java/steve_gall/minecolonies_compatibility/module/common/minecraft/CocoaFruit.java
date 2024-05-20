@@ -35,7 +35,7 @@ public class CocoaFruit extends CustomizedFruit
 	}
 
 	@Override
-	public IToolType getToolType()
+	public IToolType getHarvestToolType(@NotNull PlantBlockContext context)
 	{
 		return ToolType.AXE;
 	}

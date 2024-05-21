@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -75,7 +76,7 @@ public class EntityAIWorkFarmersCook extends AbstractEntityAISkill<JobFarmersCoo
 	private BlockPos cookingPotPosition = null;
 
 	private final List<ItemStorage> needsStorages = new ArrayList<>();
-	private final Map<ItemStorage, ItemStorage> totalNeeds = new HashMap<>();
+	private final Map<ItemStorage, AtomicInteger> totalNeeds = new HashMap<>();
 	private final List<IRecipeStorage> availableRecipes = new ArrayList<>();
 
 	private final List<AbstractEntityCitizen> citizenToServe = new ArrayList<>();
@@ -565,11 +566,11 @@ public class EntityAIWorkFarmersCook extends AbstractEntityAISkill<JobFarmersCoo
 				if (needCount > 0)
 				{
 					isReady = false;
-					var totallyNeedCount = this.totalNeeds.computeIfAbsent(ingredient, ItemStorage::copy);
+					var totallyNeedCount = this.totalNeeds.computeIfAbsent(ingredient, i -> new AtomicInteger());
 
-					if (needCount > totallyNeedCount.getAmount())
+					if (needCount > totallyNeedCount.get())
 					{
-						totallyNeedCount.setAmount(needCount);
+						totallyNeedCount.set(needCount);
 					}
 
 				}
@@ -583,9 +584,10 @@ public class EntityAIWorkFarmersCook extends AbstractEntityAISkill<JobFarmersCoo
 
 		}
 
-		for (var needs : this.totalNeeds.values())
+		for (var pair : this.totalNeeds.entrySet())
 		{
-			this.checkIfRequestForItemExistOrCreateAsync(needs.getItemStack(), needs.getAmount(), 1, !needs.ignoreDamageValue());
+			var storage = pair.getKey();
+			this.checkIfRequestForItemExistOrCreateAsync(storage.getItemStack(), pair.getValue().get(), 1, !storage.ignoreDamageValue());
 		}
 
 	}

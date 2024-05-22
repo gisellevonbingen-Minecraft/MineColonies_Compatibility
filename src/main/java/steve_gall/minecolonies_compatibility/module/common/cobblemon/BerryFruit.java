@@ -10,11 +10,13 @@ import org.jetbrains.annotations.NotNull;
 import com.cobblemon.mod.common.block.BerryBlock;
 import com.cobblemon.mod.common.block.entity.BerryBlockEntity;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -27,6 +29,12 @@ public class BerryFruit extends CustomizedFruit
 	public BerryFruit(BerryBlock block)
 	{
 		this.block = block;
+	}
+
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return ForgeRegistries.BLOCKS.getKey(this.block);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import com.legacy.blue_skies.blocks.natural.BrewberryBushBlock;
 import com.legacy.blue_skies.registries.SkiesBlocks;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -18,9 +19,16 @@ import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.mixin.common.blue_skies.BrewberryBushBlockAccessor;
+import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 
 public class BrewBerryFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return new ResourceLocation(ModuleManager.BLUE_SKIES.getModId(), "brewberry_bush");
+	}
+
 	@Override
 	public @NotNull List<ItemLike> getBlockIcons()
 	{

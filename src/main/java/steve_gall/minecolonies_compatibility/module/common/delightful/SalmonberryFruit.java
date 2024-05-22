@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import net.brnbrd.delightful.common.block.DelightfulBlocks;
 import net.brnbrd.delightful.common.block.SalmonberryBushBlock;
 import net.brnbrd.delightful.common.item.DelightfulItems;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +21,12 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class SalmonberryFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return DelightfulBlocks.SALMONBERRY_BUSH.getId();
+	}
+
 	@Override
 	public @NotNull List<ItemLike> getBlockIcons()
 	{

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import com.hollingsworth.arsnouveau.common.block.SourceBerryBush;
 import com.hollingsworth.arsnouveau.setup.registry.BlockRegistry;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +21,12 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class SourceBerryFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return BlockRegistry.SOURCEBERRY_BUSH.registryObject.getId();
+	}
+
 	@Override
 	public @NotNull List<ItemLike> getBlockIcons()
 	{

@@ -9,6 +9,7 @@ import com.aetherteam.aether.block.AetherBlockStateProperties;
 import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.item.AetherItems;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -20,6 +21,12 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class BlueBerryFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return AetherBlocks.BERRY_BUSH.getId();
+	}
+
 	@Override
 	public @NotNull List<ItemLike> getBlockIcons()
 	{

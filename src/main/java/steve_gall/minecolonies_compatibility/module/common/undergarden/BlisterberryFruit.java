@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +22,12 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class BlisterberryFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return UGBlocks.BLISTERBERRY_BUSH.getId();
+	}
+
 	@Override
 	public @NotNull List<ItemLike> getBlockIcons()
 	{

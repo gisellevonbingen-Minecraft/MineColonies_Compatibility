@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
@@ -40,6 +41,9 @@ public abstract class CustomizedFruit
 	{
 		return REGISTRY.stream().filter(it -> it.test(context)).findFirst().orElse(null);
 	}
+
+	@NotNull
+	public abstract ResourceLocation getId();
 
 	@NotNull
 	public abstract List<ItemLike> getBlockIcons();

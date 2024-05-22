@@ -6,10 +6,12 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.RegistryObject;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -17,13 +19,19 @@ import steve_gall.minecolonies_compatibility.mixin.common.cyclic.AppleCropBlockA
 
 public class AppleSproutFruit extends CustomizedFruit
 {
-	private final Supplier<Block> sprout;
+	private final RegistryObject<Block> sprout;
 	private final Supplier<Item> fruit;
 
-	public AppleSproutFruit(Supplier<Block> sprout, Supplier<Item> fruit)
+	public AppleSproutFruit(RegistryObject<Block> sprout, Supplier<Item> fruit)
 	{
 		this.sprout = sprout;
 		this.fruit = fruit;
+	}
+
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return this.sprout.getId();
 	}
 
 	@Override

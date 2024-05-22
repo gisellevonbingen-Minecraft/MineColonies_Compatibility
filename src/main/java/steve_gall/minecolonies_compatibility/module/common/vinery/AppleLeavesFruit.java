@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
@@ -20,6 +21,12 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class AppleLeavesFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return ObjectRegistry.APPLE_LEAVES.getId();
+	}
+
 	@Override
 	public @NotNull List<ItemLike> getBlockIcons()
 	{

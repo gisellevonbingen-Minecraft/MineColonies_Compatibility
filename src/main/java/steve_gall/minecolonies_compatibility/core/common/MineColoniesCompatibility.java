@@ -49,8 +49,11 @@ public class MineColoniesCompatibility
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
-		ModBuildings.guardTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_TOWER_WORK);
-		ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.ORCHARDIST_WORK);
+		e.enqueueWork(() ->
+		{
+			ModBuildings.guardTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_TOWER_WORK);
+			ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.ORCHARDIST_WORK);
+		});
 	}
 
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)

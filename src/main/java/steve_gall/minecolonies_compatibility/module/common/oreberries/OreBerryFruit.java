@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.oreberries;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,7 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import com.mrbysco.oreberriesreplanted.block.OreBerryBushBlock;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
@@ -17,10 +20,29 @@ import steve_gall.minecolonies_compatibility.mixin.common.oreberries.OreBerryBus
 
 public class OreBerryFruit extends CustomizedFruit
 {
+	private final OreBerryBushBlock block;
+
+	public OreBerryFruit(OreBerryBushBlock block)
+	{
+		this.block = block;
+	}
+
+	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(this.block);
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.asList(((OreBerryBushBlockAccessor) this.block).invokeGetBerryItem().asItem());
+	}
+
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getBlock() instanceof OreBerryBushBlock;
+		return context.getState().getBlock() == this.block;
 	}
 
 	@Override

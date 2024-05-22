@@ -29,5 +29,6 @@
 	"minecolonies_compatibility.interaction.no_cutting_board": "제 건물에 도마가 없어요! 사용할 수 있도록 설치해주세요!",
 	"minecolonies_compatibility.interaction.no_heated_cooking_pot": "제 건물에 달궈진 조리용 냄비가 없어요! 조리용 냄비와 그 아래에 열원을 설치해주세요!",
 	
-	"com.minecolonies.coremod.jei.farmers_cook": "Farmer's Delight 모드의 조리용 냄비를 사용한 요리를 하며, 시민들에게 음식을 나눠줍니다."
+	"com.minecolonies.coremod.jei.farmers_cook": "Farmer's Delight 모드의 조리용 냄비를 사용한 요리를 하며, 시민들에게 음식을 나눠줍니다.",
+	"com.minecolonies.coremod.jei.orchardist": "과일, 나무에 열린 작물을 수확합니다."
 }

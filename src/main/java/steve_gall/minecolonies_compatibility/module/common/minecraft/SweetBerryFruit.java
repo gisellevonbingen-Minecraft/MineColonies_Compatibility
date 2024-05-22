@@ -1,13 +1,16 @@
 package steve_gall.minecolonies_compatibility.module.common.minecraft;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SweetBerryBushBlock;
@@ -17,6 +20,18 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class SweetBerryFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(Items.SWEET_BERRIES);
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.asList(Items.SWEET_BERRIES);
+	}
+
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{

@@ -29,5 +29,6 @@
 	"minecolonies_compatibility.interaction.no_cutting_board": "My work hut doesn't have any Cutting Board! Please place it so I have some I can use!",
 	"minecolonies_compatibility.interaction.no_heated_cooking_pot": "My work hut doesn't have any heated Cooking Pot! Please place Cooking Pot and place heat source under it!",
 	
-	"com.minecolonies.coremod.jei.farmers_cook": "Cooks using Farmer's Delight mod's Cooking Pot and hands out food to colonists."
+	"com.minecolonies.coremod.jei.farmers_cook": "Cooks using Farmer's Delight mod's Cooking Pot and hands out food to colonists.",
+	"com.minecolonies.coremod.jei.orchardist": "Harvests fruits, leaf crops hanging at tree."
 }

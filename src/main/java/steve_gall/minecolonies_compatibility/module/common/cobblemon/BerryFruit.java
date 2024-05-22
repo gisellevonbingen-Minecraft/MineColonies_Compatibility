@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.module.common.cobblemon;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import com.cobblemon.mod.common.block.BerryBlock;
 import com.cobblemon.mod.common.block.entity.BerryBlockEntity;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
@@ -19,6 +22,25 @@ import steve_gall.minecolonies_compatibility.mixin.common.cobblemon.BerryBlockAc
 
 public class BerryFruit extends CustomizedFruit
 {
+	private final BerryBlock block;
+
+	public BerryFruit(BerryBlock block)
+	{
+		this.block = block;
+	}
+
+	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(this.block);
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.asList(this.block.asItem());
+	}
+
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{

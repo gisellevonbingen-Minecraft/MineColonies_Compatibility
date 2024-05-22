@@ -6,11 +6,13 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 import satisfyu.vinery.block.grape.GrapeBush;
 import satisfyu.vinery.block.grape.GrapeType;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -26,6 +28,12 @@ public class GrapeFruit extends CustomizedFruit
 	{
 		this.grapeType = grapeType;
 		this.block = block;
+	}
+
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return ForgeRegistries.BLOCKS.getKey(this.block);
 	}
 
 	@Override

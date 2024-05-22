@@ -10,9 +10,9 @@ public class CyclicModule
 {
 	public static void onLoad()
 	{
-		CustomizedFruit.register(new AppleSproutFruit(BlockRegistry.APPLE_SPROUT::get, () -> Items.APPLE));
-		CustomizedFruit.register(new AppleSproutFruit(BlockRegistry.APPLE_SPROUT_DIAMOND::get, ItemRegistry.APPLE_DIAMOND));
-		CustomizedFruit.register(new AppleSproutFruit(BlockRegistry.APPLE_SPROUT_EMERALD::get, ItemRegistry.APPLE_EMERALD));
+		CustomizedFruit.register(new AppleSproutFruit(BlockRegistry.APPLE_SPROUT, () -> Items.APPLE));
+		CustomizedFruit.register(new AppleSproutFruit(BlockRegistry.APPLE_SPROUT_DIAMOND, ItemRegistry.APPLE_DIAMOND));
+		CustomizedFruit.register(new AppleSproutFruit(BlockRegistry.APPLE_SPROUT_EMERALD, ItemRegistry.APPLE_EMERALD));
 	}
 
 }

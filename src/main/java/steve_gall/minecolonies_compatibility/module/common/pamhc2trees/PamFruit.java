@@ -8,11 +8,13 @@ import org.jetbrains.annotations.NotNull;
 import com.pam.pamhc2trees.blocks.BlockPamFruit;
 import com.pam.pamhc2trees.blocks.BlockPamLogFruit;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -28,6 +30,12 @@ public class PamFruit extends CustomizedFruit
 		this.block = block;
 		this.sapling = sapling;
 		this.fruit = fruit;
+	}
+
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return ForgeRegistries.BLOCKS.getKey(this.block);
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
@@ -45,6 +46,7 @@ public class MineColoniesCompatibility
 
 		NETWORK = new NetworkChannel("main");
 		ModuleManager.initialize();
+		fml_bus.addListener(this::onFMLCommonSetup2);
 	}
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
@@ -53,6 +55,17 @@ public class MineColoniesCompatibility
 		{
 			ModBuildings.guardTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_TOWER_WORK);
 			ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.ORCHARDIST_WORK);
+		});
+	}
+
+	private void onFMLCommonSetup2(FMLCommonSetupEvent e)
+	{
+		e.enqueueWork(() ->
+		{
+			for (var fruit : CustomizedFruit.getValues())
+			{
+				LOGGER.info(fruit.getClass() + " : " + fruit.getId());
+			}
 		});
 	}
 

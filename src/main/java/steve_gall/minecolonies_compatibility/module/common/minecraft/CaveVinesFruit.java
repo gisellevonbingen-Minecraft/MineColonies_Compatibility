@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
@@ -17,12 +18,19 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CaveVines;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class CaveVinesFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull ResourceLocation getId()
+	{
+		return ForgeRegistries.BLOCKS.getKey(Blocks.CAVE_VINES);
+	}
+
 	@Override
 	public @NotNull List<ItemLike> getBlockIcons()
 	{

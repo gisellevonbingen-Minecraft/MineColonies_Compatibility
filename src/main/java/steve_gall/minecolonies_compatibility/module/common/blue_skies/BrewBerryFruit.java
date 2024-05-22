@@ -1,13 +1,17 @@
 package steve_gall.minecolonies_compatibility.module.common.blue_skies;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.legacy.blue_skies.blocks.natural.BrewberryBushBlock;
+import com.legacy.blue_skies.registries.SkiesBlocks;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -18,9 +22,21 @@ import steve_gall.minecolonies_compatibility.mixin.common.blue_skies.BrewberryBu
 public class BrewBerryFruit extends CustomizedFruit
 {
 	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(SkiesBlocks.brewberry_bush);
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.stream(BrewberryBushBlock.Type.values()).map(BrewberryBushBlock.Type::getBerry).toList();
+	}
+
+	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getBlock() instanceof BrewberryBushBlock;
+		return context.getState().getBlock() == SkiesBlocks.brewberry_bush;
 	}
 
 	@Override

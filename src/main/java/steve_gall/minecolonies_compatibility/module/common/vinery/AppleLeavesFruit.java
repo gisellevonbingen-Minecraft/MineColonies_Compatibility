@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.vinery;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,9 +8,12 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import satisfyu.vinery.block.AppleLeaves;
+import satisfyu.vinery.registry.ObjectRegistry;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -17,9 +21,21 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 public class AppleLeavesFruit extends CustomizedFruit
 {
 	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(ObjectRegistry.APPLE_TREE_SAPLING.get(), ObjectRegistry.APPLE_LEAVES.get());
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.asList(Items.APPLE);
+	}
+
+	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getBlock() instanceof AppleLeaves;
+		return context.getState().getBlock() == ObjectRegistry.APPLE_LEAVES.get();
 	}
 
 	@Override

@@ -1,12 +1,16 @@
 package steve_gall.minecolonies_compatibility.module.common.croptopia;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.epherical.croptopia.blocks.LeafCropBlock;
+import com.epherical.croptopia.register.helpers.TreeCrop;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -15,10 +19,29 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class LeafCropFruit extends CustomizedFruit
 {
+	private final TreeCrop tree;
+
+	public LeafCropFruit(TreeCrop tree)
+	{
+		this.tree = tree;
+	}
+
+	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(this.tree.getSaplingBlock());
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.asList(this.tree.asItem());
+	}
+
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getBlock() instanceof LeafCropBlock;
+		return context.getState().getBlock() == this.tree.getLeaves();
 	}
 
 	@Override

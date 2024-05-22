@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.api.common.plant;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +18,11 @@ public abstract class CustomizedCrop
 	public static void register(@NotNull CustomizedCrop crop)
 	{
 		REGISTRY.add(crop);
+	}
+
+	public static List<CustomizedCrop> getValues()
+	{
+		return Collections.unmodifiableList(REGISTRY);
 	}
 
 	@Nullable

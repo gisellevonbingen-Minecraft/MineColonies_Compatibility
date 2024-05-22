@@ -1,14 +1,18 @@
 package steve_gall.minecolonies_compatibility.module.common.undergarden;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import quek.undergarden.block.UnderbeanBushBlock;
+import quek.undergarden.registry.UGBlocks;
 import quek.undergarden.registry.UGItems;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
@@ -17,9 +21,21 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 public class UnderbeanFruit extends CustomizedFruit
 {
 	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(UGItems.UNDERBEANS.get());
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.asList(UGItems.UNDERBEANS.get());
+	}
+
+	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getBlock() instanceof UnderbeanBushBlock;
+		return context.getState().getBlock() == UGBlocks.UNDERBEAN_BUSH.get();
 	}
 
 	@Override

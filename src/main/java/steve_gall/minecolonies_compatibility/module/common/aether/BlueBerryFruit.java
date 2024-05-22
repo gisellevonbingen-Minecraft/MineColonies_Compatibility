@@ -1,13 +1,17 @@
 package steve_gall.minecolonies_compatibility.module.common.aether;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.aetherteam.aether.block.AetherBlockStateProperties;
 import com.aetherteam.aether.block.AetherBlocks;
+import com.aetherteam.aether.item.AetherItems;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -16,6 +20,18 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class BlueBerryFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(AetherBlocks.BERRY_BUSH_STEM.get(), AetherBlocks.BERRY_BUSH.get());
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.asList(AetherItems.BLUE_BERRY.get());
+	}
+
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{

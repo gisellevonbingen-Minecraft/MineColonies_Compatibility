@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.minecraft;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -7,7 +8,10 @@ import org.jetbrains.annotations.NotNull;
 import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CocoaBlock;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -16,6 +20,18 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class CocoaFruit extends CustomizedFruit
 {
+	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(Items.COCOA_BEANS);
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.asList(Items.COCOA_BEANS);
+	}
+
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
@@ -35,7 +51,7 @@ public class CocoaFruit extends CustomizedFruit
 	}
 
 	@Override
-	public IToolType getHarvestToolType(@NotNull PlantBlockContext context)
+	public IToolType getHarvestToolType()
 	{
 		return ToolType.AXE;
 	}

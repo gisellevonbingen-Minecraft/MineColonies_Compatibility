@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.pamhc2trees;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -7,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import com.pam.pamhc2trees.blocks.BlockPamFruit;
 import com.pam.pamhc2trees.blocks.BlockPamLogFruit;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -16,11 +19,33 @@ import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 
 public class PamFruit extends CustomizedFruit
 {
+	private final Block block;
+	private final Block sapling;
+	private final Item fruit;
+
+	public PamFruit(Block block, Block sapling, Item fruit)
+	{
+		this.block = block;
+		this.sapling = sapling;
+		this.fruit = fruit;
+	}
+
+	@Override
+	public @NotNull List<ItemLike> getBlockIcons()
+	{
+		return Arrays.asList(this.sapling, this.block);
+	}
+
+	@Override
+	public @NotNull List<Item> getItemIcons()
+	{
+		return Arrays.asList(this.fruit);
+	}
+
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
-		var block = context.getState().getBlock();
-		return block instanceof BlockPamFruit || block instanceof BlockPamLogFruit;
+		return context.getState().getBlock() == this.block;
 	}
 
 	@Override

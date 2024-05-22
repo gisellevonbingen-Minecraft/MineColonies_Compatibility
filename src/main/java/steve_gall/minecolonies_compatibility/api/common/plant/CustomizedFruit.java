@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.api.common.plant;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,9 @@ import com.minecolonies.api.util.constant.ToolType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -27,11 +30,22 @@ public abstract class CustomizedFruit
 		REGISTRY.add(fruit);
 	}
 
+	public static List<CustomizedFruit> getValues()
+	{
+		return Collections.unmodifiableList(REGISTRY);
+	}
+
 	@Nullable
 	public static CustomizedFruit select(@NotNull PlantBlockContext context)
 	{
 		return REGISTRY.stream().filter(it -> it.test(context)).findFirst().orElse(null);
 	}
+
+	@NotNull
+	public abstract List<ItemLike> getBlockIcons();
+
+	@NotNull
+	public abstract List<Item> getItemIcons();
 
 	public abstract boolean test(@NotNull PlantBlockContext context);
 
@@ -43,9 +57,15 @@ public abstract class CustomizedFruit
 	public abstract List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester);
 
 	@NotNull
-	public IToolType getHarvestToolType(@NotNull PlantBlockContext context)
+	public IToolType getHarvestToolType()
 	{
 		return ToolType.SHEARS;
+	}
+
+	@NotNull
+	public IToolType getHarvestToolType(@NotNull PlantBlockContext context)
+	{
+		return this.getHarvestToolType();
 	}
 
 	@NotNull

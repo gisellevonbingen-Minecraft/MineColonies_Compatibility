@@ -19,6 +19,8 @@ import com.minecolonies.core.colony.buildings.moduleviews.WorkerBuildingModuleVi
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingLumberjack;
 import com.mojang.datafixers.util.Pair;
 
+import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModule;
+import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModuleView;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist.EntityAIWorkOrchardist;
 
 public class ModBuildingModules
@@ -49,5 +51,9 @@ public class ModBuildingModules
 			BuildingLumberjack.DYNAMIC_TREES_SIZE, //
 			AbstractBuilding.USE_SHEARS//
 	);
+
+	public static final BuildingEntry.ModuleProducer<FruitListModule, FruitListModuleView> FRUITLIST_BLACKLIST = new BuildingEntry.ModuleProducer<>("fruitlist_blacklist", //
+			() -> new FruitListModule(ModBuildingModules.FRUITLIST_BLACKLIST.key), //
+			() -> () -> new FruitListModuleView("fruitlist_blacklist", "com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist", true, fruit -> true));
 
 }

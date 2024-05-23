@@ -16,6 +16,8 @@
 	"minecolonies_compatibility:farmers_cook.job.desc": "Cooks using Farmer's Delight mod's Cooking Pot and hands out food to colonists.",
 	"minecolonies_compatibility:farmers_cook.skills.desc": "Affects cooking speed.",
 	
+	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruit Blacklist",
+	
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "Harvest Only Max Age",
 	
 	"minecolonies_compatibility.jei.unsupported_tool": "Unsupported Tool",

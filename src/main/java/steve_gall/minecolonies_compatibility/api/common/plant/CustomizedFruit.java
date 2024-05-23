@@ -1,8 +1,9 @@
 package steve_gall.minecolonies_compatibility.api.common.plant;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,22 +25,34 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class CustomizedFruit
 {
-	private static final List<CustomizedFruit> REGISTRY = new ArrayList<>();
+	private static final Map<ResourceLocation, CustomizedFruit> REGISTRY = new HashMap<>();
 
 	public static void register(@NotNull CustomizedFruit fruit)
 	{
-		REGISTRY.add(fruit);
+		REGISTRY.put(fruit.getId(), fruit);
 	}
 
-	public static List<CustomizedFruit> getValues()
+	public static Map<ResourceLocation, CustomizedFruit> getRegistry()
 	{
-		return Collections.unmodifiableList(REGISTRY);
+		return Collections.unmodifiableMap(REGISTRY);
 	}
 
 	@Nullable
 	public static CustomizedFruit select(@NotNull PlantBlockContext context)
 	{
-		return REGISTRY.stream().filter(it -> it.test(context)).findFirst().orElse(null);
+		return REGISTRY.values().stream().filter(it -> it.test(context)).findFirst().orElse(null);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return this.getId().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		return this == obj;
 	}
 
 	@NotNull

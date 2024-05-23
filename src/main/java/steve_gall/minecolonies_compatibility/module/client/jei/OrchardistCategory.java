@@ -35,7 +35,6 @@ public class OrchardistCategory extends JobBasedRecipeCategory<CustomizedFruit>
 	public void setRecipe(IRecipeLayoutBuilder builder, CustomizedFruit recipe, IFocusGroup focuses)
 	{
 		var inputs = recipe.getBlockIcons();
-
 		for (var i = 0; i < inputs.size(); i++)
 		{
 			var x = CITIZEN_X + CITIZEN_X + CITIZEN_W + 32;

@@ -23,19 +23,25 @@ import steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist.En
 
 public class ModBuildingModules
 {
-	public static final BuildingEntry.ModuleProducer<GuardBuildingModule, CombinedHiringLimitModuleView> GUNNER_TOWER_WORK = new BuildingEntry.ModuleProducer<>("gunner_tower_work", () -> new GuardBuildingModule(ModGuardTypes.GUNNER.get(), true, b -> 1), () -> CombinedHiringLimitModuleView::new);
+	public static final BuildingEntry.ModuleProducer<GuardBuildingModule, CombinedHiringLimitModuleView> GUNNER_TOWER_WORK = new BuildingEntry.ModuleProducer<>("gunner_tower_work", //
+			() -> new GuardBuildingModule(ModGuardTypes.GUNNER.get(), true, b -> 1), //
+			() -> CombinedHiringLimitModuleView::new);
 
-	public static final BuildingEntry.ModuleProducer<WorkerBuildingModule, WorkerBuildingModuleView> ORCHARDIST_WORK = new BuildingEntry.ModuleProducer<>("orchardist_work", () -> new WorkerBuildingModule(ModJobs.ORCHARDIST.get(), Skill.Stamina, Skill.Focus, false, b -> 1), () -> WorkerBuildingModuleView::new);
+	public static final BuildingEntry.ModuleProducer<WorkerBuildingModule, WorkerBuildingModuleView> ORCHARDIST_WORK = new BuildingEntry.ModuleProducer<>("orchardist_work", //
+			() -> new WorkerBuildingModule(ModJobs.ORCHARDIST.get(), Skill.Stamina, Skill.Focus, false, b -> 1), //
+			() -> WorkerBuildingModuleView::new);
 
 	public static final List<Pair<ISettingKey<?>, ISetting<?>>> ORCHARDIST_SETTINGS = Arrays.asList(//
 			Pair.of(EntityAIWorkOrchardist.FERTILIZE, new BoolSetting(true)), //
 			Pair.of(EntityAIWorkOrchardist.NEED_MAX_HARVEST, new BoolSetting(true))//
 	);
+
 	public static final List<ModuleProducer<?, ?>> ORCHARDIST_BAN_MODULES = Arrays.asList(//
 			BuildingModules.FORESTER_CRAFT, //
 			BuildingModules.ITEMLIST_SAPLING, //
 			BuildingModules.CRAFT_TASK_VIEW//
 	);
+
 	public static final List<ISettingKey<?>> ORCHARDIST_BAN_SETTINGS = Arrays.asList(//
 			BuildingLumberjack.REPLANT, //
 			BuildingLumberjack.DEFOLIATE, //
@@ -43,4 +49,5 @@ public class ModBuildingModules
 			BuildingLumberjack.DYNAMIC_TREES_SIZE, //
 			AbstractBuilding.USE_SHEARS//
 	);
+
 }

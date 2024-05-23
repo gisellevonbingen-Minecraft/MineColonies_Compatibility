@@ -1,9 +1,13 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.pathfinding;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BonemealableBlock;
@@ -16,6 +20,7 @@ public class PathJobFindFruit extends SimplePathJob<FruitPathResult>
 	public int vertialRange = 10;
 	public boolean needHarvestable = true;
 	public boolean needMaxHarvest = true;
+	public final Set<ResourceLocation> exceptFruits = new HashSet<>();
 
 	public PathJobFindFruit(@NotNull Level level, @NotNull BlockPos start, @NotNull BlockPos home, int range, @Nullable Mob entity)
 	{
@@ -58,6 +63,10 @@ public class PathJobFindFruit extends SimplePathJob<FruitPathResult>
 	private boolean test(Fruit fruit)
 	{
 		if (!fruit.updateAndIsValid(this.world))
+		{
+			return false;
+		}
+		else if (this.exceptFruits.contains(fruit.getFruit().getId()))
 		{
 			return false;
 		}

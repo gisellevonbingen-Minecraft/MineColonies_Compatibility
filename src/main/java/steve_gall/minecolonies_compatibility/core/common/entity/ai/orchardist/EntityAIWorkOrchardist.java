@@ -50,6 +50,7 @@ import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.pathfinding.FruitPathResult;
 import steve_gall.minecolonies_compatibility.core.common.entity.pathfinding.PathJobFindFruit;
+import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.job.JobOrchardist;
 
 public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardist, BuildingLumberjack>
@@ -212,6 +213,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		job.vertialRange = config.searchVerticalRange.get().intValue();
 		job.needHarvestable = InventoryUtils.getItemCountInItemHandler(worker.getInventoryCitizen(), EntityAIWorkOrchardist::isCompost) == 0;
 		job.needMaxHarvest = building.getSetting(NEED_MAX_HARVEST).getValue().booleanValue();
+		job.exceptFruits.addAll(building.getModule(ModBuildingModules.FRUITLIST_BLACKLIST).getIds());
 		return (FruitPathResult) ((MinecoloniesAdvancedPathNavigate) worker.getNavigation()).setPathJob(job, null, 1.0D, true);
 	}
 
@@ -256,6 +258,10 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		else if (!fruit.updateAndIsValid(level))
 		{
 			return OrchardistAIState.SEARCH;
+		}
+		else if (building.getModule(ModBuildingModules.FRUITLIST_BLACKLIST).containsId(fruit.getFruit().getId()))
+		{
+			return AIWorkerState.START_WORKING;
 		}
 		else if (this.equipTool(fruit.getToolType()))
 		{

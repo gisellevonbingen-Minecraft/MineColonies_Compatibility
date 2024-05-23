@@ -11,9 +11,7 @@ import com.hollingsworth.arsnouveau.setup.registry.BlockRegistry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
@@ -28,15 +26,15 @@ public class SourceBerryFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(BlockRegistry.SOURCEBERRY_BUSH);
+		return Arrays.asList(new ItemStack(BlockRegistry.SOURCEBERRY_BUSH));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(BlockRegistry.SOURCEBERRY_BUSH.asItem());
+		return Arrays.asList(new ItemStack(BlockRegistry.SOURCEBERRY_BUSH.asItem()));
 	}
 
 	@Override

@@ -18,13 +18,13 @@ import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.plant.FruitIconCache;
 
-public class OrchardistCategory extends JobBasedRecipeCategory<CustomizedFruit>
+public class OrchardistCategory extends JobBasedRecipeCategory<FruitIconCache>
 {
 	private final IDrawableStatic arrow;
 
-	public OrchardistCategory(@NotNull IJob<?> job, @NotNull RecipeType<CustomizedFruit> type, @NotNull ItemStack icon, @NotNull IGuiHelper guiHelper)
+	public OrchardistCategory(@NotNull IJob<?> job, @NotNull RecipeType<FruitIconCache> type, @NotNull ItemStack icon, @NotNull IGuiHelper guiHelper)
 	{
 		super(job, type, icon, guiHelper);
 
@@ -32,7 +32,7 @@ public class OrchardistCategory extends JobBasedRecipeCategory<CustomizedFruit>
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, CustomizedFruit recipe, IFocusGroup focuses)
+	public void setRecipe(IRecipeLayoutBuilder builder, FruitIconCache recipe, IFocusGroup focuses)
 	{
 		var inputs = recipe.getBlockIcons();
 		for (var i = 0; i < inputs.size(); i++)
@@ -40,7 +40,7 @@ public class OrchardistCategory extends JobBasedRecipeCategory<CustomizedFruit>
 			var x = CITIZEN_X + CITIZEN_X + CITIZEN_W + 32;
 			var y = CITIZEN_Y + (CITIZEN_H - this.arrow.getHeight()) / 2;
 			var slot = builder.addSlot(RecipeIngredientRole.INPUT, x + i * 18, y);
-			slot.addItemStack(new ItemStack(inputs.get(i)));
+			slot.addItemStack(inputs.get(i));
 		}
 
 		var outputs = recipe.getItemIcons();
@@ -50,14 +50,14 @@ public class OrchardistCategory extends JobBasedRecipeCategory<CustomizedFruit>
 			var y = CITIZEN_Y + CITIZEN_H - 17;
 			var slot = builder.addSlot(RecipeIngredientRole.OUTPUT, x, y);
 			slot.setBackground(this.slot, -1, -1);
-			slot.addItemStack(new ItemStack(outputs.get(i)));
+			slot.addItemStack(outputs.get(i));
 		}
 
-		this.addToolSlot(builder, recipe.getHarvestToolType(), WIDTH - 18, CITIZEN_Y - 20, true);
+		this.addToolSlot(builder, recipe.getFruit().getHarvestToolType(), WIDTH - 18, CITIZEN_Y - 20, true);
 	}
 
 	@Override
-	public void draw(CustomizedFruit recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY)
+	public void draw(FruitIconCache recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY)
 	{
 		super.draw(recipe, recipeSlotsView, graphics, mouseX, mouseY);
 
@@ -65,7 +65,7 @@ public class OrchardistCategory extends JobBasedRecipeCategory<CustomizedFruit>
 	}
 
 	@Override
-	protected @NotNull List<Component> generateInfoBlocks(@NotNull CustomizedFruit recipe)
+	protected @NotNull List<Component> generateInfoBlocks(@NotNull FruitIconCache recipe)
 	{
 		return Collections.emptyList();
 	}

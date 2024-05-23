@@ -10,9 +10,7 @@ import com.legacy.blue_skies.blocks.natural.BrewberryBushBlock;
 import com.legacy.blue_skies.registries.SkiesBlocks;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -30,15 +28,15 @@ public class BrewBerryFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(SkiesBlocks.brewberry_bush);
+		return Arrays.asList(new ItemStack(SkiesBlocks.brewberry_bush));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.stream(BrewberryBushBlock.Type.values()).map(BrewberryBushBlock.Type::getBerry).toList();
+		return Arrays.stream(BrewberryBushBlock.Type.values()).map(BrewberryBushBlock.Type::getBerry).map(ItemStack::new).toList();
 	}
 
 	@Override

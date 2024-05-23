@@ -9,10 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
 import satisfyu.vinery.block.AppleLeaves;
 import satisfyu.vinery.registry.ObjectRegistry;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -28,15 +26,15 @@ public class AppleLeavesFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(ObjectRegistry.APPLE_TREE_SAPLING.get(), ObjectRegistry.APPLE_LEAVES.get());
+		return Arrays.asList(new ItemStack(ObjectRegistry.APPLE_TREE_SAPLING.get()), new ItemStack(ObjectRegistry.APPLE_LEAVES.get()));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(Items.APPLE);
+		return Arrays.asList(new ItemStack(Items.APPLE));
 	}
 
 	@Override

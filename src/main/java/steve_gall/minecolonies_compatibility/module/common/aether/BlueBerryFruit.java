@@ -10,9 +10,7 @@ import com.aetherteam.aether.block.AetherBlocks;
 import com.aetherteam.aether.item.AetherItems;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -28,15 +26,15 @@ public class BlueBerryFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(AetherBlocks.BERRY_BUSH_STEM.get(), AetherBlocks.BERRY_BUSH.get());
+		return Arrays.asList(new ItemStack(AetherBlocks.BERRY_BUSH_STEM.get()), new ItemStack(AetherBlocks.BERRY_BUSH.get()));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(AetherItems.BLUE_BERRY.get());
+		return Arrays.asList(new ItemStack(AetherItems.BLUE_BERRY.get()));
 	}
 
 	@Override

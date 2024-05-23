@@ -9,9 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import satisfyu.vinery.block.CherryLeaves;
 import satisfyu.vinery.registry.ObjectRegistry;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
@@ -27,15 +25,15 @@ public class CherryLeavesFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(ObjectRegistry.CHERRY_SAPLING.get(), ObjectRegistry.CHERRY_LEAVES.get());
+		return Arrays.asList(new ItemStack(ObjectRegistry.CHERRY_SAPLING.get()), new ItemStack(ObjectRegistry.CHERRY_LEAVES.get()));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(ObjectRegistry.CHERRY.get(), ObjectRegistry.ROTTEN_CHERRY.get());
+		return Arrays.asList(new ItemStack(ObjectRegistry.CHERRY.get()), new ItemStack(ObjectRegistry.ROTTEN_CHERRY.get()));
 	}
 
 	@Override

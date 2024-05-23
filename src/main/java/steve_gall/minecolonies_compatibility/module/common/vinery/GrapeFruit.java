@@ -8,9 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import satisfyu.vinery.block.grape.GrapeBush;
@@ -37,15 +35,15 @@ public class GrapeFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(this.grapeType.getSeeds());
+		return Arrays.asList(new ItemStack(this.grapeType.getSeeds()));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(this.grapeType.getFruit());
+		return Arrays.asList(new ItemStack(this.grapeType.getFruit()));
 	}
 
 	@Override

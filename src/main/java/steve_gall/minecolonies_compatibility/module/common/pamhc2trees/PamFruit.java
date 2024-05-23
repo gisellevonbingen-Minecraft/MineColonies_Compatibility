@@ -11,7 +11,6 @@ import com.pam.pamhc2trees.blocks.BlockPamLogFruit;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -39,15 +38,15 @@ public class PamFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(this.sapling, this.block);
+		return Arrays.asList(new ItemStack(this.sapling), new ItemStack(this.block));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(this.fruit);
+		return Arrays.asList(new ItemStack(this.fruit));
 	}
 
 	@Override

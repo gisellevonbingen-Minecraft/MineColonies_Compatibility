@@ -7,9 +7,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.regions_unexplored.block.RuBlocks;
@@ -28,15 +26,15 @@ public class SalmonBerryFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(RuItems.SALMONBERRY.get());
+		return Arrays.asList(new ItemStack(RuItems.SALMONBERRY.get()));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(RuItems.SALMONBERRY.get());
+		return Arrays.asList(new ItemStack(RuItems.SALMONBERRY.get()));
 	}
 
 	@Override

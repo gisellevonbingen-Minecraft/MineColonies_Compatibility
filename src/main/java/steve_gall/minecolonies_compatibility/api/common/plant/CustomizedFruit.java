@@ -15,9 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -59,10 +57,10 @@ public abstract class CustomizedFruit
 	public abstract ResourceLocation getId();
 
 	@NotNull
-	public abstract List<ItemLike> getBlockIcons();
+	public abstract List<ItemStack> getBlockIcons();
 
 	@NotNull
-	public abstract List<Item> getItemIcons();
+	public abstract List<ItemStack> getItemIcons();
 
 	public abstract boolean test(@NotNull PlantBlockContext context);
 

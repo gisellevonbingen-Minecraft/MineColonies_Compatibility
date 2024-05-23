@@ -11,9 +11,7 @@ import net.brnbrd.delightful.common.block.SalmonberryBushBlock;
 import net.brnbrd.delightful.common.item.DelightfulItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
@@ -28,15 +26,15 @@ public class SalmonberryFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(DelightfulItems.SALMONBERRY_PIPS.get());
+		return Arrays.asList(new ItemStack(DelightfulItems.SALMONBERRY_PIPS.get()));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(DelightfulItems.SALMONBERRIES.get());
+		return Arrays.asList(new ItemStack(DelightfulItems.SALMONBERRIES.get()));
 	}
 
 	@Override

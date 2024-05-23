@@ -9,9 +9,7 @@ import com.epherical.croptopia.blocks.LeafCropBlock;
 import com.epherical.croptopia.register.helpers.TreeCrop;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -35,15 +33,15 @@ public class LeafCropFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(this.tree.getSaplingBlock());
+		return Arrays.asList(new ItemStack(this.tree.getSaplingBlock()));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(this.tree.asItem());
+		return Arrays.asList(new ItemStack(this.tree.asItem()));
 	}
 
 	@Override

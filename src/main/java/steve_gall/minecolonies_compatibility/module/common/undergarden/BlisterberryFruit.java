@@ -9,9 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import quek.undergarden.block.BlisterberryBushBlock;
 import quek.undergarden.registry.UGBlocks;
@@ -29,15 +27,15 @@ public class BlisterberryFruit extends CustomizedFruit
 	}
 
 	@Override
-	public @NotNull List<ItemLike> getBlockIcons()
+	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(UGBlocks.BLISTERBERRY_BUSH.get());
+		return Arrays.asList(new ItemStack(UGBlocks.BLISTERBERRY_BUSH.get()));
 	}
 
 	@Override
-	public @NotNull List<Item> getItemIcons()
+	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(UGItems.BLISTERBERRY.get(), UGItems.ROTTEN_BLISTERBERRY.get());
+		return Arrays.asList(new ItemStack(UGItems.BLISTERBERRY.get()), new ItemStack(UGItems.ROTTEN_BLISTERBERRY.get()));
 	}
 
 	@Override

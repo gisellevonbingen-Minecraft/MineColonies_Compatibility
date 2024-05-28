@@ -15,7 +15,6 @@ import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CaveVines;
-import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
@@ -59,17 +58,9 @@ public class CaveVinesFruit extends CustomizedFruit
 		}
 		else if (state.getBlock() == Blocks.CAVE_VINES)
 		{
-			if (((GrowingPlantHeadBlock) state.getBlock()).isMaxAge(state))
-			{
-				return true;
-			}
-			else
-			{
-				var belowPos = context.getPosition().below();
-				var belowState = context.getLevel().getBlockState(belowPos);
-				return !belowState.isAir();
-			}
-
+			var belowPos = context.getPosition().below();
+			var belowState = context.getLevel().getBlockState(belowPos);
+			return !belowState.isAir();
 		}
 
 		return false;

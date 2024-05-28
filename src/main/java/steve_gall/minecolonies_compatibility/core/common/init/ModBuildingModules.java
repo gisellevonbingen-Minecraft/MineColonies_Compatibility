@@ -38,12 +38,19 @@ public class ModBuildingModules
 			Pair.of(EntityAIWorkOrchardist.NEED_MAX_HARVEST, new BoolSetting(true))//
 	);
 
+	public static final BuildingEntry.ModuleProducer<FruitListModule, FruitListModuleView> FRUITLIST_BLACKLIST = new BuildingEntry.ModuleProducer<>("fruitlist_blacklist", //
+			() -> new FruitListModule(ModBuildingModules.FRUITLIST_BLACKLIST.key), //
+			() -> () -> new FruitListModuleView("fruitlist_blacklist", "com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist", true, fruit -> true));
+
 	public static final List<ModuleProducer<?, ?>> ORCHARDIST_BAN_MODULES = Arrays.asList(//
 			BuildingModules.FORESTER_CRAFT, //
 			BuildingModules.ITEMLIST_SAPLING, //
 			BuildingModules.CRAFT_TASK_VIEW//
 	);
 
+	public static final List<ModuleProducer<?, ?>> ORCHARDIST_ONLY_MODULES = Arrays.asList(//
+			FRUITLIST_BLACKLIST//
+	);
 	public static final List<ISettingKey<?>> ORCHARDIST_BAN_SETTINGS = Arrays.asList(//
 			BuildingLumberjack.REPLANT, //
 			BuildingLumberjack.DEFOLIATE, //
@@ -51,9 +58,5 @@ public class ModBuildingModules
 			BuildingLumberjack.DYNAMIC_TREES_SIZE, //
 			AbstractBuilding.USE_SHEARS//
 	);
-
-	public static final BuildingEntry.ModuleProducer<FruitListModule, FruitListModuleView> FRUITLIST_BLACKLIST = new BuildingEntry.ModuleProducer<>("fruitlist_blacklist", //
-			() -> new FruitListModule(ModBuildingModules.FRUITLIST_BLACKLIST.key), //
-			() -> () -> new FruitListModuleView("fruitlist_blacklist", "com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist", true, fruit -> true));
 
 }

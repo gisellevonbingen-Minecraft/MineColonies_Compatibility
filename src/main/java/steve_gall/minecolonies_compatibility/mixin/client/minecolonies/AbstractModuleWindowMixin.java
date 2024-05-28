@@ -35,6 +35,10 @@ public abstract class AbstractModuleWindowMixin
 				}
 
 			}
+			else if (ModBuildingModules.ORCHARDIST_ONLY_MODULES.contains(moduleView.getProducer()))
+			{
+				return false;
+			}
 
 		}
 

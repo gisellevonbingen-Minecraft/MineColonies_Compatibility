@@ -327,6 +327,11 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 		this.onBlockDropReception(drops);
 
+		if (fruit.updateAndIsValid(level))
+		{
+			return this.getState();
+		}
+
 		return OrchardistAIState.SEARCH;
 	}
 

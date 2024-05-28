@@ -28,13 +28,13 @@
 		textcolor="black" />
 
 	<buttonimage
-		label="$(minecolonies_tweaks.gui.workerhuts.toogle_in_current)"
+		label="$(minecolonies_tweaks.gui.toogle_in_current)"
 		id="toggleInCurrent" size="80 17" pos="14 211"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
 		textcolor="black" />
 
 	<buttonimage
-		label="$(minecolonies_tweaks.gui.workerhuts.reset_in_current)"
+		label="$(minecolonies_tweaks.gui.reset_in_current)"
 		id="resetInCurrent" size="80 17" pos="98 211"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
 		textcolor="black" />

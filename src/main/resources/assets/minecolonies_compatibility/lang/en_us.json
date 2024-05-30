@@ -1,4 +1,6 @@
 {
+	"minecolonies_tweaks.custom_tooltype.crossbow": "Crossbow",
+	"minecolonies_tweaks.custom_tooltype.bow_like": "Bow or Crossbow",
 	"minecolonies_tweaks.custom_tooltype.gun": "Gun",
 	"minecolonies_tweaks.custom_tooltype.knife": "Knife",
 	
@@ -18,6 +20,7 @@
 	
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruit Blacklist",
 	
+	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "Request Firework Rocket",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "Harvest Only Max Age",
 	
 	"minecolonies_compatibility.jei.unsupported_tool": "Unsupported Tool",

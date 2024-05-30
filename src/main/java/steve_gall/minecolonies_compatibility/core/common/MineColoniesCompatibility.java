@@ -59,6 +59,8 @@ public class MineColoniesCompatibility
 
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)
 	{
+		e.register(ModToolTypes.CROSSBOW);
+		e.register(ModToolTypes.BOW_LIKE);
 		e.register(ModToolTypes.GUN);
 	}
 

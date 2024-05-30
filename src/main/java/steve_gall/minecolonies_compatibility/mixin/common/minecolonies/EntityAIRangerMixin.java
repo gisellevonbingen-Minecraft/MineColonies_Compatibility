@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.InventoryUtils;
-import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
 import com.minecolonies.core.colony.jobs.JobRanger;
@@ -44,24 +43,18 @@ public abstract class EntityAIRangerMixin extends AbstractEntityAIGuard<JobRange
 		if (this.worker.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects().getEffectStrength(ResearchConstants.ARCHER_USE_ARROWS) > 0)
 		{
 			var inventory = this.worker.getInventoryCitizen();
-			var weaponSlot = InventoryUtils.getFirstSlotOfItemHandlerContainingTool(inventory, ModToolTypes.BOW_LIKE.getToolType(), 0, this.building.getMaxToolLevel());
+			var crossbowSlot = InventoryUtils.getFirstSlotOfItemHandlerContainingTool(inventory, ModToolTypes.CROSSBOW.getToolType(), 0, this.building.getMaxToolLevel());
 
-			if (weaponSlot == -1)
+			if (crossbowSlot == -1)
 			{
 				return;
 			}
 
-			var weapon = inventory.getStackInSlot(weaponSlot);
+			InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(this.building, item -> item.is(Items.FIREWORK_ROCKET), 64, inventory);
 
-			if (ItemStackUtils.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
+			if (this.building.getSetting(ModBuildingModules.REQUEST_FIREWORK_ROCKET).getValue() && InventoryUtils.getItemCountInItemHandler(inventory, item -> item.is(Items.FIREWORK_ROCKET)) < 16)
 			{
-				InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(this.building, item -> item.is(Items.FIREWORK_ROCKET), 64, inventory);
-
-				if (this.building.getSetting(ModBuildingModules.REQUEST_FIREWORK_ROCKET).getValue() && InventoryUtils.getItemCountInItemHandler(inventory, item -> item.is(Items.FIREWORK_ROCKET)) < 16)
-				{
-					this.checkIfRequestForItemExistOrCreateAsync(new ItemStack(Items.FIREWORK_ROCKET), 64, 16);
-				}
-
+				this.checkIfRequestForItemExistOrCreateAsync(new ItemStack(Items.FIREWORK_ROCKET), 64, 16);
 			}
 
 		}

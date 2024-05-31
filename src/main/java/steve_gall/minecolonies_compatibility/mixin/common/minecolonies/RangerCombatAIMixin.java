@@ -52,7 +52,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	@Redirect(method = "canAttack", remap = false, at = @At(value = "FIELD", target = "com/minecolonies/api/util/constant/ToolType.BOW", opcode = Opcodes.GETSTATIC))
 	private ToolType canAttack_ToolType()
 	{
-		return MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger.canUseCrossbow.get().booleanValue() ? ModToolTypes.BOW_LIKE.getToolType() : ToolType.BOW;
+		return ModToolTypes.RANGER_WEAPON.getToolType();
 	}
 
 	@ModifyConstant(method = "doAttack", remap = false, constant = @Constant(intValue = 1, ordinal = 0))
@@ -74,11 +74,11 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	@Redirect(method = "doAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/effects/IResearchEffectManager.getEffectStrength"))
 	private double doAttack_getEffectStrength_DOUBLE_ARROWS(IResearchEffectManager researchManager, ResourceLocation id)
 	{
-		if (id.equals(ResearchConstants.DOUBLE_ARROWS))
-		{
-			var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);
+		var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);
 
-			if (ItemStackUtils.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
+		if (ItemStackUtils.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
+		{
+			if (id.equals(ResearchConstants.DOUBLE_ARROWS))
 			{
 				return 0.0D;
 			}
@@ -93,38 +93,37 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	{
 		var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);
 
-		if (!ItemStackUtils.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
+		if (ItemStackUtils.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
 		{
-			return;
-		}
+			var amountOfProjectiles = weapon.getEnchantmentLevel(Enchantments.MULTISHOT) == 0 ? 1 : 3;
+			var researchEffects = this.user.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects();
+			var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger;
+			var ammoSlot = -1;
 
-		var amountOfProjectiles = weapon.getEnchantmentLevel(Enchantments.MULTISHOT) == 0 ? 1 : 3;
-		var researchEffects = this.user.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects();
-		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger;
-		var ammoSlot = -1;
+			if (config.canShootFireworkRocket.get().booleanValue() && researchEffects.getEffectStrength(ResearchConstants.ARCHER_USE_ARROWS) > 0.0D)
+			{
+				ammoSlot = InventoryUtils.findFirstSlotInItemHandlerWith(this.user.getInventoryCitizen(), item -> item.is(Items.FIREWORK_ROCKET));
+			}
 
-		if (config.canShootFireworkRocket.get().booleanValue() && researchEffects.getEffectStrength(ResearchConstants.ARCHER_USE_ARROWS) > 0.0D)
-		{
-			ammoSlot = InventoryUtils.findFirstSlotInItemHandlerWith(this.user.getInventoryCitizen(), item -> item.is(Items.FIREWORK_ROCKET));
-		}
+			var ammo = ammoSlot == -1 ? ItemStack.EMPTY : this.user.getInventoryCitizen().extractItem(ammoSlot, 1, false);
+			var weaponDamage = ammoSlot == -1 ? 1 : 3;
+			var projectiles = new Projectile[amountOfProjectiles];
+			var chance = GuardConstants.HIT_CHANCE_DIVIDER / (this.user.getCitizenData().getCitizenSkillHandler().getLevel(Skill.Adaptability) + 1);
 
-		var ammo = ammoSlot == -1 ? ItemStack.EMPTY : this.user.getInventoryCitizen().extractItem(ammoSlot, 1, false);
-		var weaponDamage = ammoSlot == -1 ? 1 : 3;
-		var projectiles = new Projectile[amountOfProjectiles];
-		var chance = GuardConstants.HIT_CHANCE_DIVIDER / (this.user.getCitizenData().getCitizenSkillHandler().getLevel(Skill.Adaptability) + 1);
+			for (var i = 0; i < amountOfProjectiles; i++)
+			{
+				var horizontalAngle = this.getShootHorizontalAngle(i);
+				var upVector = new Vector3f(this.user.getUpVector(1.0F));
+				var quaternion = new Quaternion(upVector, horizontalAngle, true);
 
-		for (var i = 0; i < amountOfProjectiles; i++)
-		{
-			var horizontalAngle = this.getShootHorizontalAngle(i);
-			var upVector = new Vector3f(this.user.getUpVector(1.0F));
-			var quaternion = new Quaternion(upVector, horizontalAngle, true);
+				var projectile = this.createProjectile(i, weapon, ammo, target, chance, quaternion, projectiles);
+				this.user.level.addFreshEntity(projectile);
+				projectiles[i] = projectile;
 
-			var projectile = this.createProjectile(i, weapon, ammo, target, chance, quaternion, projectiles);
-			this.user.level.addFreshEntity(projectile);
-			projectiles[i] = projectile;
+				this.user.playSound(SoundEvents.CROSSBOW_SHOOT, (float) GuardConstants.BASIC_VOLUME, (float) SoundUtils.getRandomPitch(this.user.getRandom()));
+				this.user.getCitizenItemHandler().damageItemInHand(InteractionHand.MAIN_HAND, i == 0 ? (weaponDamage - 1) : weaponDamage);
+			}
 
-			this.user.playSound(SoundEvents.CROSSBOW_SHOOT, (float) GuardConstants.BASIC_VOLUME, (float) SoundUtils.getRandomPitch(this.user.getRandom()));
-			this.user.getCitizenItemHandler().damageItemInHand(InteractionHand.MAIN_HAND, i == 0 ? (weaponDamage - 1) : weaponDamage);
 		}
 
 	}

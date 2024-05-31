@@ -1,8 +1,9 @@
 {
 	"minecolonies_tweaks.custom_tooltype.crossbow": "Crossbow",
-	"minecolonies_tweaks.custom_tooltype.bow_like": "Bow or Crossbow",
 	"minecolonies_tweaks.custom_tooltype.gun": "Gun",
 	"minecolonies_tweaks.custom_tooltype.knife": "Knife",
+	"minecolonies_tweaks.custom_tooltype.ranger_weapon": "Ranged Weapon",
+	"minecolonies_tweaks.custom_tooltype.knight_weapon": "Melee Weapon",
 	
 	"minecolonies_compatibility.job.gunner": "Gunner",
 	"minecolonies_compatibility:gunner.job.desc": "Distance fighter, deals high damage, but has low survival chance in close combat.",

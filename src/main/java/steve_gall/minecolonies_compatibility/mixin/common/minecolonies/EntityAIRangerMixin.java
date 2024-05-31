@@ -31,9 +31,9 @@ public abstract class EntityAIRangerMixin extends AbstractEntityAIGuard<JobRange
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"), cancellable = false)
 	private void init(JobRanger job, CallbackInfo ci)
 	{
-		if (MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger.canUseCrossbow.get().booleanValue() && this.toolsNeeded.remove(ToolType.BOW))
+		if (this.toolsNeeded.remove(ToolType.BOW))
 		{
-			this.toolsNeeded.add(ModToolTypes.BOW_LIKE.getToolType());
+			this.toolsNeeded.add(ModToolTypes.RANGER_WEAPON.getToolType());
 		}
 
 	}

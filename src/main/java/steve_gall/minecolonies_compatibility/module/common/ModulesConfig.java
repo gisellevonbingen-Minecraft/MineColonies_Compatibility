@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.core.common.config;
+package steve_gall.minecolonies_compatibility.module.common;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import steve_gall.minecolonies_compatibility.module.common.ie.IEConfig;

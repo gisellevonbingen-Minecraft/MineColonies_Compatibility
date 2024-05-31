@@ -1,6 +1,8 @@
 package steve_gall.minecolonies_compatibility.core.common.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.JobConfig;
+import steve_gall.minecolonies_compatibility.module.common.ModulesConfig;
 
 public class MineColoniesCompatibilityConfigServer
 {

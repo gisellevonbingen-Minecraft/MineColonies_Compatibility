@@ -5,12 +5,12 @@ import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import steve_gall.minecolonies_compatibility.core.common.config.AbstractModuleConfig;
-import steve_gall.minecolonies_compatibility.core.common.config.AttackDamageConfig;
-import steve_gall.minecolonies_compatibility.core.common.config.AttackDelayConfig;
-import steve_gall.minecolonies_compatibility.core.common.config.AttackRangeConfig;
-import steve_gall.minecolonies_compatibility.core.common.config.MoveSpeedConfig;
-import steve_gall.minecolonies_compatibility.core.common.config.SearchRangeConfig;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDamageConfig;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDelayConfig;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackRangeConfig;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.MoveSpeedConfig;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.SearchRangeConfig;
+import steve_gall.minecolonies_compatibility.module.common.AbstractModuleConfig;
 
 public class IEConfig extends AbstractModuleConfig
 {

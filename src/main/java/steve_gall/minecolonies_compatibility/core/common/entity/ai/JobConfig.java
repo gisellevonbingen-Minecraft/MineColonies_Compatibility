@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.core.common.config;
+package steve_gall.minecolonies_compatibility.core.common.entity.ai;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.RangerConfig;

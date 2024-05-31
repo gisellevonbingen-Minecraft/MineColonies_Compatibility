@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.core.common.config;
+package steve_gall.minecolonies_compatibility.core.common.entity.ai;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.constant.GuardConstants;

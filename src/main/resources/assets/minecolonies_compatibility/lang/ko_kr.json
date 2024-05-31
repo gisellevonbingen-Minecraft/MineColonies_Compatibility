@@ -1,8 +1,9 @@
 {
 	"minecolonies_tweaks.custom_tooltype.crossbow": "석궁",
-	"minecolonies_tweaks.custom_tooltype.bow_like": "활 혹은 석궁",
 	"minecolonies_tweaks.custom_tooltype.gun": "총",
 	"minecolonies_tweaks.custom_tooltype.knife": "식칼",
+	"minecolonies_tweaks.custom_tooltype.ranger_weapon": "원거리 무기",
+	"minecolonies_tweaks.custom_tooltype.knight_weapon": "근거리 무기",
 	
 	"minecolonies_compatibility.job.gunner": "거너",
 	"minecolonies_compatibility:gunner.job.desc": "강력한 원거리 공격이 가능하지만, 근접전은 약합니다.",

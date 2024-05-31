@@ -60,8 +60,11 @@ public class MineColoniesCompatibility
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)
 	{
 		e.register(ModToolTypes.CROSSBOW);
-		e.register(ModToolTypes.BOW_LIKE);
 		e.register(ModToolTypes.GUN);
+		e.register(ModToolTypes.KNIFE);
+
+		e.register(ModToolTypes.RANGER_WEAPON);
+		e.register(ModToolTypes.KNIGHT_WEAPON);
 	}
 
 	public static NetworkChannel network()

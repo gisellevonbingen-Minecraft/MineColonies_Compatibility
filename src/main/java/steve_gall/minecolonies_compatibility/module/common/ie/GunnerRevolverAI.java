@@ -1,13 +1,9 @@
 package steve_gall.minecolonies_compatibility.module.common.ie;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.constant.GuardConstants;
-import com.minecolonies.core.colony.buildings.modules.settings.GuardTaskSetting;
 import com.minecolonies.core.util.NamedDamageSource;
 
 import blusunrize.immersiveengineering.api.tool.BulletHandler.IBullet;
@@ -21,20 +17,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
-import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGuard;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGunner;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_compatibility.core.common.building.BuildingHelper;
-import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
-import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
-import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDelayConfig;
 import steve_gall.minecolonies_compatibility.module.common.ie.IEConfig.JobConfig.GunnerRevolverConfig;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
-public class GunnerRevolverAI extends CustomizedAIGuard
+public class GunnerRevolverAI extends CustomizedAIGunner
 {
 	public static final String TAG_KEY = MineColoniesCompatibility.rl("ie_gunner_revolver").toString();
 
@@ -46,111 +38,38 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 	@Override
 	public boolean test(@NotNull CustomizedAIContext context)
 	{
-		return CitizenHelper.getJobEntry(context.getUser().getCitizenData()) == ModJobs.GUNNER.get() && context.getWeapon().getItem() instanceof RevolverItem;
-	}
-
-	public int getBulletSlot(@NotNull IItemHandler inventory)
-	{
-		for (var i = 0; i < inventory.getSlots(); i++)
-		{
-			if (inventory.getStackInSlot(i).getItem() instanceof BulletItem)
-			{
-				return i;
-			}
-
-		}
-
-		return -1;
-	}
-
-	/**
-	 *
-	 * @param user
-	 * @param minCount
-	 * @param async
-	 * @return Request created
-	 */
-	public boolean requestBullets(@NotNull AbstractEntityCitizen user, int minCount, boolean async)
-	{
-		var citizen = user.getCitizenData();
-
-		if (!CitizenHelper.isRequested(citizen, CustomizableDeliverable.TYPE_TOKEN, r -> r.getRequest().getObject() instanceof Bullet))
-		{
-			citizen.getWorkBuilding().createRequest(citizen, new CustomizableDeliverable(new Bullet(minCount)), async);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-
-	}
-
-	public boolean takeBullets(@Nullable AbstractEntityCitizen user)
-	{
-		var citizen = user.getCitizenData();
-		var building = citizen.getWorkBuilding();
-		var inventory = citizen.getInventory();
-		return InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(building, item -> item.getItem() instanceof BulletItem, 64, inventory);
+		return super.test(context) && context.getWeapon().getItem() instanceof RevolverItem;
 	}
 
 	@Override
-	public void atBuildingActions(@NotNull CustomizedAIContext context)
+	protected boolean testBullet(ItemStack stack)
 	{
-		super.atBuildingActions(context);
-
-		var bulletMode = this.getConfig().bulletMode.get();
-
-		if (bulletMode.canUse() && bulletMode.canDefault())
-		{
-			var user = context.getUser();
-			var citizen = user.getCitizenData();
-			this.takeBullets(user);
-
-			var minCount = 16;
-			var bulletCount = InventoryUtils.getItemCountInItemHandler(citizen.getInventory(), item -> item.getItem() instanceof BulletItem);
-
-			if (bulletCount < minCount)
-			{
-				this.requestBullets(user, minCount, true);
-			}
-
-		}
-
+		return stack.getItem() instanceof BulletItem;
 	}
 
-	public boolean checkBullets(@NotNull AbstractEntityCitizen user)
+	@Override
+	protected IDeliverableObject createBulletRequest(int minCount)
 	{
-		var bulletMode = this.getConfig().bulletMode.get();
+		return new Bullet(minCount);
+	}
 
-		if (bulletMode.canUse())
-		{
-			if (this.getBulletSlot(user.getCitizenData().getInventory()) == -1)
-			{
-				var async = bulletMode.canDefault();
-				this.requestBullets(user, 16, async);
-				return async;
-			}
-
-		}
-
-		return true;
+	@Override
+	protected boolean isBulleteRequest(IDeliverableObject object)
+	{
+		return object instanceof Bullet;
 	}
 
 	@Override
 	public boolean canAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
 	{
-		var user = context.getUser();
-
-		if (user.distanceTo(target) <= GuardConstants.MAX_DISTANCE_FOR_ATTACK)
-		{
-			return true;
-		}
-		else if (!this.checkBullets(user))
+		if (!super.canAttack(context, target))
 		{
 			return false;
 		}
-		else if (this.getConfig().needReload.get().booleanValue())
+
+		var user = context.getUser();
+
+		if (this.getWeaponConfig().needReload.get().booleanValue())
 		{
 			if (this.getBulletCount(user) <= 0 && !this.isReloading(user))
 			{
@@ -174,14 +93,14 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 
 		}
 
-		return super.canAttack(context, target);
+		return true;
 	}
 
 	@Override
 	public void doAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
 	{
-		var config = this.getConfig();
-		var bulletMode = config.bulletMode.get();
+		var config = this.getWeaponConfig();
+		var bulletMode = this.getJobConfig().bulletMode.get();
 
 		var user = context.getUser();
 		var inventory = user.getItemHandlerCitizen();
@@ -263,63 +182,37 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 	}
 
 	@Override
-	public int getAttackDelay(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	protected AttackDelayConfig getAttackDealyConfig()
 	{
-		var user = context.getUser();
-		return this.getConfig().attackDelay.apply(user, this.getSecondarySkillLevel(user));
+		return this.getWeaponConfig().attackDelay;
 	}
 
 	@Override
 	public double getAttackDistance(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
 	{
-		var config = this.getConfig();
-		var user = context.getUser();
 		var weapon = context.getWeapon();
-		var distance = config.attackRange.apply(user, this.getSecondarySkillLevel(user), target);
+		var distance = super.getAttackDistance(context, target);
 
 		if (weapon.getItem() instanceof RevolverItem item && item.canZoom(weapon, null))
 		{
-			distance *= config.scopeRangeMultiplier.get().doubleValue();
+			distance *= this.getWeaponConfig().scopeRangeMultiplier.get().doubleValue();
 		}
 
 		return distance;
 	}
 
 	@Override
-	public int getHorizontalSearchRange(@NotNull CustomizedAIContext context)
+	public double getHorizontalSearchRange(@NotNull CustomizedAIContext context)
 	{
-		var config = this.getConfig();
 		var weapon = context.getWeapon();
-		var range = config.searchRange.horizontal.get().doubleValue();
+		var range = super.getHorizontalSearchRange(context);
 
 		if (weapon.getItem() instanceof RevolverItem item && item.canZoom(weapon, null))
 		{
-			range *= config.scopeRangeMultiplier.get().doubleValue();
-		}
-
-		return (int) range;
-	}
-
-	@Override
-	public int getVerticalSearchRange(@NotNull CustomizedAIContext context)
-	{
-		var config = this.getConfig().searchRange;
-		var range = config.vertical.get().intValue();
-
-		if (BuildingHelper.IsGuardsTask(context.getUser().getCitizenData().getWorkBuilding(), GuardTaskSetting.GUARD))
-		{
-			range += config.verticalBonusOnGuard.get().intValue();
+			range *= this.getWeaponConfig().scopeRangeMultiplier.get().doubleValue();
 		}
 
 		return range;
-	}
-
-	@Override
-	public double getCombatMovementSpeed(@NotNull CustomizedAIContext context)
-	{
-		var config = this.getConfig().combatMoveSpeed;
-		var user = context.getUser();
-		return config.apply(user, this.getPrimarySkillLevel(user));
 	}
 
 	@Override
@@ -329,14 +222,7 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 		return TAG_KEY;
 	}
 
-	@Override
-	@NotNull
-	public GuardType getGuardType()
-	{
-		return ModGuardTypes.GUNNER.get();
-	}
-
-	public GunnerRevolverConfig getConfig()
+	public GunnerRevolverConfig getWeaponConfig()
 	{
 		return MineColoniesCompatibilityConfigServer.INSTANCE.modules.IE.job.gunnerRevolver;
 	}
@@ -353,7 +239,7 @@ public class GunnerRevolverAI extends CustomizedAIGuard
 
 	public boolean isReloadComplete(@NotNull AbstractEntityCitizen user)
 	{
-		var reloadDuration = this.getConfig().reloadDuration.get().longValue();
+		var reloadDuration = this.getWeaponConfig().reloadDuration.get().longValue();
 		return user.getLevel().getGameTime() >= this.getOrEmptyTag(user).getLong("reloadStarted") + reloadDuration;
 	}
 

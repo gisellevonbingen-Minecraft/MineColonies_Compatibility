@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.module.common.ie;
+package steve_gall.minecolonies_compatibility.core.common.entity.ai.guard;
 
 public enum BulletMode
 {

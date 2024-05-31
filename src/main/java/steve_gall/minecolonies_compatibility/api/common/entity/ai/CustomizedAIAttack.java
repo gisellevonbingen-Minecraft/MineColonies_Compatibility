@@ -35,14 +35,14 @@ public abstract class CustomizedAIAttack extends CustomizedAI
 		return 5.0D;
 	}
 
-	public int getHorizontalSearchRange(@NotNull CustomizedAIContext context)
+	public double getHorizontalSearchRange(@NotNull CustomizedAIContext context)
 	{
-		return 16;
+		return 16.0D;
 	}
 
-	public int getVerticalSearchRange(@NotNull CustomizedAIContext context)
+	public double getVerticalSearchRange(@NotNull CustomizedAIContext context)
 	{
-		return 3;
+		return 3.0D;
 	}
 
 	public double getCombatMovementSpeed(@NotNull CustomizedAIContext context)

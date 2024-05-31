@@ -22,7 +22,7 @@ public abstract class TargetAIMixin
 
 			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
-				cir.setReturnValue(attack.getHorizontalSearchRange(parentAI.getAIContext()));
+				cir.setReturnValue((int) attack.getHorizontalSearchRange(parentAI.getAIContext()));
 			}
 			else
 			{
@@ -42,7 +42,7 @@ public abstract class TargetAIMixin
 
 			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
-				cir.setReturnValue(attack.getVerticalSearchRange(parentAI.getAIContext()));
+				cir.setReturnValue((int) attack.getVerticalSearchRange(parentAI.getAIContext()));
 			}
 			else
 			{

@@ -14,17 +14,25 @@ import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 import com.minecolonies.core.colony.buildings.modules.GuardBuildingModule;
 import com.minecolonies.core.colony.buildings.modules.WorkerBuildingModule;
 import com.minecolonies.core.colony.buildings.modules.settings.BoolSetting;
+import com.minecolonies.core.colony.buildings.modules.settings.SettingKey;
 import com.minecolonies.core.colony.buildings.moduleviews.CombinedHiringLimitModuleView;
 import com.minecolonies.core.colony.buildings.moduleviews.WorkerBuildingModuleView;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingLumberjack;
 import com.mojang.datafixers.util.Pair;
 
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModuleView;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist.EntityAIWorkOrchardist;
 
 public class ModBuildingModules
 {
+	public static final ISettingKey<BoolSetting> REQUEST_FIREWORK_ROCKET = new SettingKey<>(BoolSetting.class, MineColoniesCompatibility.rl("request_firework_rocket"));
+
+	public static final List<Pair<ISettingKey<?>, ISetting<?>>> GUARD_SETTINGS = Arrays.asList(//
+			Pair.of(REQUEST_FIREWORK_ROCKET, new BoolSetting(false)) //
+	);
+
 	public static final BuildingEntry.ModuleProducer<GuardBuildingModule, CombinedHiringLimitModuleView> GUNNER_TOWER_WORK = new BuildingEntry.ModuleProducer<>("gunner_tower_work", //
 			() -> new GuardBuildingModule(ModGuardTypes.GUNNER.get(), true, b -> 1), //
 			() -> CombinedHiringLimitModuleView::new);

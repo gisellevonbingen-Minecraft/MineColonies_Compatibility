@@ -1,4 +1,6 @@
 {
+	"minecolonies_tweaks.custom_tooltype.crossbow": "석궁",
+	"minecolonies_tweaks.custom_tooltype.bow_like": "활 혹은 석궁",
 	"minecolonies_tweaks.custom_tooltype.gun": "총",
 	"minecolonies_tweaks.custom_tooltype.knife": "식칼",
 	
@@ -16,6 +18,7 @@
 	"minecolonies_compatibility:farmers_cook.job.desc": "Farmer's Delight 모드의 조리용 냄비를 사용한 요리를 하며, 시민들에게 음식을 나눠줍니다.",
 	"minecolonies_compatibility:farmers_cook.skills.desc": "요리 속도에 영향을 줍니다.",
 	
+	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "폭죽 로켓 요청",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "최대 성장만 수확",
 	
 	"minecolonies_compatibility.jei.unsupported_tool": "지원되지 않는 도구",

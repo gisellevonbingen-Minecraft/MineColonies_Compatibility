@@ -37,6 +37,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
+import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.CombatUtils2;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
@@ -51,7 +52,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	@Redirect(method = "canAttack", remap = false, at = @At(value = "FIELD", target = "com/minecolonies/api/util/constant/ToolType.BOW", opcode = Opcodes.GETSTATIC))
 	private ToolType canAttack_ToolType()
 	{
-		return ModToolTypes.BOW_LIKE.getToolType();
+		return MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger.canUseCrossbow.get().booleanValue() ? ModToolTypes.BOW_LIKE.getToolType() : ToolType.BOW;
 	}
 
 	@ModifyConstant(method = "doAttack", remap = false, constant = @Constant(intValue = 1, ordinal = 0))
@@ -99,9 +100,10 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 
 		var amountOfProjectiles = weapon.getEnchantmentLevel(Enchantments.MULTISHOT) == 0 ? 1 : 3;
 		var researchEffects = this.user.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects();
+		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger;
 		var ammoSlot = -1;
 
-		if (researchEffects.getEffectStrength(ResearchConstants.ARCHER_USE_ARROWS) > 0.0D)
+		if (config.canShootFireworkRocket.get().booleanValue() && researchEffects.getEffectStrength(ResearchConstants.ARCHER_USE_ARROWS) > 0.0D)
 		{
 			ammoSlot = InventoryUtils.findFirstSlotInItemHandlerWith(this.user.getInventoryCitizen(), item -> item.is(Items.FIREWORK_ROCKET));
 		}

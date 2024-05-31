@@ -16,6 +16,7 @@ import com.minecolonies.core.entity.ai.workers.guard.EntityAIRanger;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
@@ -30,7 +31,7 @@ public abstract class EntityAIRangerMixin extends AbstractEntityAIGuard<JobRange
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"), cancellable = false)
 	private void init(JobRanger job, CallbackInfo ci)
 	{
-		if (this.toolsNeeded.remove(ToolType.BOW))
+		if (MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger.canUseCrossbow.get().booleanValue() && this.toolsNeeded.remove(ToolType.BOW))
 		{
 			this.toolsNeeded.add(ModToolTypes.BOW_LIKE.getToolType());
 		}
@@ -40,21 +41,27 @@ public abstract class EntityAIRangerMixin extends AbstractEntityAIGuard<JobRange
 	@Inject(method = "atBuildingActions", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void atBuildingActions(CallbackInfo ci)
 	{
-		if (this.worker.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects().getEffectStrength(ResearchConstants.ARCHER_USE_ARROWS) > 0)
+		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger;
+
+		if (config.canUseCrossbow.get().booleanValue() && config.canShootFireworkRocket.get().booleanValue())
 		{
-			var inventory = this.worker.getInventoryCitizen();
-			var crossbowSlot = InventoryUtils.getFirstSlotOfItemHandlerContainingTool(inventory, ModToolTypes.CROSSBOW.getToolType(), 0, this.building.getMaxToolLevel());
-
-			if (crossbowSlot == -1)
+			if (this.worker.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects().getEffectStrength(ResearchConstants.ARCHER_USE_ARROWS) > 0)
 			{
-				return;
-			}
+				var inventory = this.worker.getInventoryCitizen();
+				var crossbowSlot = InventoryUtils.getFirstSlotOfItemHandlerContainingTool(inventory, ModToolTypes.CROSSBOW.getToolType(), 0, this.building.getMaxToolLevel());
 
-			InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(this.building, item -> item.is(Items.FIREWORK_ROCKET), 64, inventory);
+				if (crossbowSlot == -1)
+				{
+					return;
+				}
 
-			if (this.building.getSetting(ModBuildingModules.REQUEST_FIREWORK_ROCKET).getValue() && InventoryUtils.getItemCountInItemHandler(inventory, item -> item.is(Items.FIREWORK_ROCKET)) < 16)
-			{
-				this.checkIfRequestForItemExistOrCreateAsync(new ItemStack(Items.FIREWORK_ROCKET), 64, 16);
+				InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(this.building, item -> item.is(Items.FIREWORK_ROCKET), 64, inventory);
+
+				if (this.building.getSetting(ModBuildingModules.REQUEST_FIREWORK_ROCKET).getValue().booleanValue() && InventoryUtils.getItemCountInItemHandler(inventory, item -> item.is(Items.FIREWORK_ROCKET)) < 16)
+				{
+					this.checkIfRequestForItemExistOrCreateAsync(new ItemStack(Items.FIREWORK_ROCKET), 64, 16);
+				}
+
 			}
 
 		}

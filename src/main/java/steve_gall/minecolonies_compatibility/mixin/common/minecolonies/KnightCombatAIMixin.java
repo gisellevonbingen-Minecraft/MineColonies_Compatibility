@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.minecolonies.api.compatibility.tinkers.TinkersToolHelper;
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
-import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.GuardConstants;
 import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.core.entity.ai.citizen.guard.KnightCombatAI;
@@ -21,7 +20,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
@@ -42,9 +40,9 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	@Redirect(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/compatibility/tinkers/TinkersToolHelper.getDamage"))
 	private double getAttackDamage_getDamage(ItemStack stack)
 	{
-		if (ItemStackUtils.isTool(stack, ModToolTypes.KNIGHT_WEAPON.getToolType()) && stack.getItem() instanceof DiggerItem digger)
+		if (!TinkersToolHelper.isTinkersSword(stack))
 		{
-			var amount = this.getAdditionsAmount(digger, Attributes.ATTACK_DAMAGE);
+			var amount = this.getAdditionsAmount(stack, Attributes.ATTACK_DAMAGE);
 			return amount + GuardConstants.BASE_PHYSICAL_DAMAGE;
 		}
 		else
@@ -59,11 +57,11 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	{
 		var stack = user.getItemInHand(InteractionHand.MAIN_HAND);
 
-		if (ItemStackUtils.isTool(stack, ModToolTypes.KNIGHT_WEAPON.getToolType()) && stack.getItem() instanceof DiggerItem digger)
+		if (!TinkersToolHelper.isTinkersSword(stack))
 		{
 			var base = Attributes.ATTACK_SPEED.getDefaultValue();
-			var amount = this.getAdditionsAmount(digger, Attributes.ATTACK_SPEED);
-			return (int) (KNIGHT_ATTACK_DELAY_BASE * ((base - 2.4D) / (base - amount)));
+			var amount = this.getAdditionsAmount(stack, Attributes.ATTACK_SPEED);
+			return (int) (KNIGHT_ATTACK_DELAY_BASE * ((base - 2.4D) / (base + amount)));
 
 		}
 		else
@@ -73,10 +71,10 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 
 	}
 
-	private double getAdditionsAmount(DiggerItem digger, Attribute attribute)
+	private double getAdditionsAmount(ItemStack stack, Attribute attribute)
 	{
 		var amount = 0.0D;
-		var modifiers = digger.getDefaultAttributeModifiers(EquipmentSlot.MAINHAND).get(attribute);
+		var modifiers = stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(attribute);
 
 		for (var modifier : modifiers)
 		{

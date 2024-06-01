@@ -61,14 +61,14 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	@Override
 	public boolean canAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
 	{
-		if (!super.canAttack(context, target))
-		{
-			return false;
-		}
-
 		var user = context.getUser();
 
 		if (user.distanceTo(target) <= GuardConstants.MAX_DISTANCE_FOR_ATTACK)
+		{
+			return true;
+		}
+
+		if (!super.canAttack(context, target))
 		{
 			return false;
 		}

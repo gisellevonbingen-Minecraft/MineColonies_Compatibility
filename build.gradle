@@ -148,6 +148,7 @@ dependencies {
     implementation fg.deobf("curse.maven:do-api-864599:${lets_do_api_file}")
     implementation fg.deobf("curse.maven:the-undergarden-379849:${the_undergarden_file}")
     implementation fg.deobf("curse.maven:oreberries-replanted-454062:${oreberries_file}")
+    implementation fg.deobf("curse.maven:reliquary-reincarnations-241319:${reliquary_file}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

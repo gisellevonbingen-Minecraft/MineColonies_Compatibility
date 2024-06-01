@@ -129,6 +129,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 					citizen.decreaseSaturationForContinuousAction();
 				}
 
+				ci.cancel();
 			}
 
 		}

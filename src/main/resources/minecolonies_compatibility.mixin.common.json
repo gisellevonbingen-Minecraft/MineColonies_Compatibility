@@ -29,6 +29,8 @@
 		"cobblemon.BerryBlockAccessor",
 		"cyclic.AppleCropBlockAccessor",
 		"oreberries.OreBerryBushBlockAccessor",
+		"reliquary.HandgunItemAccessor",
+		"reliquary.NeutralShotEntityMixin",
 		"thermal.CropBlockCoFHAccessor"
 	],
 	"injectors": {

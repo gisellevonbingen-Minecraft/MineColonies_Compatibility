@@ -13,13 +13,10 @@ import blusunrize.immersiveengineering.common.util.IESounds;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.items.ItemHandlerHelper;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGunner;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
@@ -44,19 +41,19 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected boolean testBullet(ItemStack stack)
+	protected boolean testAmmo(ItemStack stack)
 	{
 		return stack.getItem() instanceof BulletItem;
 	}
 
 	@Override
-	protected IDeliverableObject createBulletRequest(int minCount)
+	protected IDeliverableObject createAmmoRequest(int minCount)
 	{
 		return new Bullet(minCount);
 	}
 
 	@Override
-	protected boolean isBulleteRequest(IDeliverableObject object)
+	protected boolean isAmmoRequest(IDeliverableObject object)
 	{
 		return object instanceof Bullet;
 	}
@@ -71,31 +68,41 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 
 		var user = context.getUser();
 
-		if (this.getWeaponConfig().needReload.get().booleanValue())
+		if (user.distanceTo(target) <= GuardConstants.MAX_DISTANCE_FOR_ATTACK)
 		{
-			if (this.getBulletCount(user) <= 0 && !this.isReloading(user))
-			{
-				this.startReload(user);
-				user.playSound(IESounds.revolverReload.get(), 1.0F, 1.0F);
-			}
+			return false;
+		}
 
-			if (this.isReloading(user))
+		if (this.getWeaponConfig().needReload.get().booleanValue() && this.getBulletCount(user) <= 0)
+		{
+			if (!this.reload(user))
 			{
-				if (this.isReloadComplete(user))
-				{
-					this.setBulletCount(user, 8);
-					this.stopReload(user);
-				}
-				else
-				{
-					return false;
-				}
-
+				return false;
 			}
 
 		}
 
 		return true;
+	}
+
+	@Override
+	protected void onReloadStarted(@NotNull AbstractEntityCitizen user)
+	{
+		super.onReloadStarted(user);
+
+		user.playSound(IESounds.revolverReload.get(), 1.0F, 1.0F);
+	}
+
+	@Override
+	protected void onReloadStopped(@NotNull AbstractEntityCitizen user, boolean complete)
+	{
+		super.onReloadStopped(user, complete);
+
+		if (complete)
+		{
+			this.setBulletCount(user, 8);
+		}
+
 	}
 
 	@Override
@@ -106,7 +113,7 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 
 		var user = context.getUser();
 		var inventory = user.getItemHandlerCitizen();
-		var bulletSlot = this.getBulletSlot(inventory);
+		var bulletSlot = this.getAmmoSlot(inventory);
 		var weapon = context.getWeapon();
 		var level = user.level();
 
@@ -143,18 +150,7 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 			if (bulletType != null && bullet != null)
 			{
 				var noise = RevolverItem.fireProjectile(level, user, weapon, bulletType, bullet);
-				var casing = bulletType.getCasing(bullet).copy();
-
-				if (!casing.isEmpty())
-				{
-					var result = ItemHandlerHelper.insertItem(inventory, casing, false);
-
-					if (!result.isEmpty())
-					{
-						BehaviorUtils.throwItem(user, result.copy(), user.position());
-					}
-
-				}
+				this.insertItem(user, inventory, bulletType.getCasing(bullet).copy());
 
 				if (config.occurNoise.get().booleanValue())
 				{
@@ -171,7 +167,7 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 			}
 			else
 			{
-				level.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.NOTE_BLOCK_HAT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+				user.playSound(SoundEvents.NOTE_BLOCK_HAT.get(), 1.0F, 1.0F);
 			}
 
 			if (config.needReload.get().booleanValue())
@@ -239,25 +235,10 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 		this.getOrCreateTag(user).putInt("bulletCount", Math.max(count, 0));
 	}
 
-	public boolean isReloadComplete(@NotNull AbstractEntityCitizen user)
+	@Override
+	protected int getReloadDuration()
 	{
-		var reloadDuration = this.getWeaponConfig().reloadDuration.get().longValue();
-		return user.level().getGameTime() >= this.getOrEmptyTag(user).getLong("reloadStarted") + reloadDuration;
-	}
-
-	public boolean isReloading(@NotNull AbstractEntityCitizen user)
-	{
-		return this.getOrEmptyTag(user).getLong("reloadStarted") > 0;
-	}
-
-	public void startReload(@NotNull AbstractEntityCitizen user)
-	{
-		this.getOrCreateTag(user).putLong("reloadStarted", user.level().getGameTime());
-	}
-
-	public void stopReload(@NotNull AbstractEntityCitizen user)
-	{
-		this.getOrCreateTag(user).remove("reloadStarted");
+		return this.getWeaponConfig().reloadDuration.get().intValue();
 	}
 
 }

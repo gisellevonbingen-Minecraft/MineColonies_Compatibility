@@ -13,9 +13,9 @@ public class AttackDamageConfig
 
 	public AttackDamageConfig(ForgeConfigSpec.Builder builder, DefaultValues defaultValues)
 	{
-		this.base = builder.defineInRange("base", defaultValues.base(), 2.0D, 24.0D);
-		this.increasePerSkillLevel = builder.defineInRange("increasePerSkillLevel", defaultValues.increasePerSkillLevel(), 0, 24.0D);
-		this.increasePerBuildingLevel = builder.defineInRange("increasePerBuildingLevel", defaultValues.increasePerBuildingLevel(), 0, 24.0D);
+		this.base = builder.defineInRange("base", defaultValues.base(), 0.0D, Integer.MAX_VALUE);
+		this.increasePerSkillLevel = builder.defineInRange("increasePerSkillLevel", defaultValues.increasePerSkillLevel(), 0.0D, Integer.MAX_VALUE);
+		this.increasePerBuildingLevel = builder.defineInRange("increasePerBuildingLevel", defaultValues.increasePerBuildingLevel(), 0.0D, Integer.MAX_VALUE);
 	}
 
 	public double apply(AbstractEntityCitizen user, int skillLevel)

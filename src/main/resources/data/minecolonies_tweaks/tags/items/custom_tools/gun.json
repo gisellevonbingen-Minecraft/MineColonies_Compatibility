@@ -3,6 +3,10 @@
 		{
 			"required": false,
 			"id": "immersiveengineering:revolver"
+		},
+		{
+			"required": false,
+			"id": "reliquary:handgun"
 		}
 	]
 }

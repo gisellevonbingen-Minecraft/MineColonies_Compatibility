@@ -18,6 +18,7 @@ import steve_gall.minecolonies_compatibility.module.common.oreberries.Oreberries
 import steve_gall.minecolonies_compatibility.module.common.pamhc2trees.PamsHarvestCraft2TreesModule;
 import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphModule;
 import steve_gall.minecolonies_compatibility.module.common.regions_unexplored.RegionsUnexploredModule;
+import steve_gall.minecolonies_compatibility.module.common.reliquary.ReliquaryModule;
 import steve_gall.minecolonies_compatibility.module.common.thermal.ThermalModule;
 import steve_gall.minecolonies_compatibility.module.common.undergarden.UndergardenModule;
 import steve_gall.minecolonies_compatibility.module.common.vinery.VineryModule;
@@ -52,6 +53,7 @@ public class ModuleManager
 	public static final OptionalModule PHC2TREES = register("pamhc2trees", () -> PamsHarvestCraft2TreesModule::onLoad);
 	public static final OptionalModule POLYMORPH = register("polymorph", () -> PolymorphModule::onLoad);
 	public static final OptionalModule REGIONS_UNEXPLORED = register("regions_unexplored", () -> RegionsUnexploredModule::onLoad);
+	public static final OptionalModule RELIQUARY = register("reliquary", () -> ReliquaryModule::onLoad);
 	public static final OptionalModule THERMAL = register("thermal", () -> ThermalModule::onLoad);
 	public static final OptionalModule UNDERGARDEN = register("undergarden", () -> UndergardenModule::onLoad);
 	public static final OptionalModule VINERY = register("vinery", () -> VineryModule::onLoad);

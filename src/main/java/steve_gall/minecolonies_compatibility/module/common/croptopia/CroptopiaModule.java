@@ -3,19 +3,15 @@ package steve_gall.minecolonies_compatibility.module.common.croptopia;
 import com.epherical.croptopia.register.helpers.TreeCrop;
 
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 
-public class CroptopiaModule
+public class CroptopiaModule extends AbstractModule
 {
-	public static void onLoad()
+	@Override
+	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
-		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
-		fml_bus.addListener(CroptopiaModule::onFMLCommonSetup);
-	}
-
-	private static void onFMLCommonSetup(FMLCommonSetupEvent e)
-	{
+		super.onFMLCommonSetup(e);
 		e.enqueueWork(() ->
 		{
 			for (var tree : TreeCrop.copy())

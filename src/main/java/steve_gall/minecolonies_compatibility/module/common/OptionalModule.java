@@ -3,14 +3,17 @@ package steve_gall.minecolonies_compatibility.module.common;
 import java.util.function.Supplier;
 
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-public class OptionalModule
+public class OptionalModule<MODULE extends AbstractModule>
 {
 	private final String modId;
-	private final Supplier<Runnable> initializer;
+	private final Supplier<Supplier<MODULE>> initializer;
 	private boolean isLoaded;
 
-	public OptionalModule(String modid, Supplier<Runnable> initializer)
+	private MODULE module;
+
+	public OptionalModule(String modid, Supplier<Supplier<MODULE>> initializer)
 	{
 		this.modId = modid;
 		this.initializer = initializer;
@@ -32,7 +35,12 @@ public class OptionalModule
 		if (this.canLoad())
 		{
 			this.isLoaded = true;
-			this.initializer.get().run();
+			this.module = this.initializer.get().get();
+			this.module.onLoad();
+
+			var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+			fml_bus.addListener(this.module::onFMLCommonSetup);
+			fml_bus.addListener(this.module::onFMLClientSetup);
 		}
 
 	}
@@ -40,6 +48,11 @@ public class OptionalModule
 	public boolean isLoaded()
 	{
 		return this.isLoaded;
+	}
+
+	public MODULE getModule()
+	{
+		return this.module;
 	}
 
 }

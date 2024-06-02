@@ -26,11 +26,15 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
+import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 
-public class PolymorphModule
+public class PolymorphModule extends AbstractModule
 {
-	public static void onLoad()
+	@Override
+	protected void onLoad()
 	{
+		super.onLoad();
+
 		PolymorphApi.common().registerContainer2ItemStack(menu ->
 		{
 			if (menu instanceof ContainerCrafting crafting)

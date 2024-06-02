@@ -1,12 +1,19 @@
 package steve_gall.minecolonies_compatibility.module.common.blue_skies;
 
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 
-public class BlueSkiesModule
+public class BlueSkiesModule extends AbstractModule
 {
-	public static void onLoad()
+	@Override
+	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
-		CustomizedFruit.register(new BrewBerryFruit());
+		super.onFMLCommonSetup(e);
+		e.enqueueWork(() ->
+		{
+			CustomizedFruit.register(new BrewBerryFruit());
+		});
 	}
 
 }

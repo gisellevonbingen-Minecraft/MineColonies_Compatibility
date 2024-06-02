@@ -1,12 +1,19 @@
 package steve_gall.minecolonies_compatibility.module.common.delightful;
 
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 
-public class DelightfulModule
+public class DelightfulModule extends AbstractModule
 {
-	public static void onLoad()
+	@Override
+	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
-		CustomizedFruit.register(new SalmonberryFruit());
+		super.onFMLCommonSetup(e);
+		e.enqueueWork(() ->
+		{
+			CustomizedFruit.register(new SalmonberryFruit());
+		});
 	}
 
 }

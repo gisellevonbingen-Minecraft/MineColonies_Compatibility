@@ -1,13 +1,20 @@
 package steve_gall.minecolonies_compatibility.module.common.undergarden;
 
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 
-public class UndergardenModule
+public class UndergardenModule extends AbstractModule
 {
-	public static void onLoad()
+	@Override
+	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
-		CustomizedFruit.register(new UnderbeanFruit());
-		CustomizedFruit.register(new BlisterberryFruit());
+		super.onFMLCommonSetup(e);
+		e.enqueueWork(() ->
+		{
+			CustomizedFruit.register(new UnderbeanFruit());
+			CustomizedFruit.register(new BlisterberryFruit());
+		});
 	}
 
 }

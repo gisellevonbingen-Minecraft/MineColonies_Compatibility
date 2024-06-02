@@ -11,22 +11,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 
-public class PamsHarvestCraft2TreesModule
+public class PamsHarvestCraft2TreesModule extends AbstractModule
 {
 	public static String FRUIT_PREFIX = "pam";
 
-	public static void onLoad()
+	@Override
+	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
-		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
-		fml_bus.addListener(PamsHarvestCraft2TreesModule::onFMLCommonSetup);
-	}
-
-	private static void onFMLCommonSetup(FMLCommonSetupEvent e)
-	{
+		super.onFMLCommonSetup(e);
 		e.enqueueWork(() ->
 		{
 			var modid = Pamhc2trees.MOD_ID;

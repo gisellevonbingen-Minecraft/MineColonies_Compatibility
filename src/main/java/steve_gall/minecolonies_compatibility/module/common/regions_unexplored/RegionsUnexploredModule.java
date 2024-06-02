@@ -1,19 +1,15 @@
 package steve_gall.minecolonies_compatibility.module.common.regions_unexplored;
 
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 
-public class RegionsUnexploredModule
+public class RegionsUnexploredModule extends AbstractModule
 {
-	public static void onLoad()
+	@Override
+	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
-		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
-		fml_bus.addListener(RegionsUnexploredModule::onFMLCommonSetup);
-	}
-
-	private static void onFMLCommonSetup(FMLCommonSetupEvent e)
-	{
+		super.onFMLCommonSetup(e);
 		e.enqueueWork(() ->
 		{
 			CustomizedFruit.register(new AppleLeavesFruit());

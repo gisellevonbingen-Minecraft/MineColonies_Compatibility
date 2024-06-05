@@ -114,7 +114,7 @@ public class EntityAIWorkFarmersCook extends AbstractEntityAISkill<JobFarmersCoo
 		var cookingModule = this.building.getFirstModuleOccurance(CookingCraftingModule.class);
 		cookingModule.requestFindWorkingBlocks(this.worker);
 
-		var cookingPots = cookingModule.getWorkingBlocks(this.world).toList();
+		var cookingPots = cookingModule.getWorkingBlocks().toList();
 
 		if (cookingPots.size() == 0)
 		{
@@ -505,7 +505,7 @@ public class EntityAIWorkFarmersCook extends AbstractEntityAISkill<JobFarmersCoo
 		var world = this.building.getColony().getWorld();
 
 		var cookingModule = this.building.getFirstModuleOccurance(CookingCraftingModule.class);
-		var cookingPots = cookingModule.getWorkingBlocks(this.world).toList();
+		var cookingPots = cookingModule.getWorkingBlocks().toList();
 
 		for (var pos : cookingPots)
 		{

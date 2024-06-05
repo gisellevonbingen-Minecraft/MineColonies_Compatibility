@@ -39,7 +39,8 @@ public class PathJobFindWorkingBlocks<RESULT extends WorkingBlocksPathResult> ex
 	@Override
 	protected boolean testTarget(int x, int y, int z)
 	{
-		return this.getResult().test(this, this.tempPos.set(x, y, z));
+		this.getResult().test(this, this.tempPos.set(x, y, z));
+		return false;
 	}
 
 }

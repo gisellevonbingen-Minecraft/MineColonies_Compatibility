@@ -44,14 +44,14 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 		if (this.building.getCraftingModuleForRecipe(recipeStorage.getToken()) instanceof ICraftingModuleWithExternalWorkingBlocks module && module.isIntermediate(recipeStorage.getIntermediate()))
 		{
 			module.requestFindWorkingBlocks(this.worker);
-			var pos = module.getWorkingBlocks(this.world).findAny().orElse(null);
+			var pos = module.getWorkingBlocks().findAny().orElse(null);
 
 			if (pos != null)
 			{
 				this.minecolonies_compatibility$workingPosition = pos;
-				this.minecolonies_compatibility$hitPosition = module.getHitPosition(this.world, pos);
-				this.minecolonies_compatibility$particlePosition = module.getParticlePosition(this.world, pos);
-				return this.walkToBlock(module.getWalkingPosition(this.world, pos));
+				this.minecolonies_compatibility$hitPosition = module.getHitPosition(pos);
+				this.minecolonies_compatibility$particlePosition = module.getParticlePosition(pos);
+				return this.walkToBlock(module.getWalkingPosition(pos));
 			}
 			else
 			{

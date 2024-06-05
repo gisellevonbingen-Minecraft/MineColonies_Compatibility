@@ -55,6 +55,13 @@ public abstract class AbstractCraftingModuleWithExternalWorkingBlocks extends Ab
 	}
 
 	@Override
+	public boolean requestFindWorkingBlocks()
+	{
+		var worker = this.getPathFindingCitizen();
+		return this.requestFindWorkingBlocks(worker);
+	}
+
+	@Override
 	public boolean requestFindWorkingBlocks(@Nullable AbstractEntityCitizen citizen)
 	{
 		if (this.pathReuslt == null)
@@ -65,8 +72,17 @@ public abstract class AbstractCraftingModuleWithExternalWorkingBlocks extends Ab
 		}
 		else if (this.pathReuslt.isDone())
 		{
-			this.workingPositions.addAll(this.pathReuslt.positions);
+			for (var pos : this.pathReuslt.positions)
+			{
+				if (this.workingPositions.add(pos))
+				{
+					this.onWorkingBlockAdded(pos);
+				}
+
+			}
+
 			this.pathReuslt = null;
+			this.markDirty();
 			return false;
 		}
 		else
@@ -79,11 +95,14 @@ public abstract class AbstractCraftingModuleWithExternalWorkingBlocks extends Ab
 	@Override
 	public void onColonyTick(@NotNull IColony colony)
 	{
-		super.onColonyTick(colony);
+		this.requestFindWorkingBlocks();
+	}
 
+	@Nullable
+	protected AbstractEntityCitizen getPathFindingCitizen()
+	{
 		var data = this.building.getModuleMatching(WorkerBuildingModule.class, m -> m.getJobEntry() == this.jobEntry).getFirstCitizen();
-		var worker = data != null ? data.getEntity().orElse(null) : null;
-		this.requestFindWorkingBlocks(worker);
+		return data != null ? data.getEntity().orElse(null) : null;
 	}
 
 	@Override
@@ -106,13 +125,38 @@ public abstract class AbstractCraftingModuleWithExternalWorkingBlocks extends Ab
 	{
 		var level = this.building.getColony().getWorld();
 		var state = level.getBlockState(pos);
-		return this.isWorkingBlock(level, pos, state) && this.workingPositions.add(pos);
+
+		if (this.isWorkingBlock(level, pos, state) && this.workingPositions.add(pos))
+		{
+			this.onWorkingBlockAdded(pos);
+			this.markDirty();
+			return true;
+		}
+
+		return false;
+	}
+
+	protected void onWorkingBlockAdded(@NotNull BlockPos pos)
+	{
+
 	}
 
 	@Override
 	public boolean removeWorkingBlock(@Nullable BlockPos pos)
 	{
-		return this.workingPositions.remove(pos);
+		if (this.workingPositions.remove(pos))
+		{
+			this.removeWorkingBlock(pos);
+			this.markDirty();
+			return true;
+		}
+
+		return false;
+	}
+
+	protected void onWorkingBlockRemoved(@Nullable BlockPos pos)
+	{
+
 	}
 
 	@Override

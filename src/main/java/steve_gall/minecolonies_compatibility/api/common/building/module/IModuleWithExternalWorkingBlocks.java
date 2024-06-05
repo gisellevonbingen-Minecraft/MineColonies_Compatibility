@@ -52,6 +52,12 @@ public interface IModuleWithExternalWorkingBlocks extends IModuleWithExternalBlo
 
 	/**
 	 *
+	 * @return true if finding path
+	 */
+	boolean requestFindWorkingBlocks();
+
+	/**
+	 *
 	 * @param citizen
 	 * @return true if finding path
 	 */
@@ -62,8 +68,10 @@ public interface IModuleWithExternalWorkingBlocks extends IModuleWithExternalBlo
 	boolean removeWorkingBlock(@Nullable BlockPos pos);
 
 	@NotNull
-	default Stream<BlockPos> getWorkingBlocks(@NotNull LevelReader level)
+	default Stream<BlockPos> getWorkingBlocks()
 	{
+		var level = this.getBuilding().getColony().getWorld();
+
 		return this.getRegisteredBlocks().stream().filter(pos ->
 		{
 			var state = level.getBlockState(pos);
@@ -81,7 +89,7 @@ public interface IModuleWithExternalWorkingBlocks extends IModuleWithExternalBlo
 	boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state);
 
 	@NotNull
-	default BlockPos getWalkingPosition(@NotNull LevelReader level, @NotNull BlockPos pos)
+	default BlockPos getWalkingPosition(@NotNull BlockPos pos)
 	{
 		return pos;
 	}

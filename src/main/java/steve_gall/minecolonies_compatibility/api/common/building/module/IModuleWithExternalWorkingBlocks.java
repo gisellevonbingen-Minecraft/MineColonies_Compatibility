@@ -7,18 +7,48 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.modules.IModuleWithExternalBlocks;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
+import com.minecolonies.api.research.util.ResearchConstants;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
+import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.WorkingBlocksPathResult;
 
 public interface IModuleWithExternalWorkingBlocks extends IModuleWithExternalBlocks
 {
+	default @NotNull PathJobFindWorkingBlocks<?> createWorkingBlocksFindPath(@Nullable AbstractEntityCitizen citizen)
+	{
+		return this.createWorkingBlocksFindPath(citizen, this.createPathResult(citizen));
+	}
+
+	default @NotNull PathJobFindWorkingBlocks<?> createWorkingBlocksFindPath(@Nullable AbstractEntityCitizen citizen, WorkingBlocksPathResult result)
+	{
+		var building = this.getBuilding();
+		var corners = building.getCorners();
+		var colony = building.getColony();
+		var job = new PathJobFindWorkingBlocks<>(colony.getWorld(), citizen != null ? citizen.blockPosition() : building.getID(), BoundingBox.fromCorners(corners.getA(), corners.getB()), citizen, result);
+
+		if (citizen != null)
+		{
+			job.setPathingOptions(citizen.getNavigation().getPathingOptions());
+		}
+		else
+		{
+			var researchEffects = colony.getResearchManager().getResearchEffects();
+			var options = job.getPathingOptions();
+			options.setEnterDoors(true);
+			options.setCanOpenDoors(true);
+			options.setCanUseRails(researchEffects.getEffectStrength(ResearchConstants.RAILS) > 0);
+			options.setCanClimbVines(researchEffects.getEffectStrength(ResearchConstants.VINES) > 0);
+		}
+
+		return job;
+	}
+
 	@NotNull
-	PathJobFindWorkingBlocks<?> createWorkingBlocksFindPath(@Nullable AbstractEntityCitizen citizen);
+	WorkingBlocksPathResult createPathResult(@Nullable AbstractEntityCitizen citizen);
 
 	/**
 	 *
@@ -30,9 +60,6 @@ public interface IModuleWithExternalWorkingBlocks extends IModuleWithExternalBlo
 	boolean addWorkingBlock(@Nullable BlockPos pos);
 
 	boolean removeWorkingBlock(@Nullable BlockPos pos);
-
-	@NotNull
-	Component getWorkingBlockNotFoundMessage();
 
 	@NotNull
 	default Stream<BlockPos> getWorkingBlocks(@NotNull LevelReader level)
@@ -51,29 +78,12 @@ public interface IModuleWithExternalWorkingBlocks extends IModuleWithExternalBlo
 		});
 	}
 
-	default boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
-	{
-		return this.isIntermediate(state.getBlock());
-	}
-
-	boolean isIntermediate(@NotNull Block block);
+	boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state);
 
 	@NotNull
 	default BlockPos getWalkingPosition(@NotNull LevelReader level, @NotNull BlockPos pos)
 	{
 		return pos;
-	}
-
-	@NotNull
-	default BlockPos getHitPosition(@NotNull LevelReader level, @NotNull BlockPos pos)
-	{
-		return pos;
-	}
-
-	@NotNull
-	default BlockPos getParticlePosition(@NotNull LevelReader level, @NotNull BlockPos pos)
-	{
-		return this.getHitPosition(level, pos).above();
 	}
 
 }

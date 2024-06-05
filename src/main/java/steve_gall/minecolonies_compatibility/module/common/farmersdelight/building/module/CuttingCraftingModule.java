@@ -18,13 +18,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractModuleWithExternalWorkingBlocks;
+import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.WorkingBlocksPathResult;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleCraftingTypes;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 
-public class CuttingCraftingModule extends AbstractModuleWithExternalWorkingBlocks
+public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWorkingBlocks
 {
 	private final IToolType toolType;
 
@@ -92,7 +92,7 @@ public class CuttingCraftingModule extends AbstractModuleWithExternalWorkingBloc
 	}
 
 	@Override
-	protected WorkingBlocksPathResult createPathResult(@Nullable AbstractEntityCitizen citizen)
+	public WorkingBlocksPathResult createPathResult(@Nullable AbstractEntityCitizen citizen)
 	{
 		return new WorkingBlocksPathResult(this)
 		{

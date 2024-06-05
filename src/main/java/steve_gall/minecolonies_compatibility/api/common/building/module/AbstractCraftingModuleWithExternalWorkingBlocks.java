@@ -11,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.colony.IColony;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.core.colony.buildings.modules.AbstractCraftingBuildingModule;
 import com.minecolonies.core.colony.buildings.modules.WorkerBuildingModule;
@@ -20,20 +19,20 @@ import com.minecolonies.core.entity.pathfinding.Pathfinding;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.WorkingBlocksPathResult;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
-public abstract class AbstractModuleWithExternalWorkingBlocks extends AbstractCraftingBuildingModule.Custom implements IModuleWithExternalWorkingBlocks
+public abstract class AbstractCraftingModuleWithExternalWorkingBlocks extends AbstractCraftingBuildingModule.Custom implements ICraftingModuleWithExternalWorkingBlocks
 {
 	public static final String TAG_REGISTERED_POSITIONS = MineColoniesCompatibility.rl("registered_positions").toString();
 
 	private final Set<BlockPos> workingPositions = new HashSet<>();
 	private WorkingBlocksPathResult pathReuslt;
 
-	public AbstractModuleWithExternalWorkingBlocks(JobEntry jobEntry)
+	public AbstractCraftingModuleWithExternalWorkingBlocks(JobEntry jobEntry)
 	{
 		super(jobEntry);
 	}
@@ -53,30 +52,6 @@ public abstract class AbstractModuleWithExternalWorkingBlocks extends AbstractCr
 		super.serializeNBT(compound);
 
 		BlockPosUtil.writePosListToNBT(compound, TAG_REGISTERED_POSITIONS, new ArrayList<>(this.workingPositions));
-	}
-
-	@Override
-	public @NotNull PathJobFindWorkingBlocks<?> createWorkingBlocksFindPath(@Nullable AbstractEntityCitizen citizen)
-	{
-		var corners = this.building.getCorners();
-		var colony = this.building.getColony();
-		var job = new PathJobFindWorkingBlocks<>(colony.getWorld(), citizen != null ? citizen.blockPosition() : this.building.getID(), BoundingBox.fromCorners(corners.getA(), corners.getB()), citizen, this.createPathResult(citizen));
-
-		if (citizen != null)
-		{
-			job.setPathingOptions(citizen.getNavigation().getPathingOptions());
-		}
-		else
-		{
-			var researchEffects = colony.getResearchManager().getResearchEffects();
-			var options = job.getPathingOptions();
-			options.setEnterDoors(true);
-			options.setCanOpenDoors(true);
-			options.setCanUseRails(researchEffects.getEffectStrength(ResearchConstants.RAILS) > 0);
-			options.setCanClimbAdvanced(researchEffects.getEffectStrength(ResearchConstants.VINES) > 0);
-		}
-
-		return job;
 	}
 
 	@Override
@@ -101,8 +76,6 @@ public abstract class AbstractModuleWithExternalWorkingBlocks extends AbstractCr
 
 	}
 
-	protected abstract WorkingBlocksPathResult createPathResult(@Nullable AbstractEntityCitizen citizen);
-
 	@Override
 	public void onColonyTick(@NotNull IColony colony)
 	{
@@ -112,6 +85,15 @@ public abstract class AbstractModuleWithExternalWorkingBlocks extends AbstractCr
 		var worker = data != null ? data.getEntity().orElse(null) : null;
 		this.requestFindWorkingBlocks(worker);
 	}
+
+	@Override
+	public boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
+	{
+		return this.isIntermediate(state.getBlock());
+	}
+
+	@Override
+	public abstract boolean isIntermediate(@NotNull Block block);
 
 	@Override
 	public void onBlockPlacedInBuilding(@NotNull BlockState blockState, @NotNull BlockPos pos, @NotNull Level level)

@@ -16,14 +16,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractModuleWithExternalWorkingBlocks;
+import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.WorkingBlocksPathResult;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleCraftingTypes;
 import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 
-public class CookingCraftingModule extends AbstractModuleWithExternalWorkingBlocks
+public class CookingCraftingModule extends AbstractCraftingModuleWithExternalWorkingBlocks
 {
 	public CookingCraftingModule(JobEntry jobEntry)
 	{
@@ -80,7 +80,7 @@ public class CookingCraftingModule extends AbstractModuleWithExternalWorkingBloc
 	}
 
 	@Override
-	protected WorkingBlocksPathResult createPathResult(@Nullable AbstractEntityCitizen citizen)
+	public WorkingBlocksPathResult createPathResult(@Nullable AbstractEntityCitizen citizen)
 	{
 		return new WorkingBlocksPathResult(this)
 		{

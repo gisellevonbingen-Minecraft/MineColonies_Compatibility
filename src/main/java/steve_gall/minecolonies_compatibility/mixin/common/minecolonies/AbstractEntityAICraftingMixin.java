@@ -16,7 +16,7 @@ import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 
 import net.minecraft.core.BlockPos;
-import steve_gall.minecolonies_compatibility.api.common.building.module.IModuleWithExternalWorkingBlocks;
+import steve_gall.minecolonies_compatibility.api.common.building.module.ICraftingModuleWithExternalWorkingBlocks;
 
 @Mixin(value = AbstractEntityAICrafting.class, remap = false)
 public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter<?, J>, B extends AbstractBuilding> extends AbstractEntityAIInteract<J, B>
@@ -41,7 +41,7 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 	{
 		var recipeStorage = this.currentRecipeStorage;
 
-		if (this.building.getCraftingModuleForRecipe(recipeStorage.getToken()) instanceof IModuleWithExternalWorkingBlocks module && module.isIntermediate(recipeStorage.getIntermediate()))
+		if (this.building.getCraftingModuleForRecipe(recipeStorage.getToken()) instanceof ICraftingModuleWithExternalWorkingBlocks module && module.isIntermediate(recipeStorage.getIntermediate()))
 		{
 			module.requestFindWorkingBlocks(this.worker);
 			var pos = module.getWorkingBlocks(this.world).findAny().orElse(null);

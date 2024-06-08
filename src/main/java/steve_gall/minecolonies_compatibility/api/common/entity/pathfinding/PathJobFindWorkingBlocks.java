@@ -3,10 +3,13 @@ package steve_gall.minecolonies_compatibility.api.common.entity.pathfinding;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.core.entity.pathfinding.MNode;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import steve_gall.minecolonies_tweaks.api.common.pathfinding.SimplePathJob;
 
@@ -28,6 +31,18 @@ public class PathJobFindWorkingBlocks<RESULT extends WorkingBlocksPathResult> ex
 	public LevelReader getLevel()
 	{
 		return this.world;
+	}
+
+	@Override
+	protected boolean isPassable(int x, int y, int z, boolean head, MNode parent)
+	{
+		return true;
+	}
+
+	@Override
+	protected boolean isPassable(@NotNull BlockState block, int x, int y, int z, MNode parent, boolean head)
+	{
+		return true;
 	}
 
 	@Override

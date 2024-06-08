@@ -54,6 +54,7 @@ public class MineColoniesCompatibility
 			ModBuildings.guardTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_TOWER_WORK);
 			ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.ORCHARDIST_WORK);
 			ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.FRUITLIST_BLACKLIST);
+			ModBuildings.wareHouse.get().getModuleProducers().add(ModBuildingModules.NETWORK_STORAGE);
 		});
 	}
 

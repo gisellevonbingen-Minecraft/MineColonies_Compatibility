@@ -14,6 +14,7 @@ import steve_gall.minecolonies_compatibility.core.common.network.message.Farmers
 import steve_gall.minecolonies_compatibility.core.common.network.message.FarmersTeachCuttingOpenMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIRecipeTransferMessage;
+import steve_gall.minecolonies_compatibility.core.common.network.message.NetworkStorageRefreshMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.PolymorphTeachResultItemMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuNewResultMessage;
 
@@ -32,6 +33,7 @@ public class NetworkChannel
 		this.registerMessage(PolymorphTeachResultItemMessage.class, PolymorphTeachResultItemMessage::new);
 		this.registerMessage(JEIGhostAcceptMessage.class, JEIGhostAcceptMessage::new);
 		this.registerMessage(JEIRecipeTransferMessage.class, JEIRecipeTransferMessage::new);
+		this.registerMessage(NetworkStorageRefreshMessage.class, NetworkStorageRefreshMessage::new);
 		this.registerMessage(FarmersTeachCuttingOpenMessage.class, FarmersTeachCuttingOpenMessage::new);
 		this.registerMessage(FarmersTeachCookingOpenMessage.class, FarmersTeachCookingOpenMessage::new);
 	}

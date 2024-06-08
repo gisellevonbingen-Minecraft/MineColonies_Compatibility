@@ -1,0 +1,19 @@
+<window size="190 244" pause="false" lightbox="false">
+	<image
+		source="minecolonies:textures/gui/builderhut/builder_paper.png"
+		size="190 244" />
+	<label id="desc" size="130 11" pos="30 14" color="black"
+		textalign="MIDDLE" />
+	<list id="resources" size="167 136" pos="13 50">
+		<box size="100% 22" linewidth="1">
+			<itemicon id="resourceIcon" size="16 16" pos="2 4" />
+			<label id="resourceName" size="147 8" pos="20 2" color="black" />
+			<label id="pos" size="147 8" pos="20 12" color="black" />
+		</box>
+	</list>
+	<buttonimage
+		label="$(minecolonies_compatibility.gui.refresh)" id="refresh"
+		size="86 17" pos="50 194"
+		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
+		textcolor="black" />
+</window>

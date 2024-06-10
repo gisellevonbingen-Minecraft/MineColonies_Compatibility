@@ -23,6 +23,8 @@ import com.mojang.datafixers.util.Pair;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModuleView;
+import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
+import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModuleView;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist.EntityAIWorkOrchardist;
 
 public class ModBuildingModules
@@ -49,6 +51,10 @@ public class ModBuildingModules
 	public static final BuildingEntry.ModuleProducer<FruitListModule, FruitListModuleView> FRUITLIST_BLACKLIST = new BuildingEntry.ModuleProducer<>("fruitlist_blacklist", //
 			() -> new FruitListModule(ModBuildingModules.FRUITLIST_BLACKLIST.key), //
 			() -> () -> new FruitListModuleView("fruitlist_blacklist", "com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist", true, fruit -> true));
+
+	public static final BuildingEntry.ModuleProducer<NetworkStorageModule, NetworkStorageModuleView> NETWORK_STORAGE = new BuildingEntry.ModuleProducer<>("warehouse_refinfedstoprage_grid", //
+			() -> new NetworkStorageModule(), //
+			() -> NetworkStorageModuleView::new);//
 
 	public static final List<ModuleProducer<?, ?>> ORCHARDIST_BAN_MODULES = Arrays.asList(//
 			BuildingModules.FORESTER_CRAFT, //

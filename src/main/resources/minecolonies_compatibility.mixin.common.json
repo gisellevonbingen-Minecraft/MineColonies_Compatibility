@@ -15,6 +15,7 @@
 		"minecolonies.ContainerCraftingMixin",
 		"minecolonies.EntityAIKnightMixin",
 		"minecolonies.EntityAIRangerMixin",
+		"minecolonies.EntityAIWorkDeliverymanMixin",
 		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.GenericRecipeCategoryMixin",
 		"minecolonies.JobEntryMixin",
@@ -23,6 +24,7 @@
 		"minecolonies.RangerCombatAIMixin",
 		"minecolonies.RecipeStorageMixin",
 		"minecolonies.TargetAIMixin",
+		"minecolonies.TileEntityWareHouseMixin",
 		"minecolonies.WorkerBuildingModuleViewMixin",
 		
 		"blue_skies.BrewberryBushBlockAccessor",

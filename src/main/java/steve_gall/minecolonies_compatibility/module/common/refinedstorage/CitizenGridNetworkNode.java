@@ -50,6 +50,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements INetworkStora
 		super(level, pos);
 
 		this.listener = new StorageListener();
+
 		this.colonyId = 0;
 		this.warehousePos = Optional.empty();
 	}
@@ -93,7 +94,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements INetworkStora
 			return false;
 		}
 
-		return RefinedStorageModule.hasPermission(this.getPairedModule().getBuilding().getColony(), network, Permission.EXTRACT);
+		return RefinedStorageModule.hasPermission(this.getLinkedModule().getBuilding().getColony(), network, Permission.EXTRACT);
 	}
 
 	@Override
@@ -106,7 +107,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements INetworkStora
 			return false;
 		}
 
-		return RefinedStorageModule.hasPermission(this.getPairedModule().getBuilding().getColony(), network, Permission.INSERT);
+		return RefinedStorageModule.hasPermission(this.getLinkedModule().getBuilding().getColony(), network, Permission.INSERT);
 	}
 
 	@Override
@@ -182,7 +183,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements INetworkStora
 	@Override
 	public void unlink()
 	{
-		var module = this.getPairedModule0();
+		var module = this.getLinkedModule0();
 
 		if (module != null)
 		{
@@ -198,9 +199,9 @@ public class CitizenGridNetworkNode extends NetworkNode implements INetworkStora
 	}
 
 	@Override
-	public NetworkStorageModule getPairedModule()
+	public NetworkStorageModule getLinkedModule()
 	{
-		var module = this.getPairedModule0();
+		var module = this.getLinkedModule0();
 
 		if (module == null || module.isDestroyed())
 		{
@@ -211,7 +212,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements INetworkStora
 		return module;
 	}
 
-	public NetworkStorageModuleView getPairedModuleView()
+	public NetworkStorageModuleView getLinkedModuleView()
 	{
 		if (this.warehousePos.isEmpty())
 		{
@@ -235,7 +236,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements INetworkStora
 		return building.getModuleView(ModBuildingModules.NETWORK_STORAGE);
 	}
 
-	private NetworkStorageModule getPairedModule0()
+	private NetworkStorageModule getLinkedModule0()
 	{
 		if (this.module == null)
 		{
@@ -328,7 +329,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements INetworkStora
 				return;
 			}
 
-			var module = getPairedModule();
+			var module = getLinkedModule();
 
 			if (module != null && result.getChange() > 0)
 			{
@@ -345,7 +346,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements INetworkStora
 				return;
 			}
 
-			var module = getPairedModule();
+			var module = getLinkedModule();
 
 			if (module == null)
 			{

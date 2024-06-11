@@ -15,7 +15,7 @@ public interface INetworkStorageView
 
 	BlockPos getPos();
 
-	NetworkStorageModule getPairedModule();
+	NetworkStorageModule getLinkedModule();
 
 	boolean isActive();
 

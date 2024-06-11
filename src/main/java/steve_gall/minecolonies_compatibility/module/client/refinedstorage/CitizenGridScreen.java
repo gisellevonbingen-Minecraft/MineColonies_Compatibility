@@ -42,7 +42,7 @@ public class CitizenGridScreen extends BaseScreen<CitizenGridContainerMenu>
 		this.renderString(graphics, 7, 43, TEXT_INVENTORY.getString());
 
 		var node = ((CitizenGridBlockEntity) this.getMenu().getBlockEntity()).getNode();
-		var module = node.getPairedModuleView();
+		var module = node.getLinkedModuleView();
 
 		if (module != null)
 		{

@@ -227,12 +227,12 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 
 		if (view != null)
 		{
-			if (view.getPairedModule() == null)
+			if (view.getLinkedModule() == null)
 			{
 				view.link(this);
 				return view;
 			}
-			else if (view.getPairedModule() == this)
+			else if (view.getLinkedModule() == this)
 			{
 				return view;
 			}
@@ -264,7 +264,7 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 		var blockEntity = level.getBlockEntity(pos);
 		var view = resolveView(blockEntity);
 
-		if (view != null && view.getPairedModule() == null)
+		if (view != null && view.getLinkedModule() == null)
 		{
 			view.link(this);
 		}
@@ -275,7 +275,7 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	{
 		var view = this.getView(pos);
 
-		if (view != null && view.getPairedModule() == this)
+		if (view != null && view.getLinkedModule() == this)
 		{
 			view.unlink();
 		}

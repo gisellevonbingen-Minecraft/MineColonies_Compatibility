@@ -75,10 +75,4 @@ public class NBTUtils2
 
 	}
 
-	public static interface TagProvider
-	{
-		@NotNull
-		CompoundTag get(@Nullable CompoundTag tag, @NotNull String key);
-	}
-
 }

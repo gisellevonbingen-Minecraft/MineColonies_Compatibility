@@ -67,6 +67,8 @@ public interface IModuleWithExternalWorkingBlocks extends IModuleWithExternalBlo
 
 	boolean removeWorkingBlock(@Nullable BlockPos pos);
 
+	boolean containsWorkingBlock(@Nullable BlockPos pos);
+
 	@NotNull
 	default Stream<BlockPos> getWorkingBlocks()
 	{

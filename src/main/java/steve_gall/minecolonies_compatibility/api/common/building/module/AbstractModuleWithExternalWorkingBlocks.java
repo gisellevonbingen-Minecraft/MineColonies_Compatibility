@@ -130,7 +130,7 @@ public abstract class AbstractModuleWithExternalWorkingBlocks extends AbstractBu
 	{
 		if (this.workingPositions.remove(pos))
 		{
-			this.removeWorkingBlock(pos);
+			this.onWorkingBlockRemoved(pos);
 			this.markDirty();
 			return true;
 		}
@@ -141,6 +141,12 @@ public abstract class AbstractModuleWithExternalWorkingBlocks extends AbstractBu
 	protected void onWorkingBlockRemoved(@Nullable BlockPos pos)
 	{
 
+	}
+
+	@Override
+	public boolean containsWorkingBlock(@Nullable BlockPos pos)
+	{
+		return this.workingPositions.contains(pos);
 	}
 
 	@Override

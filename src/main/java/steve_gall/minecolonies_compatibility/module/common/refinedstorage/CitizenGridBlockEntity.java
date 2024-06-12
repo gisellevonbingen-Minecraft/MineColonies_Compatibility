@@ -16,8 +16,8 @@ public class CitizenGridBlockEntity extends NetworkNodeBlockEntity<CitizenGridNe
 	private static final String TAG_LINK = "link";
 
 	public static final BlockEntitySynchronizationParameter<CompoundTag, CitizenGridBlockEntity> PAIR = new BlockEntitySynchronizationParameter<>(EntityDataSerializers.COMPOUND_TAG, new CompoundTag(), //
-			t -> t.getNode().writeLink(), //
-			(t, v) -> t.getNode().readLink(v), //
+			t -> t.getNode().getView().write(), //
+			(t, v) -> t.getNode().getView().read(v), //
 			(initial, p) ->
 			{
 			});
@@ -44,7 +44,7 @@ public class CitizenGridBlockEntity extends NetworkNodeBlockEntity<CitizenGridNe
 
 		if (!this.level.isClientSide())
 		{
-			this.getRemovedNode().unlink();
+			this.getRemovedNode().getView().unlink();
 		}
 
 	}
@@ -54,7 +54,7 @@ public class CitizenGridBlockEntity extends NetworkNodeBlockEntity<CitizenGridNe
 	{
 		super.writeUpdate(tag);
 
-		tag.put(TAG_LINK, this.getNode().writeLink());
+		tag.put(TAG_LINK, this.getNode().getView().write());
 
 		return tag;
 	}
@@ -64,7 +64,7 @@ public class CitizenGridBlockEntity extends NetworkNodeBlockEntity<CitizenGridNe
 	{
 		super.readUpdate(tag);
 
-		this.getNode().readLink(tag.getCompound(TAG_LINK));
+		this.getNode().getView().read(tag.getCompound(TAG_LINK));
 	}
 
 }

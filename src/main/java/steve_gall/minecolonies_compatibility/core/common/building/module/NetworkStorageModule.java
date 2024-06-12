@@ -1,7 +1,10 @@
 package steve_gall.minecolonies_compatibility.core.common.building.module;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -17,21 +20,37 @@ import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.Tuple;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractModuleWithExternalWorkingBlocks;
+import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
+import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.WorkingBlocksPathResult;
-import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
-import steve_gall.minecolonies_compatibility.module.common.refinedstorage.CitizenGridBlockEntity;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
 public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlocks implements IBuildingEventsModule
 {
-	private boolean isDestroyed;
+	public static final String TAG_POSTION_DIRECTIONS = MineColoniesCompatibility.rl("position_directions").toString();
+
+	private static final List<Direction> VIEW_DIRECTIONS = new ArrayList<>();
+
+	static
+	{
+		VIEW_DIRECTIONS.add(null);
+		VIEW_DIRECTIONS.addAll(Arrays.asList(Direction.values()));
+	}
+
+	private boolean isDestroyed = false;
+	private final Map<BlockPos, Direction> directions = new HashMap<>();
 
 	public void onItemIncremented(ItemStack stack)
 	{
@@ -46,49 +65,37 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	@Override
 	public boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
 	{
-		var blockEntity = level.getBlockEntity(pos);
-		var view = resolveView(blockEntity);
-
-		if (view != null)
+		if (this.containsWorkingBlock(pos))
 		{
-			return true;
+			return this.getView(level, pos) != null;
+		}
+		else
+		{
+			return resolveView(level, pos) != null;
 		}
 
-		return false;
 	}
 
 	public Stream<BlockPos> getExtractableBlocks()
 	{
-		return this.getWorkingBlocks().filter(this::canExtract);
+		return this.getRegisteredBlocks().stream().filter(this::canExtract);
 	}
 
 	public boolean canExtract(@NotNull BlockPos pos)
 	{
 		var view = this.getView(pos);
-
-		if (view != null)
-		{
-			return view.isActive() && view.canExtract();
-		}
-
-		return false;
+		return view != null && view.isActive() && view.canExtract();
 	}
 
 	public Stream<BlockPos> getInsertableBlocks()
 	{
-		return this.getWorkingBlocks().filter(this::canInsert);
+		return this.getRegisteredBlocks().stream().filter(this::canInsert);
 	}
 
 	public boolean canInsert(@NotNull BlockPos pos)
 	{
 		var view = this.getView(pos);
-
-		if (view != null)
-		{
-			return view.isActive() && view.canInsert();
-		}
-
-		return false;
+		return view != null && view.isActive() && view.canInsert();
 	}
 
 	public boolean hasMatchingItemStack(ItemStack itemStack, int count, boolean ignoreNBT, boolean ignoreDamage, int leftOver)
@@ -172,21 +179,71 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	}
 
 	@Override
+	public void deserializeNBT(CompoundTag compound)
+	{
+		super.deserializeNBT(compound);
+
+		var directionsTag = compound.getList(TAG_POSTION_DIRECTIONS, Tag.TAG_COMPOUND);
+		this.directions.clear();
+
+		for (var i = 0; i < directionsTag.size(); i++)
+		{
+			var entryTag = directionsTag.getCompound(i);
+			var pos = NbtUtils.readBlockPos(entryTag.getCompound("pos"));
+			var direction = entryTag.getString("direction");
+			this.directions.put(pos, Direction.byName(direction));
+		}
+
+	}
+
+	@Override
+	public void serializeNBT(@NotNull CompoundTag compound)
+	{
+		super.serializeNBT(compound);
+
+		var directionsTag = new ListTag();
+		compound.put(TAG_POSTION_DIRECTIONS, directionsTag);
+
+		for (var entry : this.directions.entrySet())
+		{
+			var entryTag = new CompoundTag();
+			entryTag.put("pos", NbtUtils.writeBlockPos(entry.getKey()));
+			entryTag.putString("direction", entry.getValue().getSerializedName());
+			directionsTag.add(entryTag);
+		}
+
+	}
+
+	@Override
 	public void serializeToView(FriendlyByteBuf buf)
 	{
 		super.serializeToView(buf);
 
 		buf.writeCollection(this.getWorkingBlocks().toList(), FriendlyByteBuf::writeBlockPos);
+		buf.writeCollection(this.directions.entrySet(), (buf2, data) ->
+		{
+			buf2.writeBlockPos(data.getKey());
+			buf2.writeEnum(data.getValue());
+		});
 	}
 
 	public void onLink(INetworkStorageView view)
 	{
 		this.addWorkingBlock(view.getPos());
+
+		var direction = view.getDirection();
+
+		if (direction != null)
+		{
+			this.directions.put(view.getPos(), direction);
+		}
+
 	}
 
 	public void onUnlink(INetworkStorageView view)
 	{
 		this.removeWorkingBlock(view.getPos());
+		this.directions.remove(view.getPos());
 	}
 
 	@Override
@@ -213,17 +270,25 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	}
 
 	@Nullable
-	private INetworkStorageView getView(@NotNull BlockPos pos)
+	public INetworkStorageView getView(@NotNull BlockPos pos)
 	{
 		var level = this.building.getColony().getWorld();
-		return this.getView(level, pos);
+		var view = this.getView(level, pos);
+
+		if (view == null)
+		{
+			this.removeWorkingBlock(pos);
+		}
+
+		return view;
 	}
 
 	@Nullable
-	private INetworkStorageView getView(LevelReader level, @NotNull BlockPos pos)
+	private INetworkStorageView getView(LevelReader level, BlockPos pos)
 	{
 		var blockEntity = level.getBlockEntity(pos);
-		var view = resolveView(blockEntity);
+		var direction = this.directions.get(pos);
+		var view = NetworkStorageViewRegistry.select(blockEntity, direction);
 
 		if (view != null)
 		{
@@ -239,36 +304,42 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 
 		}
 
-		this.removeWorkingBlock(pos);
-		return null;
-	}
-
-	@Nullable
-	public static INetworkStorageView resolveView(BlockEntity blockEntity)
-	{
-		if (ModuleManager.RS.isLoaded())
-		{
-			if (blockEntity instanceof CitizenGridBlockEntity grid)
-			{
-				return grid.getNode();
-			}
-
-		}
-
 		return null;
 	}
 
 	private void link(BlockPos pos)
 	{
 		var level = this.building.getColony().getWorld();
-		var blockEntity = level.getBlockEntity(pos);
-		var view = resolveView(blockEntity);
+		var view = resolveView(level, pos);
 
 		if (view != null && view.getLinkedModule() == null)
 		{
 			view.link(this);
 		}
 
+	}
+
+	public static INetworkStorageView resolveView(LevelReader level, BlockPos pos)
+	{
+		var blockEntity = level.getBlockEntity(pos);
+
+		if (blockEntity == null)
+		{
+			return null;
+		}
+
+		for (var direction : VIEW_DIRECTIONS)
+		{
+			var view = NetworkStorageViewRegistry.select(blockEntity, direction);
+
+			if (view != null)
+			{
+				return view;
+			}
+
+		}
+
+		return null;
 	}
 
 	private void unlink(BlockPos pos)

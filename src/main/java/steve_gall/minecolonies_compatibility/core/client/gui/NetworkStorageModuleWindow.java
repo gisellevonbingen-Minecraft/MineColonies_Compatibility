@@ -14,15 +14,14 @@ import com.ldtteam.blockui.views.ScrollingList;
 import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
+import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_compatibility.core.common.building.module.INetworkStorageView;
-import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModuleView;
 import steve_gall.minecolonies_compatibility.core.common.network.message.NetworkStorageRefreshMessage;
 
@@ -106,14 +105,16 @@ public class NetworkStorageModuleWindow extends AbstractModuleWindow
 
 	protected void updateResources()
 	{
-		this.revision = this.module.getRevision();
+		var module = this.module;
+		this.revision = module.getRevision();
 
 		var level = module.getBuildingView().getColony().getWorld();
 		this.currentDisplayedList = new ArrayList<>();
 
-		for (var pos : this.getModule().getBlocks())
+		for (var pos : module.getBlocks())
 		{
-			this.currentDisplayedList.add(new ViewCache(level, pos));
+			var direction = module.getDirection(pos);
+			this.currentDisplayedList.add(new ViewCache(level, pos, direction));
 		}
 
 		this.resourceList.enable();
@@ -150,24 +151,18 @@ public class NetworkStorageModuleWindow extends AbstractModuleWindow
 
 	public class ViewCache
 	{
-		public final BlockPos pos;
+		public final INetworkStorageView view;
 		public final Component posText;
 		public final ItemStack icon;
 		public final Component name;
-		public final INetworkStorageView view;
 
-		public ViewCache(Level level, BlockPos pos)
+		public ViewCache(Level level, BlockPos pos, Direction direction)
 		{
-			this.pos = pos;
+			var blockEntity = level.getBlockEntity(pos);
+			this.view = NetworkStorageViewRegistry.select(blockEntity, direction);
 			this.posText = Component.translatable("minecolonies_compatibility.gui.pos", pos.getX(), pos.getY(), pos.getZ());
-
-			var state = level.getBlockState(pos);
-			var mc = Minecraft.getInstance();
-			this.icon = state.getCloneItemStack(mc.hitResult, level, pos, mc.player);
+			this.icon = this.view != null ? this.view.getIcon() : ItemStack.EMPTY;
 			this.name = this.icon.getHoverName();
-
-			BlockEntity blockEntity = level.getBlockEntity(pos);
-			this.view = NetworkStorageModule.resolveView(blockEntity);
 		}
 
 	}

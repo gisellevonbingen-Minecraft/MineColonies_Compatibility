@@ -160,6 +160,12 @@ public abstract class AbstractCraftingModuleWithExternalWorkingBlocks extends Ab
 	}
 
 	@Override
+	public boolean containsWorkingBlock(@Nullable BlockPos pos)
+	{
+		return this.workingPositions.contains(pos);
+	}
+
+	@Override
 	public List<BlockPos> getRegisteredBlocks()
 	{
 		return new ArrayList<>(this.workingPositions);

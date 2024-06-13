@@ -48,7 +48,7 @@ public abstract class TileEntityWareHouseMixin extends AbstractTileEntityWareHou
 
 		if (module != null)
 		{
-			var list = module.getMatchingItemStacks(itemStackSelectionPredicate);
+			var list = module.getMatchingItemStacks(itemStackSelectionPredicate).toList();
 
 			if (list.size() > 0)
 			{

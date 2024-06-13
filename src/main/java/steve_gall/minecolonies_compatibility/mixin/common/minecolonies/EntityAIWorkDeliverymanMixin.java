@@ -16,6 +16,7 @@ import com.minecolonies.core.entity.ai.citizen.deliveryman.EntityAIWorkDeliverym
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.items.ItemHandlerHelper;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 
 @Mixin(value = EntityAIWorkDeliveryman.class)
@@ -48,15 +49,25 @@ public abstract class EntityAIWorkDeliverymanMixin extends AbstractEntityAIInter
 
 		var view = module.getView(entity.getBlockPos());
 
-		if (view == null || !module.canExtract(view.getPos()))
+		if (!module.canExtract(view))
 		{
 			return;
 		}
 
 		var inventory = this.worker.getInventoryCitizen();
+		var extracting = view.extractItem(is, true);
 
-		if (view.extract(inventory, is))
+		if (extracting.isEmpty())
 		{
+			return;
+		}
+
+		var remain = ItemHandlerHelper.insertItem(inventory, extracting, true);
+
+		if (remain.isEmpty())
+		{
+			var extracted = view.extractItem(is, false);
+			ItemHandlerHelper.insertItem(inventory, extracted, false);
 			cir.setReturnValue(true);
 		}
 

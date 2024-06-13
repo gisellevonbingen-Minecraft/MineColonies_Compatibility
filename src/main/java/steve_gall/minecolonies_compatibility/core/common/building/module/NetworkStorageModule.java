@@ -36,6 +36,7 @@ import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkS
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.WorkingBlocksPathResult;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.util.StreamUtils;
 
 public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlocks implements IBuildingEventsModule
 {
@@ -76,49 +77,38 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 
 	}
 
-	public Stream<BlockPos> getExtractableBlocks()
+	public Stream<INetworkStorageView> getExtractableBlocks()
 	{
-		return this.getRegisteredBlocks().stream().filter(this::canExtract);
+		return this.getRegisteredBlocks().stream().map(this::getView).filter(this::canExtract);
 	}
 
-	public boolean canExtract(@NotNull BlockPos pos)
+	public boolean canExtract(@Nullable INetworkStorageView view)
 	{
-		var view = this.getView(pos);
 		return view != null && view.isActive() && view.canExtract();
 	}
 
-	public Stream<BlockPos> getInsertableBlocks()
+	public Stream<INetworkStorageView> getInsertableBlocks()
 	{
-		return this.getRegisteredBlocks().stream().filter(this::canInsert);
+		return this.getRegisteredBlocks().stream().map(this::getView).filter(this::canInsert);
 	}
 
-	public boolean canInsert(@NotNull BlockPos pos)
+	public boolean canInsert(@Nullable INetworkStorageView view)
 	{
-		var view = this.getView(pos);
 		return view != null && view.isActive() && view.canInsert();
 	}
 
 	public boolean hasMatchingItemStack(ItemStack itemStack, int count, boolean ignoreNBT, boolean ignoreDamage, int leftOver)
 	{
 		var totalCountFound = 0 - leftOver;
+		Predicate<ItemStack> predicate = stack -> ItemStackUtils.compareItemStacksIgnoreStackSize(itemStack, stack, !ignoreDamage, !ignoreNBT);
 
-		for (var pos : this.getExtractableBlocks().toList())
+		for (var stack : StreamUtils.toIterable(this.getExtractableBlocks().flatMap(view -> view.getAllStacks().filter(predicate))))
 		{
-			var view = this.getView(pos);
+			totalCountFound += stack.getCount();
 
-			if (view != null)
+			if (totalCountFound >= count)
 			{
-				for (var stack : view.getMatchingStacks(stack -> ItemStackUtils.compareItemStacksIgnoreStackSize(itemStack, stack, !ignoreDamage, !ignoreNBT)))
-				{
-					totalCountFound += stack.getCount();
-
-					if (totalCountFound >= count)
-					{
-						return true;
-					}
-
-				}
-
+				return true;
 			}
 
 		}
@@ -126,42 +116,19 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 		return false;
 	}
 
-	public List<Tuple<ItemStack, BlockPos>> getMatchingItemStacks(Predicate<ItemStack> predicate)
+	public Stream<Tuple<ItemStack, BlockPos>> getMatchingItemStacks(Predicate<ItemStack> predicate)
 	{
-		var list = new ArrayList<Tuple<ItemStack, BlockPos>>();
-
-		for (var pos : this.getExtractableBlocks().toList())
+		return this.getExtractableBlocks().flatMap(view ->
 		{
-			var view = this.getView(pos);
-
-			if (view != null)
-			{
-				for (var stack : view.getMatchingStacks(predicate))
-				{
-					list.add(new Tuple<>(stack, pos));
-				}
-
-			}
-
-		}
-
-		return list;
+			return view.getAllStacks().filter(predicate).map(stack -> new Tuple<>(stack, view.getPos()));
+		});
 	}
 
 	public void dump(IItemHandlerModifiable itemHandler)
 	{
-		var blocks = this.getInsertableBlocks().toList();
-
-		for (var block : blocks)
+		for (var i = 0; i < itemHandler.getSlots(); i++)
 		{
-			var view = this.getView(block);
-
-			if (view == null)
-			{
-				continue;
-			}
-
-			for (var i = 0; i < itemHandler.getSlots(); i++)
+			for (var view : StreamUtils.toIterable(this.getInsertableBlocks()))
 			{
 				var stack = itemHandler.getStackInSlot(i);
 
@@ -170,7 +137,7 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 					continue;
 				}
 
-				var remained = view.insert(itemHandler, stack);
+				var remained = view.insertItem(stack, false);
 				itemHandler.setStackInSlot(i, remained);
 			}
 

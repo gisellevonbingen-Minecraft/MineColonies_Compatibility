@@ -25,8 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_compatibility.core.common.building.module.AbstractNetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
+import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 
 public class CitizenGridNetworkNode extends NetworkNode
@@ -35,7 +35,7 @@ public class CitizenGridNetworkNode extends NetworkNode
 
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("citizen_grid");
 
-	private final AbstractNetworkStorageView view;
+	private final StorageView view;
 	private final StorageListener listener;
 
 	public CitizenGridNetworkNode(Level level, BlockPos pos)
@@ -75,7 +75,15 @@ public class CitizenGridNetworkNode extends NetworkNode
 		network.getItemStorageCache().removeListener(this.listener);
 	}
 
-	public AbstractNetworkStorageView getView()
+	@Override
+	public void update()
+	{
+		super.update();
+
+		this.view.onTick();
+	}
+
+	public StorageView getView()
 	{
 		return this.view;
 	}
@@ -104,7 +112,7 @@ public class CitizenGridNetworkNode extends NetworkNode
 		this.view.read(tag.getCompound(TAG_LINK));
 	}
 
-	public class StorageView extends AbstractNetworkStorageView
+	public class StorageView extends QueueNetworkStorageView
 	{
 		@Override
 		public Level getLevel()
@@ -133,7 +141,7 @@ public class CitizenGridNetworkNode extends NetworkNode
 		@Override
 		public boolean isActive()
 		{
-			return CitizenGridNetworkNode.this.isActive();
+			return CitizenGridNetworkNode.this.canUpdate();
 		}
 
 		@Override
@@ -152,6 +160,13 @@ public class CitizenGridNetworkNode extends NetworkNode
 
 			markDirty();
 			LevelUtils.updateBlock(level, pos);
+		}
+
+		@Override
+		protected void enqueueAll()
+		{
+			var results = network.getItemStorageCache().getList().getStacks();
+			this.enqueue(results.stream().map(StackListEntry<ItemStack>::getStack).toList());
 		}
 
 		@Override
@@ -249,16 +264,11 @@ public class CitizenGridNetworkNode extends NetworkNode
 		@Override
 		public void onChanged(StackListResult<ItemStack> result)
 		{
-			if (!isActive())
-			{
-				return;
-			}
+			var view = getView();
 
-			var module = getView().getLinkedModule();
-
-			if (module != null && result.getChange() > 0)
+			if (view.canEnqueue() && result.getChange() > 0)
 			{
-				module.onItemIncremented(result.getStack());
+				getView().enqueue(result.getStack());
 			}
 
 		}
@@ -266,25 +276,11 @@ public class CitizenGridNetworkNode extends NetworkNode
 		@Override
 		public void onChangedBulk(List<StackListResult<ItemStack>> results)
 		{
-			if (!isActive())
+			var view = getView();
+
+			if (view.canEnqueue())
 			{
-				return;
-			}
-
-			var module = getView().getLinkedModule();
-
-			if (module == null)
-			{
-				return;
-			}
-
-			for (var result : results)
-			{
-				if (result.getChange() > 0)
-				{
-					module.onItemIncremented(result.getStack());
-				}
-
+				view.enqueue(results.stream().filter(result -> result.getChange() > 0).map(e -> e.getStack()).toList());
 			}
 
 		}
@@ -292,7 +288,7 @@ public class CitizenGridNetworkNode extends NetworkNode
 		@Override
 		public void onInvalidated()
 		{
-
+			getView().requestAll();
 		}
 
 	}

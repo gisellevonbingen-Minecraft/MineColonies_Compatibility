@@ -51,7 +51,6 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 		if (this.wasActive != isActive)
 		{
 			this.onActiveChanged(isActive);
-
 		}
 
 		this.wasActive = isActive;

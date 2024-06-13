@@ -24,6 +24,8 @@
 	
 	"block.minecolonies_compatibility.citizen_grid": "Grid for Colonist",
 	
+	"item.minecolonies_compatibility.citizen_terminal": "ME Terminal for Colonist",
+	
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruit Blacklist",
 	"com.minecolonies.coremod.gui.workerhuts.network_storage": "Network Storage",
 	

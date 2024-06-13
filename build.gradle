@@ -142,6 +142,7 @@ dependencies {
     implementation fg.deobf("curse.maven:oreberries-replanted-454062:${oreberries_file}")
     implementation fg.deobf("curse.maven:reliquary-reincarnations-241319:${reliquary_file}")
     implementation fg.deobf("curse.maven:refined-storage-243076:${refined_storage_file}")
+    implementation fg.deobf("appeng:appliedenergistics2-forge:${appliedenergistics2_version}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

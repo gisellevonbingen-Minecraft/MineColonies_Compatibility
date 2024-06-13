@@ -1,0 +1,108 @@
+{
+	"parent": "ae2:item/part_base",
+	"textures": {
+		"sides": "ae2:part/monitor_sides",
+		"back": "ae2:part/monitor_back",
+		"front": "ae2:part/terminal",
+		"dark": "minecolonies_compatibility:part/citizen_terminal_dark",
+		"bright": "minecolonies_compatibility:part/citizen_terminal_bright_color"
+	},
+	"elements": [
+		{
+			"from": [
+				2,
+				2,
+				8
+			],
+			"to": [
+				14,
+				14,
+				9
+			],
+			"faces": {
+				"north": {
+					"texture": "#front"
+				},
+				"south": {
+					"texture": "#back"
+				},
+				"east": {
+					"texture": "#sides"
+				},
+				"west": {
+					"texture": "#sides"
+				},
+				"up": {
+					"texture": "#sides"
+				},
+				"down": {
+					"texture": "#sides"
+				}
+			}
+		},
+		{
+			"from": [
+				2,
+				2,
+				8
+			],
+			"to": [
+				14,
+				14,
+				9
+			],
+			"faces": {
+				"north": {
+					"texture": "#dark",
+					"tintindex": 2
+				}
+			}
+		},
+		{
+			"from": [
+				2,
+				2,
+				8
+			],
+			"to": [
+				14,
+				14,
+				9
+			],
+			"faces": {
+				"north": {
+					"texture": "#bright"
+				}
+			}
+		},
+		{
+			"from": [
+				4,
+				4,
+				9
+			],
+			"to": [
+				12,
+				12,
+				10
+			],
+			"faces": {
+				"east": {
+					"texture": "#sides"
+				},
+				"south": {
+					"texture": "#back"
+				},
+				"west": {
+					"texture": "#sides"
+				},
+				"up": {
+					"texture": "#sides"
+				},
+				"down": {
+					"texture": "#sides"
+				}
+			}
+		}
+	]
+}

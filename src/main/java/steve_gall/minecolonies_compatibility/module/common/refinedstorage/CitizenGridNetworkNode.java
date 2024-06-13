@@ -1,8 +1,7 @@
 package steve_gall.minecolonies_compatibility.module.common.refinedstorage;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,8 +21,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemHandlerHelper;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
@@ -196,50 +193,34 @@ public class CitizenGridNetworkNode extends NetworkNode
 		}
 
 		@Override
-		public List<ItemStack> getMatchingStacks(Predicate<ItemStack> predicate)
+		public Stream<ItemStack> getAllStacks()
 		{
 			var network = getNetwork();
 
 			if (network == null)
 			{
-				return Collections.emptyList();
+				return Stream.empty();
 			}
 
-			var stackList = network.getItemStorageCache().getList();
-			return stackList.getStacks().stream().map(StackListEntry<ItemStack>::getStack).filter(predicate).toList();
+			var entryList = network.getItemStorageCache().getList().getStacks();
+			return entryList.stream().map(StackListEntry<ItemStack>::getStack);
 		}
 
 		@Override
-		public boolean extract(IItemHandlerModifiable to, ItemStack stack)
+		public ItemStack extractItem(ItemStack stack, boolean simulate)
 		{
 			var network = getNetwork();
 
 			if (network == null)
 			{
-				return false;
+				return ItemStack.EMPTY;
 			}
 
-			var extracting = network.extractItem(stack, stack.getCount(), Action.SIMULATE);
-
-			if (extracting.isEmpty())
-			{
-				return false;
-			}
-
-			var remain = ItemHandlerHelper.insertItem(to, extracting, true);
-
-			if (remain.isEmpty())
-			{
-				var extracted = network.extractItem(stack, stack.getCount(), Action.PERFORM);
-				ItemHandlerHelper.insertItem(to, extracted, false);
-				return true;
-			}
-
-			return false;
+			return network.extractItem(stack, stack.getCount(), simulate ? Action.SIMULATE : Action.PERFORM);
 		}
 
 		@Override
-		public ItemStack insert(IItemHandlerModifiable from, ItemStack stack)
+		public ItemStack insertItem(ItemStack stack, boolean simulate)
 		{
 			var network = getNetwork();
 
@@ -248,7 +229,7 @@ public class CitizenGridNetworkNode extends NetworkNode
 				return stack;
 			}
 
-			return network.insertItem(stack, stack.getCount(), Action.PERFORM);
+			return network.insertItem(stack, stack.getCount(), simulate ? Action.SIMULATE : Action.PERFORM);
 		}
 
 	}

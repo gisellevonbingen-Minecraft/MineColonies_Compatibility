@@ -1,7 +1,6 @@
 package steve_gall.minecolonies_compatibility.api.common.building.module;
 
-import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModuleView;
 
@@ -45,10 +43,23 @@ public interface INetworkStorageView
 	boolean canInsert();
 
 	@NotNull
-	List<ItemStack> getMatchingStacks(@NotNull Predicate<ItemStack> predicate);
+	Stream<ItemStack> getAllStacks();
 
-	boolean extract(@NotNull IItemHandlerModifiable to, @NotNull ItemStack stack);
-
+	/**
+	 * 
+	 * @param stack
+	 * @param simulate
+	 * @return extracted stack
+	 */
 	@NotNull
-	ItemStack insert(@NotNull IItemHandlerModifiable from, @NotNull ItemStack stack);
+	ItemStack extractItem(@NotNull ItemStack stack, boolean simulate);
+
+	/**
+	 * 
+	 * @param stack
+	 * @param simulate
+	 * @return remained stack
+	 */
+	@NotNull
+	ItemStack insertItem(@NotNull ItemStack stack, boolean simulate);
 }

@@ -18,7 +18,16 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 	{
 		this.updateActive();
 
-		if (this.allRequested && this.wasActive)
+		if (this.wasActive)
+		{
+			this.onActiveTick();
+		}
+
+	}
+
+	protected void onActiveTick()
+	{
+		if (this.allRequested)
 		{
 			this.allRequested = false;
 			this.queue.clear();
@@ -27,16 +36,17 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 
 		var module = this.getLinkedModule();
 
-		for (var i = 0; i < DEQUEUE_COUNT; i++)
+		if (module != null)
 		{
-			var stack = this.queue.poll();
+			for (var i = 0; i < DEQUEUE_COUNT; i++)
+			{
+				var stack = this.queue.poll();
 
-			if (stack == null)
-			{
-				break;
-			}
-			else if (module != null)
-			{
+				if (stack == null)
+				{
+					break;
+				}
+
 				module.onItemIncremented(stack);
 			}
 
@@ -46,7 +56,7 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 
 	private void updateActive()
 	{
-		var isActive = this.isActive();
+		var isActive = this.isActive() && this.getLinkedModule() != null;
 
 		if (this.wasActive != isActive)
 		{
@@ -70,22 +80,6 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 	}
 
 	protected abstract void enqueueAll();
-
-	@Override
-	public void link(NetworkStorageModule module)
-	{
-		super.link(module);
-
-		this.requestAll();
-	}
-
-	@Override
-	public void unlink()
-	{
-		super.unlink();
-
-		this.clearQueue();
-	}
 
 	public void requestAll()
 	{

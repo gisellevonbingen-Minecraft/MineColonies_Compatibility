@@ -8,6 +8,6 @@
 		"up": "refinedstorage:block/grid/top",
 		"down": "refinedstorage:block/bottom",
 		"north": "refinedstorage:block/grid/front",
-		"cutout": "minecolonies_compatibility:block/citizen_grid/cutouts/connected"
+		"cutout": "minecolonies_compatibility:block/citizen_grid_connected"
 	}
 }

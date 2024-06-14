@@ -30,7 +30,7 @@ public class CitizenGridScreen extends BaseScreen<CitizenGridContainerMenu>
 	@Override
 	public void renderBackground(PoseStack poseStack, int x, int y, int mouseX, int mouseY)
 	{
-		this.bindTexture(MineColoniesCompatibility.MOD_ID, "gui/refinedstorage/citizen_grid.png");
+		this.bindTexture(MineColoniesCompatibility.MOD_ID, "gui/citizen_grid.png");
 		this.blit(poseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
 	}
 

@@ -1,33 +1,33 @@
 {
 	"variants": {
 		"connected=false,direction=east": {
-			"model": "minecolonies_compatibility:block/citizen_grid/disconnected",
+			"model": "minecolonies_compatibility:block/citizen_grid_disconnected",
 			"y": 90
 		},
 		"connected=false,direction=north": {
-			"model": "minecolonies_compatibility:block/citizen_grid/disconnected"
+			"model": "minecolonies_compatibility:block/citizen_grid_disconnected"
 		},
 		"connected=false,direction=south": {
-			"model": "minecolonies_compatibility:block/citizen_grid/disconnected",
+			"model": "minecolonies_compatibility:block/citizen_grid_disconnected",
 			"y": 180
 		},
 		"connected=false,direction=west": {
-			"model": "minecolonies_compatibility:block/citizen_grid/disconnected",
+			"model": "minecolonies_compatibility:block/citizen_grid_disconnected",
 			"y": 270
 		},
 		"connected=true,direction=east": {
-			"model": "minecolonies_compatibility:block/citizen_grid/connected",
+			"model": "minecolonies_compatibility:block/citizen_grid_connected",
 			"y": 90
 		},
 		"connected=true,direction=north": {
-			"model": "minecolonies_compatibility:block/citizen_grid/connected"
+			"model": "minecolonies_compatibility:block/citizen_grid_connected"
 		},
 		"connected=true,direction=south": {
-			"model": "minecolonies_compatibility:block/citizen_grid/connected",
+			"model": "minecolonies_compatibility:block/citizen_grid_connected",
 			"y": 180
 		},
 		"connected=true,direction=west": {
-			"model": "minecolonies_compatibility:block/citizen_grid/connected",
+			"model": "minecolonies_compatibility:block/citizen_grid_connected",
 			"y": 270
 		}
 	}

@@ -46,7 +46,7 @@ public interface INetworkStorageView
 	Stream<ItemStack> getAllStacks();
 
 	/**
-	 * 
+	 *
 	 * @param stack
 	 * @param simulate
 	 * @return extracted stack
@@ -55,7 +55,7 @@ public interface INetworkStorageView
 	ItemStack extractItem(@NotNull ItemStack stack, boolean simulate);
 
 	/**
-	 * 
+	 *
 	 * @param stack
 	 * @param simulate
 	 * @return remained stack

@@ -14,7 +14,7 @@ import steve_gall.minecolonies_compatibility.module.common.refinedstorage.Citize
 
 public class CitizenGridScreen extends BaseScreen<CitizenGridContainerMenu>
 {
-	private static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/refinedstorage/citizen_grid.png");
+	private static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/citizen_grid.png");
 	private static final Component TEXT_INVENTORY = Component.translatable("container.inventory");
 	private static final Component TEXT_NOT_LINKED = Component.translatable("minecolonies_compatibility.gui.not_linked");
 

@@ -19,7 +19,7 @@ import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 
 public class TeachCuttingScreen extends TeachRecipeScreen<TeachCuttingMenu, CuttingBoardRecipe>
 {
-	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/farmers/teach_cutting.png");
+	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/teach_cutting.png");
 
 	public TeachCuttingScreen(TeachCuttingMenu menu, Inventory inventory, Component title)
 	{

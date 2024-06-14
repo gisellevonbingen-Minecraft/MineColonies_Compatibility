@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
+import steve_gall.minecolonies_compatibility.core.common.colony.ColonyHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 
 public class CitizenGridNetworkNode extends NetworkNode
@@ -70,6 +71,21 @@ public class CitizenGridNetworkNode extends NetworkNode
 		super.onDisconnected(network);
 
 		network.getItemStorageCache().removeListener(this.listener);
+	}
+
+	public boolean hasPermission(Permission permission)
+	{
+		var module = this.view.getLinkedModule();
+		var network = this.network;
+
+		if (module == null || network == null)
+		{
+			return false;
+		}
+
+		var colony = module.getBuilding().getColony();
+		var owner = ColonyHelper.getFakeOwner(colony);
+		return network.getSecurityManager().hasPermission(permission, owner);
 	}
 
 	@Override
@@ -169,27 +185,13 @@ public class CitizenGridNetworkNode extends NetworkNode
 		@Override
 		public boolean canExtract()
 		{
-			var network = getNetwork();
-
-			if (network == null)
-			{
-				return false;
-			}
-
-			return RefinedStorageModule.hasPermission(this.getLinkedModule().getBuilding().getColony(), network, Permission.EXTRACT);
+			return hasPermission(Permission.EXTRACT);
 		}
 
 		@Override
 		public boolean canInsert()
 		{
-			var network = getNetwork();
-
-			if (network == null)
-			{
-				return false;
-			}
-
-			return RefinedStorageModule.hasPermission(this.getLinkedModule().getBuilding().getColony(), network, Permission.INSERT);
+			return hasPermission(Permission.INSERT);
 		}
 
 		@Override

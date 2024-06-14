@@ -1,14 +1,8 @@
 package steve_gall.minecolonies_compatibility.module.common.refinedstorage;
 
-import com.minecolonies.api.colony.IColony;
-import com.mojang.authlib.GameProfile;
-import com.refinedmods.refinedstorage.api.network.INetwork;
-import com.refinedmods.refinedstorage.api.network.security.Permission;
 import com.refinedmods.refinedstorage.apiimpl.API;
 
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -51,14 +45,6 @@ public class RefinedStorageModule extends AbstractModule
 		super.onFMLClientSetup(e);
 
 		MenuScreens.register(ModuleMenuTypes.CITIZEN_GRID.get(), CitizenGridScreen::new);
-	}
-
-	public static boolean hasPermission(IColony colony, INetwork network, Permission permission)
-	{
-		var permissions = colony.getPermissions();
-		var ownerProfile = new GameProfile(permissions.getOwner(), permissions.getOwnerName());
-		var owner = FakePlayerFactory.get((ServerLevel) colony.getWorld(), ownerProfile);
-		return network.getSecurityManager().hasPermission(permission, owner);
 	}
 
 }

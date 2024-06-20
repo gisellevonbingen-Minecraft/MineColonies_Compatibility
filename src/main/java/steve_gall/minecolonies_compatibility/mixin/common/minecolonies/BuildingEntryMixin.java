@@ -35,6 +35,10 @@ public abstract class BuildingEntryMixin
 		{
 			this.injectSettings(building, BuildingModules.GUARD_SETTINGS, ModBuildingModules.GUARD_SETTINGS);
 		}
+		else if (buildingType == ModBuildings.barracks.get())
+		{
+			this.injectSettings(building, BuildingModules.GUARD_SETTINGS, ModBuildingModules.GUARD_SETTINGS);
+		}
 		else if (buildingType == ModBuildings.lumberjack.get())
 		{
 			this.injectSettings(building, BuildingModules.FORESTER_SETTINGS, ModBuildingModules.ORCHARDIST_SETTINGS);

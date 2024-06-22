@@ -87,12 +87,12 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		var owner = ColonyHelper.getFakeOwner(colony);
 		return grid.getSecurityService().hasPermission(owner, permissions);
 	}
-	
+
 	@Override
 	public void removeFromWorld()
 	{
 		super.removeFromWorld();
-		
+
 		this.view.unlink();
 	}
 

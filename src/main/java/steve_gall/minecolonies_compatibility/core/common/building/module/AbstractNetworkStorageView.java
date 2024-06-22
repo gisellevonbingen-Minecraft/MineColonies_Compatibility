@@ -94,7 +94,11 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 
 		if (module == null || module.isDestroyed())
 		{
-			this.unlink();
+			if (!this.warehousePos.isEmpty())
+			{
+				this.unlink();
+			}
+			
 			return null;
 		}
 

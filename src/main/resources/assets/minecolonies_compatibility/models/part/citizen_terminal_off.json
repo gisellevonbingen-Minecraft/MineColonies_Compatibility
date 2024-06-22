@@ -1,0 +1,43 @@
+{
+	"textures": {
+		"dark": "minecolonies_compatibility:part/citizen_terminal_dark",
+		"bright": "minecolonies_compatibility:part/citizen_terminal_bright_gray"
+	},
+	"elements": [
+		{
+			"from": [
+				2,
+				2,
+				0
+			],
+			"to": [
+				14,
+				14,
+				2
+			],
+			"faces": {
+				"north": {
+					"texture": "#dark",
+					"tintindex": 2
+				}
+			}
+		},
+		{
+			"from": [
+				2,
+				2,
+				0
+			],
+			"to": [
+				14,
+				14,
+				2
+			],
+			"faces": {
+				"north": {
+					"texture": "#bright"
+				}
+			}
+		}
+	]
+}

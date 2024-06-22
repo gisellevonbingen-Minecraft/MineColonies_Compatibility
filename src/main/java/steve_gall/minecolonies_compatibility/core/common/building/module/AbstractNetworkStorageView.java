@@ -98,7 +98,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 			{
 				this.unlink();
 			}
-			
+
 			return null;
 		}
 

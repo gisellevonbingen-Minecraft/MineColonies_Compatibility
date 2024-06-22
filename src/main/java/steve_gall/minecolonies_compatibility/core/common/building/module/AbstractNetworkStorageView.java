@@ -52,10 +52,15 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		this.module = null;
 	}
 
-	public void read(CompoundTag tag)
+	public boolean read(CompoundTag tag)
 	{
+		var colonyId = this.colonyId;
+		var warehousePos = this.warehousePos;
+
 		this.colonyId = tag.getInt(TAG_COLONY_ID);
 		this.warehousePos = tag.contains(TAG_WAREHOUSE_POS) ? Optional.of(BlockPosUtil.read(tag, TAG_WAREHOUSE_POS)) : Optional.empty();
+
+		return this.colonyId != colonyId || !this.warehousePos.equals(warehousePos);
 	}
 
 	public CompoundTag write()
@@ -66,10 +71,14 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		return tag;
 	}
 
-	public void read(FriendlyByteBuf buffer)
+	public boolean read(FriendlyByteBuf buffer)
 	{
+		var colonyId = this.colonyId;
+		var warehousePos = this.warehousePos;
 		this.colonyId = buffer.readInt();
 		this.warehousePos = buffer.readOptional(FriendlyByteBuf::readBlockPos);
+
+		return this.colonyId != colonyId || !this.warehousePos.equals(warehousePos);
 	}
 
 	public void write(FriendlyByteBuf buffer)

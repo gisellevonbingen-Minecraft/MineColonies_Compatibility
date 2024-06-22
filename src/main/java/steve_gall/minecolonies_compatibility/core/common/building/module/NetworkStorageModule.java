@@ -137,7 +137,7 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 					continue;
 				}
 
-				var remained = view.insertItem(stack, false);
+				var remained = view.insertItem(stack.copy(), false);
 				itemHandler.setStackInSlot(i, remained);
 			}
 

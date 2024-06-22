@@ -66,7 +66,7 @@ public abstract class EntityAIWorkDeliverymanMixin extends AbstractEntityAIInter
 
 		if (remain.isEmpty())
 		{
-			var extracted = view.extractItem(is, false);
+			var extracted = view.extractItem(is, false).copy();
 			ItemHandlerHelper.insertItem(inventory, extracted, false);
 			cir.setReturnValue(true);
 		}

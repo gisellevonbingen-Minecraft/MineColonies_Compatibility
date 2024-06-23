@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingFarmer;
+import com.minecolonies.core.colony.fields.FarmField;
 import com.minecolonies.core.colony.jobs.JobFarmer;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 import com.minecolonies.core.entity.ai.workers.production.agriculture.EntityAIWorkFarmer;
@@ -21,6 +22,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StemBlock;
@@ -30,6 +32,7 @@ import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantSeedContext;
+import steve_gall.minecolonies_compatibility.core.common.block.BlockUtils;
 
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
 public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<JobFarmer, BuildingFarmer>
@@ -196,6 +199,32 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		}
 
 		return this.mineBlock(position);
+	}
+
+	@Redirect(method = "hoeIfAble", remap = false, at = @At(value = "INVOKE", target = "net.minecraft.world.level.Level.setBlockAndUpdate"))
+	private boolean hoeIfAble_setBlockAndUpdate(Level level, BlockPos pos, BlockState next)
+	{
+		var hand = this.worker.getUsedItemHand();
+		var hoe = this.worker.getInventoryCitizen().getHeldItem(hand);
+		var tilled = BlockUtils.getHoeTilledState(level, pos, hand, hoe, false);
+
+		return tilled != null ? level.setBlockAndUpdate(pos, tilled) : false;
+	}
+
+	@Inject(method = "findHoeableSurface", remap = false, at = @At(value = "TAIL"), cancellable = true)
+	private void findHoeableSurface_TAIL(BlockPos pos, FarmField farmField, CallbackInfoReturnable<BlockPos> cir)
+	{
+		var level = this.world;
+		var hand = this.worker.getUsedItemHand();
+		var hoe = this.worker.getInventoryCitizen().getHeldItem(hand);
+		var prev = level.getBlockState(pos);
+		var tilled = BlockUtils.getHoeTilledState(level, pos, hand, hoe, true);
+
+		if (tilled == null || tilled == prev)
+		{
+			cir.setReturnValue(null);
+		}
+
 	}
 
 	@ModifyVariable(method = "getSurfacePos(Lnet/minecraft/core/BlockPos;Ljava/lang/Integer;)Lnet/minecraft/core/BlockPos;", remap = false, at = @At("STORE"), ordinal = 0)

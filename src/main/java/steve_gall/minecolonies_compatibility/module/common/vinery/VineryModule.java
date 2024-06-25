@@ -2,7 +2,7 @@ package steve_gall.minecolonies_compatibility.module.common.vinery;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import satisfyu.vinery.registry.GrapeTypeRegistry;
+import net.satisfy.vinery.registry.GrapeTypeRegistry;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 

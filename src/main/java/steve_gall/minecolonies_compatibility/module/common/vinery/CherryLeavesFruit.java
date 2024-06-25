@@ -10,8 +10,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import satisfyu.vinery.block.CherryLeaves;
-import satisfyu.vinery.registry.ObjectRegistry;
+import net.satisfy.vinery.block.CherryLeavesBlock;
+import net.satisfy.vinery.registry.ObjectRegistry;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -46,7 +46,7 @@ public class CherryLeavesFruit extends CustomizedFruit
 	public boolean canHarvest(@NotNull PlantBlockContext context)
 	{
 		var state = context.getState();
-		return state.getValue(CherryLeaves.VARIANT) && state.getValue(CherryLeaves.HAS_CHERRIES);
+		return state.getValue(CherryLeavesBlock.VARIANT) && state.getValue(CherryLeavesBlock.HAS_CHERRIES);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class CherryLeavesFruit extends CustomizedFruit
 			var rotten = random.nextInt(8) == 0;
 			var dropStack = new ItemStack(rotten ? ObjectRegistry.ROTTEN_CHERRY.get() : ObjectRegistry.CHERRY.get(), dropCount);
 
-			var newState = context.getState().setValue(CherryLeaves.HAS_CHERRIES, false);
+			var newState = context.getState().setValue(CherryLeavesBlock.HAS_CHERRIES, false);
 			level.setBlockAndUpdate(context.getPosition(), newState);
 
 			return Collections.singletonList(dropStack);

@@ -350,16 +350,6 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		}
 
-		@Override
-		protected void enqueueAll()
-		{
-			for (var entry : counter)
-			{
-				view.enqueue(toStack(entry));
-			}
-
-		}
-
 	}
 
 }

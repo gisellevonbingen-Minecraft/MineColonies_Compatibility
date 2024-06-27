@@ -1,0 +1,7 @@
+{
+	"variants": {
+		"": {
+			"model": "minecolonies_compatibility:block/citizen_inventory"
+		}
+	}
+}

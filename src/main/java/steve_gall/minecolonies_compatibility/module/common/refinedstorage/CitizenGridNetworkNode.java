@@ -176,13 +176,6 @@ public class CitizenGridNetworkNode extends NetworkNode
 		}
 
 		@Override
-		protected void enqueueAll()
-		{
-			var results = network.getItemStorageCache().getList().getStacks();
-			this.enqueue(results.stream().map(StackListEntry<ItemStack>::getStack).toList());
-		}
-
-		@Override
 		public boolean canExtract()
 		{
 			return hasPermission(Permission.EXTRACT);

@@ -31,7 +31,7 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 		{
 			this.allRequested = false;
 			this.queue.clear();
-			this.enqueueAll();
+			this.getAllStacks().forEach(this.queue::add);
 		}
 
 		var module = this.getLinkedModule();
@@ -78,8 +78,6 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 		}
 
 	}
-
-	protected abstract void enqueueAll();
 
 	public void requestAll()
 	{

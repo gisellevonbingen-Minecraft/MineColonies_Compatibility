@@ -34,6 +34,12 @@ public class PathJobFindWorkingBlocks<RESULT extends WorkingBlocksPathResult> ex
 	}
 
 	@Override
+	protected double computeHeuristic(int x, int y, int z)
+	{
+		return 0.0D;
+	}
+
+	@Override
 	protected boolean isPassable(int x, int y, int z, boolean head, MNode parent)
 	{
 		return true;
@@ -43,12 +49,6 @@ public class PathJobFindWorkingBlocks<RESULT extends WorkingBlocksPathResult> ex
 	protected boolean isPassable(@NotNull BlockState block, int x, int y, int z, MNode parent, boolean head)
 	{
 		return true;
-	}
-
-	@Override
-	protected double computeHeuristic(int x, int y, int z)
-	{
-		return 0.0D;
 	}
 
 	@Override

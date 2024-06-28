@@ -123,11 +123,6 @@ public abstract class AbstractCraftingModuleWithExternalWorkingBlocks extends Ab
 	@Override
 	public boolean addWorkingBlock(@NotNull BlockPos pos)
 	{
-		if (this.building.isDeconstructed())
-		{
-			return false;
-		}
-
 		var level = this.building.getColony().getWorld();
 		var state = level.getBlockState(pos);
 

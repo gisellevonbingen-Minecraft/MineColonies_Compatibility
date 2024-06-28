@@ -29,6 +29,11 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 	@Override
 	public void link(NetworkStorageModule module)
 	{
+		if (module == null || module.isDestroyed())
+		{
+			return;
+		}
+
 		var building = module.getBuilding();
 		this.colonyId = building.getColony().getID();
 		this.warehousePos = Optional.of(building.getID());
@@ -42,14 +47,15 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 	{
 		var module = this.getLinkedModule0();
 
+		this.colonyId = 0;
+		this.warehousePos = Optional.empty();
+		this.module = null;
+
 		if (module != null)
 		{
 			module.onUnlink(this);
 		}
 
-		this.colonyId = 0;
-		this.warehousePos = Optional.empty();
-		this.module = null;
 	}
 
 	public boolean read(CompoundTag tag)

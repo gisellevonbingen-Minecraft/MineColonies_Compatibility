@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import steve_gall.minecolonies_compatibility.core.client.gui.NetworkStorageViewScreenUtils;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.CitizenGridBlockEntity;
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.CitizenGridContainerMenu;
@@ -16,7 +17,6 @@ public class CitizenGridScreen extends BaseScreen<CitizenGridContainerMenu>
 {
 	private static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/citizen_grid.png");
 	private static final Component TEXT_INVENTORY = Component.translatable("container.inventory");
-	private static final Component TEXT_NOT_LINKED = Component.translatable("minecolonies_compatibility.gui.not_linked");
 
 	public CitizenGridScreen(CitizenGridContainerMenu containerMenu, Inventory inventory, Component title)
 	{
@@ -42,18 +42,7 @@ public class CitizenGridScreen extends BaseScreen<CitizenGridContainerMenu>
 		this.renderString(graphics, 7, 43, TEXT_INVENTORY.getString());
 
 		var view = ((CitizenGridBlockEntity) this.getMenu().getBlockEntity()).getNode().getView();
-		var module = view.getLinkedModuleView();
-
-		if (module != null)
-		{
-			var pos = module.getBuildingView().getID();
-			this.renderString(graphics, 14, 21, Component.translatable("minecolonies_compatibility.gui.linked_pos", pos.getX(), pos.getY(), pos.getZ()).getString());
-		}
-		else
-		{
-			this.renderString(graphics, 14, 21, TEXT_NOT_LINKED.getString());
-		}
-
+		this.renderString(graphics, 14, 21, NetworkStorageViewScreenUtils.getModuleText(view).getString());
 	}
 
 	@Override

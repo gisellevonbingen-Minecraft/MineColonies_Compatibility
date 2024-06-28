@@ -143,6 +143,7 @@ dependencies {
     implementation fg.deobf("curse.maven:reliquary-reincarnations-241319:${reliquary_file}")
     implementation fg.deobf("curse.maven:refined-storage-243076:${refined_storage_file}")
     implementation fg.deobf("appeng:appliedenergistics2-forge:${appliedenergistics2_version}")
+    implementation fg.deobf("curse.maven:simple-storage-network-268495:${simple_storage_network_file}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

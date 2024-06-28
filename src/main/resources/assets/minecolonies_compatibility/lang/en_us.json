@@ -26,6 +26,9 @@
 	
 	"item.minecolonies_compatibility.citizen_terminal": "ME Terminal for Colonist",
 	
+	"block.minecolonies_compatibility.citizen_inventory": "Storage Inventory for Colonist",
+	"block.minecolonies_compatibility.citizen_inventory.tooltip": "Link 'Storage Network' and 'Minecolonies Warehouse'",
+	
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruit Blacklist",
 	"com.minecolonies.coremod.gui.workerhuts.network_storage": "Network Storage",
 	

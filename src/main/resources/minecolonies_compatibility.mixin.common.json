@@ -32,6 +32,8 @@
 		"oreberries.OreBerryBushBlockAccessor",
 		"reliquary.HandgunItemAccessor",
 		"reliquary.NeutralShotEntityMixin",
+		"storagenetwork.NetworkModuleAccessor",
+		"storagenetwork.UtilConnectionsMixin",
 		"thermal.CropBlockCoFHAccessor"
 	],
 	"injectors": {

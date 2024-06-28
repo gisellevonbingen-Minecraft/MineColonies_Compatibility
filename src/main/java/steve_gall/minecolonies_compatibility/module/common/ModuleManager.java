@@ -21,6 +21,7 @@ import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphMo
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.RefinedStorageModule;
 import steve_gall.minecolonies_compatibility.module.common.regions_unexplored.RegionsUnexploredModule;
 import steve_gall.minecolonies_compatibility.module.common.reliquary.ReliquaryModule;
+import steve_gall.minecolonies_compatibility.module.common.storagenetwork.StorageNetworkModule;
 import steve_gall.minecolonies_compatibility.module.common.thermal.ThermalModule;
 import steve_gall.minecolonies_compatibility.module.common.undergarden.UndergardenModule;
 import steve_gall.minecolonies_compatibility.module.common.vinery.VineryModule;
@@ -58,6 +59,7 @@ public class ModuleManager
 	public static final OptionalModule<RegionsUnexploredModule> REGIONS_UNEXPLORED = register("regions_unexplored", () -> RegionsUnexploredModule::new);
 	public static final OptionalModule<ReliquaryModule> RELIQUARY = register("reliquary", () -> ReliquaryModule::new);
 	public static final OptionalModule<RefinedStorageModule> RS = register("refinedstorage", () -> RefinedStorageModule::new);
+	public static final OptionalModule<StorageNetworkModule> STORAGE_NETWORK = register("storagenetwork", () -> StorageNetworkModule::new);
 	public static final OptionalModule<ThermalModule> THERMAL = register("thermal", () -> ThermalModule::new);
 	public static final OptionalModule<UndergardenModule> UNDERGARDEN = register("undergarden", () -> UndergardenModule::new);
 	public static final OptionalModule<VineryModule> VINERY = register("vinery", () -> VineryModule::new);

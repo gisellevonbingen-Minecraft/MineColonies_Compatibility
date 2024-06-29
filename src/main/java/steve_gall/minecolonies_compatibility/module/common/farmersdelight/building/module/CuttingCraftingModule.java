@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.WorkingBlocksPathResult;
+import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting.CuttingGenericRecipe;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleCraftingTypes;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 
@@ -43,9 +44,9 @@ public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	}
 
 	@Override
-	public boolean isIntermediate(@NotNull Block block)
+	public boolean isIntermediate(@NotNull Block intermediateBlock)
 	{
-		return block == ModBlocks.CUTTING_BOARD.get();
+		return intermediateBlock == ModBlocks.CUTTING_BOARD.get();
 	}
 
 	@Override
@@ -75,7 +76,7 @@ public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	@Override
 	public boolean isRecipeCompatible(@NotNull IGenericRecipe recipe)
 	{
-		return recipe.getRequiredTool() == this.getToolType();
+		return recipe instanceof CuttingGenericRecipe && recipe.getRequiredTool() == this.getToolType();
 	}
 
 	@Override

@@ -41,10 +41,10 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 	{
 		var recipeStorage = this.currentRecipeStorage;
 
-		if (this.building.getCraftingModuleForRecipe(recipeStorage.getToken()) instanceof ICraftingModuleWithExternalWorkingBlocks module && module.isIntermediate(recipeStorage.getIntermediate()))
+		if (this.building.getCraftingModuleForRecipe(recipeStorage.getToken()) instanceof ICraftingModuleWithExternalWorkingBlocks module && module.hasWorkingBlock(recipeStorage))
 		{
 			module.requestFindWorkingBlocks(this.worker);
-			var pos = module.getWorkingBlocks().findAny().orElse(null);
+			var pos = module.getRecipeWorkingBlocks(recipeStorage).findAny().orElse(null);
 
 			if (pos != null)
 			{
@@ -55,7 +55,7 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 			}
 			else
 			{
-				this.worker.getCitizenData().triggerInteraction(new StandardInteraction(module.getWorkingBlockNotFoundMessage(), ChatPriority.BLOCKING));
+				this.worker.getCitizenData().triggerInteraction(new StandardInteraction(module.getWorkingBlockNotFoundMessage(recipeStorage), ChatPriority.BLOCKING));
 				this.walkToBuilding();
 				return true;
 			}

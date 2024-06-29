@@ -14,7 +14,7 @@ import com.minecolonies.core.client.gui.modules.WindowListRecipes;
 import steve_gall.minecolonies_compatibility.core.client.gui.ItemIconExtension;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting.CuttingRecipeStorage;
-import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizableRecipeStorage;
+import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizableRecipeStorage;
 
 @Mixin(targets = "com.minecolonies.core.client.gui.modules.WindowListRecipes$1", remap = false)
 public abstract class WindowListRecipes1Mixin
@@ -41,7 +41,7 @@ public abstract class WindowListRecipes1Mixin
 		{
 			var accessor = (WindowListRecipesAcccessor) this.getOuter();
 
-			if (accessor.getModule().getRecipes().get(index) instanceof CustomizableRecipeStorage recipe && recipe.getImpl() instanceof CuttingRecipeStorage cutting)
+			if (accessor.getModule().getRecipes().get(index) instanceof ICustomizableRecipeStorage recipe && recipe.getImpl() instanceof CuttingRecipeStorage cutting)
 			{
 				var displayStacks = recipe.getRecipeType().getOutputDisplayStacks();
 				var outputIndex = (accessor.getLifeCount() / WindowConstants.LIFE_COUNT_DIVIDER) % displayStacks.size();

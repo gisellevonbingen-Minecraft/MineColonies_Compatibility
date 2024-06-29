@@ -112,7 +112,7 @@ public abstract class AbstractCraftingModuleWithExternalWorkingBlocks extends Ab
 	}
 
 	@Override
-	public abstract boolean isIntermediate(@NotNull Block block);
+	public abstract boolean isIntermediate(@NotNull Block intermediateBlock);
 
 	@Override
 	public void onBlockPlacedInBuilding(@NotNull BlockState blockState, @NotNull BlockPos pos, @NotNull Level level)

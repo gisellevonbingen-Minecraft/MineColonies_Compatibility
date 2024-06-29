@@ -43,9 +43,9 @@ public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	}
 
 	@Override
-	public boolean isIntermediate(@NotNull Block block)
+	public boolean isIntermediate(@NotNull Block intermediateBlock)
 	{
-		return block == ModBlocks.CUTTING_BOARD.get();
+		return intermediateBlock == ModBlocks.CUTTING_BOARD.get();
 	}
 
 	@Override

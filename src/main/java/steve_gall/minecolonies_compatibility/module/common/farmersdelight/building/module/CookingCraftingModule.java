@@ -37,9 +37,9 @@ public class CookingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	}
 
 	@Override
-	public boolean isIntermediate(@NotNull Block block)
+	public boolean isIntermediate(@NotNull Block intermediateBlock)
 	{
-		return block == ModBlocks.COOKING_POT.get();
+		return intermediateBlock == ModBlocks.COOKING_POT.get();
 	}
 
 	@Override

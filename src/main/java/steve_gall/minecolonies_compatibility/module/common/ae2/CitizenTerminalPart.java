@@ -37,6 +37,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.block.entity.BlockEntityExtension;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
 import steve_gall.minecolonies_compatibility.module.common.ae2.init.ModuleMenuTypes;
@@ -89,7 +90,11 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	{
 		super.removeFromWorld();
 
-		this.view.unlink();
+		if (this.getBlockEntity() instanceof BlockEntityExtension bee && !bee.minecolonies_compatibility$isUnloaded())
+		{
+			this.view.unlink();
+		}
+
 	}
 
 	@Override

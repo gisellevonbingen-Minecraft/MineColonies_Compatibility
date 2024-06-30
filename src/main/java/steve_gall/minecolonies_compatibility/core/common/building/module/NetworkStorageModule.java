@@ -68,31 +68,31 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	{
 		if (this.containsWorkingBlock(pos))
 		{
-			return this.getView(level, pos) != null;
+			return this.getOwnLinkedViews(pos).findAny().isPresent();
 		}
 		else
 		{
-			return resolveView(level, pos) != null;
+			return getUnlinkedView(level, pos) != null;
 		}
 
 	}
 
 	public Stream<INetworkStorageView> getExtractableBlocks()
 	{
-		return this.getRegisteredBlocks().stream().map(this::getView).filter(this::canExtract);
+		return this.getRegisteredBlocks().stream().flatMap(this::getOwnLinkedViews).filter(m -> canExtract(m));
 	}
 
-	public boolean canExtract(@Nullable INetworkStorageView view)
+	public static boolean canExtract(@Nullable INetworkStorageView view)
 	{
 		return view != null && view.isActive() && view.canExtract();
 	}
 
 	public Stream<INetworkStorageView> getInsertableBlocks()
 	{
-		return this.getRegisteredBlocks().stream().map(this::getView).filter(this::canInsert);
+		return this.getRegisteredBlocks().stream().flatMap(this::getOwnLinkedViews).filter(m -> canInsert(m));
 	}
 
-	public boolean canInsert(@Nullable INetworkStorageView view)
+	public static boolean canInsert(@Nullable INetworkStorageView view)
 	{
 		return view != null && view.isActive() && view.canInsert();
 	}
@@ -237,78 +237,54 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	}
 
 	@Nullable
-	public INetworkStorageView getView(@NotNull BlockPos pos)
+	public Stream<INetworkStorageView> getOwnLinkedViews(BlockPos pos)
 	{
 		var level = this.building.getColony().getWorld();
-		var view = this.getView(level, pos);
-
-		if (view == null)
-		{
-			this.removeWorkingBlock(pos);
-		}
-
-		return view;
-	}
-
-	@Nullable
-	private INetworkStorageView getView(LevelReader level, BlockPos pos)
-	{
-		var blockEntity = level.getBlockEntity(pos);
-		var direction = this.directions.get(pos);
-		var view = NetworkStorageViewRegistry.select(blockEntity, direction);
-
-		if (view != null && view.getLinkedModule() == this)
-		{
-			return view;
-		}
-
-		return null;
+		return getAllViews(level, pos, view -> view.getLinkedModule() == this);
 	}
 
 	private void link(BlockPos pos)
 	{
 		var level = this.building.getColony().getWorld();
-		var view = resolveView(level, pos);
+		var view = getUnlinkedView(level, pos);
 
-		if (view != null && view.getLinkedModule() == null)
+		if (view != null)
 		{
 			view.link(this);
 		}
 
 	}
 
-	public static INetworkStorageView resolveView(LevelReader level, BlockPos pos)
+	private void unlink(BlockPos pos)
+	{
+		this.getOwnLinkedViews(pos).forEach(view ->
+		{
+			view.unlink();
+		});
+	}
+
+	public static Stream<INetworkStorageView> getAllViews(LevelReader level, BlockPos pos, Predicate<INetworkStorageView> predicate)
 	{
 		var blockEntity = level.getBlockEntity(pos);
 
 		if (blockEntity == null)
 		{
-			return null;
+			return Stream.empty();
 		}
 
-		for (var direction : VIEW_DIRECTIONS)
+		return VIEW_DIRECTIONS.stream().map(direction ->
 		{
-			var view = NetworkStorageViewRegistry.select(blockEntity, direction);
-
-			if (view != null)
-			{
-				return view;
-			}
-
-		}
-
-		return null;
+			return NetworkStorageViewRegistry.select(blockEntity, direction);
+		}).filter(view ->
+		{
+			return view != null && (predicate == null || predicate.test(view));
+		});
 	}
 
-	private void unlink(BlockPos pos)
+	@Nullable
+	public static INetworkStorageView getUnlinkedView(LevelReader level, BlockPos pos)
 	{
-		var view = this.getView(pos);
-
-		if (view != null && view.getLinkedModule() == this)
-		{
-			view.unlink();
-		}
-
+		return getAllViews(level, pos, view -> view.getLinkedModule() == null).findAny().orElse(null);
 	}
 
 	@Override

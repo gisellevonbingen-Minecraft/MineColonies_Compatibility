@@ -17,6 +17,7 @@ import com.minecolonies.core.entity.ai.workers.service.EntityAIWorkDeliveryman;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.ItemHandlerHelper;
+import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 
 @Mixin(value = EntityAIWorkDeliveryman.class)
@@ -47,9 +48,9 @@ public abstract class EntityAIWorkDeliverymanMixin extends AbstractEntityAIInter
 			return;
 		}
 
-		var view = module.getView(entity.getBlockPos());
+		var view = NetworkStorageModule.getAllViews(entity.getLevel(), entity.getBlockPos(), v -> v.getLinkedModule() != null && NetworkStorageModule.canExtract(v)).findAny().orElse(null);
 
-		if (!module.canExtract(view))
+		if (view == null)
 		{
 			return;
 		}

@@ -11,6 +11,7 @@ import com.lothrazar.storagenetwork.StorageNetworkMod;
 import com.lothrazar.storagenetwork.block.TileConnectable;
 import com.lothrazar.storagenetwork.block.main.TileMain;
 import com.lothrazar.storagenetwork.capability.handler.ItemStackMatcher;
+import com.minecolonies.api.util.WorldUtil;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
@@ -20,7 +21,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -82,10 +82,17 @@ public class CitizenInventoryBlockEntity extends TileConnectable
 
 	}
 
-	private void markUpdated()
+	@Override
+	public void setChanged()
 	{
-		this.setChanged();
-		this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL);
+		var level = this.getLevel();
+
+		if (level != null)
+		{
+			WorldUtil.markChunkDirty(level, this.getBlockPos());
+		}
+
+		super.setChanged();
 	}
 
 	protected void onTick()
@@ -300,7 +307,7 @@ public class CitizenInventoryBlockEntity extends TileConnectable
 		{
 			super.link(module);
 
-			markUpdated();
+			setChanged();
 		}
 
 		@Override
@@ -308,7 +315,7 @@ public class CitizenInventoryBlockEntity extends TileConnectable
 		{
 			super.unlink();
 
-			markUpdated();
+			setChanged();
 		}
 
 		@Override

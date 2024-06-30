@@ -257,18 +257,9 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 		var direction = this.directions.get(pos);
 		var view = NetworkStorageViewRegistry.select(blockEntity, direction);
 
-		if (view != null)
+		if (view != null && view.getLinkedModule() == this)
 		{
-			if (view.getLinkedModule() == null)
-			{
-				view.link(this);
-				return view;
-			}
-			else if (view.getLinkedModule() == this)
-			{
-				return view;
-			}
-
+			return view;
 		}
 
 		return null;

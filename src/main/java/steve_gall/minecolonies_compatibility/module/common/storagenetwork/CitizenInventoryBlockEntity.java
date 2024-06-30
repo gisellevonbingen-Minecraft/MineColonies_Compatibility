@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import steve_gall.minecolonies_compatibility.core.common.block.entity.BlockEntityExtension;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
 import steve_gall.minecolonies_compatibility.mixin.common.storagenetwork.NetworkModuleAccessor;
@@ -74,7 +75,11 @@ public class CitizenInventoryBlockEntity extends TileConnectable
 	{
 		super.setRemoved();
 
-		this.view.unlink();
+		if (this instanceof BlockEntityExtension bee && !bee.minecolonies_compatibility$isUnloaded())
+		{
+			this.view.unlink();
+		}
+
 	}
 
 	private void markUpdated()

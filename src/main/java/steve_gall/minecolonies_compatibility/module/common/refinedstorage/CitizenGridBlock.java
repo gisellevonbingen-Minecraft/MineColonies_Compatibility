@@ -48,9 +48,9 @@ public class CitizenGridBlock extends NetworkNodeBlock
 		if (!level.isClientSide)
 		{
 			return NetworkUtils.attemptModify(level, pos, player, () -> NetworkHooks.openScreen((ServerPlayer) player, //
-					new BlockEntityMenuProvider<CitizenGridBlockEntity>(//
+					new BlockEntityMenuProvider<>(//
 							this.getName(), //
-							(blockEntity, windowId, inventory, p) -> new CitizenGridContainerMenu(blockEntity, player, windowId), pos),
+							(blockEntity, windowId, inventory, p) -> new CitizenGridContainerMenu((CitizenGridBlockEntity) blockEntity, player, windowId), pos),
 					pos));
 		}
 

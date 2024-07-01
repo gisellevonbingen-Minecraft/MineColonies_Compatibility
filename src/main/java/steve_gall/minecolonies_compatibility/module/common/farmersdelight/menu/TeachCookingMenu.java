@@ -1,5 +1,7 @@
 package steve_gall.minecolonies_compatibility.module.common.farmersdelight.menu;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.core.BlockPos;
@@ -15,6 +17,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import steve_gall.minecolonies_compatibility.api.common.inventory.GhostSlot;
+import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeValidator;
+import steve_gall.minecolonies_compatibility.api.common.inventory.RecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.inventory.ReadOnlySlotsContainer;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
@@ -23,7 +27,7 @@ import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.M
 import vectorwing.farmersdelight.common.crafting.CookingPotRecipe;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
-public class TeachCookingMenu extends TeachRecipeMenu<CookingPotRecipe, RecipeWrapper>
+public class TeachCookingMenu extends TeachRecipeMenu<CookingPotRecipe>
 {
 	public static final int INVENTORY_X = 8;
 	public static final int INVENTORY_Y = 84;
@@ -100,11 +104,30 @@ public class TeachCookingMenu extends TeachRecipeMenu<CookingPotRecipe, RecipeWr
 	}
 
 	@Override
-	public void onRecipeTransfer(CookingPotRecipe recipe, CompoundTag tag)
+	protected IRecipeValidator<CookingPotRecipe> createRecipeValidator()
 	{
-		super.onRecipeTransfer(recipe, tag);
+		return new RecipeValidatorRecipe<>(this.inventory.player.level())
+		{
+			@Override
+			public RecipeType<CookingPotRecipe> getRecipeType()
+			{
+				return ModRecipeTypes.COOKING.get();
+			}
 
-		var input = NBTUtils2.deserializeList(tag, "input", ItemStack::of);
+			@Override
+			public RecipeWrapper createRecipeContainer(CraftingContainer craftContainer)
+			{
+				return new RecipeWrapper(new InvWrapper(craftContainer));
+			}
+		};
+	}
+
+	@Override
+	public void onRecipeTransfer(@NotNull CookingPotRecipe recipe, @NotNull CompoundTag payload)
+	{
+		super.onRecipeTransfer(recipe, payload);
+
+		var input = NBTUtils2.deserializeList(payload, "input", ItemStack::of);
 
 		for (var i = 0; i < CRAFTING_SLOTS; i++)
 		{
@@ -121,21 +144,9 @@ public class TeachCookingMenu extends TeachRecipeMenu<CookingPotRecipe, RecipeWr
 	}
 
 	@Override
-	public RecipeType<CookingPotRecipe> getRecipeType()
-	{
-		return ModRecipeTypes.COOKING.get();
-	}
-
-	@Override
 	public CraftingType getCraftingType()
 	{
 		return ModuleCraftingTypes.COOKING.get();
-	}
-
-	@Override
-	protected RecipeWrapper createRecipeContainer(CraftingContainer craftContainer)
-	{
-		return new RecipeWrapper(new InvWrapper(craftContainer));
 	}
 
 }

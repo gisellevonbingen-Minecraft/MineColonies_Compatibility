@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
@@ -21,6 +23,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import steve_gall.minecolonies_compatibility.api.common.inventory.GhostSlot;
+import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeValidator;
+import steve_gall.minecolonies_compatibility.api.common.inventory.RecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.crafting.IngredientHelper;
 import steve_gall.minecolonies_compatibility.core.common.inventory.ReadOnlySlotsContainer;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
@@ -31,7 +35,7 @@ import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.crafting.ingredient.ChanceResult;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
-public class TeachCuttingMenu extends TeachRecipeMenu<CuttingBoardRecipe, RecipeWrapper>
+public class TeachCuttingMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 {
 	public static final int INVENTORY_X = 8;
 	public static final int INVENTORY_Y = 84;
@@ -94,11 +98,30 @@ public class TeachCuttingMenu extends TeachRecipeMenu<CuttingBoardRecipe, Recipe
 	}
 
 	@Override
-	public void onRecipeTransfer(CuttingBoardRecipe recipe, CompoundTag tag)
+	protected IRecipeValidator<CuttingBoardRecipe> createRecipeValidator()
 	{
-		super.onRecipeTransfer(recipe, tag);
+		return new RecipeValidatorRecipe<>(this.inventory.player.level())
+		{
+			@Override
+			public RecipeType<CuttingBoardRecipe> getRecipeType()
+			{
+				return ModRecipeTypes.CUTTING.get();
+			}
 
-		this.craftSlots.get(0).set(ItemStack.of(tag));
+			@Override
+			public RecipeWrapper createRecipeContainer(CraftingContainer craftContainer)
+			{
+				return new RecipeWrapper(new InvWrapper(craftContainer));
+			}
+		};
+	}
+
+	@Override
+	public void onRecipeTransfer(@NotNull CuttingBoardRecipe recipe, @NotNull CompoundTag payload)
+	{
+		super.onRecipeTransfer(recipe, payload);
+
+		this.craftSlots.get(0).set(ItemStack.of(payload));
 	}
 
 	@Override
@@ -152,21 +175,9 @@ public class TeachCuttingMenu extends TeachRecipeMenu<CuttingBoardRecipe, Recipe
 	}
 
 	@Override
-	public RecipeType<CuttingBoardRecipe> getRecipeType()
-	{
-		return ModRecipeTypes.CUTTING.get();
-	}
-
-	@Override
 	public CraftingType getCraftingType()
 	{
 		return ModuleCraftingTypes.CUTTING.get();
-	}
-
-	@Override
-	protected RecipeWrapper createRecipeContainer(CraftingContainer craftContainer)
-	{
-		return new RecipeWrapper(new InvWrapper(craftContainer));
 	}
 
 	public IToolType getToolType()

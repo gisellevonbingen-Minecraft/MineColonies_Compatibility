@@ -2,33 +2,28 @@ package steve_gall.minecolonies_compatibility.core.common.network.message;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.network.NetworkEvent.Context;
-import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
 import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
 
-public class JEIRecipeTransferMessage extends AbstractMessage
+public class JEIRecipeTransferMessage<RECIPE> extends AbstractMessage
 {
-	private final RecipeType<?> type;
-	private final ResourceLocation id;
+	public static final String RECIPE_TRANSFER_TAG_RECIPE = "recipe";
+	public static final String RECIPE_TRANSFER_TAG_PAYLOAD = "payload";
+
 	private final CompoundTag tag;
 
-	public JEIRecipeTransferMessage(Recipe<?> recipe, CompoundTag tag)
+	public JEIRecipeTransferMessage(IRecipeTransferableMenu<RECIPE> menu, RECIPE recipe, CompoundTag payload)
 	{
-		this.type = recipe.getType();
-		this.id = recipe.getId();
-		this.tag = tag;
+		this.tag = new CompoundTag();
+		this.tag.put(RECIPE_TRANSFER_TAG_RECIPE, menu.getRecipeValidator().serialize(recipe));
+		this.tag.put(RECIPE_TRANSFER_TAG_PAYLOAD, payload);
 	}
 
 	public JEIRecipeTransferMessage(FriendlyByteBuf buffer)
 	{
 		super(buffer);
 
-		this.type = ForgeRegistries.RECIPE_TYPES.getValue(buffer.readResourceLocation());
-		this.id = buffer.readResourceLocation();
 		this.tag = buffer.readNbt();
 	}
 
@@ -37,12 +32,10 @@ public class JEIRecipeTransferMessage extends AbstractMessage
 	{
 		super.encode(buffer);
 
-		buffer.writeResourceLocation(ForgeRegistries.RECIPE_TYPES.getKey(this.type));
-		buffer.writeResourceLocation(this.id);
 		buffer.writeNbt(this.tag);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(Context context)
 	{
@@ -55,25 +48,13 @@ public class JEIRecipeTransferMessage extends AbstractMessage
 			return;
 		}
 
-		player.level().getRecipeManager().byKey(this.id).ifPresent(recipe ->
+		if (player.containerMenu instanceof IRecipeTransferableMenu menu)
 		{
-			if (player.containerMenu instanceof IRecipeTransferableMenu menu)
-			{
-				menu.onRecipeTransfer(recipe, this.tag);
-			}
+			var recipe = menu.getRecipeValidator().deserialize(this.tag.getCompound(RECIPE_TRANSFER_TAG_RECIPE));
+			var payload = this.tag.getCompound(RECIPE_TRANSFER_TAG_PAYLOAD);
+			menu.onRecipeTransfer(recipe, payload);
+		}
 
-		});
-
-	}
-
-	public RecipeType<?> getType()
-	{
-		return this.type;
-	}
-
-	public ResourceLocation getId()
-	{
-		return this.id;
 	}
 
 	public CompoundTag getTag()

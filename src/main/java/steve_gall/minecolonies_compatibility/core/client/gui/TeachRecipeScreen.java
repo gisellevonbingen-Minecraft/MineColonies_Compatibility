@@ -25,7 +25,7 @@ import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStora
 import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
 import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 
-public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE, ?>, RECIPE extends Recipe<?>> extends AbstractContainerScreen<MENU> implements CloseableWindowExtension
+public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RECIPE extends Recipe<?>> extends AbstractContainerScreen<MENU> implements CloseableWindowExtension
 {
 	protected final IBuildingView building;
 	protected final CraftingModuleView module;

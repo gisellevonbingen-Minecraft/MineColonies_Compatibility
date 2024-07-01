@@ -1,9 +1,13 @@
 package steve_gall.minecolonies_compatibility.api.common.inventory;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.crafting.Recipe;
+import org.jetbrains.annotations.NotNull;
 
-public interface IRecipeTransferableMenu<RECIPE extends Recipe<?>>
+import net.minecraft.nbt.CompoundTag;
+
+public interface IRecipeTransferableMenu<RECIPE>
 {
-	void onRecipeTransfer(RECIPE recipe, CompoundTag tag);
+	@NotNull
+	IRecipeValidator<RECIPE> getRecipeValidator();
+
+	void onRecipeTransfer(@NotNull RECIPE recipe, @NotNull CompoundTag payload);
 }

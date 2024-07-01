@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,15 +20,13 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.GameRules;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostMenu;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
+import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeValidator;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuNewResultMessage;
 
-public abstract class TeachRecipeMenu<RECIPE extends Recipe<CONTAINER>, CONTAINER extends Container> extends ModuleMenu implements IItemGhostMenu, IRecipeTransferableMenu<RECIPE>
+public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IItemGhostMenu, IRecipeTransferableMenu<RECIPE>
 {
 	protected CraftingContainer craftMatrix;
 	protected List<Slot> craftSlots;
@@ -35,6 +34,7 @@ public abstract class TeachRecipeMenu<RECIPE extends Recipe<CONTAINER>, CONTAINE
 	protected Container resultContainer;
 	protected List<Slot> resultSlots;
 
+	private IRecipeValidator<RECIPE> recipeValidator;
 	protected RECIPE recipe;
 
 	public TeachRecipeMenu(MenuType<?> menuType, int windowId, Inventory inventory, BlockPos buildingId, int moduleId)
@@ -57,19 +57,29 @@ public abstract class TeachRecipeMenu<RECIPE extends Recipe<CONTAINER>, CONTAINE
 		this.craftMatrix = null;
 		this.resultContainer = null;
 
+		this.recipeValidator = null;
 		this.recipe = null;
 	}
 
-	public abstract RecipeType<RECIPE> getRecipeType();
-
 	public abstract CraftingType getCraftingType();
+
+	protected abstract IRecipeValidator<RECIPE> createRecipeValidator();
 
 	protected abstract void onSetRecipe(RECIPE recipe);
 
-	protected abstract CONTAINER createRecipeContainer(CraftingContainer craftContainer);
+	@Override
+	public IRecipeValidator<RECIPE> getRecipeValidator()
+	{
+		if (this.recipeValidator == null)
+		{
+			this.recipeValidator = this.createRecipeValidator();
+		}
+
+		return this.recipeValidator;
+	}
 
 	@Override
-	public void onRecipeTransfer(RECIPE recipe, CompoundTag tag)
+	public void onRecipeTransfer(@NotNull RECIPE recipe, @NotNull CompoundTag payload)
 	{
 		for (var slot : this.craftSlots)
 		{
@@ -98,35 +108,18 @@ public abstract class TeachRecipeMenu<RECIPE extends Recipe<CONTAINER>, CONTAINE
 			if (container == this.craftMatrix)
 			{
 				var level = player.level;
-				var recipeContainer = this.createRecipeContainer(this.craftMatrix);
-				var recipe = level.getRecipeManager().getRecipeFor(this.getRecipeType(), recipeContainer, level).orElse(null);
-
-				if (recipe != null)
-				{
-					var canLearn = recipe.isSpecial() || !level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || player.getRecipeBook().contains(recipe) || player.isCreative();
-					this.setRecipe(canLearn ? recipe : null);
-				}
-				else
-				{
-					this.setRecipe(null);
-				}
-
+				var recipe = this.getRecipeValidator().test(level, player, this);
+				this.setRecipe(recipe);
 			}
 			else if (container == this.resultContainer)
 			{
-				var recipeId = recipe != null ? recipe.getId() : null;
-				MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewResultMessage(recipeId), player);
+				var tag = this.recipe != null ? this.getRecipeValidator().serialize(this.recipe) : null;
+				MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewResultMessage(tag), player);
 			}
 
 		}
 
 		super.slotsChanged(container);
-	}
-
-	@SuppressWarnings("unchecked")
-	public void setRecipeId(ResourceLocation recipeId)
-	{
-		this.setRecipe((RECIPE) this.inventory.player.level.getRecipeManager().byKey(recipeId).orElse(null));
 	}
 
 	public void setRecipe(RECIPE recipe)

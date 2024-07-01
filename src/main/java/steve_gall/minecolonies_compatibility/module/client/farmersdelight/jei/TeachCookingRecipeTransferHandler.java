@@ -24,6 +24,7 @@ import vectorwing.farmersdelight.integration.jei.FDRecipeTypes;
 
 public class TeachCookingRecipeTransferHandler implements IRecipeTransferHandler<TeachCookingMenu, CookingPotRecipe>
 {
+	@SuppressWarnings("unused")
 	private final IRecipeTransferHandlerHelper recipeTransferHandlerHelper;
 
 	public TeachCookingRecipeTransferHandler(IRecipeTransferHandlerHelper recipeTransferHandlerHelper)
@@ -55,10 +56,11 @@ public class TeachCookingRecipeTransferHandler implements IRecipeTransferHandler
 	{
 		if (doTransfer)
 		{
-			var tag = new CompoundTag();
 			var input = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT).stream().map(view -> view.getDisplayedIngredient(VanillaTypes.ITEM_STACK).orElse(ItemStack.EMPTY)).toList();
+
+			var tag = new CompoundTag();
 			NBTUtils2.serializeList(tag, "input", input, ItemStack::serializeNBT);
-			MineColoniesCompatibility.network().sendToServer(new JEIRecipeTransferMessage(recipe, tag));
+			MineColoniesCompatibility.network().sendToServer(new JEIRecipeTransferMessage<>(menu, recipe, tag));
 		}
 
 		return null;

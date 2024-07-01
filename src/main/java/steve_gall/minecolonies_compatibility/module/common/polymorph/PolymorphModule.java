@@ -72,7 +72,7 @@ public class PolymorphModule extends AbstractModule
 				@Override
 				public IRecipesWidget createWidget(AbstractContainerScreen<?> screen)
 				{
-					if (screen instanceof WindowCrafting window)
+					if (screen instanceof WindowCrafting)
 					{
 						return new AbstractRecipesWidget(screen)
 						{

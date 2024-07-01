@@ -3,8 +3,8 @@ package steve_gall.minecolonies_compatibility.core.common.network.message;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent.Context;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
@@ -12,18 +12,18 @@ import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage
 public class TeachRecipeMenuNewResultMessage extends AbstractMessage
 {
 	@Nullable
-	private final ResourceLocation recipeId;
+	private final CompoundTag tag;
 
-	public TeachRecipeMenuNewResultMessage(@Nullable ResourceLocation recipeId)
+	public TeachRecipeMenuNewResultMessage(@Nullable CompoundTag tag)
 	{
-		this.recipeId = recipeId;
+		this.tag = tag;
 	}
 
 	public TeachRecipeMenuNewResultMessage(FriendlyByteBuf buffer)
 	{
 		super(buffer);
 
-		this.recipeId = buffer.readNullable(FriendlyByteBuf::readResourceLocation);
+		this.tag = buffer.readNullable(FriendlyByteBuf::readNbt);
 	}
 
 	@Override
@@ -31,9 +31,10 @@ public class TeachRecipeMenuNewResultMessage extends AbstractMessage
 	{
 		super.encode(buffer);
 
-		buffer.writeNullable(this.recipeId, FriendlyByteBuf::writeResourceLocation);
+		buffer.writeNullable(this.tag, FriendlyByteBuf::writeNbt);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(Context context)
 	{
@@ -41,17 +42,26 @@ public class TeachRecipeMenuNewResultMessage extends AbstractMessage
 
 		var mc = Minecraft.getInstance();
 
-		if (mc.player.containerMenu instanceof TeachRecipeMenu<?, ?> menu)
+		if (mc.player.containerMenu instanceof TeachRecipeMenu menu)
 		{
-			menu.setRecipeId(this.recipeId);
+			if (this.tag != null)
+			{
+				var recipe = menu.getRecipeValidator().deserialize(this.tag);
+				menu.setRecipe(recipe);
+			}
+			else
+			{
+				menu.setRecipe(null);
+			}
+
 		}
 
 	}
 
 	@Nullable
-	public ResourceLocation getRecipeId()
+	public CompoundTag getTag()
 	{
-		return this.recipeId;
+		return this.tag;
 	}
 
 }

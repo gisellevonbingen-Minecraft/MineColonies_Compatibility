@@ -62,7 +62,7 @@ public class TeachCuttingRecipeTransferHandler implements IRecipeTransferHandler
 		if (doTransfer)
 		{
 			var input = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT).get(1).getDisplayedIngredient(VanillaTypes.ITEM_STACK).orElse(ItemStack.EMPTY);
-			MineColoniesCompatibility.network().sendToServer(new JEIRecipeTransferMessage(recipe, input.serializeNBT()));
+			MineColoniesCompatibility.network().sendToServer(new JEIRecipeTransferMessage<>(menu, recipe, input.serializeNBT()));
 		}
 
 		return null;

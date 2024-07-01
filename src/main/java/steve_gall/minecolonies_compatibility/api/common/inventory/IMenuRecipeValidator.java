@@ -5,13 +5,12 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
-import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
+import net.minecraft.world.Container;
 
-public interface IRecipeValidator<RECIPE>
+public interface IMenuRecipeValidator<RECIPE>
 {
 	@Nullable
-	RECIPE test(@NotNull Level level, @NotNull ServerPlayer player, @NotNull TeachRecipeMenu<RECIPE> menu);
+	RECIPE find(@NotNull ServerPlayer player, @NotNull Container container);
 
 	@NotNull
 	CompoundTag serialize(@NotNull RECIPE recipe);

@@ -7,9 +7,9 @@ import com.minecolonies.api.crafting.registry.CraftingType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -17,8 +17,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import steve_gall.minecolonies_compatibility.api.common.inventory.GhostSlot;
-import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeValidator;
-import steve_gall.minecolonies_compatibility.api.common.inventory.RecipeValidatorRecipe;
+import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
+import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.inventory.ReadOnlySlotsContainer;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
@@ -104,9 +104,9 @@ public class TeachCookingMenu extends TeachRecipeMenu<CookingPotRecipe>
 	}
 
 	@Override
-	protected IRecipeValidator<CookingPotRecipe> createRecipeValidator()
+	protected IMenuRecipeValidator<CookingPotRecipe> createRecipeValidator()
 	{
-		return new RecipeValidatorRecipe<>(this.inventory.player.level())
+		return new MenuRecipeValidatorRecipe<>(this.inventory.player.level())
 		{
 			@Override
 			public RecipeType<CookingPotRecipe> getRecipeType()
@@ -115,9 +115,9 @@ public class TeachCookingMenu extends TeachRecipeMenu<CookingPotRecipe>
 			}
 
 			@Override
-			public RecipeWrapper createRecipeContainer(CraftingContainer craftContainer)
+			public RecipeWrapper createRecipeContainer(Container container)
 			{
-				return new RecipeWrapper(new InvWrapper(craftContainer));
+				return new RecipeWrapper(new InvWrapper(container));
 			}
 		};
 	}

@@ -21,8 +21,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostMenu;
+import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
-import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeValidator;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuNewResultMessage;
 
@@ -34,7 +34,7 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	protected Container resultContainer;
 	protected List<Slot> resultSlots;
 
-	private IRecipeValidator<RECIPE> recipeValidator;
+	private IMenuRecipeValidator<RECIPE> recipeValidator;
 	protected RECIPE recipe;
 
 	public TeachRecipeMenu(MenuType<?> menuType, int windowId, Inventory inventory, BlockPos buildingId, int moduleId)
@@ -63,12 +63,12 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 
 	public abstract CraftingType getCraftingType();
 
-	protected abstract IRecipeValidator<RECIPE> createRecipeValidator();
+	protected abstract IMenuRecipeValidator<RECIPE> createRecipeValidator();
 
 	protected abstract void onSetRecipe(RECIPE recipe);
 
 	@Override
-	public IRecipeValidator<RECIPE> getRecipeValidator()
+	public IMenuRecipeValidator<RECIPE> getRecipeValidator()
 	{
 		if (this.recipeValidator == null)
 		{
@@ -107,8 +107,7 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 		{
 			if (container == this.craftMatrix)
 			{
-				var level = player.level();
-				var recipe = this.getRecipeValidator().test(level, player, this);
+				var recipe = this.getRecipeValidator().find(player, container);
 				this.setRecipe(recipe);
 			}
 			else if (container == this.resultContainer)

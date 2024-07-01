@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.WorkingBlocksPathResult;
-import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting.CuttingGenericRecipe;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleCraftingTypes;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
 

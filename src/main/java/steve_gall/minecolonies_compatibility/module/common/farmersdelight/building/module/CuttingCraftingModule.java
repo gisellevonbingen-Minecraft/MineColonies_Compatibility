@@ -76,7 +76,7 @@ public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	@Override
 	public boolean isRecipeCompatible(@NotNull IGenericRecipe recipe)
 	{
-		return recipe instanceof CuttingGenericRecipe && recipe.getRequiredTool() == this.getToolType();
+		return recipe.getRequiredTool() == this.getToolType();
 	}
 
 	@Override

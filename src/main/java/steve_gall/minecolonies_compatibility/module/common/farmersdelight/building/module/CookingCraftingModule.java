@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.PathJobFindWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.entity.pathfinding.WorkingBlocksPathResult;
-import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting.CookingGenericRecipe;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleCraftingTypes;
 import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity;
 import vectorwing.farmersdelight.common.registry.ModBlocks;
@@ -70,7 +69,7 @@ public class CookingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	@Override
 	public boolean isRecipeCompatible(@NotNull IGenericRecipe recipe)
 	{
-		return recipe instanceof CookingGenericRecipe;
+		return true;
 	}
 
 	@Override

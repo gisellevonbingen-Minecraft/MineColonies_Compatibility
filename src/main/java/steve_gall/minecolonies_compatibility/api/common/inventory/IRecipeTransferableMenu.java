@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 public interface IRecipeTransferableMenu<RECIPE>
 {
 	@NotNull
-	IRecipeValidator<RECIPE> getRecipeValidator();
+	IMenuRecipeValidator<RECIPE> getRecipeValidator();
 
 	void onRecipeTransfer(@NotNull RECIPE recipe, @NotNull CompoundTag payload);
 }

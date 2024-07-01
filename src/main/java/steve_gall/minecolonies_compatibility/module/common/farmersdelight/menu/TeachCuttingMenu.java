@@ -13,6 +13,7 @@ import com.minecolonies.api.util.constant.ToolType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -22,8 +23,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import steve_gall.minecolonies_compatibility.api.common.inventory.GhostSlot;
-import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeValidator;
-import steve_gall.minecolonies_compatibility.api.common.inventory.RecipeValidatorRecipe;
+import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
+import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.crafting.IngredientHelper;
 import steve_gall.minecolonies_compatibility.core.common.inventory.ReadOnlySlotsContainer;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
@@ -97,9 +98,9 @@ public class TeachCuttingMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 	}
 
 	@Override
-	protected IRecipeValidator<CuttingBoardRecipe> createRecipeValidator()
+	protected IMenuRecipeValidator<CuttingBoardRecipe> createRecipeValidator()
 	{
-		return new RecipeValidatorRecipe<>(this.inventory.player.level)
+		return new MenuRecipeValidatorRecipe<>(this.inventory.player.level)
 		{
 			@Override
 			public RecipeType<CuttingBoardRecipe> getRecipeType()
@@ -108,9 +109,9 @@ public class TeachCuttingMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 			}
 
 			@Override
-			public RecipeWrapper createRecipeContainer(CraftingContainer craftContainer)
+			public RecipeWrapper createRecipeContainer(Container container)
 			{
-				return new RecipeWrapper(new InvWrapper(craftContainer));
+				return new RecipeWrapper(new InvWrapper(container));
 			}
 		};
 	}

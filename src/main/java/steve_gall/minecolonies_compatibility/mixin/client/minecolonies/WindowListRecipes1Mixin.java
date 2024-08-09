@@ -2,6 +2,7 @@ package steve_gall.minecolonies_compatibility.mixin.client.minecolonies;
 
 import java.util.ArrayList;
 
+import net.minecraftforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.ldtteam.blockui.Pane;
 import com.ldtteam.blockui.controls.ItemIcon;
 import com.ldtteam.blockui.views.View;
-import com.lothrazar.cyclic.util.FluidHelpers.FluidAttributes;
 import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.modules.WindowListRecipes;
 
@@ -69,7 +69,7 @@ public abstract class WindowListRecipes1Mixin
 						view.addChild(fluidIcon);
 					}
 
-					fluidIcon.setFluid(bucketFilling.getFluidStack(FluidAttributes.BUCKET_VOLUME));
+					fluidIcon.setFluid(bucketFilling.getFluidStack(FluidType.BUCKET_VOLUME));
 				}
 
 			}

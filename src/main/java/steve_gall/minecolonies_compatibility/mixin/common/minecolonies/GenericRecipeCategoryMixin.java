@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.mixin.common.minecolonies;
 
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -9,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.lothrazar.cyclic.util.FluidHelpers.FluidAttributes;
 import com.minecolonies.api.colony.jobs.IJob;
 import com.minecolonies.api.crafting.IGenericRecipe;
 import com.minecolonies.core.compatibility.jei.GenericRecipeCategory;
@@ -68,8 +68,8 @@ public abstract class GenericRecipeCategoryMixin extends JobBasedRecipeCategory<
 		if (recipe instanceof BucketFillingGenericRecipe fillingRecipe)
 		{
 			var slot = builder.addSlot(RecipeIngredientRole.INPUT, this.outputSlotX, CITIZEN_Y + 1);
-			slot.addFluidStack(fillingRecipe.getFluid(), FluidAttributes.BUCKET_VOLUME, fillingRecipe.getFluidTag());
-			slot.setFluidRenderer(FluidAttributes.BUCKET_VOLUME, false, 16, 16);
+			slot.addFluidStack(fillingRecipe.getFluid(), FluidType.BUCKET_VOLUME, fillingRecipe.getFluidTag());
+			slot.setFluidRenderer(FluidType.BUCKET_VOLUME, false, 16, 16);
 			slot.setBackground(this.slot, -1, -1);
 		}
 

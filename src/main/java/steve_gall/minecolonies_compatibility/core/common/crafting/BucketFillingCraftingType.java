@@ -3,10 +3,10 @@ package steve_gall.minecolonies_compatibility.core.common.crafting;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.lothrazar.cyclic.util.FluidHelpers.FluidAttributes;
 import com.minecolonies.api.crafting.IGenericRecipe;
 import com.minecolonies.api.crafting.registry.CraftingType;
 
@@ -34,7 +34,7 @@ public class BucketFillingCraftingType extends CraftingType
 
 	public static BucketFillingRecipeStorage parse(ItemStack filledBucket)
 	{
-		var tank = new FluidTank(FluidAttributes.BUCKET_VOLUME);
+		var tank = new FluidTank(FluidType.BUCKET_VOLUME);
 		var emptyResult = FluidUtil.tryEmptyContainer(filledBucket, tank, tank.getCapacity(), null, true);
 		var emptyBucket = emptyResult.getResult();
 

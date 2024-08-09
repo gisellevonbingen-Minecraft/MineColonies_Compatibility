@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 
-import com.lothrazar.cyclic.util.FluidHelpers.FluidAttributes;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.IColonyManager;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
@@ -122,7 +122,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 		if (recipe != null)
 		{
-			return Component.translatable("minecolonies_compatibility.interaction.no_fluid_source", recipe.getFluidStack(FluidAttributes.BUCKET_VOLUME).getDisplayName());
+			return Component.translatable("minecolonies_compatibility.interaction.no_fluid_source", recipe.getFluidStack(FluidType.BUCKET_VOLUME).getDisplayName());
 		}
 
 		return this.getWorkingBlockNotFoundMessage();
@@ -171,7 +171,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 				if (fluidHandler != null)
 				{
-					var stack = recipe.getFluidStack(FluidAttributes.BUCKET_VOLUME);
+					var stack = recipe.getFluidStack(FluidType.BUCKET_VOLUME);
 					var drained = fluidHandler.drain(stack, simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE);
 					return drained.getAmount() >= stack.getAmount();
 				}

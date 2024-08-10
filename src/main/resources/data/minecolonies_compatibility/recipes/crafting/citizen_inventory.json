@@ -1,5 +1,11 @@
 {
 	"type": "minecraft:crafting_shaped",
+	"conditions": [
+		{
+			"type": "forge:item_exists",
+			"item": "minecolonies_compatibility:citizen_inventory"
+		}
+	],
 	"pattern": [
 		"dkd",
 		"kck",

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -57,9 +57,9 @@ public class CocoaFruit extends CustomizedFruit
 	}
 
 	@Override
-	public IToolType getHarvestToolType()
+	public EquipmentTypeEntry getHarvestToolType()
 	{
-		return ToolType.AXE;
+		return ModEquipmentTypes.axe.get();
 	}
 
 	@Override

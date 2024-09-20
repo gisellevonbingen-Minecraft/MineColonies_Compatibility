@@ -6,7 +6,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.crafting.IGenericRecipe;
-import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -67,7 +67,7 @@ public abstract class GenericedRecipeStorage<GENERIC extends IGenericRecipe> imp
 	}
 
 	@Override
-	public IToolType getRequiredTool()
+	public EquipmentTypeEntry getRequiredTool()
 	{
 		return this.getGenericRecipe().getRequiredTool();
 	}

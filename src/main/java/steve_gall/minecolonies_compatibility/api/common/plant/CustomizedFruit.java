@@ -8,8 +8,8 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -67,13 +67,13 @@ public abstract class CustomizedFruit
 	public abstract List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester);
 
 	@NotNull
-	public IToolType getHarvestToolType()
+	public EquipmentTypeEntry getHarvestToolType()
 	{
-		return ToolType.SHEARS;
+		return ModEquipmentTypes.shears.get();
 	}
 
 	@NotNull
-	public IToolType getHarvestToolType(@NotNull PlantBlockContext context)
+	public EquipmentTypeEntry getHarvestToolType(@NotNull PlantBlockContext context)
 	{
 		return this.getHarvestToolType();
 	}

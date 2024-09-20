@@ -2,8 +2,9 @@ package steve_gall.minecolonies_compatibility.module.common.farmersdelight.build
 
 import org.jetbrains.annotations.NotNull;
 
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.IMinecoloniesAPI;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,11 +13,11 @@ import steve_gall.minecolonies_compatibility.module.common.farmersdelight.networ
 
 public class CuttingCraftingModuleView extends CraftingModuleView
 {
-	private IToolType toolType;
+	private EquipmentTypeEntry toolType;
 
 	public CuttingCraftingModuleView()
 	{
-		this.toolType = ToolType.NONE;
+		this.toolType = ModEquipmentTypes.none.get();
 	}
 
 	@Override
@@ -24,7 +25,7 @@ public class CuttingCraftingModuleView extends CraftingModuleView
 	{
 		super.deserialize(buf);
 
-		this.toolType = ToolType.getToolType(buf.readUtf());
+		this.toolType = buf.readRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry());
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class CuttingCraftingModuleView extends CraftingModuleView
 		MineColoniesCompatibility.network().sendToServer(new CuttingOpenTeachMessage(this, this.getToolType()));
 	}
 
-	public IToolType getToolType()
+	public EquipmentTypeEntry getToolType()
 	{
 		return this.toolType;
 	}

@@ -7,8 +7,8 @@ import java.util.Objects;
 
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -185,9 +185,9 @@ public class SmithingTemplateRecipeStorage implements ICustomizedRecipeStorage
 	}
 
 	@Override
-	public IToolType getRequiredTool()
+	public EquipmentTypeEntry getRequiredTool()
 	{
-		return ToolType.NONE;
+		return ModEquipmentTypes.none.get();
 	}
 
 }

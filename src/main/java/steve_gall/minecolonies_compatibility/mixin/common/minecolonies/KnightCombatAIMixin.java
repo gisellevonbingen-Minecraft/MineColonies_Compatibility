@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.minecolonies.api.compatibility.tinkers.TinkersToolHelper;
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.constant.GuardConstants;
-import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.core.entity.ai.combat.AttackMoveAI;
 import com.minecolonies.core.entity.ai.workers.guard.KnightCombatAI;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
@@ -31,8 +31,8 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 		super(owner, stateMachine);
 	}
 
-	@Redirect(method = "canAttack", remap = false, at = @At(value = "FIELD", target = "com/minecolonies/api/util/constant/ToolType.SWORD", opcode = Opcodes.GETSTATIC))
-	private ToolType canAttack_ToolType()
+	@Redirect(method = "canAttack", remap = false, at = @At(value = "FIELD", target = "com/minecolonies/api/util/constant/EquipmentTypeEntry.SWORD", opcode = Opcodes.GETSTATIC))
+	private EquipmentTypeEntry canAttack_ToolType()
 	{
 		return ModToolTypes.KNIGHT_WEAPON.getToolType();
 	}

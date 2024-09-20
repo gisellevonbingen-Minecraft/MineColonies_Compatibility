@@ -7,10 +7,10 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +21,7 @@ import steve_gall.minecolonies_compatibility.api.common.crafting.ISecondaryRolla
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.crafting.ItemStorageHelper;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
+import steve_gall.minecolonies_tweaks.core.common.MineColoniesTweaks;
 
 public class CuttingRecipeStorage extends GenericedRecipeStorage<CuttingGenericRecipe> implements ISecondaryRollableRecipeStorage
 {
@@ -31,7 +32,8 @@ public class CuttingRecipeStorage extends GenericedRecipeStorage<CuttingGenericR
 		tag.putString("recipeId", recipe.recipeId.toString());
 		NBTUtils2.serializeCollection(tag, "ingreidnts", recipe.ingreidnts, StandardFactoryController.getInstance()::serialize);
 		NBTUtils2.serializeCollection(tag, "results", recipe.results, CuttingChanceResult::serializeNBT);
-		tag.putString("toolType", recipe.toolType.getName());
+		tag.putString("toolType", recipe.toolType.getRegistryName().toString());
+		tag.putInt("version", 1);
 	}
 
 	public static CuttingRecipeStorage deserialize(CompoundTag tag)
@@ -39,18 +41,29 @@ public class CuttingRecipeStorage extends GenericedRecipeStorage<CuttingGenericR
 		var recipeId = new ResourceLocation(tag.getString("recipeId"));
 		List<ItemStorage> ingreidnts = NBTUtils2.deserializeList(tag, "ingreidnts", StandardFactoryController.getInstance()::deserialize);
 		var results = NBTUtils2.deserializeList(tag, "results", CuttingChanceResult::new);
-		var toolType = ToolType.getToolType(tag.getString("toolType"));
+		var version = tag.getInt("version");
+		EquipmentTypeEntry toolType;
+
+		if (version == 0)
+		{
+			toolType = IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getValue((MineColoniesTweaks.rl(tag.getString("toolType"))));
+		}
+		else
+		{
+			toolType = IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getValue(new ResourceLocation(tag.getString("toolType")));
+		}
+
 		return new CuttingRecipeStorage(recipeId, ingreidnts, results, toolType);
 	}
 
 	private final ResourceLocation recipeId;
 	private final List<ItemStorage> ingreidnts;
 	private final List<CuttingChanceResult> results;
-	private final IToolType toolType;
+	private final EquipmentTypeEntry toolType;
 
 	private final CuttingGenericRecipe genericRecipe;
 
-	public CuttingRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingreidnts, List<CuttingChanceResult> results, IToolType toolType)
+	public CuttingRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingreidnts, List<CuttingChanceResult> results, EquipmentTypeEntry toolType)
 	{
 		this.recipeId = recipeId;
 		this.ingreidnts = Collections.unmodifiableList(ingreidnts);

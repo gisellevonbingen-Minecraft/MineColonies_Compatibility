@@ -3,7 +3,7 @@ package steve_gall.minecolonies_compatibility.core.common.entity.ai.guard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
 import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
@@ -26,7 +26,7 @@ public class EntityAIGunner extends AbstractEntityAIGuard<JobGunner, AbstractBui
 
 	@Override
 	@Nullable
-	public ToolType getHandToolType()
+	public EquipmentTypeEntry getHandToolType()
 	{
 		return ModToolTypes.GUN.getToolType();
 	}

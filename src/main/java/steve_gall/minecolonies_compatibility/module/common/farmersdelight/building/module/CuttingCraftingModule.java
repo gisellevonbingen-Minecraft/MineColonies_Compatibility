@@ -5,12 +5,13 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.crafting.IGenericRecipe;
 import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.crafting.registry.CraftingType;
-import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,9 +25,9 @@ import vectorwing.farmersdelight.common.registry.ModBlocks;
 
 public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWorkingBlocks
 {
-	private final IToolType toolType;
+	private final EquipmentTypeEntry toolType;
 
-	public CuttingCraftingModule(JobEntry jobEntry, IToolType toolType)
+	public CuttingCraftingModule(JobEntry jobEntry, EquipmentTypeEntry toolType)
 	{
 		super(jobEntry);
 
@@ -44,7 +45,7 @@ public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	{
 		super.serializeToView(buf, fullSync);
 
-		buf.writeUtf(this.getToolType().getName());
+		buf.writeRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry(), this.getToolType());
 	}
 
 	@Override
@@ -62,7 +63,7 @@ public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	@Override
 	public @NotNull String getId()
 	{
-		return "farmers_cutting_" + this.getToolType().getName();
+		return "farmers_cutting_" + this.getToolType().getRegistryName().getPath();
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWor
 		return InteractionMessageHelper.getWorkingBlockNotFound(ModBlocks.CUTTING_BOARD.get());
 	}
 
-	public IToolType getToolType()
+	public EquipmentTypeEntry getToolType()
 	{
 		return this.toolType;
 	}

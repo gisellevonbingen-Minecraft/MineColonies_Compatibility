@@ -6,9 +6,9 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.equipment.ModEquipmentTypes;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.BlockPosUtil;
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -97,10 +97,10 @@ public class Fruit
 		return !needMaxHarvest || fruit.isMaxHarvest(context);
 	}
 
-	public IToolType getToolType()
+	public EquipmentTypeEntry getToolType()
 	{
 		var fruit = this.fruit;
-		return fruit != null ? fruit.getHarvestToolType(this.getContext()) : ToolType.NONE;
+		return fruit != null ? fruit.getHarvestToolType(this.getContext()) : ModEquipmentTypes.none.get();
 	}
 
 	public SoundEvent getSound()

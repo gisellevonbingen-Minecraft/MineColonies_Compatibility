@@ -8,8 +8,8 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.OptionalPredicate;
-import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -32,14 +32,14 @@ public class CuttingGenericRecipe implements IRecipeSlotModifiableGenericRecipe
 	private final List<ItemStack> primaryOutputs;
 	private final List<CuttingChanceResult> additionalResults;
 	private final List<ItemStack> additionalOutputs;
-	private final IToolType toolType;
+	private final EquipmentTypeEntry toolType;
 
-	public CuttingGenericRecipe(CuttingBoardRecipe recipe, IToolType toolType)
+	public CuttingGenericRecipe(CuttingBoardRecipe recipe, EquipmentTypeEntry toolType)
 	{
 		this(recipe.getId(), IngredientHelper.getStacksList(recipe.getIngredients()), recipe.getRollableResults().stream().map(CuttingChanceResult::new).toList(), toolType);
 	}
 
-	public CuttingGenericRecipe(ResourceLocation recipeId, List<List<ItemStack>> ingredients, List<CuttingChanceResult> results, IToolType toolType)
+	public CuttingGenericRecipe(ResourceLocation recipeId, List<List<ItemStack>> ingredients, List<CuttingChanceResult> results, EquipmentTypeEntry toolType)
 	{
 		var allResults = new ArrayList<CuttingChanceResult>();
 		this.recipeId = recipeId;
@@ -171,7 +171,7 @@ public class CuttingGenericRecipe implements IRecipeSlotModifiableGenericRecipe
 	}
 
 	@Override
-	public @NotNull IToolType getRequiredTool()
+	public @NotNull EquipmentTypeEntry getRequiredTool()
 	{
 		return this.toolType;
 	}

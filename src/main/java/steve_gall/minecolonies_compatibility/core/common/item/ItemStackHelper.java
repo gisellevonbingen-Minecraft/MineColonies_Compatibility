@@ -6,8 +6,8 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.ItemStackUtils;
-import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.item.ItemStack;
 
@@ -41,12 +41,12 @@ public class ItemStackHelper
 		return inputs.stream().filter(stack -> !stack.isEmpty()).toList();
 	}
 
-	public static boolean isTool(@NotNull ItemStack stack, @NotNull IToolType toolType)
+	public static boolean isTool(@NotNull ItemStack stack, @NotNull EquipmentTypeEntry toolType)
 	{
-		return ItemStackUtils.isTool(stack, toolType);
+		return toolType.checkIsEquipment(stack);
 	}
 
-	public static boolean isTool(@NotNull List<ItemStack> list, @NotNull IToolType toolType)
+	public static boolean isTool(@NotNull List<ItemStack> list, @NotNull EquipmentTypeEntry toolType)
 	{
 		return list.stream().allMatch(stack -> isTool(stack, toolType));
 	}

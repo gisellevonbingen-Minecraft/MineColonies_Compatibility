@@ -42,7 +42,7 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 		public float getMeleeAttackDamage(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
 		{
 			var damage = super.getMeleeAttackDamage(context, target);
-			damage += Config.bayonetDamage;
+			damage += (Config.bayonetDamage - 1);
 			return damage;
 		}
 

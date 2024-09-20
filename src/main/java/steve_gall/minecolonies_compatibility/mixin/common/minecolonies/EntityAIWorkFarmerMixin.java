@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.util.InventoryUtils;
-import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingFarmer;
 import com.minecolonies.core.colony.fields.FarmField;
 import com.minecolonies.core.colony.jobs.JobFarmer;
@@ -230,7 +230,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	@Inject(method = "findHoeableSurface", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void findHoeableSurface_TAIL(BlockPos pos, FarmField farmField, CallbackInfoReturnable<BlockPos> cir)
 	{
-		if (!checkForToolOrWeapon(ToolType.HOE))
+		if (!checkForToolOrWeapon(ModEquipmentTypes.hoe.get()))
 		{
 			this.equipHoe();
 		}

@@ -14,13 +14,13 @@ import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.entity.citizen.VisibleCitizenStatus;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.items.ModItems;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.CitizenConstants;
 import com.minecolonies.api.util.constant.Constants;
-import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.StatisticsConstants;
 import com.minecolonies.api.util.constant.translation.RequestSystemTranslationConstants;
 import com.minecolonies.core.Network;
@@ -156,7 +156,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 	 *
 	 * @return false if we have the tool
 	 */
-	private boolean equipTool(IToolType toolType)
+	private boolean equipTool(EquipmentTypeEntry toolType)
 	{
 		if (this.checkForToolOrWeapon(toolType))
 		{

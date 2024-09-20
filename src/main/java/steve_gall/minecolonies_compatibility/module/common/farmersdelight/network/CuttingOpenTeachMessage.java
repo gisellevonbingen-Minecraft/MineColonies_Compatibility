@@ -1,9 +1,9 @@
 package steve_gall.minecolonies_compatibility.module.common.farmersdelight.network;
 
+import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,9 +14,9 @@ import steve_gall.minecolonies_compatibility.module.common.farmersdelight.menu.C
 
 public class CuttingOpenTeachMessage extends ModuleMenuOpenMessage
 {
-	private final IToolType toolType;
+	private final EquipmentTypeEntry toolType;
 
-	public CuttingOpenTeachMessage(IBuildingModuleView module, IToolType toolType)
+	public CuttingOpenTeachMessage(IBuildingModuleView module, EquipmentTypeEntry toolType)
 	{
 		super(module);
 
@@ -27,7 +27,7 @@ public class CuttingOpenTeachMessage extends ModuleMenuOpenMessage
 	{
 		super(buffer);
 
-		this.toolType = ToolType.getToolType(buffer.readUtf());
+		this.toolType = buffer.readRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry());
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class CuttingOpenTeachMessage extends ModuleMenuOpenMessage
 	{
 		super.encode(buffer);
 
-		buffer.writeUtf(this.toolType.getName());
+		buffer.writeRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry(), this.toolType);
 	}
 
 	@Override
@@ -49,10 +49,10 @@ public class CuttingOpenTeachMessage extends ModuleMenuOpenMessage
 	{
 		super.toBuffer(buffer, module);
 
-		buffer.writeUtf(this.getToolType().getName());
+		buffer.writeRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry(), this.getToolType());
 	}
 
-	public IToolType getToolType()
+	public EquipmentTypeEntry getToolType()
 	{
 		return this.toolType;
 	}

@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.crafting.IGenericRecipe;
 import com.minecolonies.api.crafting.RecipeCraftingType;
-import com.minecolonies.api.util.ItemStackUtils;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -35,27 +37,21 @@ public class CuttingCraftingType extends RecipeCraftingType<RecipeWrapper, Cutti
 
 		for (var recipe : recipeManager.getAllRecipesFor(ModRecipeTypes.CUTTING.get()))
 		{
-			var toolTypes = Arrays.stream(recipe.getTool().getItems()).map(this::getToolType).distinct().collect(Collectors.toList());
-			toolTypes.remove(ToolType.NONE);
+			var toolTypes = Arrays.stream(recipe.getTool().getItems()).flatMap(this::streamToolType).distinct().collect(Collectors.toList());
+			toolTypes.remove(ModEquipmentTypes.none.get());
 
-			recipes.add(new CuttingGenericRecipe(recipe, toolTypes.size() > 0 ? toolTypes.get(0) : ToolType.NONE));
+			recipes.add(new CuttingGenericRecipe(recipe, toolTypes.size() > 0 ? toolTypes.get(0) : ModEquipmentTypes.none.get()));
 		}
 
 		return recipes;
 	}
 
-	private ToolType getToolType(ItemStack stack)
+	private Stream<EquipmentTypeEntry> streamToolType(ItemStack stack)
 	{
-		for (var toolType : ToolType.values())
+		return IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getValues().stream().filter(toolType ->
 		{
-			if (ItemStackUtils.isTool(stack, toolType))
-			{
-				return toolType;
-			}
-
-		}
-
-		return ToolType.NONE;
+			return toolType.checkIsEquipment(stack);
+		});
 	}
 
 }

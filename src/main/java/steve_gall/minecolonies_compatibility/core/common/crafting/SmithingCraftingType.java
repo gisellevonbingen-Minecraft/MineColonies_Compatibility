@@ -11,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.crafting.GenericRecipe;
 import com.minecolonies.api.crafting.IGenericRecipe;
 import com.minecolonies.api.crafting.registry.CraftingType;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.util.constant.Constants;
-import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.api.util.constant.TranslationConstants;
 
 import net.minecraft.core.RegistryAccess;
@@ -119,7 +119,7 @@ public class SmithingCraftingType extends CraftingType
 		input.add(base);
 		input.add(addition);
 		var allResults = getAllResults(recipe, registryAccess, template, base, addition);
-		return new GenericRecipe(recipe.getId(), ItemStack.EMPTY, allResults, Arrays.asList(template), input, 2, Blocks.AIR, null, ToolType.NONE, null, restrictions, requiredLevel);
+		return new GenericRecipe(recipe.getId(), ItemStack.EMPTY, allResults, Arrays.asList(template), input, 2, Blocks.AIR, null, ModEquipmentTypes.none.get(), null, restrictions, requiredLevel);
 	}
 
 	private static List<ItemStack> getAllResults(SmithingRecipe recipe, RegistryAccess registryAccess, ItemStack template, List<ItemStack> bases, List<ItemStack> additions)

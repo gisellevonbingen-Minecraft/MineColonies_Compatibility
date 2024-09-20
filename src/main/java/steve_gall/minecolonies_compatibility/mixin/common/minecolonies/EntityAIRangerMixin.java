@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.InventoryUtils;
-import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
 import com.minecolonies.core.colony.jobs.JobRanger;
 import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard;
@@ -31,7 +31,7 @@ public abstract class EntityAIRangerMixin extends AbstractEntityAIGuard<JobRange
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"), cancellable = false)
 	private void init(JobRanger job, CallbackInfo ci)
 	{
-		if (this.toolsNeeded.remove(ToolType.BOW))
+		if (this.toolsNeeded.remove(ModEquipmentTypes.bow.get()))
 		{
 			this.toolsNeeded.add(ModToolTypes.RANGER_WEAPON.getToolType());
 		}
@@ -48,7 +48,7 @@ public abstract class EntityAIRangerMixin extends AbstractEntityAIGuard<JobRange
 			if (this.worker.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects().getEffectStrength(ResearchConstants.ARCHER_USE_ARROWS) > 0)
 			{
 				var inventory = this.worker.getInventoryCitizen();
-				var crossbowSlot = InventoryUtils.getFirstSlotOfItemHandlerContainingTool(inventory, ModToolTypes.CROSSBOW.getToolType(), 0, this.building.getMaxToolLevel());
+				var crossbowSlot = InventoryUtils.getFirstSlotOfItemHandlerContainingEquipment(inventory, ModToolTypes.CROSSBOW.getToolType(), 0, this.building.getMaxEquipmentLevel());
 
 				if (crossbowSlot == -1)
 				{

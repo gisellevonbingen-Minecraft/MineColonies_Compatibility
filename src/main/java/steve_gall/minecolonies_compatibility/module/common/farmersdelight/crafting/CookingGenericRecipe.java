@@ -9,9 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.crafting.IGenericRecipe;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.OptionalPredicate;
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
@@ -139,9 +139,9 @@ public class CookingGenericRecipe implements IGenericRecipe
 	}
 
 	@Override
-	public @NotNull IToolType getRequiredTool()
+	public @NotNull EquipmentTypeEntry getRequiredTool()
 	{
-		return ToolType.NONE;
+		return ModEquipmentTypes.none.get();
 	}
 
 	@Override

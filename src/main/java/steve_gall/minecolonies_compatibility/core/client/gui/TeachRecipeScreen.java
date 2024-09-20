@@ -13,7 +13,6 @@ import com.minecolonies.core.network.messages.server.colony.building.worker.AddR
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,10 +24,8 @@ import steve_gall.minecolonies_compatibility.core.common.item.ItemHandlerHelper2
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuSwitchingMessage;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
-import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
-import steve_gall.minecolonies_tweaks.core.common.config.MineColoniesTweaksConfigClient;
 
-public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RECIPE> extends AbstractContainerScreen<MENU> implements CloseableWindowExtension
+public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RECIPE> extends AbstractContainerScreen<MENU>
 {
 	private static final Component TEXT_WARNING_MAXIMUM_NUMBER_RECIPES = Component.translatable(TranslationConstants.WARNING_MAXIMUM_NUMBER_RECIPES);
 	private static final Component TEXT_DONE = Component.translatable(BaseGameTranslationConstants.BASE_GUI_DONE);
@@ -42,9 +39,7 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 	protected final CraftingModuleView module;
 
 	private Button doneButton;
-	private Button closeButton;
 	private ImageButton switchButton;
-	private Screen parent;
 
 	private Component lastError;
 
@@ -63,12 +58,6 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 		this.doneButton = Button.builder(TEXT_DONE, this::onDoneButtonPress).bounds(this.leftPos + 1, this.topPos + this.imageHeight + 4, 150, 20).build();
 		this.doneButton.active = false;
 		this.addRenderableWidget(this.doneButton);
-
-		if (MineColoniesTweaksConfigClient.INSTANCE.addReturnButton.get().booleanValue())
-		{
-			this.closeButton = Button.builder(Component.literal("X"), this::onClosePress).bounds(this.doneButton.getX() + this.doneButton.getWidth() + 5, this.doneButton.getY(), this.doneButton.getHeight(), this.doneButton.getHeight()).build();
-			this.addRenderableWidget(this.closeButton);
-		}
 
 		this.switchButton = new ImageButton(this.leftPos + this.getSwitchButtonX(), this.topPos + this.getSwitchButtonY(), SWITCH_WIDTH, SWITCH_HEIGHT, 0, 0, SWITCH_HEIGHT + 1, SWITCH_TEXTURE, btn ->
 		{
@@ -151,23 +140,6 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 	}
 
 	protected abstract ICustomizedRecipeStorage createRecipeStorage(RECIPE recipe, List<ItemStorage> input);
-
-	private void onClosePress(Button button)
-	{
-		this.minecolonies_tweaks$returnOrClose();
-	}
-
-	@Override
-	public void minecolonies_tweaks$setParent(Screen screen)
-	{
-		this.parent = screen;
-	}
-
-	@Override
-	public Screen minecolonies_tweaks$getParent()
-	{
-		return this.parent;
-	}
 
 	public CraftingModuleView getModule()
 	{

@@ -7,10 +7,10 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.crafting.registry.CraftingType;
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -51,11 +51,11 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 	public static final int RESULT_Y = 18;
 	public static final int RESULT_COLUMNS = 5;
 
-	private final IToolType toolType;
+	private final EquipmentTypeEntry toolType;
 
 	private List<ChanceResult> results;
 
-	public CuttingTeachMenu(int windowId, Inventory inventory, IBuildingModule module, IToolType toolType)
+	public CuttingTeachMenu(int windowId, Inventory inventory, IBuildingModule module, EquipmentTypeEntry toolType)
 	{
 		super(ModuleMenuTypes.CUTTING_TEACH.get(), windowId, inventory, module);
 		this.toolType = toolType;
@@ -65,7 +65,7 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 	public CuttingTeachMenu(int windowId, Inventory inventory, FriendlyByteBuf buffer)
 	{
 		super(ModuleMenuTypes.CUTTING_TEACH.get(), windowId, inventory, buffer);
-		this.toolType = ToolType.getToolType(buffer.readUtf());
+		this.toolType = buffer.readRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry());
 		this.setup();
 	}
 
@@ -170,7 +170,7 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 		return ModuleCraftingTypes.CUTTING.get();
 	}
 
-	public IToolType getToolType()
+	public EquipmentTypeEntry getToolType()
 	{
 		return this.toolType;
 	}

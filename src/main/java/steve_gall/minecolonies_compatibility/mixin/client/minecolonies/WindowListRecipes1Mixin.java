@@ -2,6 +2,7 @@ package steve_gall.minecolonies_compatibility.mixin.client.minecolonies;
 
 import java.util.ArrayList;
 
+import net.minecraftforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.mixin.common.minecolonies;
 
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

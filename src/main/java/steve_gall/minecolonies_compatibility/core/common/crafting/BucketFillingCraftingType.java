@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.core.common.crafting;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

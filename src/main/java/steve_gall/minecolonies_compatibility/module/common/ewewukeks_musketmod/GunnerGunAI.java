@@ -195,7 +195,7 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 			var damage = config.defaultBulletDamage.apply(user, this.getPrimarySkillLevel(user));
 			var dummyGun = ModuleItems.DUMMY_GUN.get();
 			dummyGun.setParent((GunItem) weapon.getItem());
-			dummyGun.setDamage((float) damage);
+			dummyGun.setDamage((float) damage / Config.mobDamageMultiplier);
 			gun = dummyGun;
 			bullet = ItemStack.EMPTY.copy();
 		}

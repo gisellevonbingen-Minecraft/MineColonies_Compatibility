@@ -13,6 +13,7 @@ import com.minecolonies.core.colony.buildings.AbstractBuilding;
 import com.minecolonies.core.colony.jobs.AbstractJob;
 import com.minecolonies.core.entity.ai.workers.AbstractAISkeleton;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIBasic;
+import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
@@ -51,12 +52,12 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 			if (this.minecolonies_compatibility$selectedAI != null)
 			{
 				this.minecolonies_compatibility$aiContext = context;
-				worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, this.minecolonies_compatibility$aiContext.getWeaponSlot());
+				CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, context.getWeaponSlot());
 			}
 			else
 			{
 				this.minecolonies_compatibility$aiContext = null;
-				worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, -1);
+				CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, -1);
 			}
 
 		}

@@ -16,6 +16,7 @@ import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting
 import com.minecolonies.core.entity.pathfinding.PathfindingUtils;
 import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.network.messages.client.LocalizedParticleEffectMessage;
+import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -189,7 +190,7 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 			return AIWorkerState.START_WORKING;
 		}
 
-		this.worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, slot);
+		CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, slot);
 
 		if (this.walkToBlock(this.cauldronPos))
 		{
@@ -213,7 +214,7 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 
 		inventory.getStackInSlot(slot).shrink(1);
 		InventoryUtils.transferItemStackIntoNextBestSlotInItemHandler(new ItemStack(Items.LAVA_BUCKET), inventory);
-		this.worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, slot);
+		CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, slot);
 
 		this.worker.getCitizenExperienceHandler().addExperience(XP_PER_HARVEST);
 		this.incrementActionsDone();

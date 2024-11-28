@@ -165,7 +165,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		}
 
 		var slot = CitizenHelper.getMaxLevelToolSlot(this.worker.getCitizenData(), toolType);
-		this.worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, slot);
+		CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, slot);
 		return false;
 	}
 

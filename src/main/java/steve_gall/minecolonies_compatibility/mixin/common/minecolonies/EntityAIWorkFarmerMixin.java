@@ -17,6 +17,7 @@ import com.minecolonies.core.colony.fields.FarmField;
 import com.minecolonies.core.colony.jobs.JobFarmer;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 import com.minecolonies.core.entity.ai.workers.production.agriculture.EntityAIWorkFarmer;
+import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -193,7 +194,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 				}
 
 				worker.swing(hand);
-				worker.getCitizenItemHandler().damageItemInHand(hand, 1);
+				CitizenItemUtils.damageItemInHand(worker, hand, 1);
 
 				this.incrementActionsDone();
 				worker.decreaseSaturationForContinuousAction();

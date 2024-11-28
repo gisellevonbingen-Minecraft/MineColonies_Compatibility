@@ -13,8 +13,7 @@ import com.minecolonies.api.util.OptionalPredicate;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -22,17 +21,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class AnimalHerdingLootGenericRecipe implements IGenericRecipe
 {
-	private final Animal animal;
-	private final ResourceLocation entityType;
+	private final EntityType<?> entityType;
+	private final ResourceLocation entityTypeKey;
 	private final ResourceLocation lootTable;
 	private final List<List<ItemStack>> breedingItems;
 	private final EquipmentTypeEntry toolType;
 
-	public AnimalHerdingLootGenericRecipe(Animal animal, List<List<ItemStack>> breedingItems, EquipmentTypeEntry toolType)
+	public AnimalHerdingLootGenericRecipe(EntityType<?> entityType, List<List<ItemStack>> breedingItems, ResourceLocation lootTable, EquipmentTypeEntry toolType)
 	{
-		this.animal = animal;
-		this.entityType = ForgeRegistries.ENTITY_TYPES.getKey(animal.getType());
-		this.lootTable = animal.getLootTable();
+		this.entityType = entityType;
+		this.entityTypeKey = ForgeRegistries.ENTITY_TYPES.getKey(entityType);
+		this.lootTable = lootTable;
 		this.breedingItems = breedingItems.stream().map(l -> l.stream().map(ItemStack::copy).toList()).toList();
 		this.toolType = toolType;
 	}
@@ -46,7 +45,7 @@ public class AnimalHerdingLootGenericRecipe implements IGenericRecipe
 	@Override
 	public @Nullable ResourceLocation getRecipeId()
 	{
-		return this.entityType;
+		return this.entityTypeKey;
 	}
 
 	@Override
@@ -104,9 +103,9 @@ public class AnimalHerdingLootGenericRecipe implements IGenericRecipe
 	}
 
 	@Override
-	public @Nullable LivingEntity getRequiredEntity()
+	public @Nullable EntityType<?> getRequiredEntity()
 	{
-		return this.animal;
+		return this.entityType;
 	}
 
 	@Override

@@ -51,12 +51,12 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 			if (this.minecolonies_compatibility$selectedAI != null)
 			{
 				this.minecolonies_compatibility$aiContext = context;
-				worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, this.minecolonies_compatibility$aiContext.getWeaponSlot());
+				worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, this.minecolonies_compatibility$aiContext.getWeaponSlot());
 			}
 			else
 			{
 				this.minecolonies_compatibility$aiContext = null;
-				worker.getCitizenItemHandler().removeHeldItem();
+				worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, -1);
 			}
 
 		}

@@ -109,7 +109,7 @@ public class FarmersDelightModule extends AbstractModule
 
 	private void onAnimalHerdingLoot(AnimalHerdingLootEvent e)
 	{
-		var type = e.getRecipe().getRequiredEntity().getType();
+		var type = e.getRecipe().getRequiredEntity();
 
 		if (type == EntityType.PIG || type == EntityType.HOGLIN)
 		{

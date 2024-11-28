@@ -33,6 +33,7 @@ import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
 import com.minecolonies.core.entity.pathfinding.PathfindingUtils;
 import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.network.messages.client.CompostParticleMessage;
+import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -164,7 +165,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		}
 
 		var slot = CitizenHelper.getMaxLevelToolSlot(this.worker.getCitizenData(), toolType);
-		this.worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, slot);
+		this.worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, slot);
 		return false;
 	}
 
@@ -317,7 +318,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		}
 
 		worker.swing(hand);
-		worker.getCitizenItemHandler().damageItemInHand(hand, 1);
+		CitizenItemUtils.damageItemInHand(worker, hand, 1);
 
 		var colony = worker.getCitizenColonyHandler().getColony();
 		colony.getStatisticsManager().increment(StatisticsConstants.CROPS_HARVESTED, colony.getDay());

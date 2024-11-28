@@ -15,7 +15,7 @@ import com.minecolonies.api.util.OptionalPredicate;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -140,7 +140,7 @@ public class BucketFillingGenericRecipe implements IGenericRecipe
 	}
 
 	@Override
-	public @Nullable LivingEntity getRequiredEntity()
+	public @Nullable EntityType<?> getRequiredEntity()
 	{
 		return null;
 	}

@@ -18,6 +18,7 @@ import com.minecolonies.core.entity.ai.combat.TargetAI;
 import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 import com.minecolonies.core.entity.pathfinding.pathresults.PathResult;
+import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -123,7 +124,7 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 
 				if (user instanceof EntityCitizen citizen)
 				{
-					citizen.getCitizenItemHandler().damageItemInHand(InteractionHand.MAIN_HAND, 1);
+					CitizenItemUtils.damageItemInHand(citizen, InteractionHand.MAIN_HAND, 1);
 					citizen.decreaseSaturationForContinuousAction();
 				}
 

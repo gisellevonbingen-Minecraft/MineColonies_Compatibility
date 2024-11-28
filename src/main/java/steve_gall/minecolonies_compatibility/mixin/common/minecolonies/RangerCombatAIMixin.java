@@ -24,6 +24,7 @@ import com.minecolonies.core.entity.ai.combat.AttackMoveAI;
 import com.minecolonies.core.entity.ai.combat.CombatUtils;
 import com.minecolonies.core.entity.ai.workers.guard.RangerCombatAI;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
+import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -126,7 +127,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 				projectiles[i] = projectile;
 
 				this.user.playSound(SoundEvents.CROSSBOW_SHOOT, (float) GuardConstants.BASIC_VOLUME, (float) SoundUtils.getRandomPitch(this.user.getRandom()));
-				this.user.getCitizenItemHandler().damageItemInHand(InteractionHand.MAIN_HAND, i == 0 ? (weaponDamage - 1) : weaponDamage);
+				CitizenItemUtils.damageItemInHand(this.user, InteractionHand.MAIN_HAND, i == 0 ? (weaponDamage - 1) : weaponDamage);
 			}
 
 		}

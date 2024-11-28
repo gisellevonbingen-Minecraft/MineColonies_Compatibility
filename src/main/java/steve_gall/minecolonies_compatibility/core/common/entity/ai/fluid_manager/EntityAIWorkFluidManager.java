@@ -189,7 +189,7 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 			return AIWorkerState.START_WORKING;
 		}
 
-		this.worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, slot);
+		this.worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, slot);
 
 		if (this.walkToBlock(this.cauldronPos))
 		{
@@ -213,7 +213,7 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 
 		inventory.getStackInSlot(slot).shrink(1);
 		InventoryUtils.transferItemStackIntoNextBestSlotInItemHandler(new ItemStack(Items.LAVA_BUCKET), inventory);
-		this.worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, slot);
+		this.worker.getInventoryCitizen().setHeldItem(InteractionHand.MAIN_HAND, slot);
 
 		this.worker.getCitizenExperienceHandler().addExperience(XP_PER_HARVEST);
 		this.incrementActionsDone();

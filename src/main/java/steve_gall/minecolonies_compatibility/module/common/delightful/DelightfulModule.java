@@ -39,9 +39,9 @@ public class DelightfulModule extends AbstractModule
 	{
 		if (e.getRecipe().getRequiredTool() == ModToolTypes.KNIFE.getToolType())
 		{
-			var type = e.getRecipe().getRequiredEntity().getType();
+			var type = e.getRecipe().getRequiredEntity();
 
-			if (type.is(DelightfulEntityTags.FATTY_ANIMALS))
+			if (type != null && type.is(DelightfulEntityTags.FATTY_ANIMALS))
 			{
 				e.register(new LootTableAnalyzer.LootDrop(Collections.singletonList(new ItemStack(DelightfulItems.ANIMAL_FAT.get())), 0.6F, 1, false));
 			}

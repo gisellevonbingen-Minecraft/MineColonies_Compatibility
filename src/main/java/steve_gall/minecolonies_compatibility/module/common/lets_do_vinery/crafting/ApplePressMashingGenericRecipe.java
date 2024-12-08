@@ -9,18 +9,18 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.satisfy.vinery.recipe.ApplePressRecipe;
-import net.satisfy.vinery.registry.ObjectRegistry;
+import net.satisfy.vinery.core.recipe.ApplePressMashingRecipe;
+import net.satisfy.vinery.core.registry.ObjectRegistry;
 import steve_gall.minecolonies_compatibility.api.common.crafting.SimpleGenericRecipe;
 
-public class ApplePressGenericRecipe extends SimpleGenericRecipe
+public class ApplePressMashingGenericRecipe extends SimpleGenericRecipe
 {
-	public ApplePressGenericRecipe(@NotNull ApplePressRecipe recipe, @NotNull RegistryAccess registryAccess)
+	public ApplePressMashingGenericRecipe(@NotNull ApplePressMashingRecipe recipe, @NotNull RegistryAccess registryAccess)
 	{
 		super(recipe, registryAccess);
 	}
 
-	public ApplePressGenericRecipe(@NotNull ResourceLocation recipeId, @NotNull List<List<ItemStack>> ingredients, @NotNull ItemStack output)
+	public ApplePressMashingGenericRecipe(@NotNull ResourceLocation recipeId, @NotNull List<List<ItemStack>> ingredients, @NotNull ItemStack output)
 	{
 		super(recipeId, ingredients, output);
 	}

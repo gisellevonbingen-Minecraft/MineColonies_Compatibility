@@ -12,8 +12,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.satisfy.vinery.recipe.ApplePressRecipe;
-import net.satisfy.vinery.registry.RecipeTypesRegistry;
+import net.satisfy.vinery.core.recipe.ApplePressMashingRecipe;
+import net.satisfy.vinery.core.registry.RecipeTypesRegistry;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachContainer;
@@ -23,7 +23,7 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSl
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.init.ModuleMenuTypes;
 
-public class ApplePressTeachMenu extends TeachRecipeMenu<ApplePressRecipe>
+public class ApplePressMashingTeachMenu extends TeachRecipeMenu<ApplePressMashingRecipe>
 {
 	public static final int INVENTORY_X = 8;
 	public static final int INVENTORY_Y = 84;
@@ -34,15 +34,15 @@ public class ApplePressTeachMenu extends TeachRecipeMenu<ApplePressRecipe>
 	public static final int RESULT_X = 116;
 	public static final int RESULT_Y = 34;
 
-	public ApplePressTeachMenu(int windowId, Inventory inventory, IBuildingModule module)
+	public ApplePressMashingTeachMenu(int windowId, Inventory inventory, IBuildingModule module)
 	{
-		super(ModuleMenuTypes.APPLE_PRESS.get(), windowId, inventory, module);
+		super(ModuleMenuTypes.APPLE_PRESS_MASHING.get(), windowId, inventory, module);
 		this.setup();
 	}
 
-	public ApplePressTeachMenu(int windowId, Inventory inventory, FriendlyByteBuf buffer)
+	public ApplePressMashingTeachMenu(int windowId, Inventory inventory, FriendlyByteBuf buffer)
 	{
-		super(ModuleMenuTypes.APPLE_PRESS.get(), windowId, inventory, buffer);
+		super(ModuleMenuTypes.APPLE_PRESS_MASHING.get(), windowId, inventory, buffer);
 		this.setup();
 	}
 
@@ -58,18 +58,18 @@ public class ApplePressTeachMenu extends TeachRecipeMenu<ApplePressRecipe>
 	}
 
 	@Override
-	protected IMenuRecipeValidator<ApplePressRecipe> createRecipeValidator()
+	protected IMenuRecipeValidator<ApplePressMashingRecipe> createRecipeValidator()
 	{
 		return new MenuRecipeValidatorRecipe<>(this.inventory.player.level())
 		{
 			@Override
-			public RecipeType<ApplePressRecipe> getRecipeType()
+			public RecipeType<ApplePressMashingRecipe> getRecipeType()
 			{
-				return RecipeTypesRegistry.APPLE_PRESS_RECIPE_TYPE.get();
+				return RecipeTypesRegistry.APPLE_PRESS_MASHING_RECIPE_TYPE.get();
 			}
 
 			@Override
-			protected boolean test(ApplePressRecipe recipe, Container container, ServerPlayer player)
+			protected boolean test(ApplePressMashingRecipe recipe, Container container, ServerPlayer player)
 			{
 				return recipe.matches(container, this.level);
 			}
@@ -78,7 +78,7 @@ public class ApplePressTeachMenu extends TeachRecipeMenu<ApplePressRecipe>
 	}
 
 	@Override
-	protected void setContainerByTransfer(@NotNull ApplePressRecipe recipe, @NotNull CompoundTag payload)
+	protected void setContainerByTransfer(@NotNull ApplePressMashingRecipe recipe, @NotNull CompoundTag payload)
 	{
 		super.setContainerByTransfer(recipe, payload);
 
@@ -88,13 +88,13 @@ public class ApplePressTeachMenu extends TeachRecipeMenu<ApplePressRecipe>
 	@Override
 	protected void onRecipeChanged()
 	{
-		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem() : ItemStack.EMPTY);
+		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem(this.inventory.player.level().registryAccess()) : ItemStack.EMPTY);
 	}
 
 	@Override
 	public CraftingType getCraftingType()
 	{
-		return ModuleCraftingTypes.APPLE_PRESS.get();
+		return ModuleCraftingTypes.APPLE_PRESS_MASHING.get();
 	}
 
 }

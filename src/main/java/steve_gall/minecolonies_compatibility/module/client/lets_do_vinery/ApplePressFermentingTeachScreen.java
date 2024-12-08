@@ -8,18 +8,19 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.satisfy.vinery.recipe.ApplePressRecipe;
+import net.satisfy.vinery.core.recipe.ApplePressFermentingRecipe;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressRecipeStorage;
-import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.menu.ApplePressTeachMenu;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressFermentingGenericRecipe;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressFermentingRecipeStorage;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.menu.ApplePressFermentingTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public class ApplePressTeachScreen extends TeachRecipeScreen<ApplePressTeachMenu, ApplePressRecipe>
+public class ApplePressFermentingTeachScreen extends TeachRecipeScreen<ApplePressFermentingTeachMenu, ApplePressFermentingRecipe>
 {
-	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/lets_do_vinery_apple_press_teach.png");
+	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/lets_do_vinery_apple_press_fermenting_teach.png");
 
-	public ApplePressTeachScreen(ApplePressTeachMenu menu, Inventory inventory, Component title)
+	public ApplePressFermentingTeachScreen(ApplePressFermentingTeachMenu menu, Inventory inventory, Component title)
 	{
 		super(menu, inventory, title);
 
@@ -28,11 +29,12 @@ public class ApplePressTeachScreen extends TeachRecipeScreen<ApplePressTeachMenu
 	}
 
 	@Override
-	protected ICustomizedRecipeStorage createRecipeStorage(ApplePressRecipe recipe, List<ItemStorage> input)
+	protected ICustomizedRecipeStorage createRecipeStorage(ApplePressFermentingRecipe recipe, List<ItemStorage> input)
 	{
 		var resultContainer = this.menu.getResultContainer();
+		var container = new ItemStorage(ApplePressFermentingGenericRecipe.getContainer(recipe));
 		var output = resultContainer.getItem(0);
-		return new ApplePressRecipeStorage(recipe.getId(), input, output);
+		return new ApplePressFermentingRecipeStorage(recipe.getId(), input, container, output);
 	}
 
 	@Override

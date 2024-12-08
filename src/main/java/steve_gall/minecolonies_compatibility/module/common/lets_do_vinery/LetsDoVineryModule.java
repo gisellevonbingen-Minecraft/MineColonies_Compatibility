@@ -7,16 +7,19 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.satisfy.vinery.registry.GrapeTypeRegistry;
+import net.satisfy.vinery.core.registry.GrapeTypeRegistry;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_compatibility.module.client.lets_do_vinery.ApplePressTeachScreen;
+import steve_gall.minecolonies_compatibility.module.client.lets_do_vinery.ApplePressFermentingTeachScreen;
+import steve_gall.minecolonies_compatibility.module.client.lets_do_vinery.ApplePressMashingTeachScreen;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
-import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressRecipeStorage;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressFermentingRecipeStorage;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressMashingRecipeStorage;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.init.ModuleBuildingModules;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.init.ModuleMenuTypes;
-import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.network.ApplePressOpenTeachMessage;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.network.ApplePressFermentingOpenTeachMessage;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.network.ApplePressMashingOpenTeachMessage;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizedRecipeStorageRegistry;
 
 public class LetsDoVineryModule extends AbstractModule
@@ -31,9 +34,11 @@ public class LetsDoVineryModule extends AbstractModule
 		ModuleMenuTypes.REGISTER.register(fml_bus);
 
 		var network = MineColoniesCompatibility.network();
-		network.registerMessage(ApplePressOpenTeachMessage.class, ApplePressOpenTeachMessage::new);
+		network.registerMessage(ApplePressMashingOpenTeachMessage.class, ApplePressMashingOpenTeachMessage::new);
+		network.registerMessage(ApplePressFermentingOpenTeachMessage.class, ApplePressFermentingOpenTeachMessage::new);
 
-		CustomizedRecipeStorageRegistry.INSTANCE.register(ApplePressRecipeStorage.ID, ApplePressRecipeStorage::serialize, ApplePressRecipeStorage::new);
+		CustomizedRecipeStorageRegistry.INSTANCE.register(ApplePressMashingRecipeStorage.ID, ApplePressMashingRecipeStorage::serialize, ApplePressMashingRecipeStorage::new);
+		CustomizedRecipeStorageRegistry.INSTANCE.register(ApplePressFermentingRecipeStorage.ID, ApplePressFermentingRecipeStorage::serialize, ApplePressFermentingRecipeStorage::new);
 	}
 
 	@Override
@@ -54,7 +59,8 @@ public class LetsDoVineryModule extends AbstractModule
 
 			}
 
-			ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_APPLE_PRESS);
+			ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_APPLE_PRESS_MASHING);
+			ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_APPLE_PRESS_FERMENTING);
 		});
 	}
 
@@ -63,7 +69,8 @@ public class LetsDoVineryModule extends AbstractModule
 	{
 		super.onFMLClientSetup(e);
 
-		MenuScreens.register(ModuleMenuTypes.APPLE_PRESS.get(), ApplePressTeachScreen::new);
+		MenuScreens.register(ModuleMenuTypes.APPLE_PRESS_MASHING.get(), ApplePressMashingTeachScreen::new);
+		MenuScreens.register(ModuleMenuTypes.APPLE_PRESS_FERMENTING.get(), ApplePressFermentingTeachScreen::new);
 	}
 
 }

@@ -16,15 +16,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.satisfy.vinery.block.ApplePressBlock;
-import net.satisfy.vinery.registry.ObjectRegistry;
+import net.satisfy.vinery.core.block.ApplePressBlock;
+import net.satisfy.vinery.core.registry.ObjectRegistry;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.init.ModuleCraftingTypes;
 
-public class ApplePressCraftingModule extends AbstractCraftingModuleWithExternalWorkingBlocks
+public class ApplePressFermentingCraftingModule extends AbstractCraftingModuleWithExternalWorkingBlocks
 {
-	public ApplePressCraftingModule(JobEntry jobEntry)
+	public ApplePressFermentingCraftingModule(JobEntry jobEntry)
 	{
 		super(jobEntry);
 	}
@@ -50,13 +50,13 @@ public class ApplePressCraftingModule extends AbstractCraftingModuleWithExternal
 	@Override
 	public @NotNull String getId()
 	{
-		return "lets_do_vinery_apple_press";
+		return "lets_do_vinery_apple_press_fermenting";
 	}
 
 	@Override
 	public Set<CraftingType> getSupportedCraftingTypes()
 	{
-		return Collections.singleton(ModuleCraftingTypes.APPLE_PRESS.get());
+		return Collections.singleton(ModuleCraftingTypes.APPLE_PRESS_FERMENTING.get());
 	}
 
 	@Override

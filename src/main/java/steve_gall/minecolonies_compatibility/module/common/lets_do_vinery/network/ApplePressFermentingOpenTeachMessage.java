@@ -8,16 +8,16 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import steve_gall.minecolonies_compatibility.core.common.network.message.ModuleMenuOpenMessage;
-import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.menu.ApplePressTeachMenu;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.menu.ApplePressFermentingTeachMenu;
 
-public class ApplePressOpenTeachMessage extends ModuleMenuOpenMessage
+public class ApplePressFermentingOpenTeachMessage extends ModuleMenuOpenMessage
 {
-	public ApplePressOpenTeachMessage(IBuildingModuleView module)
+	public ApplePressFermentingOpenTeachMessage(IBuildingModuleView module)
 	{
 		super(module);
 	}
 
-	public ApplePressOpenTeachMessage(FriendlyByteBuf buffer)
+	public ApplePressFermentingOpenTeachMessage(FriendlyByteBuf buffer)
 	{
 		super(buffer);
 	}
@@ -31,7 +31,7 @@ public class ApplePressOpenTeachMessage extends ModuleMenuOpenMessage
 	@Override
 	protected AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player, IBuildingModule module)
 	{
-		return new ApplePressTeachMenu(windowId, inventory, module);
+		return new ApplePressFermentingTeachMenu(windowId, inventory, module);
 	}
 
 	@Override

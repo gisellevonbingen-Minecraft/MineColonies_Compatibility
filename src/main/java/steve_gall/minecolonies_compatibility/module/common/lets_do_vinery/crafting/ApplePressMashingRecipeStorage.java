@@ -11,16 +11,16 @@ import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.crafting.SimpleRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
-public class ApplePressRecipeStorage extends SimpleRecipeStorage<ApplePressGenericRecipe>
+public class ApplePressMashingRecipeStorage extends SimpleRecipeStorage<ApplePressMashingGenericRecipe>
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("lets_do_vinery_apple_press");
 
-	public ApplePressRecipeStorage(CompoundTag tag)
+	public ApplePressMashingRecipeStorage(CompoundTag tag)
 	{
 		super(tag);
 	}
 
-	public ApplePressRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingredients, ItemStack output)
+	public ApplePressMashingRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingredients, ItemStack output)
 	{
 		super(recipeId, ingredients, output);
 	}
@@ -38,9 +38,9 @@ public class ApplePressRecipeStorage extends SimpleRecipeStorage<ApplePressGener
 	}
 
 	@Override
-	protected GenericRecipeFactory<ApplePressGenericRecipe> getGenericRecipeFactory()
+	protected GenericRecipeFactory<ApplePressMashingGenericRecipe> getGenericRecipeFactory()
 	{
-		return ApplePressGenericRecipe::new;
+		return ApplePressMashingGenericRecipe::new;
 	}
 
 }

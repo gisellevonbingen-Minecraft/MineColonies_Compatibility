@@ -11,8 +11,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.satisfy.vinery.block.AppleLeaves;
-import net.satisfy.vinery.registry.ObjectRegistry;
+import net.satisfy.vinery.core.block.AppleLeavesBlock;
+import net.satisfy.vinery.core.registry.ObjectRegistry;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -47,7 +47,7 @@ public class AppleLeavesFruit extends CustomizedFruit
 	public boolean canHarvest(@NotNull PlantBlockContext context)
 	{
 		var state = context.getState();
-		return state.getValue(AppleLeaves.VARIANT) && state.getValue(AppleLeaves.HAS_APPLES);
+		return state.getValue(AppleLeavesBlock.VARIANT) && state.getValue(AppleLeavesBlock.HAS_APPLES);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class AppleLeavesFruit extends CustomizedFruit
 			var dropCount = random.nextBoolean() ? Mth.nextInt(random, 1, 3) : 1;
 			var dropStack = new ItemStack(Items.APPLE, dropCount);
 
-			var newState = context.getState().setValue(AppleLeaves.HAS_APPLES, false);
+			var newState = context.getState().setValue(AppleLeavesBlock.HAS_APPLES, false);
 			level.setBlockAndUpdate(context.getPosition(), newState);
 
 			return Collections.singletonList(dropStack);

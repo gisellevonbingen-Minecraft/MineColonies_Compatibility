@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import steve_gall.minecolonies_compatibility.core.client.gui.NetworkStorageViewScreenUtils;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.CitizenInventoryMenu;
 
@@ -30,6 +31,9 @@ public class CitizenInventoryScreen extends AbstractContainerScreen<CitizenInven
 		this.renderBackground(guiGraphics);
 
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+
+		var view = this.getMenu().getBlockEntity().getView();
+		guiGraphics.drawString(this.font, NetworkStorageViewScreenUtils.getModuleText(view), this.leftPos + 14, this.topPos + 21, 0xFF404040, false);
 
 		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}

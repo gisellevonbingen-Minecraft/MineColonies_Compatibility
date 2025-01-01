@@ -7,6 +7,7 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.module.client.storagenetwork.CitizenInventoryScreen;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.init.ModuleBlockEntities;
@@ -33,6 +34,10 @@ public class StorageNetworkModule extends AbstractModule
 	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
 		super.onFMLCommonSetup(e);
+		e.enqueueWork(() ->
+		{
+			NetworkStorageViewRegistry.register((be, direction) -> be instanceof CitizenInventoryBlockEntity inventory ? inventory.getView() : null);
+		});
 	}
 
 	@Override

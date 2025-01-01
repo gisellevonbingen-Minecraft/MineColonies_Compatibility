@@ -35,15 +35,15 @@
 	"minecolonies_compatibility.ewewukeks_musketmod_cartridge.desc": "ewewukek's Musket Mod's Cartridges",
 	
 	"_comment_blocks": "Blocks",
-	"block.minecolonies_compatibility.citizen_grid": "Grid for Colonist (Removed)",
-	"block.minecolonies_compatibility.citizen_inventory": "Storage Inventory for Colonist (Removed)",
-	"block.minecolonies_compatibility.citizen_inventory.tooltip": "'Network Storage' feature is removed.",
+	"block.minecolonies_compatibility.citizen_grid": "Grid for Colonist",
+	"block.minecolonies_compatibility.citizen_inventory": "Storage Inventory for Colonist",
+	"block.minecolonies_compatibility.citizen_inventory.tooltip": "Link 'Simple Storage Network' and 'Minecolonies Warehouse'",
 	
 	"_comment_items": "Items",
 	"item.minecolonies_compatibility.restrict_tool": "Zoning Tool",
 	"item.minecolonies_compatibility.restrict_tool.name": "Building: %s",
 	"item.minecolonies_compatibility.restrict_tool.pos": "Pos: %1$s, %2$s, %3$s",
-	"item.minecolonies_compatibility.citizen_terminal": "ME Terminal for Colonist (Removed)",
+	"item.minecolonies_compatibility.citizen_terminal": "ME Terminal for Colonist",
 	
 	"_comment_texts": "Texts",
 	"minecolonies_compatibility.text.refresh": "Refresh",
@@ -65,6 +65,7 @@
 	
 	"_comment_modules": "Modules",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruits",
+	"com.minecolonies.coremod.gui.workerhuts.network_storage": "Network Storage",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.bucket_filling": "Bucket Filling Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.bucket_filling.menu": "Bucket Filling Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.fluid_manager_lava_cauldron": "Lava Cauldron",

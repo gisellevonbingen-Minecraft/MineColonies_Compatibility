@@ -2,11 +2,13 @@ package steve_gall.minecolonies_compatibility.module.common.ae2;
 
 import com.minecolonies.api.creativetab.ModCreativeTabs;
 
+import appeng.blockentity.networking.CableBusBlockEntity;
 import appeng.init.client.InitScreens;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.module.client.ae2.CitizenTerminalScreen;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 import steve_gall.minecolonies_compatibility.module.common.ae2.init.ModuleItems;
@@ -32,6 +34,22 @@ public class AppliedEnergistics2Module extends AbstractModule
 	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
 		super.onFMLCommonSetup(e);
+		e.enqueueWork(() ->
+		{
+			NetworkStorageViewRegistry.register((be, direction) ->
+			{
+				if (be instanceof CableBusBlockEntity cable)
+				{
+					if (cable.getPart(direction) instanceof CitizenTerminalPart part)
+					{
+						return part.getView();
+					}
+
+				}
+
+				return null;
+			});
+		});
 	}
 
 	@Override

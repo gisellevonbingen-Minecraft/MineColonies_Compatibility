@@ -8,7 +8,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import steve_gall.minecolonies_compatibility.core.client.gui.NetworkStorageViewScreenUtils;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.module.common.refinedstorage.CitizenGridBlockEntity;
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.CitizenGridContainerMenu;
 
 public class CitizenGridScreen extends BaseScreen<CitizenGridContainerMenu>
@@ -38,6 +40,9 @@ public class CitizenGridScreen extends BaseScreen<CitizenGridContainerMenu>
 	{
 		this.renderString(graphics, 7, 7, this.title.getString());
 		this.renderString(graphics, 7, 43, TEXT_INVENTORY.getString());
+
+		var view = ((CitizenGridBlockEntity) this.getMenu().getBlockEntity()).getNode().getView();
+		this.renderString(graphics, 14, 21, NetworkStorageViewScreenUtils.getModuleText(view).getString());
 	}
 
 	@Override

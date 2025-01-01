@@ -35,15 +35,15 @@
 	"minecolonies_compatibility.ewewukeks_musketmod_cartridge.desc": "ewewukek's Musket Mod's Cartridges",
 	
 	"_comment_blocks": "블록",
-	"block.minecolonies_compatibility.citizen_grid": "시민용 그리드 (삭제됨)",
-	"block.minecolonies_compatibility.citizen_inventory": "시민용 Storage Inventory (삭제됨)",
-	"block.minecolonies_compatibility.citizen_inventory.tooltip": "'네트워크 저장소' 기능은 삭제되었습니다.",
+	"block.minecolonies_compatibility.citizen_grid": "시민용 그리드",
+	"block.minecolonies_compatibility.citizen_inventory": "시민용 Storage Inventory",
+	"block.minecolonies_compatibility.citizen_inventory.tooltip": "'Simple Storage Network'와 'Minecolonies 창고'를 연결합니다",
 	
 	"_comment_items": "아이템",
 	"item.minecolonies_compatibility.restrict_tool": "구역 설정 도구",
 	"item.minecolonies_compatibility.restrict_tool.name": "건물: %s",
 	"item.minecolonies_compatibility.restrict_tool.pos": "위치: %1$s, %2$s, %3$s",
-	"item.minecolonies_compatibility.citizen_terminal": "시민용 ME 터미널 (삭제됨)",
+	"item.minecolonies_compatibility.citizen_terminal": "시민용 ME 터미널",
 	
 	"_comment_texts": "텍스트",
 	"minecolonies_compatibility.text.refresh": "새로고침",
@@ -65,6 +65,7 @@
 	
 	"_comment_modules": "모듈",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "과일 목록",
+	"com.minecolonies.coremod.gui.workerhuts.network_storage": "네트워크 저장소",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.bucket_filling": "양동이를 채우는 제작법",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.bucket_filling.menu": "양동이를 채우는 제작법",
 	"com.minecolonies.coremod.gui.workerhuts.fluid_manager_lava_cauldron": "용암 가마솥",

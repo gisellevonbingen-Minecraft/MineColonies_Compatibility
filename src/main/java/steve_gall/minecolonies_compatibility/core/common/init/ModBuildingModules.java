@@ -23,6 +23,8 @@ import steve_gall.minecolonies_compatibility.core.common.building.module.BucketF
 import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModuleView;
 import steve_gall.minecolonies_compatibility.core.common.building.module.LavaCauldronModule;
+import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
+import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModuleView;
 import steve_gall.minecolonies_compatibility.core.common.building.module.RestrictableModuleView;
 import steve_gall.minecolonies_compatibility.core.common.building.module.SmithingCraftingModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.SmithingCraftingModuleView;
@@ -65,6 +67,10 @@ public class ModBuildingModules
 	public static final BuildingEntry.ModuleProducer<FruitListModule, FruitListModuleView> FRUITLIST_BLACKLIST = new BuildingEntry.ModuleProducer<>("fruitlist_blacklist", //
 			() -> new FruitListModule(ModBuildingModules.FRUITLIST_BLACKLIST.key), //
 			() -> () -> new FruitListModuleView("fruitlist_blacklist", "com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist", true, fruit -> true));
+
+	public static final BuildingEntry.ModuleProducer<NetworkStorageModule, NetworkStorageModuleView> NETWORK_STORAGE = new BuildingEntry.ModuleProducer<>("warehouse_refinfedstoprage_grid", //
+			() -> new NetworkStorageModule(), //
+			() -> NetworkStorageModuleView::new);
 
 	public static final BuildingEntry.ModuleProducer<CraftingWorkerBuildingModule, WorkerBuildingModuleView> FLUID_MANAGER_WORK = new BuildingEntry.ModuleProducer<>("fluid_manager_work", //
 			() -> new CraftingWorkerBuildingModule(ModJobs.FLUID_MANAGER.get(), Skill.Focus, Skill.Athletics, false, b -> 1), //

@@ -138,11 +138,11 @@ public class CitizenInventoryBlockEntity extends TileConnectable
 
 		var isFiltered = true;
 		var counter = new ItemStackCounter();
-		main.nw.setShouldRefresh();
+		main.getNetwork().setShouldRefresh();
 
 		try
 		{
-			var links = ((NetworkModuleAccessor) main.nw).invokeGetConnectableStorage();
+			var links = ((NetworkModuleAccessor) main.getNetwork()).invokeGetConnectableStorage();
 
 			for (var link : links)
 			{

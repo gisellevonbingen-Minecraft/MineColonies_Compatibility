@@ -14,6 +14,7 @@ import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 import com.minecolonies.core.entity.pathfinding.PathfindingUtils;
 import com.minecolonies.core.entity.pathfinding.PathingOptions;
+import com.minecolonies.core.entity.pathfinding.navigation.EntityNavigationUtils;
 import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.entity.pathfinding.pathjobs.AbstractPathJob;
 import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobCanSee;
@@ -72,7 +73,7 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 				if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 				{
 					var speed = attack.getJobPathSpeed(parentAI.getAIContext());
-					user.getNavigation().moveAwayFromLivingEntity(target, getAttackDistance() / 2.0D, speed);
+					EntityNavigationUtils.walkAwayFrom(user, target.blockPosition(), (int) (this.getAttackDistance() / 2.0D), speed);
 				}
 
 			}

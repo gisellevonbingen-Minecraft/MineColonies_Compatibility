@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
+import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
 import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
@@ -39,11 +40,11 @@ public class EntityAIGunner extends AbstractEntityAIGuard<JobGunner, AbstractBui
 
 		if (worker.getRandom().nextInt(3) < 1)
 		{
-			worker.isWorkerAtSiteWithMove(buildingGuards.getGuardPos(), 3);
+			this.walkToSafePos(buildingGuards.getGuardPos());
 			return;
 		}
 
-		if (worker.isWorkerAtSiteWithMove(buildingGuards.getGuardPos(), 10) || Math.abs(buildingGuards.getGuardPos().getY() - worker.blockPosition().getY()) > 3)
+		if ((BlockPosUtil.dist(buildingGuards.getGuardPos(), worker.blockPosition()) <= 10.0D || walkToSafePos(buildingGuards.getGuardPos())) || Math.abs(buildingGuards.getGuardPos().getY() - worker.blockPosition().getY()) > 3)
 		{
 			// Moves the ranger randomly to close edges, for better vision to mobs
 			((MinecoloniesAdvancedPathNavigate) worker.getNavigation()).setPathJob(new PathJobWalkRandomEdge(this.world, buildingGuards.getGuardPos(), 20, worker), null, 1.0, true);

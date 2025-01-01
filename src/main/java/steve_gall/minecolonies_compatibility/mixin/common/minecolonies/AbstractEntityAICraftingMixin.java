@@ -56,7 +56,7 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 				this.minecolonies_compatibility$workingPosition = pos;
 				this.minecolonies_compatibility$hitPosition = module.getHitPosition(pos);
 				this.minecolonies_compatibility$particlePosition = module.getParticlePosition(pos);
-				return this.walkToBlock(module.getWalkingPosition(pos));
+				return this.walkToWorkPos(module.getWalkingPosition(pos));
 			}
 			else
 			{

@@ -192,7 +192,7 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 
 		CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, slot);
 
-		if (this.walkToBlock(this.cauldronPos))
+		if (this.walkToWorkPos(this.cauldronPos))
 		{
 			return this.getState();
 		}

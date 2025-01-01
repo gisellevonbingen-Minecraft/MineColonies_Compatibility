@@ -268,7 +268,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		{
 			return AIWorkerState.START_WORKING;
 		}
-		else if (this.walkToBlock(position) || this.hasNotDelayed(this.getLevelDelay()))
+		else if (this.walkToWorkPos(position) || this.hasNotDelayed(this.getLevelDelay()))
 		{
 			return this.getState();
 		}

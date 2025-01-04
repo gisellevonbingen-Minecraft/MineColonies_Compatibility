@@ -215,8 +215,7 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 		this.worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, slot);
 
 		this.worker.getCitizenExperienceHandler().addExperience(XP_PER_HARVEST);
-		this.incrementActionsDone();
-		this.worker.decreaseSaturationForContinuousAction();
+		this.incrementActionsDoneAndDecSaturation();
 
 		return this.decideSearch(AIWorkerState.INVENTORY_FULL);
 	}

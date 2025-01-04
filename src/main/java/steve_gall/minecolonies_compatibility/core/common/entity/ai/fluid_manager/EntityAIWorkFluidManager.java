@@ -86,7 +86,7 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 		{
 			return AIWorkerState.START_WORKING;
 		}
-		else if (this.walkToBuilding())
+		else if (!this.walkToBuilding())
 		{
 			return this.getState();
 		}
@@ -192,7 +192,7 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 
 		CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, slot);
 
-		if (this.walkToWorkPos(this.cauldronPos))
+		if (!this.walkToWorkPos(this.cauldronPos))
 		{
 			return this.getState();
 		}

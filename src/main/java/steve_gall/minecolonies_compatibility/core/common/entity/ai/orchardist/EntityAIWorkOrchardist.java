@@ -113,7 +113,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 	private IAIState decide()
 	{
-		if (this.walkToBuilding())
+		if (!this.walkToBuilding())
 		{
 			return this.getState();
 		}
@@ -268,7 +268,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		{
 			return AIWorkerState.START_WORKING;
 		}
-		else if (this.walkToWorkPos(position) || this.hasNotDelayed(this.getLevelDelay()))
+		else if (!this.walkToWorkPos(position) || this.hasNotDelayed(this.getLevelDelay()))
 		{
 			return this.getState();
 		}

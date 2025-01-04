@@ -62,7 +62,7 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 			{
 				this.worker.getCitizenData().triggerInteraction(new StandardInteraction(module.getWorkingBlockNotFoundMessage(recipeStorage), ChatPriority.BLOCKING));
 				this.walkToBuilding();
-				return true;
+				return false;
 			}
 
 		}

@@ -97,8 +97,12 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 
 	public int getMatchingItemStackCount(ItemStack itemStack, int count, boolean ignoreNBT, boolean ignoreDamage, int leftOver)
 	{
+		return this.getMatchingItemStackCount(stack -> ItemStackUtils.compareItemStacksIgnoreStackSize(itemStack, stack, !ignoreDamage, !ignoreNBT), count, leftOver);
+	}
+
+	public int getMatchingItemStackCount(Predicate<ItemStack> predicate, int count, int leftOver)
+	{
 		var totalCountFound = 0 - leftOver;
-		Predicate<ItemStack> predicate = stack -> ItemStackUtils.compareItemStacksIgnoreStackSize(itemStack, stack, !ignoreDamage, !ignoreNBT);
 
 		for (var stack : StreamUtils.toIterable(this.getExtractableBlocks().flatMap(view -> view.getAllStacks().filter(predicate))))
 		{

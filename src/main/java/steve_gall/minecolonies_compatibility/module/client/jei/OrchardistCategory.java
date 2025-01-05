@@ -37,7 +37,7 @@ public class OrchardistCategory extends JobBasedRecipeCategory<FruitIconCache>
 		var inputs = recipe.getBlockIcons();
 		for (var i = 0; i < inputs.size(); i++)
 		{
-			var x = CITIZEN_X + CITIZEN_X + CITIZEN_W + 30;
+			var x = CITIZEN_X + CITIZEN_W + 32;
 			var y = CITIZEN_Y + (CITIZEN_H - this.arrow.getHeight()) / 2;
 			var slot = builder.addSlot(RecipeIngredientRole.INPUT, x + i * 18, y);
 			slot.addItemStack(inputs.get(i));

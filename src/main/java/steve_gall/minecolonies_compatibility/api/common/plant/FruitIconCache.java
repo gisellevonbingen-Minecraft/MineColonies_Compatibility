@@ -18,8 +18,8 @@ public class FruitIconCache
 	public FruitIconCache(@NotNull CustomizedFruit fruit)
 	{
 		this.fruit = fruit;
-		this.blockIcons = fruit.getBlockIcons().stream().map(ItemStack::copy).toList();
-		this.itemIcons = fruit.getItemIcons().stream().map(ItemStack::copy).toList();
+		this.blockIcons = fruit.getBlockIcons();
+		this.itemIcons = fruit.getItemIcons();
 	}
 
 	@NotNull

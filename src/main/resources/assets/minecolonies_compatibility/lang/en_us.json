@@ -20,11 +20,15 @@
 	"minecolonies_compatibility.job.farmers_cook": "Farmer's Cook (Deleted, please rehire as Cook Assistant.)",
 	"minecolonies_compatibility:farmers_cook.job.desc": "Deleted, please rehire as Cook Assistant.",
 	"minecolonies_compatibility:farmers_cook.skills.desc": "Deleted, please rehire as Cook Assistant.",
+	"minecolonies_compatibility.job.butcher": "Butcher",
+	"minecolonies_compatibility:butcher.job.desc": "Dismember carcasses to obtain meats, hides, or by-products.",
+	"minecolonies_compatibility:butcher.skills.desc": "Affects working speed.",
 	
 	"_comment_jobs_jei_descs": "JEI Jobs",
 	"com.minecolonies.coremod.jei.orchardist": "Harvests fruits, leaf crops hanging at tree.",
 	"com.minecolonies.coremod.jei.fluid_manager": "Fill bucket with fluid and Pickup lava from cauldron.",
 	"com.minecolonies.coremod.jei.farmers_cook": "Cooks using Farmer's Delight mod's Cooking Pot and hands out food to colonists.",
+	"com.minecolonies.coremod.jei.butcher": "Dismember carcasses to obtain meats, hides, or by-products.",
 	
 	"_comment_requests": "Requests",
 	"minecolonies_compatibility.ie_bullet": "Bullets",
@@ -33,6 +37,8 @@
 	"minecolonies_compatibility.reliquary_magazine.desc": "Reliquary's Magazines",
 	"minecolonies_compatibility.ewewukeks_musketmod_cartridge": "Cartridges",
 	"minecolonies_compatibility.ewewukeks_musketmod_cartridge.desc": "ewewukek's Musket Mod's Cartridges",
+	"minecolonies_compatibility.butcherable": "Butcherables",
+	"minecolonies_compatibility.butcherable.desc": "Items that the Butcher can process",
 	
 	"_comment_blocks": "Blocks",
 	"block.minecolonies_compatibility.citizen_grid": "Grid for Colonist",
@@ -99,6 +105,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_meadow_woodcutting.menu": "Woodcutter Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press": "[Let's Do] Vinery - Apple Press Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press.menu": "Apple Press Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_brewery_silo.menu": "Silo Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist": "Butcherables",
 	
 	"_comment_module_settings": "Module Settings",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "Request Firework Rocket",

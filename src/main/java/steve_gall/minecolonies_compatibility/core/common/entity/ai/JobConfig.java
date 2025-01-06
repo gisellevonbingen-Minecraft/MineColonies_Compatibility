@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher.ButcherConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.fluid_manager.FluidManagerConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.GunnerConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.KnightConfig;
@@ -14,6 +15,7 @@ public class JobConfig
 	public final GunnerConfig gunner;
 	public final OrchardistConfig orchardist;
 	public final FluidManagerConfig fluidManager;
+	public final ButcherConfig butcher;
 
 	public JobConfig(ForgeConfigSpec.Builder builder)
 	{
@@ -35,6 +37,10 @@ public class JobConfig
 
 		builder.push("fluidManager");
 		this.fluidManager = new FluidManagerConfig(builder);
+		builder.pop();
+
+		builder.push("butcher");
+		this.butcher = new ButcherConfig(builder);
 		builder.pop();
 	}
 

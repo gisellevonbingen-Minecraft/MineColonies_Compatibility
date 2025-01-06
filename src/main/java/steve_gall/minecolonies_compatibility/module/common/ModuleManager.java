@@ -9,6 +9,7 @@ import steve_gall.minecolonies_compatibility.module.common.ae2.AppliedEnergistic
 import steve_gall.minecolonies_compatibility.module.common.aether.AetherModule;
 import steve_gall.minecolonies_compatibility.module.common.ars_nouveau.ArsNouveauModule;
 import steve_gall.minecolonies_compatibility.module.common.blue_skies.BlueSkiesModule;
+import steve_gall.minecolonies_compatibility.module.common.butchersdelight.ButchersDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.croptopia.CroptopiaModule;
 import steve_gall.minecolonies_compatibility.module.common.cyclic.CyclicModule;
 import steve_gall.minecolonies_compatibility.module.common.delightful.DelightfulModule;
@@ -53,6 +54,8 @@ public class ModuleManager
 	public static final OptionalModule<AetherModule> AETHER = register("aether", () -> AetherModule::new);
 	public static final OptionalModule<ArsNouveauModule> ARS_NOUVEAU = register("ars_nouveau", () -> ArsNouveauModule::new);
 	public static final OptionalModule<BlueSkiesModule> BLUE_SKIES = register("blue_skies", () -> BlueSkiesModule::new);
+	public static final OptionalModule<ButchersDelightModule> BUTCHERSDELIGHT = register("butchersdelight", () -> ButchersDelightModule::new);
+	public static final OptionalModule<AbstractModule> BUTCHERSDELIGHTFOODS = register("butchersdelightfoods", () -> AbstractModule::new);
 	public static final OptionalModule<CroptopiaModule> CROPTOPIA = register("croptopia", () -> CroptopiaModule::new);
 	public static final OptionalModule<CyclicModule> CYCLIC = register("cyclic", () -> CyclicModule::new);
 	public static final OptionalModule<DelightfulModule> DELIGHTFUL = register("delightful", () -> DelightfulModule::new);

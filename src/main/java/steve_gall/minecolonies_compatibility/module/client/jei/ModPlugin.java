@@ -20,6 +20,8 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.client.jei.GhostIngredientHandler;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherableIconCache;
+import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.FruitIconCache;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
@@ -34,11 +36,11 @@ public class ModPlugin implements IModPlugin
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration)
 	{
-		var job = ModJobs.ORCHARDIST.get().produceJob(null);
 		var guiHelper = registration.getJeiHelpers().getGuiHelper();
 
 		registration.addRecipeCategories(new ResearchCategory(guiHelper));
-		registration.addRecipeCategories(new OrchardistCategory(job, ModJeiRecipeTypes.ORCHARDIST_FRUIT, new ItemStack(ModBlocks.blockHutLumberjack), guiHelper));
+		registration.addRecipeCategories(new OrchardistCategory(ModJobs.ORCHARDIST.get().produceJob(null), ModJeiRecipeTypes.ORCHARDIST_FRUIT, guiHelper));
+		registration.addRecipeCategories(new ButcherCategory(ModJobs.BUTCHER.get().produceJob(null), ModJeiRecipeTypes.BUTCHER_BUTCHERABLE, guiHelper));
 	}
 
 	@Override
@@ -46,6 +48,7 @@ public class ModPlugin implements IModPlugin
 	{
 		registration.addRecipes(ModJeiRecipeTypes.RESEARCH, this.getGlobalResearches().map(ResearchCache::new).toList());
 		registration.addRecipes(ModJeiRecipeTypes.ORCHARDIST_FRUIT, CustomizedFruit.getRegistry().values().stream().map(FruitIconCache::new).toList());
+		registration.addRecipes(ModJeiRecipeTypes.BUTCHER_BUTCHERABLE, CustomizedButcherable.getRegistry().values().stream().map(ButcherableIconCache::new).toList());
 	}
 
 	@Override

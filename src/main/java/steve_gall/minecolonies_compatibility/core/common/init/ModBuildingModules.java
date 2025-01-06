@@ -16,10 +16,14 @@ import com.minecolonies.core.colony.buildings.moduleviews.CombinedHiringLimitMod
 import com.minecolonies.core.colony.buildings.moduleviews.WorkerBuildingModuleView;
 import com.mojang.datafixers.util.Pair;
 
+import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.BucketFillingCraftingModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.BucketFillingCraftingModuleView;
+import steve_gall.minecolonies_compatibility.core.common.building.module.ButcherWorkerBuildingModule;
+import steve_gall.minecolonies_compatibility.core.common.building.module.ButcherableListModule;
+import steve_gall.minecolonies_compatibility.core.common.building.module.ButcherableListModuleView;
 import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModuleView;
 import steve_gall.minecolonies_compatibility.core.common.building.module.LavaCauldronModule;
@@ -105,4 +109,13 @@ public class ModBuildingModules
 	public static final BuildingEntry.ModuleProducer<SmithingTemplateCraftingModule, SmithingTemplateCraftingModuleView> BLACKSMITH_SMITHING_TEMPLATE_CRAFTING = new BuildingEntry.ModuleProducer<>("blacksmith_smithing_template_crafting", //
 			() -> new SmithingTemplateCraftingModule(com.minecolonies.api.colony.jobs.ModJobs.blacksmith.get()), //
 			() -> SmithingTemplateCraftingModuleView::new);
+
+	public static final BuildingEntry.ModuleProducer<WorkerBuildingModule, WorkerBuildingModuleView> BUTCHER_WORK = new BuildingEntry.ModuleProducer<>("butcher_work", //
+			() -> new ButcherWorkerBuildingModule(ModJobs.BUTCHER.get(), Skill.Strength, Skill.Focus, false, b -> CustomizedButcherable.getRegistry().size() > 0 ? 1 : 0), //
+			() -> WorkerBuildingModuleView::new);
+
+	public static final BuildingEntry.ModuleProducer<ButcherableListModule, ButcherableListModuleView> BUTCHERABLELIST_BLACKLIST = new BuildingEntry.ModuleProducer<>("butcherablelist_blacklist", //
+			() -> new ButcherableListModule(ModBuildingModules.BUTCHERABLELIST_BLACKLIST.key), //
+			() -> () -> new ButcherableListModuleView("butcherablelist_blacklist", "com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist", true, item -> true));
+
 }

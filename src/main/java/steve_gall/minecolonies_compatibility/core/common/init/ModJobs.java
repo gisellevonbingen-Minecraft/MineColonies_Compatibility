@@ -6,6 +6,7 @@ import com.minecolonies.core.colony.jobs.views.DefaultJobView;
 
 import net.minecraftforge.registries.RegistryObject;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.job.JobButcher;
 import steve_gall.minecolonies_compatibility.core.common.job.JobFluidManager;
 import steve_gall.minecolonies_compatibility.core.common.job.JobGunner;
 import steve_gall.minecolonies_compatibility.core.common.job.JobOrchardist;
@@ -29,6 +30,11 @@ public class ModJobs
 	{
 		builder.setJobProducer(JobFluidManager::new);
 		builder.setJobViewProducer(() -> CrafterJobView::new);
+	});
+	public static final RegistryObject<JobEntry> BUTCHER = REGISTER.register("butcher", builder ->
+	{
+		builder.setJobProducer(JobButcher::new);
+		builder.setJobViewProducer(() -> DefaultJobView::new);
 	});
 
 	private ModJobs()

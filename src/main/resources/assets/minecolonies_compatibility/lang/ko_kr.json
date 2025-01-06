@@ -20,11 +20,15 @@
 	"minecolonies_compatibility.job.farmers_cook": "파머스 요리사(삭제됨, Kitchen에서 다시 고용해주세요.)",
 	"minecolonies_compatibility:farmers_cook.job.desc": "삭제됨, Kitchen에서 다시 고용해주세요.",
 	"minecolonies_compatibility:farmers_cook.skills.desc": "삭제됨, Kitchen에서 다시 고용해주세요.",
+	"minecolonies_compatibility.job.butcher": "도축업자",
+	"minecolonies_compatibility:butcher.job.desc": "시체를 해체하여 고기, 가죽이나 부산물을 얻습니다.",
+	"minecolonies_compatibility:butcher.skills.desc": "작업 속도에 영향을 미칩니다.",
 	
 	"_comment_jobs_jei_descs": "JEI 직업 설명",
 	"com.minecolonies.coremod.jei.orchardist": "과일, 나무에 열린 작물을 수확합니다.",
 	"com.minecolonies.coremod.jei.fluid_manager": "양동이에 유체를 채우고 가마솥에서 용암을 퍼냅니다.",
 	"com.minecolonies.coremod.jei.farmers_cook": "Farmer's Delight 모드의 조리용 냄비를 사용한 요리를 하며, 시민들에게 음식을 나눠줍니다.",
+	"com.minecolonies.coremod.jei.butcher": "시체를 해체하여 고기, 가죽이나 부산물을 얻습니다.",
 	
 	"_comment_requests": "요청",
 	"minecolonies_compatibility.ie_bullet": "총알",
@@ -33,6 +37,8 @@
 	"minecolonies_compatibility.reliquary_magazine.desc": "Reliquary's Magazines",
 	"minecolonies_compatibility.ewewukeks_musketmod_cartridge": "Cartridges",
 	"minecolonies_compatibility.ewewukeks_musketmod_cartridge.desc": "ewewukek's Musket Mod's Cartridges",
+	"minecolonies_compatibility.butcherable": "도축 아이템",
+	"minecolonies_compatibility.butcherable.desc": "도축업자가 처리할 수 있는 아이템",
 	
 	"_comment_blocks": "블록",
 	"block.minecolonies_compatibility.citizen_grid": "시민용 그리드",
@@ -105,6 +111,7 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press.menu": "Apple Press Recipes - Smashing",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press_fermenting": "[Let's Do] Vinery - Apple Press Recipes - Fermenting",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press_fermenting.menu": "Apple Press Recipes - Fermenting",
+	"com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist": "도축가능 목록",
 	
 	"_comment_module_settings": "모듈 설정",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "폭죽 로켓 요청",

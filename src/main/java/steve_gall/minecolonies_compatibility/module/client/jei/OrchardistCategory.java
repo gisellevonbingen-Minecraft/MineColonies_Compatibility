@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.blocks.ModBlocks;
 import com.minecolonies.api.colony.jobs.IJob;
 import com.minecolonies.core.compatibility.jei.JobBasedRecipeCategory;
 
@@ -24,9 +25,9 @@ public class OrchardistCategory extends JobBasedRecipeCategory<FruitIconCache>
 {
 	private final IDrawableStatic arrow;
 
-	public OrchardistCategory(@NotNull IJob<?> job, @NotNull RecipeType<FruitIconCache> type, @NotNull ItemStack icon, @NotNull IGuiHelper guiHelper)
+	public OrchardistCategory(@NotNull IJob<?> job, @NotNull RecipeType<FruitIconCache> type, @NotNull IGuiHelper guiHelper)
 	{
-		super(job, type, icon, guiHelper);
+		super(job, type, new ItemStack(ModBlocks.blockHutLumberjack), guiHelper);
 
 		this.arrow = guiHelper.createDrawable(TEXTURE, 20, 121, 24, 18);
 	}

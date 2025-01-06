@@ -14,6 +14,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import steve_gall.minecolonies_compatibility.api.common.butcher.Butcherable;
 import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTemplateInventoryScreen;
@@ -32,6 +33,7 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.network.NetworkChannel;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizedRecipeStorageRegistry;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.DeliverableObjectRegistry;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeRegisterEvent;
 
 @Mod(MineColoniesCompatibility.MOD_ID)
@@ -65,6 +67,8 @@ public class MineColoniesCompatibility
 		CustomizedRecipeStorageRegistry.INSTANCE.register(BucketFillingRecipeStorage.ID, BucketFillingRecipeStorage::serialize, BucketFillingRecipeStorage::deserialize);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(SmithingRecipeStorage.ID, SmithingRecipeStorage::serialize, SmithingRecipeStorage::deserialize);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(SmithingTemplateRecipeStorage.ID, SmithingTemplateRecipeStorage::serialize, SmithingTemplateRecipeStorage::deserialize);
+
+		DeliverableObjectRegistry.INSTANCE.register(Butcherable.ID, Butcherable::serialize, Butcherable::deserialize);
 	}
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
@@ -83,6 +87,12 @@ public class MineColoniesCompatibility
 			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_WORK);
 			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_BUCKET_FILLING);
 			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_LAVA_CAULDRON);
+
+			ModBuildings.swineHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+			ModBuildings.chickenHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+			ModBuildings.cowboy.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+			ModBuildings.rabbitHutch.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+			ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
 		});
 	}
 

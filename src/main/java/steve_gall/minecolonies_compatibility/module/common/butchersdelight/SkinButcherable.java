@@ -41,7 +41,7 @@ public class SkinButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public EquipmentTypeEntry getToolType()
+	public EquipmentTypeEntry getBlockToolType()
 	{
 		return ModEquipmentTypes.shears.get();
 	}

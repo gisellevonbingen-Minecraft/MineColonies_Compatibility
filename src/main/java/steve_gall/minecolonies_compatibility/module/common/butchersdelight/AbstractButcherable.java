@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
+import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -60,6 +62,12 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	public @NotNull List<ItemStack> getOutputIcons()
 	{
 		return this.outputIcons;
+	}
+
+	@Override
+	public EquipmentTypeEntry getTableToolType()
+	{
+		return ModEquipmentTypes.none.get();
 	}
 
 	@Override

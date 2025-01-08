@@ -84,7 +84,14 @@ public abstract class CustomizedButcherable
 	@NotNull
 	public abstract List<BlockState> getTableIcons();
 
-	public ToolType getToolType()
+	@NotNull
+	public ToolType getBlockToolType()
+	{
+		return ModToolTypes.BUTCHER_TOOL.getToolType();
+	}
+
+	@NotNull
+	public ToolType getTableToolType()
 	{
 		return ModToolTypes.BUTCHER_TOOL.getToolType();
 	}

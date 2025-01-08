@@ -40,7 +40,7 @@ public class SkinButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public ToolType getToolType()
+	public ToolType getBlockToolType()
 	{
 		return ToolType.SHEARS;
 	}

@@ -1,11 +1,13 @@
 package steve_gall.minecolonies_compatibility.module.client.jei;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.jobs.IJob;
+import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.api.util.constant.TranslationConstants;
 import com.minecolonies.core.compatibility.jei.JobBasedRecipeCategory;
 import com.minecolonies.core.compatibility.jei.RenderHelper;
@@ -76,7 +78,18 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 			slot.addItemStack(outputs.get(i));
 		}
 
-		this.addToolSlot(builder, recipe.getButcherable().getToolType(), TOOL_X, TOOL_Y, true);
+		var tools = new ArrayList<ToolType>();
+		tools.add(recipe.getButcherable().getTableToolType());
+		tools.add(recipe.getButcherable().getBlockToolType());
+		tools.removeIf(entry -> entry == ToolType.NONE);
+
+		var toolsX = TOOL_X - (tools.size() - 1) * 18;
+
+		for (var i = 0; i < tools.size(); i++)
+		{
+			this.addToolSlot(builder, tools.get(i), toolsX + i * 18, TOOL_Y, true);
+		}
+
 	}
 
 	@Override

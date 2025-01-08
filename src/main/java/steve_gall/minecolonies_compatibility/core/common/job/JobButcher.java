@@ -1,22 +1,61 @@
 package steve_gall.minecolonies_compatibility.core.common.job;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.minecolonies.api.client.render.modeltype.ModModelTypes;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.core.colony.jobs.AbstractJob;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher.EntityAIWorkButcher;
 
 public class JobButcher extends AbstractJob<EntityAIWorkButcher, JobButcher>
 {
+	public static final String TAG_TABLE_NEEDED = "TableNeeded";
+
+	@Nullable
+	private CustomizedButcherable tableNeeded = null;
+
 	public JobButcher(ICitizenData entity)
 	{
 		super(entity);
 	}
 
-	@Override
-	public void onLevelUp()
+	public @Nullable CustomizedButcherable getTableNeeded()
 	{
+		return tableNeeded;
+	}
+
+	public void setTableNeeded(@Nullable CustomizedButcherable tableNeeded)
+	{
+		this.tableNeeded = tableNeeded;
+	}
+
+	@Override
+	public CompoundTag serializeNBT()
+	{
+		var compound = super.serializeNBT();
+
+		if (this.tableNeeded != null)
+		{
+			compound.putString(TAG_TABLE_NEEDED, this.tableNeeded.getId().toString());
+		}
+
+		return compound;
+	}
+
+	@Override
+	public void deserializeNBT(CompoundTag compound)
+	{
+		super.deserializeNBT(compound);
+
+		if (compound.contains(TAG_TABLE_NEEDED, Tag.TAG_STRING))
+		{
+			this.tableNeeded = CustomizedButcherable.getRegistry().get(new ResourceLocation(compound.getString(TAG_TABLE_NEEDED)));
+		}
 
 	}
 

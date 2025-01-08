@@ -5,7 +5,7 @@ import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
 public enum ButcherAIState implements IAIState
 {
 	SEARCH(true),
-	BUTCHER(false),
+	BUTCHER(true),
 	//
 	;
 

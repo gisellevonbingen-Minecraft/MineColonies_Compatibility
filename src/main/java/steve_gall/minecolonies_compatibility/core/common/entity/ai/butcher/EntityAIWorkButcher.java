@@ -3,17 +3,15 @@ package steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher;
 import static com.minecolonies.api.util.constant.CitizenConstants.BLOCK_BREAK_PARTICLE_RANGE;
 import static com.minecolonies.api.util.constant.CitizenConstants.FACING_DELTA_YAW;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.interactionhandling.ChatPriority;
+import com.minecolonies.api.colony.interactionhandling.InteractionValidatorRegistry;
 import com.minecolonies.api.entity.ai.statemachine.AITarget;
 import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
+import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.Tuple;
@@ -28,11 +26,16 @@ import com.minecolonies.core.entity.pathfinding.pathjobs.AbstractPathJob;
 import com.minecolonies.core.network.messages.client.BlockParticleEffectMessage;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.butcher.Butcherable;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.pathfinding.ButcherPositionsPathResult;
@@ -43,6 +46,12 @@ import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliv
 public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, AbstractBuilding>
 {
 	public static final double XP_PER_HARVEST = 0.5D;
+	public static final Component TABLE_NEEDED_KEY = Component.literal(MineColoniesCompatibility.tl("butcer.table_needed"));
+
+	static
+	{
+		InteractionValidatorRegistry.registerStandardPredicate(TABLE_NEEDED_KEY, c -> c.getJob() instanceof JobButcher job && job.getTableNeeded() != null);
+	}
 
 	@Nullable
 	private ButcherPositionsPathResult pathResult;
@@ -151,6 +160,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		var result = this.pathResult;
 		this.pathResult = null;
 		this.butcherProgress = 0;
+		this.job.setTableNeeded(null);
 
 		for (var block : result.blocks)
 		{
@@ -158,23 +168,29 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 			return ButcherAIState.BUTCHER;
 		}
 
-		var tableNeeds = new HashSet<CustomizedButcherable>();
-
-		for (var table : result.tables)
+		for (var positon : result.tables)
 		{
-			if (this.getButcherTable(table) != null)
+			var info = this.getButcherTable(positon);
+
+			if (info != null)
 			{
-				this.butcherPosition = table;
+				this.butcherPosition = positon;
 				return ButcherAIState.BUTCHER;
 			}
 
-			tableNeeds.addAll(this.getTableNeeds(result.tables));
 		}
 
-		for (var butcherable : tableNeeds)
+		for (var positon : result.tables)
 		{
-			this.worker.getCitizenData().triggerInteraction(new StandardInteraction(butcherable.getTableNotFoundMessage(), ChatPriority.BLOCKING));
-			break;
+			var info = this.getNeededTable(positon);
+
+			if (info != null)
+			{
+				this.job.setTableNeeded(info);
+				this.worker.getCitizenData().triggerInteraction(new StandardInteraction(info.getTableNotFoundMessage(), TABLE_NEEDED_KEY, ChatPriority.BLOCKING));
+				break;
+			}
+
 		}
 
 		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.fluidManager;
@@ -199,30 +215,24 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	}
 
-	private Set<CustomizedButcherable> getTableNeeds(Collection<BlockPos> positions)
+	private CustomizedButcherable getNeededTable(BlockPos position)
 	{
 		var inventory = this.worker.getInventoryCitizen();
-		var set = new HashSet<CustomizedButcherable>();
+		var state = this.world.getBlockState(position);
 
-		for (var pos : positions)
+		for (var i = 0; i < inventory.getSlots(); i++)
 		{
-			var state = this.world.getBlockState(pos);
+			var item = inventory.getStackInSlot(i);
+			var butcherable = CustomizedButcherable.selectByItem(item);
 
-			for (var i = 0; i < inventory.getSlots(); i++)
+			if (butcherable != null && !butcherable.isTableBlock(this.world, position, state))
 			{
-				var item = inventory.getStackInSlot(i);
-				var butcherable = CustomizedButcherable.selectByItem(item);
-
-				if (butcherable != null && !butcherable.isTableBlock(this.world, pos, state))
-				{
-					set.add(butcherable);
-				}
-
+				return butcherable;
 			}
 
 		}
 
-		return set;
+		return null;
 	}
 
 	@Nullable
@@ -264,6 +274,44 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	private record ButcherInfo(CustomizedButcherable butcherable, boolean isBlock, int slot)
 	{
+		public ToolType getToolType()
+		{
+			if (this.isBlock())
+			{
+				return this.butcherable().getBlockToolType();
+			}
+			else
+			{
+				return this.butcherable().getTableToolType();
+			}
+
+		}
+
+		public SoundEvent getSound(Level level, BlockPos position, BlockState state)
+		{
+			if (this.isBlock())
+			{
+				return this.butcherable().getBlockSound(level, position, state);
+			}
+			else
+			{
+				return this.butcherable().getTableSound(level, position, state);
+			}
+
+		}
+
+		public void doButcher(Level level, BlockPos position, BlockState state, AbstractEntityCitizen worker, InteractionHand itemHand)
+		{
+			if (this.isBlock())
+			{
+				this.butcherable().doButcherBlock(level, position, state, worker);
+			}
+			else
+			{
+				this.butcherable().doButcherTable(level, position, state, worker, itemHand);
+			}
+
+		}
 
 	}
 
@@ -284,7 +332,10 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		{
 			return AIWorkerState.START_WORKING;
 		}
-		else if (this.equipTool(info.butcherable().getToolType()))
+
+		var toolType = info.getToolType();
+
+		if (this.equipTool(toolType))
 		{
 			return AIWorkerState.START_WORKING;
 		}
@@ -293,22 +344,15 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 			return this.getState();
 		}
 
-		var itemHand = InteractionHand.OFF_HAND;
+		var itemHand = toolType != ToolType.NONE ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
 		worker.getCitizenItemHandler().setHeldItem(itemHand, info.slot());
 
 		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.butcher;
 		var delay = config.workDelay.get() - (int) ((this.getPrimarySkillLevel() + this.getSecondarySkillLevel()) * config.workDelayReducePerSkillLevel.get().doubleValue());
 		var state = level.getBlockState(position);
-		this.hitBlockWithToolInHand(position);
 
-		if (info.isBlock())
-		{
-			worker.queueSound(info.butcherable().getBlockSound(level, position, state), position, 1, 0);
-		}
-		else
-		{
-			worker.queueSound(info.butcherable().getTableSound(level, position, state), position, 1, 0);
-		}
+		this.hitBlockWithToolInHand(position);
+		worker.queueSound(info.getSound(level, position, state), position, 1, 0);
 
 		if (this.butcherProgress < delay)
 		{
@@ -317,19 +361,14 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		}
 
 		this.butcherProgress = 0;
+		info.doButcher(level, position, state, worker, itemHand);
 
-		if (info.isBlock())
+		if (toolType != ToolType.NONE)
 		{
-			info.butcherable().doButcherBlock(level, position, state, worker);
-		}
-		else
-		{
-			info.butcherable().doButcherTable(level, position, state, worker, itemHand);
+			worker.getCitizenItemHandler().damageItemInHand(InteractionHand.MAIN_HAND, 1);
 		}
 
-		worker.getCitizenItemHandler().damageItemInHand(InteractionHand.MAIN_HAND, 1);
 		worker.getCitizenItemHandler().setHeldItem(itemHand, info.slot());
-
 		worker.getCitizenExperienceHandler().addExperience(XP_PER_HARVEST);
 
 		if (this.getButcheringBlock(position) != null)
@@ -360,7 +399,12 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	private boolean equipTool(ToolType toolType)
 	{
-		if (this.checkForToolOrWeapon(toolType))
+		if (toolType == ToolType.NONE)
+		{
+			this.worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, -1);
+			return false;
+		}
+		else if (this.checkForToolOrWeapon(toolType))
 		{
 			return true;
 		}

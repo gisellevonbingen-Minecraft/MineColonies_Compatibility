@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ButcherableIconCache
@@ -14,7 +15,7 @@ public class ButcherableIconCache
 	@NotNull
 	private final List<ItemStack> itemIcons;
 	@NotNull
-	private final List<ItemStack> outputIcons;
+	private final List<Ingredient> outputIcons;
 	@NotNull
 	private final List<BlockState> tableIcons;
 
@@ -39,7 +40,7 @@ public class ButcherableIconCache
 	}
 
 	@NotNull
-	public List<ItemStack> getOutputIcons()
+	public List<Ingredient> getOutputIcons()
 	{
 		return this.outputIcons;
 	}

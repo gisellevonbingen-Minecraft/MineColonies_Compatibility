@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,9 +28,9 @@ public abstract class CustomizedButcherable
 {
 	private static final Map<ResourceLocation, CustomizedButcherable> REGISTRY = new HashMap<>();
 
-	public static void register(@NotNull CustomizedButcherable fruit)
+	public static void register(@NotNull CustomizedButcherable butcherable)
 	{
-		REGISTRY.put(fruit.getId(), fruit);
+		REGISTRY.put(butcherable.getId(), butcherable);
 	}
 
 	public static Map<ResourceLocation, CustomizedButcherable> getRegistry()
@@ -79,7 +80,7 @@ public abstract class CustomizedButcherable
 	public abstract List<ItemStack> getItemIcons();
 
 	@NotNull
-	public abstract List<ItemStack> getOutputIcons();
+	public abstract List<Ingredient> getOutputIcons();
 
 	@NotNull
 	public abstract List<BlockState> getTableIcons();

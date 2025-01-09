@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -33,7 +34,7 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	protected final Set<Block> blocks;
 
 	protected final List<ItemStack> itemIcons;
-	protected final List<ItemStack> outputIcons;
+	protected final List<Ingredient> outputIcons;
 
 	public AbstractButcherable(Builder builder)
 	{
@@ -41,8 +42,8 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 		this.item = builder.item;
 		this.blocks = builder.blocks.stream().collect(Collectors.toUnmodifiableSet());
 
-		this.itemIcons = Collections.singletonList(new ItemStack(item));
-		this.outputIcons = builder.outputs.stream().map(ItemStack::copy).toList();
+		this.itemIcons = Collections.singletonList(new ItemStack(builder.item));
+		this.outputIcons = builder.outputs.stream().map(Ingredient::of).toList();
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	}
 
 	@Override
-	public @NotNull List<ItemStack> getOutputIcons()
+	public @NotNull List<Ingredient> getOutputIcons()
 	{
 		return this.outputIcons;
 	}

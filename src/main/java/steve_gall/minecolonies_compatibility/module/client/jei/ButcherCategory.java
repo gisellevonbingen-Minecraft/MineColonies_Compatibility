@@ -59,12 +59,8 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, ButcherableIconCache recipe, IFocusGroup focuses)
 	{
-		var inputs = recipe.getItemIcons();
-		for (var i = 0; i < inputs.size(); i++)
-		{
-			var slot = builder.addSlot(RecipeIngredientRole.INPUT, INPUT_X + i * 18, INPUT_Y);
-			slot.addItemStack(inputs.get(i));
-		}
+		var inputSLot = builder.addSlot(RecipeIngredientRole.INPUT, INPUT_X, INPUT_Y);
+		inputSLot.addItemStacks(recipe.getItemIcons());
 
 		var outputs = recipe.getOutputIcons();
 		var cols = 6;
@@ -75,7 +71,7 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 			var yi = i / cols;
 			var slot = builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X + xi * 18, y + yi * 18);
 			slot.setBackground(this.slot, -1, -1);
-			slot.addItemStack(outputs.get(i));
+			slot.addIngredients(outputs.get(i));
 		}
 
 		var tools = new ArrayList<>(recipe.getButcherable().getToolTypesForIcon());

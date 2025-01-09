@@ -75,37 +75,37 @@ public class ButcherableListModuleWindow extends AbstractModuleWindow
 		if (Objects.equals(buttonId, WindowConstants.BUTTON_SWITCH))
 		{
 			var row = this.resourceList.getListElementIndexByPane(button);
-			var fruit = this.currentDisplayedList.get(row);
-			this.toggleFruits(Arrays.asList(fruit));
+			var item = this.currentDisplayedList.get(row);
+			this.toggleItems(Arrays.asList(item));
 		}
 		else if (Objects.equals(buttonId, WindowConstants.BUTTON_RESET_DEFAULT))
 		{
-			this.clearFruits();
+			this.clearItems();
 		}
 		else if (Objects.equals(buttonId, "toggleInCurrent"))
 		{
-			this.toggleFruits(this.currentDisplayedList);
+			this.toggleItems(this.currentDisplayedList);
 		}
 		else if (Objects.equals(buttonId, "resetInCurrent"))
 		{
-			this.removeFruits(this.currentDisplayedList);
+			this.removeItems(this.currentDisplayedList);
 		}
 
 	}
 
-	public void addFruits(Collection<ButcherableIconCache> items)
+	public void addItems(Collection<ButcherableIconCache> items)
 	{
 		this.module.addIds(items.stream().map(item -> item.getButcherable().getId()).toList());
 		this.resourceList.refreshElementPanes();
 	}
 
-	public void removeFruits(Collection<ButcherableIconCache> items)
+	public void removeItems(Collection<ButcherableIconCache> items)
 	{
 		this.module.removeIds(items.stream().map(item -> item.getButcherable().getId()).toList());
 		this.resourceList.refreshElementPanes();
 	}
 
-	public void toggleFruits(Collection<ButcherableIconCache> items)
+	public void toggleItems(Collection<ButcherableIconCache> items)
 	{
 		var toRemoves = items.stream().map(item -> item.getButcherable().getId()).filter(id -> this.module.containsId(id)).toList();
 		var toAddes = items.stream().map(item -> item.getButcherable().getId()).filter(id -> !this.module.containsId(id)).toList();
@@ -115,7 +115,7 @@ public class ButcherableListModuleWindow extends AbstractModuleWindow
 		this.resourceList.refreshElementPanes();
 	}
 
-	public void clearFruits()
+	public void clearItems()
 	{
 		this.module.clearIds();
 		this.resourceList.refreshElementPanes();
@@ -167,15 +167,15 @@ public class ButcherableListModuleWindow extends AbstractModuleWindow
 		return stacks.stream().anyMatch(stack -> this.testFilter(stack, lowerCaseFilter));
 	}
 
-	private boolean testFilter(ButcherableIconCache fruit, String lowerCaseFilter)
+	private boolean testFilter(ButcherableIconCache item, String lowerCaseFilter)
 	{
-		return this.testFilter(fruit.getItemIcons(), lowerCaseFilter);
+		return this.testFilter(item.getItemIcons(), lowerCaseFilter);
 	}
 
 	protected void updateResources()
 	{
 		var lowerCase = this.filter.toLowerCase(Locale.US);
-		Predicate<ButcherableIconCache> filterPredicate = this.filter.isEmpty() ? (fruit -> true) : (fruit -> this.testFilter(fruit, lowerCase));
+		Predicate<ButcherableIconCache> filterPredicate = this.filter.isEmpty() ? (item -> true) : (item -> this.testFilter(item, lowerCase));
 
 		if (this.currentDisplayedList != null)
 		{

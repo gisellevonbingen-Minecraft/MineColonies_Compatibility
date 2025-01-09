@@ -78,9 +78,7 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 			slot.addItemStack(outputs.get(i));
 		}
 
-		var tools = new ArrayList<ToolType>();
-		tools.add(recipe.getButcherable().getTableToolType());
-		tools.add(recipe.getButcherable().getBlockToolType());
+		var tools = new ArrayList<>(recipe.getButcherable().getToolTypesForIcon());
 		tools.removeIf(entry -> entry == ToolType.NONE);
 
 		var toolsX = TOOL_X - (tools.size() - 1) * 18;

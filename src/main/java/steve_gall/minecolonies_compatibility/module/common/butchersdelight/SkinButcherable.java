@@ -40,7 +40,13 @@ public class SkinButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public ToolType getBlockToolType()
+	public @NotNull List<ToolType> getToolTypesForIcon()
+	{
+		return Collections.singletonList(ToolType.SHEARS);
+	}
+
+	@Override
+	public @NotNull ToolType getBlockToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
 	{
 		return ToolType.SHEARS;
 	}

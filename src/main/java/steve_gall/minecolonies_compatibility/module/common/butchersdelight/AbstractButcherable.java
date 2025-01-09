@@ -64,7 +64,7 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	}
 
 	@Override
-	public ToolType getTableToolType()
+	public @NotNull ToolType getTableToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
 	{
 		return ToolType.NONE;
 	}

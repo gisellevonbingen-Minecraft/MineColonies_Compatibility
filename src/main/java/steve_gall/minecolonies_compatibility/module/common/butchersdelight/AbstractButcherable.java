@@ -65,7 +65,7 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	}
 
 	@Override
-	public EquipmentTypeEntry getTableToolType()
+	public @NotNull EquipmentTypeEntry getTableToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
 	{
 		return ModEquipmentTypes.none.get();
 	}

@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.jobs.IJob;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
-import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.constant.TranslationConstants;
 import com.minecolonies.core.compatibility.jei.JobBasedRecipeCategory;
 import com.minecolonies.core.compatibility.jei.RenderHelper;
@@ -79,9 +78,7 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 			slot.addItemStack(outputs.get(i));
 		}
 
-		var tools = new ArrayList<EquipmentTypeEntry>();
-		tools.add(recipe.getButcherable().getTableToolType());
-		tools.add(recipe.getButcherable().getBlockToolType());
+		var tools = new ArrayList<>(recipe.getButcherable().getToolTypesForIcon());
 		tools.removeIf(entry -> entry == ModEquipmentTypes.none.get());
 
 		var toolsX = TOOL_X - (tools.size() - 1) * 18;

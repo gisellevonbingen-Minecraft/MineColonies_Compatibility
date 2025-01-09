@@ -276,15 +276,15 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	private record ButcherInfo(CustomizedButcherable butcherable, boolean isBlock, int slot)
 	{
-		public EquipmentTypeEntry getToolType()
+		public EquipmentTypeEntry getToolType(Level level, BlockPos position, BlockState state)
 		{
 			if (this.isBlock())
 			{
-				return this.butcherable().getBlockToolType();
+				return this.butcherable().getBlockToolType(level, position, state);
 			}
 			else
 			{
-				return this.butcherable().getTableToolType();
+				return this.butcherable().getTableToolType(level, position, state);
 			}
 
 		}
@@ -335,7 +335,8 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 			return AIWorkerState.START_WORKING;
 		}
 
-		var toolType = info.getToolType();
+		var state = level.getBlockState(position);
+		var toolType = info.getToolType(level, position, state);
 
 		if (this.equipTool(toolType))
 		{
@@ -351,7 +352,6 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.butcher;
 		var delay = config.workDelay.get() - (int) ((this.getPrimarySkillLevel() + this.getSecondarySkillLevel()) * config.workDelayReducePerSkillLevel.get().doubleValue());
-		var state = level.getBlockState(position);
 
 		this.hitBlockWithToolInHand(position);
 		worker.queueSound(info.getSound(level, position, state), position, 1, 0);

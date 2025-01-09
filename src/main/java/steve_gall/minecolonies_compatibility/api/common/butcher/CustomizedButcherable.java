@@ -85,13 +85,19 @@ public abstract class CustomizedButcherable
 	public abstract List<BlockState> getTableIcons();
 
 	@NotNull
-	public EquipmentTypeEntry getBlockToolType()
+	public List<EquipmentTypeEntry> getToolTypesForIcon()
+	{
+		return Collections.singletonList(ModToolTypes.BUTCHER_TOOL.getToolType());
+	}
+
+	@NotNull
+	public EquipmentTypeEntry getBlockToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
 	{
 		return ModToolTypes.BUTCHER_TOOL.getToolType();
 	}
 
 	@NotNull
-	public EquipmentTypeEntry getTableToolType()
+	public EquipmentTypeEntry getTableToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
 	{
 		return ModToolTypes.BUTCHER_TOOL.getToolType();
 	}
@@ -122,13 +128,13 @@ public abstract class CustomizedButcherable
 	}
 
 	@NotNull
-	public SoundEvent getBlockSound(Level level, BlockPos position, BlockState state)
+	public SoundEvent getBlockSound(@NotNull Level level, @NotNull BlockPos position, @NotNull BlockState state)
 	{
 		return state.getSoundType(level, position, null).getHitSound();
 	}
 
 	@NotNull
-	public SoundEvent getTableSound(Level level, BlockPos position, BlockState state)
+	public SoundEvent getTableSound(@NotNull Level level, @NotNull BlockPos position, @NotNull BlockState state)
 	{
 		return state.getSoundType(level, position, null).getHitSound();
 	}

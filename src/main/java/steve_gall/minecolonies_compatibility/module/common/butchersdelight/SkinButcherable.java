@@ -41,7 +41,13 @@ public class SkinButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public EquipmentTypeEntry getBlockToolType()
+	public @NotNull List<EquipmentTypeEntry> getToolTypesForIcon()
+	{
+		return Collections.singletonList(ModEquipmentTypes.shears.get());
+	}
+
+	@Override
+	public @NotNull EquipmentTypeEntry getBlockToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
 	{
 		return ModEquipmentTypes.shears.get();
 	}

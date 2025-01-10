@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.resources.ResourceLocation;
-import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
+import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_tweaks.api.common.tool.OrToolType;
 
@@ -24,7 +24,7 @@ public class RangerWeaponToolType extends OrToolType
 	{
 		var list = new ArrayList<>(super.getToolTypes());
 
-		if (MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger.canUseCrossbow.get().booleanValue())
+		if (MineColoniesCompatibilityConfigCommon.INSTANCE.jobs.canUseCrossbow.get().booleanValue())
 		{
 			list.add(ModToolTypes.CROSSBOW::getToolType);
 		}

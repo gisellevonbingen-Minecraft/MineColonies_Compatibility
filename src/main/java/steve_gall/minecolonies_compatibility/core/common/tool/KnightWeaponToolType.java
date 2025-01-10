@@ -9,7 +9,7 @@ import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.resources.ResourceLocation;
-import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
+import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
 import steve_gall.minecolonies_tweaks.api.common.tool.OrToolType;
 
 public class KnightWeaponToolType extends OrToolType
@@ -24,7 +24,7 @@ public class KnightWeaponToolType extends OrToolType
 	{
 		var list = new ArrayList<>(super.getToolTypes());
 
-		if (MineColoniesCompatibilityConfigServer.INSTANCE.jobs.knight.canUseAxe.get().booleanValue())
+		if (MineColoniesCompatibilityConfigCommon.INSTANCE.jobs.canUseAxe.get().booleanValue())
 		{
 			list.add(() -> ToolType.AXE);
 		}

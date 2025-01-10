@@ -21,6 +21,7 @@
 		"minecolonies.AttackMoveAIMixin",
 		"minecolonies.BuildingEntryMixin",
 		"minecolonies.ContainerCraftingMixin",
+		"minecolonies.EntityAIArcherTrainingMixin",
 		"minecolonies.EntityAIKnightMixin",
 		"minecolonies.EntityAIRangerMixin",
 		"minecolonies.EntityAIWorkDeliverymanMixin",

@@ -8,11 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.mcreator.butchersdelight.init.ButchersdelightModItems;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.state.BlockState;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
 public abstract class CarcassButcherable extends AbstractButcherable
@@ -29,7 +27,7 @@ public abstract class CarcassButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public @NotNull EquipmentTypeEntry getBlockToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public @NotNull EquipmentTypeEntry getBlockToolType(@NotNull ButcherBlockContext context)
 	{
 		return ModToolTypes.BUTCHER_TOOL.getToolType();
 	}

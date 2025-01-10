@@ -11,16 +11,14 @@ import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.mcreator.butchersdelight.init.ButchersdelightModBlocks;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
 
 public class SkinButcherable extends AbstractButcherable
@@ -47,25 +45,25 @@ public class SkinButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public @NotNull EquipmentTypeEntry getBlockToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public @NotNull EquipmentTypeEntry getBlockToolType(@NotNull ButcherBlockContext context)
 	{
 		return ModEquipmentTypes.shears.get();
 	}
 
 	@Override
-	public @Nullable boolean isTableBlock(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public @Nullable boolean isTableBlock(@NotNull ButcherBlockContext context)
 	{
-		return state.is(ButchersdelightModBlocks.RACK.get());
+		return context.getState().is(ButchersdelightModBlocks.RACK.get());
 	}
 
 	@Override
-	public void doButcherTable(@NotNull Level level, @NotNull BlockPos position, @NotNull BlockState state, @NotNull AbstractEntityCitizen worker, @NotNull InteractionHand hand)
+	public void doButcherTable(@NotNull ButcherBlockContext context, @NotNull AbstractEntityCitizen worker, @NotNull InteractionHand hand)
 	{
-		super.doButcherTable(level, position, state, worker, hand);
+		super.doButcherTable(context, worker, hand);
 
-		if (level instanceof ServerLevel serverLevel)
+		if (context.getLevel() instanceof ServerLevel serverLevel)
 		{
-			ButchersDelightModule.rightClick(serverLevel, position, worker, worker.getItemInHand(hand));
+			ButchersDelightModule.rightClick(serverLevel, context.getPosition(), worker, worker.getItemInHand(hand));
 		}
 
 	}

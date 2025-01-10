@@ -14,6 +14,7 @@ import com.minecolonies.core.colony.buildings.modules.WorkerBuildingModule;
 
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
+import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 
 public class ButcherWorkerBuildingModule extends WorkerBuildingModule implements IAltersRequiredItems
 {
@@ -25,8 +26,8 @@ public class ButcherWorkerBuildingModule extends WorkerBuildingModule implements
 	@Override
 	public void alterItemsToBeKept(TriConsumer<Predicate<ItemStack>, Integer, Boolean> consumer)
 	{
-		consumer.accept(ModToolTypes.BUTCHER_TOOL.getToolType()::checkIsEquipment, 1, true);
-		consumer.accept(ModEquipmentTypes.shears.get()::checkIsEquipment, 1, true);
+		consumer.accept(is -> ItemStackHelper.isTool(is, ModToolTypes.BUTCHER_TOOL.getToolType()), 1, true);
+		consumer.accept(is -> ItemStackHelper.isTool(is, ModEquipmentTypes.shears.get()), 1, true);
 	}
 
 }

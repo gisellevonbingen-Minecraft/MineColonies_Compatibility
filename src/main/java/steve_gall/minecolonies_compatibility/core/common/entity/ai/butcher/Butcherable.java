@@ -1,4 +1,4 @@
-package steve_gall.minecolonies_compatibility.api.common.butcher;
+package steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
@@ -35,13 +36,13 @@ public class Butcherable implements IDeliverableObject
 		return ID;
 	}
 
-	public static Butcherable deserialize(@NotNull CompoundTag tag)
+	public static @NotNull Butcherable deserialize(@NotNull CompoundTag tag)
 	{
 		var minCount = tag.getInt("minCount");
 		return new Butcherable(minCount);
 	}
 
-	public static void serialize(Butcherable request, @NotNull CompoundTag tag)
+	public static void serialize(@NotNull Butcherable request, @NotNull CompoundTag tag)
 	{
 		tag.putInt("minCount", request.minCount);
 	}

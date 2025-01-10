@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_tweaks.api.common.pathfinding.SimplePathJob;
 
@@ -53,7 +54,7 @@ public class PathJobFindButcherPosition extends SimplePathJob<ButcherPositionsPa
 	@Override
 	protected boolean testPos(@NotNull MutableBlockPos pos)
 	{
-		var state = this.world.getBlockState(pos);
+		var context = new ButcherBlockContext(this.world, pos, this.world.getBlockState(pos));
 
 		for (var butcherable : CustomizedButcherable.getRegistry().values())
 		{
@@ -65,7 +66,7 @@ public class PathJobFindButcherPosition extends SimplePathJob<ButcherPositionsPa
 			{
 				continue;
 			}
-			else if (butcherable.isButcheringBlock(this.world, pos, state))
+			else if (butcherable.isButcheringBlock(context))
 			{
 				if (this.blocks.contains(butcherable))
 				{
@@ -77,7 +78,7 @@ public class PathJobFindButcherPosition extends SimplePathJob<ButcherPositionsPa
 				this.positions.add(pos.immutable());
 				break;
 			}
-			else if (butcherable.isTableBlock(this.world, pos, state))
+			else if (butcherable.isTableBlock(context))
 			{
 				if (this.tables.contains(butcherable))
 				{

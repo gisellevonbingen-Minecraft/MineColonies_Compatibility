@@ -14,7 +14,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import steve_gall.minecolonies_compatibility.api.common.butcher.Butcherable;
 import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTemplateInventoryScreen;
@@ -23,6 +22,7 @@ import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesComp
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingTemplateRecipeStorage;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher.Butcherable;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;

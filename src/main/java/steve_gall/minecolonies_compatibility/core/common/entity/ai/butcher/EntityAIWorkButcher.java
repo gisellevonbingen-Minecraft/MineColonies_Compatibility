@@ -31,11 +31,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraftforge.network.PacketDistributor;
-import steve_gall.minecolonies_compatibility.api.common.butcher.Butcherable;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
@@ -201,10 +199,10 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 	}
 
 	@Nullable
-	private ButcherInfo getButcheringBlock(BlockPos pos)
+	private ButcherInfo getButcheringBlock(BlockPos position)
 	{
-		var state = this.world.getBlockState(pos);
-		var butcherable = CustomizedButcherable.selectByButcheringBlock(this.world, pos, state);
+		var context = new ButcherBlockContext(this.world, position, this.world.getBlockState(position));
+		var butcherable = CustomizedButcherable.selectByButcheringBlock(context);
 
 		if (butcherable != null)
 		{
@@ -220,14 +218,14 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 	private CustomizedButcherable getNeededTable(BlockPos position)
 	{
 		var inventory = this.worker.getInventoryCitizen();
-		var state = this.world.getBlockState(position);
+		var context = new ButcherBlockContext(this.world, position, this.world.getBlockState(position));
 
 		for (var i = 0; i < inventory.getSlots(); i++)
 		{
 			var item = inventory.getStackInSlot(i);
 			var butcherable = CustomizedButcherable.selectByItem(item);
 
-			if (butcherable != null && !butcherable.isTableBlock(this.world, position, state))
+			if (butcherable != null && !butcherable.isTableBlock(context))
 			{
 				return butcherable;
 			}
@@ -238,17 +236,17 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 	}
 
 	@Nullable
-	private ButcherInfo getButcherTable(BlockPos pos)
+	private ButcherInfo getButcherTable(BlockPos position)
 	{
 		var inventory = this.worker.getInventoryCitizen();
-		var state = this.world.getBlockState(pos);
+		var context = new ButcherBlockContext(this.world, position, this.world.getBlockState(position));
 
 		for (var i = 0; i < inventory.getSlots(); i++)
 		{
 			var item = inventory.getStackInSlot(i);
 			var butcherable = CustomizedButcherable.selectByItem(item);
 
-			if (butcherable != null && butcherable.isTableBlock(this.world, pos, state))
+			if (butcherable != null && butcherable.isTableBlock(context))
 			{
 				return new ButcherInfo(butcherable, false, i);
 			}
@@ -276,41 +274,41 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	private record ButcherInfo(CustomizedButcherable butcherable, boolean isBlock, int slot)
 	{
-		public EquipmentTypeEntry getToolType(Level level, BlockPos position, BlockState state)
+		public EquipmentTypeEntry getToolType(ButcherBlockContext context)
 		{
 			if (this.isBlock())
 			{
-				return this.butcherable().getBlockToolType(level, position, state);
+				return this.butcherable().getBlockToolType(context);
 			}
 			else
 			{
-				return this.butcherable().getTableToolType(level, position, state);
+				return this.butcherable().getTableToolType(context);
 			}
 
 		}
 
-		public SoundEvent getSound(Level level, BlockPos position, BlockState state)
+		public SoundEvent getSound(ButcherBlockContext context)
 		{
 			if (this.isBlock())
 			{
-				return this.butcherable().getBlockSound(level, position, state);
+				return this.butcherable().getBlockSound(context);
 			}
 			else
 			{
-				return this.butcherable().getTableSound(level, position, state);
+				return this.butcherable().getTableSound(context);
 			}
 
 		}
 
-		public void doButcher(Level level, BlockPos position, BlockState state, AbstractEntityCitizen worker, InteractionHand itemHand)
+		public void doButcher(ButcherBlockContext context, AbstractEntityCitizen worker, InteractionHand itemHand)
 		{
 			if (this.isBlock())
 			{
-				this.butcherable().doButcherBlock(level, position, state, worker);
+				this.butcherable().doButcherBlock(context, worker);
 			}
 			else
 			{
-				this.butcherable().doButcherTable(level, position, state, worker, itemHand);
+				this.butcherable().doButcherTable(context, worker, itemHand);
 			}
 
 		}
@@ -335,8 +333,8 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 			return AIWorkerState.START_WORKING;
 		}
 
-		var state = level.getBlockState(position);
-		var toolType = info.getToolType(level, position, state);
+		var context = new ButcherBlockContext(level, position, level.getBlockState(position));
+		var toolType = info.getToolType(context);
 
 		if (this.equipTool(toolType))
 		{
@@ -354,7 +352,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		var delay = config.workDelay.get() - (int) ((this.getPrimarySkillLevel() + this.getSecondarySkillLevel()) * config.workDelayReducePerSkillLevel.get().doubleValue());
 
 		this.hitBlockWithToolInHand(position);
-		worker.queueSound(info.getSound(level, position, state), position, 1, 0);
+		worker.queueSound(info.getSound(context), position, 1, 0);
 
 		if (this.butcherProgress < delay)
 		{
@@ -363,7 +361,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		}
 
 		this.butcherProgress = 0;
-		info.doButcher(level, position, state, worker, itemHand);
+		info.doButcher(context, worker, itemHand);
 
 		if (toolType != ModEquipmentTypes.none.get())
 		{
@@ -406,14 +404,18 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 			CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, -1);
 			return false;
 		}
-		else if (this.checkForToolOrWeapon(toolType))
+		else
 		{
-			return true;
+			if (this.checkForToolOrWeapon(toolType))
+			{
+				return true;
+			}
+
+			var slot = CitizenHelper.getMaxLevelToolSlot(this.worker.getCitizenData(), toolType);
+			CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, slot);
+			return false;
 		}
 
-		var slot = CitizenHelper.getMaxLevelToolSlot(this.worker.getCitizenData(), toolType);
-		CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, slot);
-		return false;
 	}
 
 	private void hitBlockWithToolInHand(BlockPos pos)

@@ -6,6 +6,8 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.IMinecoloniesAPI;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.ItemStackUtils;
 
@@ -46,9 +48,18 @@ public class ItemStackHelper
 		return toolType.checkIsEquipment(stack);
 	}
 
-	public static boolean isTool(@NotNull List<ItemStack> list, @NotNull EquipmentTypeEntry toolType)
+	public static @NotNull EquipmentTypeEntry getFirstToolType(@NotNull ItemStack stack)
 	{
-		return list.stream().allMatch(stack -> isTool(stack, toolType));
+		for (var toolType : IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getValues())
+		{
+			if (isTool(stack, toolType))
+			{
+				return toolType;
+			}
+
+		}
+
+		return ModEquipmentTypes.none.get();
 	}
 
 	public static boolean equals(ItemStack stack1, ItemStack stack2)

@@ -16,6 +16,7 @@ import com.minecolonies.core.colony.buildings.moduleviews.SettingsModuleView;
 import com.mojang.datafixers.util.Pair;
 
 import steve_gall.minecolonies_compatibility.core.common.building.BuildingViewHelper;
+import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
@@ -31,9 +32,10 @@ public abstract class SettingsModuleViewMixin extends AbstractBuildingModuleView
 
 		if (buildingType == ModBuildings.guardTower.get())
 		{
-			var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger;
+			var canUseCrossbow = MineColoniesCompatibilityConfigCommon.INSTANCE.jobs.canUseCrossbow;
+			var canShootFireworkRocket = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger.canShootFireworkRocket;
 
-			if (config.canUseCrossbow.get().booleanValue() && config.canShootFireworkRocket.get().booleanValue())
+			if (canUseCrossbow.get().booleanValue() && canShootFireworkRocket.get().booleanValue())
 			{
 
 			}

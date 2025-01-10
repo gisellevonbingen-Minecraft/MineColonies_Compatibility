@@ -5,12 +5,10 @@ import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 
 public class RangerConfig
 {
-	public final BooleanValue canUseCrossbow;
 	public final BooleanValue canShootFireworkRocket;
 
 	public RangerConfig(ForgeConfigSpec.Builder builder)
 	{
-		this.canUseCrossbow = builder.define("canUseCrossbow", true);
 		this.canShootFireworkRocket = builder.define("canShootFireworkRocket", true);
 	}
 

@@ -16,6 +16,7 @@ import com.minecolonies.core.entity.ai.workers.guard.EntityAIRanger;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
@@ -41,9 +42,10 @@ public abstract class EntityAIRangerMixin extends AbstractEntityAIGuard<JobRange
 	@Inject(method = "atBuildingActions", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void atBuildingActions(CallbackInfo ci)
 	{
-		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger;
+		var canUseCrossbow = MineColoniesCompatibilityConfigCommon.INSTANCE.jobs.canUseCrossbow;
+		var canShootFireworkRocket = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger.canShootFireworkRocket;
 
-		if (config.canUseCrossbow.get().booleanValue() && config.canShootFireworkRocket.get().booleanValue())
+		if (canUseCrossbow.get().booleanValue() && canShootFireworkRocket.get().booleanValue())
 		{
 			if (this.worker.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects().getEffectStrength(ResearchConstants.ARCHER_USE_ARROWS) > 0)
 			{

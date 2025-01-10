@@ -8,7 +8,7 @@ import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.KnightC
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.RangerConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist.OrchardistConfig;
 
-public class JobConfig
+public class ServerJobConfig
 {
 	public final RangerConfig ranger;
 	public final KnightConfig knight;
@@ -17,7 +17,7 @@ public class JobConfig
 	public final FluidManagerConfig fluidManager;
 	public final ButcherConfig butcher;
 
-	public JobConfig(ForgeConfigSpec.Builder builder)
+	public ServerJobConfig(ForgeConfigSpec.Builder builder)
 	{
 		builder.push("ranger");
 		this.ranger = new RangerConfig(builder);

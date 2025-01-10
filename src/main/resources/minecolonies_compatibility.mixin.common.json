@@ -10,6 +10,7 @@
 		"minecraft.SmithingTrimRecipeAccessor",
 		
 		"minecolonies.AbstractAISkeletonMixin",
+		"minecolonies.AbstractBuildingGuardsMixin",
 		"minecolonies.AbstractEntityAIBasicMixin",
 		"minecolonies.AbstractEntityAICraftingMixin",
 		"minecolonies.AbstractEntityAIFightMixin",

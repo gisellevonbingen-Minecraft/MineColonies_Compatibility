@@ -10,12 +10,11 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-import com.minecolonies.api.util.constant.IToolType;
-import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
+import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
 
 public abstract class AbstractButcherable extends CustomizedButcherable
 {
@@ -63,9 +63,9 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	}
 
 	@Override
-	public @NotNull IToolType getTableToolType(@NotNull ButcherBlockContext context)
+	public @NotNull ToolOrIngredientStack getTableTool(@NotNull ButcherBlockContext context)
 	{
-		return ToolType.NONE;
+		return ToolOrIngredientStack.EMPTY;
 	}
 
 	@Override
@@ -90,6 +90,8 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 			var tool = this.getButcherBlockTool();
 			this.setButcherBlockProcess(serverLevel.getBlockEntity(context.getPosition()).getPersistentData());
 			ButchersDelightModule.rightClick(serverLevel, context.getPosition(), worker, tool.copy());
+
+			worker.getCitizenItemHandler().damageItemInHand(InteractionHand.MAIN_HAND, 1);
 		}
 
 	}

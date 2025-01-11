@@ -7,7 +7,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.jobs.IJob;
-import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.api.util.constant.TranslationConstants;
 import com.minecolonies.core.compatibility.jei.JobBasedRecipeCategory;
 import com.minecolonies.core.compatibility.jei.RenderHelper;
@@ -26,6 +25,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherableIconCache;
+import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
 public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache>
@@ -74,16 +74,28 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 			slot.addIngredients(outputs.get(i));
 		}
 
-		var tools = new ArrayList<>(recipe.getButcherable().getToolTypesForIcon());
-		tools.removeIf(tool -> tool == ToolType.NONE);
+		var tools = new ArrayList<>(recipe.getButcherable().getToolsForIcon());
+		tools.removeIf(ToolOrIngredientStack::isEmpty);
 
 		var toolsX = TOOL_X - (tools.size() - 1) * 18;
 
 		for (var i = 0; i < tools.size(); i++)
 		{
+			var ingredient = tools.get(i);
 			var x = toolsX + i * 18;
 			var y = TOOL_Y;
-			this.addToolSlot(builder, tools.get(i), x, y, true);
+
+			if (ingredient.isToolType())
+			{
+				this.addToolSlot(builder, ingredient.toolType(), x, y, true);
+			}
+			else
+			{
+				var slot = builder.addSlot(RecipeIngredientRole.CATALYST, x, y);
+				slot.setBackground(this.slot, -1, -1);
+				slot.addIngredients(ingredient.stack().ingredient());
+			}
+
 		}
 
 	}

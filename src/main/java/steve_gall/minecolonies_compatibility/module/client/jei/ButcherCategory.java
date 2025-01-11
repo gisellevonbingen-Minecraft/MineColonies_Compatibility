@@ -12,6 +12,7 @@ import com.minecolonies.core.compatibility.jei.JobBasedRecipeCategory;
 import com.minecolonies.core.compatibility.jei.RenderHelper;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -43,7 +44,7 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 	protected static final int INPUT_X = ARROW_X + ARROW_WIDTH + 4;
 	protected static final int INPUT_Y = ARROW_Y;
 	protected static final int OUTPUT_X = CITIZEN_X + CITIZEN_W + 8;
-	protected static final int OUTPUT_Y = CITIZEN_Y + CITIZEN_H - 25;
+	protected static final int OUTPUT_Y = CITIZEN_Y + CITIZEN_H - 34;
 
 	private final IDrawableStatic icon;
 	private final IDrawableStatic arrow;
@@ -63,26 +64,43 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 		inputSLot.addItemStacks(recipe.getItemIcons());
 
 		var outputs = recipe.getOutputIcons();
+		var slots = new IRecipeSlotBuilder[12];
 		var cols = 6;
-		var outputY = OUTPUT_Y - 9 * ((outputs.size() - 1) / cols);
-		for (int i = 0; i < outputs.size(); i++)
+
+		for (var i = 0; i < slots.length; i++)
 		{
 			var xi = i % cols;
 			var yi = i / cols;
-			var slot = builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X + xi * 18, outputY + yi * 18);
+			var slot = builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X + xi * 18, OUTPUT_Y + yi * 18);
 			slot.setBackground(this.slot, -1, -1);
-			slot.addIngredients(outputs.get(i));
+			slots[i] = slot;
+		}
+
+		var index = 0;
+		var packedSize = ((outputs.size() + slots.length - 1) / slots.length) * slots.length;
+
+		for (var i = 0; i < packedSize; i++)
+		{
+			var slot = slots[(index++) % slots.length];
+
+			if (i < outputs.size())
+			{
+				slot.addIngredients(outputs.get(i));
+			}
+			else
+			{
+				slot.addItemStack(ItemStack.EMPTY);
+			}
+
 		}
 
 		var tools = new ArrayList<>(recipe.getButcherable().getToolsForIcon());
 		tools.removeIf(ToolOrIngredientStack::isEmpty);
 
-		var toolsX = TOOL_X - (tools.size() - 1) * 18;
-
 		for (var i = 0; i < tools.size(); i++)
 		{
 			var ingredient = tools.get(i);
-			var x = toolsX + i * 18;
+			var x = TOOL_X - (tools.size() - i - 1) * 18;
 			var y = TOOL_Y;
 
 			if (ingredient.isToolType())

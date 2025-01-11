@@ -30,7 +30,6 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachContaine
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachInputSlot;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
-import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleMenuTypes;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
@@ -148,7 +147,7 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 	@Override
 	public @Nullable Component getRecipeError(@NotNull CuttingBoardRecipe recipe)
 	{
-		if (!ItemStackHelper.isTool(IngredientHelper.getStacks(recipe.getTool()), this.getToolType()))
+		if (!IngredientHelper.isTool(recipe.getTool(), this.getToolType()))
 		{
 			return Component.translatable("minecolonies_compatibility.text.unsupported_tool");
 		}

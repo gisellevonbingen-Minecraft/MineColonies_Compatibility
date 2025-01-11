@@ -9,13 +9,11 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
 import net.mcreator.butchersdelight.init.ButchersdelightModBlocks;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
 
 public class CarcassHookButcherable extends CarcassButcherable
@@ -36,19 +34,19 @@ public class CarcassHookButcherable extends CarcassButcherable
 	}
 
 	@Override
-	public @Nullable boolean isTableBlock(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public @Nullable boolean isTableBlock(@NotNull ButcherBlockContext context)
 	{
-		return state.is(ButchersdelightModBlocks.HOOK.get());
+		return context.getState().is(ButchersdelightModBlocks.HOOK.get());
 	}
 
 	@Override
-	public void doButcherTable(@NotNull Level level, @NotNull BlockPos position, @NotNull BlockState state, @NotNull AbstractEntityCitizen worker, @NotNull InteractionHand hand)
+	public void doButcherTable(@NotNull ButcherBlockContext context, @NotNull AbstractEntityCitizen worker, @NotNull InteractionHand hand)
 	{
-		super.doButcherTable(level, position, state, worker, hand);
+		super.doButcherTable(context, worker, hand);
 
-		if (level instanceof ServerLevel serverLevel)
+		if (context.getLevel() instanceof ServerLevel serverLevel)
 		{
-			ButchersDelightModule.rightClick(serverLevel, position, worker, worker.getItemInHand(hand));
+			ButchersDelightModule.rightClick(serverLevel, context.getPosition(), worker, worker.getItemInHand(hand));
 		}
 
 	}

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.IToolType;
+import com.minecolonies.api.util.constant.ToolType;
 
 import net.minecraft.world.item.ItemStack;
 
@@ -46,9 +47,18 @@ public class ItemStackHelper
 		return ItemStackUtils.isTool(stack, toolType);
 	}
 
-	public static boolean isTool(@NotNull List<ItemStack> list, @NotNull IToolType toolType)
+	public static @NotNull ToolType getFirstToolType(@NotNull ItemStack stack)
 	{
-		return list.stream().allMatch(stack -> isTool(stack, toolType));
+		for (var toolType : ToolType.values())
+		{
+			if (isTool(stack, toolType))
+			{
+				return toolType;
+			}
+
+		}
+
+		return ToolType.NONE;
 	}
 
 	public static boolean equals(ItemStack stack1, ItemStack stack2)

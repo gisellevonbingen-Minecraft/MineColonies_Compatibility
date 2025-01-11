@@ -9,17 +9,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-import com.minecolonies.api.util.constant.ToolType;
+import com.minecolonies.api.util.constant.IToolType;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
@@ -45,15 +42,15 @@ public abstract class CustomizedButcherable
 	}
 
 	@Nullable
-	public static CustomizedButcherable selectByButcheringBlock(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public static CustomizedButcherable selectByButcheringBlock(@NotNull ButcherBlockContext context)
 	{
-		return REGISTRY.values().stream().filter(it -> it.isButcheringBlock(level, position, state)).findFirst().orElse(null);
+		return REGISTRY.values().stream().filter(it -> it.isButcheringBlock(context)).findFirst().orElse(null);
 	}
 
 	@Nullable
-	public static CustomizedButcherable selectByTableBlock(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public static CustomizedButcherable selectByTableBlock(@NotNull ButcherBlockContext context)
 	{
-		return REGISTRY.values().stream().filter(it -> it.isTableBlock(level, position, state)).findFirst().orElse(null);
+		return REGISTRY.values().stream().filter(it -> it.isTableBlock(context)).findFirst().orElse(null);
 	}
 
 	public static boolean isButcherable(@NotNull ItemStack stack)
@@ -86,19 +83,19 @@ public abstract class CustomizedButcherable
 	public abstract List<BlockState> getTableIcons();
 
 	@NotNull
-	public List<ToolType> getToolTypesForIcon()
+	public List<IToolType> getToolTypesForIcon()
 	{
 		return Collections.singletonList(ModToolTypes.BUTCHER_TOOL.getToolType());
 	}
 
 	@NotNull
-	public ToolType getBlockToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public IToolType getBlockToolType(@NotNull ButcherBlockContext context)
 	{
 		return ModToolTypes.BUTCHER_TOOL.getToolType();
 	}
 
 	@NotNull
-	public ToolType getTableToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public IToolType getTableToolType(@NotNull ButcherBlockContext context)
 	{
 		return ModToolTypes.BUTCHER_TOOL.getToolType();
 	}
@@ -108,36 +105,36 @@ public abstract class CustomizedButcherable
 		return false;
 	}
 
-	public boolean isButcheringBlock(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public boolean isButcheringBlock(@NotNull ButcherBlockContext context)
 	{
 		return false;
 	}
 
-	public boolean isTableBlock(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public boolean isTableBlock(@NotNull ButcherBlockContext context)
 	{
 		return false;
 	}
 
-	public void doButcherBlock(@NotNull Level level, @NotNull BlockPos position, @NotNull BlockState state, @NotNull AbstractEntityCitizen worker)
+	public void doButcherBlock(@NotNull ButcherBlockContext context, @NotNull AbstractEntityCitizen worker)
 	{
 
 	}
 
-	public void doButcherTable(@NotNull Level level, @NotNull BlockPos position, @NotNull BlockState state, @NotNull AbstractEntityCitizen worker, @NotNull InteractionHand hand)
+	public void doButcherTable(@NotNull ButcherBlockContext context, @NotNull AbstractEntityCitizen worker, @NotNull InteractionHand hand)
 	{
 
 	}
 
 	@NotNull
-	public SoundEvent getBlockSound(@NotNull Level level, @NotNull BlockPos position, @NotNull BlockState state)
+	public SoundEvent getBlockSound(@NotNull ButcherBlockContext context)
 	{
-		return state.getSoundType(level, position, null).getHitSound();
+		return context.getState().getSoundType(context.getLevel(), context.getPosition(), null).getHitSound();
 	}
 
 	@NotNull
-	public SoundEvent getTableSound(@NotNull Level level, @NotNull BlockPos position, @NotNull BlockState state)
+	public SoundEvent getTableSound(@NotNull ButcherBlockContext context)
 	{
-		return state.getSoundType(level, position, null).getHitSound();
+		return context.getState().getSoundType(context.getLevel(), context.getPosition(), null).getHitSound();
 	}
 
 	public Component getTableNotFoundMessage()

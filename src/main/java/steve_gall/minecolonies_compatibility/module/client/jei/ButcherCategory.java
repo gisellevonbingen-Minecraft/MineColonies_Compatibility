@@ -64,24 +64,26 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 
 		var outputs = recipe.getOutputIcons();
 		var cols = 6;
-		var y = OUTPUT_Y - 9 * ((outputs.size() - 1) / cols);
+		var outputY = OUTPUT_Y - 9 * ((outputs.size() - 1) / cols);
 		for (int i = 0; i < outputs.size(); i++)
 		{
 			var xi = i % cols;
 			var yi = i / cols;
-			var slot = builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X + xi * 18, y + yi * 18);
+			var slot = builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X + xi * 18, outputY + yi * 18);
 			slot.setBackground(this.slot, -1, -1);
 			slot.addIngredients(outputs.get(i));
 		}
 
 		var tools = new ArrayList<>(recipe.getButcherable().getToolTypesForIcon());
-		tools.removeIf(entry -> entry == ToolType.NONE);
+		tools.removeIf(tool -> tool == ToolType.NONE);
 
 		var toolsX = TOOL_X - (tools.size() - 1) * 18;
 
 		for (var i = 0; i < tools.size(); i++)
 		{
-			this.addToolSlot(builder, tools.get(i), toolsX + i * 18, TOOL_Y, true);
+			var x = toolsX + i * 18;
+			var y = TOOL_Y;
+			this.addToolSlot(builder, tools.get(i), x, y, true);
 		}
 
 	}

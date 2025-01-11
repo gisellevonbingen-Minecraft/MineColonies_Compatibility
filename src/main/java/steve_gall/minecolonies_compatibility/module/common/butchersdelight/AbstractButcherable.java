@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
+import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -20,11 +20,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 
 public abstract class AbstractButcherable extends CustomizedButcherable
@@ -65,7 +63,7 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	}
 
 	@Override
-	public @NotNull ToolType getTableToolType(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public @NotNull IToolType getTableToolType(@NotNull ButcherBlockContext context)
 	{
 		return ToolType.NONE;
 	}
@@ -77,21 +75,21 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	}
 
 	@Override
-	public boolean isButcheringBlock(@NotNull LevelReader level, @NotNull BlockPos position, @NotNull BlockState state)
+	public boolean isButcheringBlock(@NotNull ButcherBlockContext context)
 	{
-		return this.blocks.contains(state.getBlock());
+		return this.blocks.contains(context.getState().getBlock());
 	}
 
 	@Override
-	public void doButcherBlock(@NotNull Level level, @NotNull BlockPos position, @NotNull BlockState state, @NotNull AbstractEntityCitizen worker)
+	public void doButcherBlock(@NotNull ButcherBlockContext context, @NotNull AbstractEntityCitizen worker)
 	{
-		super.doButcherBlock(level, position, state, worker);
+		super.doButcherBlock(context, worker);
 
-		if (level instanceof ServerLevel serverLevel)
+		if (context.getLevel() instanceof ServerLevel serverLevel)
 		{
 			var tool = this.getButcherBlockTool();
-			this.setButcherBlockProcess(serverLevel.getBlockEntity(position).getPersistentData());
-			ButchersDelightModule.rightClick(serverLevel, position, worker, tool.copy());
+			this.setButcherBlockProcess(serverLevel.getBlockEntity(context.getPosition()).getPersistentData());
+			ButchersDelightModule.rightClick(serverLevel, context.getPosition(), worker, tool.copy());
 		}
 
 	}

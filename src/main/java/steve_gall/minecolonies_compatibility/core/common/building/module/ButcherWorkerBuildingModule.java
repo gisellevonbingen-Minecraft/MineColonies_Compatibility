@@ -9,12 +9,12 @@ import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.colony.buildings.modules.IAltersRequiredItems;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.entity.citizen.Skill;
-import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.core.colony.buildings.modules.WorkerBuildingModule;
 
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
+import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 
 public class ButcherWorkerBuildingModule extends WorkerBuildingModule implements IAltersRequiredItems
 {
@@ -26,8 +26,8 @@ public class ButcherWorkerBuildingModule extends WorkerBuildingModule implements
 	@Override
 	public void alterItemsToBeKept(TriConsumer<Predicate<ItemStack>, Integer, Boolean> consumer)
 	{
-		consumer.accept(is -> ItemStackUtils.isTool(is, ModToolTypes.BUTCHER_TOOL.getToolType()), 1, true);
-		consumer.accept(is -> ItemStackUtils.isTool(is, ToolType.SHEARS), 1, true);
+		consumer.accept(is -> ItemStackHelper.isTool(is, ModToolTypes.BUTCHER_TOOL.getToolType()), 1, true);
+		consumer.accept(is -> ItemStackHelper.isTool(is, ToolType.SHEARS), 1, true);
 	}
 
 }

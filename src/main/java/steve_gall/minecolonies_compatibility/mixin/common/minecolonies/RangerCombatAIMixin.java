@@ -16,7 +16,6 @@ import com.minecolonies.api.entity.citizen.Skill;
 import com.minecolonies.api.research.effects.IResearchEffectManager;
 import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.InventoryUtils;
-import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.SoundUtils;
 import com.minecolonies.api.util.constant.GuardConstants;
 import com.minecolonies.api.util.constant.ToolType;
@@ -40,6 +39,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.CombatUtils2;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
+import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 
 @Mixin(value = RangerCombatAI.class, remap = false)
 public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
@@ -60,7 +60,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	{
 		var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);
 
-		if (ItemStackUtils.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
+		if (ItemStackHelper.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
 		{
 			return 0;
 		}
@@ -76,7 +76,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	{
 		var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);
 
-		if (ItemStackUtils.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
+		if (ItemStackHelper.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
 		{
 			if (id.equals(ResearchConstants.DOUBLE_ARROWS))
 			{
@@ -93,7 +93,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	{
 		var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);
 
-		if (ItemStackUtils.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
+		if (ItemStackHelper.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
 		{
 			var amountOfProjectiles = weapon.getEnchantmentLevel(Enchantments.MULTISHOT) == 0 ? 1 : 3;
 			var researchEffects = this.user.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects();
@@ -194,7 +194,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	{
 		var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);
 
-		if (!ItemStackUtils.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
+		if (!ItemStackHelper.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
 		{
 			return;
 		}

@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.building.module.ButcherableListModule;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
 public class Butcherable implements IDeliverableObject
@@ -23,10 +24,12 @@ public class Butcherable implements IDeliverableObject
 	private static List<ItemStack> EXAMPLES = null;
 
 	private final int minCount;
+	private final ButcherableListModule blacklist;
 
-	public Butcherable(int minCount)
+	public Butcherable(int minCount, ButcherableListModule blacklist)
 	{
 		this.minCount = minCount;
+		this.blacklist = blacklist;
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class Butcherable implements IDeliverableObject
 	public static @NotNull Butcherable deserialize(@NotNull CompoundTag tag)
 	{
 		var minCount = tag.getInt("minCount");
-		return new Butcherable(minCount);
+		return new Butcherable(minCount, null);
 	}
 
 	public static void serialize(@NotNull Butcherable request, @NotNull CompoundTag tag)
@@ -76,13 +79,13 @@ public class Butcherable implements IDeliverableObject
 	@Override
 	public Butcherable copyWithCount(int newCount)
 	{
-		return new Butcherable(this.minCount);
+		return new Butcherable(this.minCount, this.blacklist);
 	}
 
 	@Override
 	public int getCount()
 	{
-		return 64;
+		return 8;
 	}
 
 	@Override
@@ -91,10 +94,16 @@ public class Butcherable implements IDeliverableObject
 		return this.minCount;
 	}
 
+	public ButcherableListModule getBlacklist()
+	{
+		return this.blacklist;
+	}
+
 	@Override
 	public boolean matches(@NotNull ItemStack stack)
 	{
-		return CustomizedButcherable.isButcherable(stack);
+		var butcherable = CustomizedButcherable.selectByItem(stack);
+		return butcherable != null && (this.blacklist == null || !this.blacklist.containsId(butcherable.getId()));
 	}
 
 }

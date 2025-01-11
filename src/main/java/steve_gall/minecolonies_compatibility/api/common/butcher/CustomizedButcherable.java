@@ -53,11 +53,6 @@ public abstract class CustomizedButcherable
 		return REGISTRY.values().stream().filter(it -> it.isTableBlock(context)).findFirst().orElse(null);
 	}
 
-	public static boolean isButcherable(@NotNull ItemStack stack)
-	{
-		return selectByItem(stack) != null;
-	}
-
 	@Override
 	public int hashCode()
 	{

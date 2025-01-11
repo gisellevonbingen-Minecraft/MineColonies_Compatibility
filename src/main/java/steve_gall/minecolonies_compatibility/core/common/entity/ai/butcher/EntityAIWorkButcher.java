@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.interactionhandling.ChatPriority;
 import com.minecolonies.api.colony.interactionhandling.InteractionValidatorRegistry;
+import com.minecolonies.api.colony.requestsystem.request.RequestState;
 import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
 import com.minecolonies.api.entity.ai.statemachine.AITarget;
 import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
@@ -16,7 +17,6 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.Tuple;
-import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.TypeConstants;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
@@ -31,6 +31,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
@@ -43,6 +44,7 @@ import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.pathfinding.ButcherPositionsPathResult;
 import steve_gall.minecolonies_compatibility.core.common.entity.pathfinding.PathJobFindButcherPosition;
+import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.job.JobButcher;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
 
@@ -103,22 +105,39 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 		var building = this.building;
 		var worker = this.worker;
-		var amountInBuilding = InventoryUtils.hasBuildingEnoughElseCount(building, CustomizedButcherable::isButcherable, 1);
-		var amountInInv = InventoryUtils.getItemCountInItemHandler(worker.getInventoryCitizen(), CustomizedButcherable::isButcherable);
+		var amountInBuilding = InventoryUtils.hasBuildingEnoughElseCount(building, this::testButcherable, 1);
+		var amountInInv = InventoryUtils.getItemCountInItemHandler(worker.getInventoryCitizen(), this::testButcherable);
 
 		if (amountInBuilding + amountInInv <= 0)
 		{
 			var citizenData = worker.getCitizenData();
+			var any = false;
 
-			if (!CitizenHelper.isRequested(citizenData, CustomizableDeliverable.TYPE_TOKEN, r -> r.getRequest().getObject() instanceof Butcherable))
+			for (var request : CitizenHelper.getRequests(citizenData, CustomizableDeliverable.TYPE_TOKEN, r -> r.getRequest().getObject() instanceof Butcherable))
 			{
-				citizenData.createRequestAsync(new CustomizableDeliverable(new Butcherable(1)));
+				var butcherable = (Butcherable) request.getRequest().getObject();
+
+				if (butcherable.getBlacklist() == null)
+				{
+					citizenData.getColony().getRequestManager().updateRequestState(request.getId(), RequestState.CANCELLED);
+				}
+				else
+				{
+					any = true;
+				}
+
+			}
+
+			if (!any)
+			{
+				var blacklist = building.getModule(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+				citizenData.createRequestAsync(new CustomizableDeliverable(new Butcherable(1, blacklist)));
 			}
 
 		}
 		else if (amountInInv <= 0 && amountInBuilding > 0)
 		{
-			this.needsCurrently = new Tuple<>(CustomizedButcherable::isButcherable, Constants.STACKSIZE);
+			this.needsCurrently = new Tuple<>(this::testButcherable, 8);
 			return AIWorkerState.GATHERING_REQUIRED_MATERIALS;
 		}
 
@@ -128,6 +147,26 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		}
 
 		return ButcherAIState.SEARCH;
+	}
+
+	private boolean testButcherable(ItemStack item)
+	{
+		return this.selectByItem(item) != null;
+	}
+
+	private CustomizedButcherable selectByItem(ItemStack item)
+	{
+		var butcherable = CustomizedButcherable.selectByItem(item);
+
+		if (butcherable != null && !this.building.getModule(ModBuildingModules.BUTCHERABLELIST_BLACKLIST).containsId(butcherable.getId()))
+		{
+			return butcherable;
+		}
+		else
+		{
+			return null;
+		}
+
 	}
 
 	private IAIState search()
@@ -155,6 +194,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		var corners = this.building.getCorners();
 		var job = new PathJobFindButcherPosition(this.world, start, BoundingBox.fromCorners(corners.getA(), corners.getB()), worker);
 		job.vertialRange = 2;
+		job.exceptButcherables.addAll(this.building.getModule(ModBuildingModules.BUTCHERABLELIST_BLACKLIST).getIds());
 		return (ButcherPositionsPathResult) ((MinecoloniesAdvancedPathNavigate) worker.getNavigation()).setPathJob(job, null, 1.0D, true);
 	}
 
@@ -226,7 +266,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		for (var i = 0; i < inventory.getSlots(); i++)
 		{
 			var item = inventory.getStackInSlot(i);
-			var butcherable = CustomizedButcherable.selectByItem(item);
+			var butcherable = this.selectByItem(item);
 
 			if (butcherable != null && !butcherable.isTableBlock(context))
 			{
@@ -247,7 +287,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		for (var i = 0; i < inventory.getSlots(); i++)
 		{
 			var item = inventory.getStackInSlot(i);
-			var butcherable = CustomizedButcherable.selectByItem(item);
+			var butcherable = this.selectByItem(item);
 
 			if (butcherable != null && butcherable.isTableBlock(context))
 			{
@@ -456,7 +496,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 		var deliverable = new IngredientDeliverable(stack.ingredient(), description, stack.count());
 
-		if (building.getOpenRequestsOfTypeFiltered(worker.getCitizenData(), TypeConstants.DELIVERABLE, r -> this.testDeliverable(r.getRequest(), deliverable)).isEmpty() && building.getCompletedRequestsOfTypeFiltered(worker.getCitizenData(), TypeConstants.DELIVERABLE, r -> this.testDeliverable(r.getRequest(), deliverable)).isEmpty())
+		if (!CitizenHelper.isRequested(worker.getCitizenData(), TypeConstants.DELIVERABLE, r -> this.testDeliverable(r.getRequest(), deliverable)))
 		{
 			worker.getCitizenData().createRequest(new CustomizableDeliverable(deliverable));
 		}

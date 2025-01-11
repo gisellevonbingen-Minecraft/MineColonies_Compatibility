@@ -1,5 +1,7 @@
 package steve_gall.minecolonies_compatibility.core.common.colony;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +27,15 @@ public class CitizenHelper
 	{
 		var job = citizen.getJob();
 		return job != null ? job.getJobRegistryEntry() : null;
+	}
+
+	public static <R> List<IRequest<? extends R>> getRequests(@NotNull ICitizenData citizen, @NotNull TypeToken<R> token, @NotNull Predicate<IRequest<? extends R>> predicate)
+	{
+		var building = citizen.getWorkBuilding();
+		var list = new ArrayList<IRequest<? extends R>>();
+		list.addAll(building.getOpenRequestsOfTypeFiltered(citizen, token, predicate));
+		list.addAll(building.getCompletedRequestsOfTypeFiltered(citizen, token, predicate));
+		return list;
 	}
 
 	public static <R> boolean isRequested(@NotNull ICitizenData citizen, @NotNull TypeToken<R> token, @NotNull Predicate<IRequest<? extends R>> predicate)

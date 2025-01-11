@@ -87,10 +87,19 @@ public class MineColoniesCompatibility
 			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_LAVA_CAULDRON);
 
 			ModBuildings.swineHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+			ModBuildings.swineHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+
 			ModBuildings.chickenHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+			ModBuildings.chickenHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+
 			ModBuildings.cowboy.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+			ModBuildings.cowboy.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+
 			ModBuildings.rabbitHutch.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+			ModBuildings.rabbitHutch.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+
 			ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+			ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
 		});
 	}
 

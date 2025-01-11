@@ -52,7 +52,7 @@ public class CarcassHookButcherable extends CarcassButcherable
 	}
 
 	@Override
-	public Component getTableNotFoundMessage()
+	public @NotNull Component getTableNotFoundMessage()
 	{
 		return InteractionMessageHelper.getWorkingBlockNotFound(ButchersdelightModBlocks.HOOK.get());
 	}

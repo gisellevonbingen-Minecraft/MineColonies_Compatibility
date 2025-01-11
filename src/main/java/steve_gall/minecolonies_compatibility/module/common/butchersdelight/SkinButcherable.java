@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
-import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.mcreator.butchersdelight.init.ButchersdelightModBlocks;
 import net.minecraft.nbt.CompoundTag;
@@ -19,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
 
 public class SkinButcherable extends AbstractButcherable
@@ -39,15 +39,15 @@ public class SkinButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public @NotNull List<EquipmentTypeEntry> getToolTypesForIcon()
+	public @NotNull List<ToolOrIngredientStack> getToolsForIcon()
 	{
-		return Collections.singletonList(ModEquipmentTypes.shears.get());
+		return Collections.singletonList(ToolOrIngredientStack.of(ModEquipmentTypes.shears.get()));
 	}
 
 	@Override
-	public @NotNull EquipmentTypeEntry getBlockToolType(@NotNull ButcherBlockContext context)
+	public @NotNull ToolOrIngredientStack getBlockTool(@NotNull ButcherBlockContext context)
 	{
-		return ModEquipmentTypes.shears.get();
+		return ToolOrIngredientStack.of(ModEquipmentTypes.shears.get());
 	}
 
 	@Override

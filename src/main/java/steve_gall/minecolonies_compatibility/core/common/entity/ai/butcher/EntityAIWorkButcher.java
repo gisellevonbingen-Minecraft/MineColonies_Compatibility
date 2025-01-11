@@ -8,16 +8,16 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.interactionhandling.ChatPriority;
 import com.minecolonies.api.colony.interactionhandling.InteractionValidatorRegistry;
+import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
 import com.minecolonies.api.entity.ai.statemachine.AITarget;
 import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-import com.minecolonies.api.equipment.ModEquipmentTypes;
-import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
+import com.minecolonies.api.util.constant.TypeConstants;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
 import com.minecolonies.core.colony.interactionhandling.StandardInteraction;
@@ -35,6 +35,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
+import steve_gall.minecolonies_compatibility.api.common.crafting.IngredientStack;
+import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
+import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
@@ -274,15 +277,15 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	private record ButcherInfo(CustomizedButcherable butcherable, boolean isBlock, int slot)
 	{
-		public EquipmentTypeEntry getToolType(ButcherBlockContext context)
+		public ToolOrIngredientStack getTool(ButcherBlockContext context)
 		{
 			if (this.isBlock())
 			{
-				return this.butcherable().getBlockToolType(context);
+				return this.butcherable().getBlockTool(context);
 			}
 			else
 			{
-				return this.butcherable().getTableToolType(context);
+				return this.butcherable().getTableTool(context);
 			}
 
 		}
@@ -334,7 +337,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		}
 
 		var context = new ButcherBlockContext(level, position, level.getBlockState(position));
-		var toolType = info.getToolType(context);
+		var toolType = info.getTool(context);
 
 		if (this.equipTool(toolType))
 		{
@@ -345,7 +348,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 			return this.getState();
 		}
 
-		var itemHand = toolType != ModEquipmentTypes.none.get() ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+		var itemHand = !toolType.isEmpty() ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
 		CitizenItemUtils.setHeldItem(worker, itemHand, info.slot());
 
 		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.butcher;
@@ -362,11 +365,6 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 		this.butcherProgress = 0;
 		info.doButcher(context, worker, itemHand);
-
-		if (toolType != ModEquipmentTypes.none.get())
-		{
-			CitizenItemUtils.damageItemInHand(worker, InteractionHand.MAIN_HAND, 1);
-		}
 
 		CitizenItemUtils.setHeldItem(worker, itemHand, info.slot());
 		worker.getCitizenExperienceHandler().addExperience(XP_PER_HARVEST);
@@ -397,25 +395,87 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	}
 
-	private boolean equipTool(EquipmentTypeEntry toolType)
+	private boolean equipTool(ToolOrIngredientStack toolType)
 	{
-		if (toolType == ModEquipmentTypes.none.get())
+		var slot = -1;
+
+		if (toolType.isEmpty())
 		{
-			CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, -1);
-			return false;
+			slot = -1;
 		}
-		else
+		else if (toolType.isToolType())
 		{
-			if (this.checkForToolOrWeapon(toolType))
+			if (this.checkForToolOrWeapon(toolType.toolType()))
 			{
 				return true;
 			}
 
-			var slot = CitizenHelper.getMaxLevelToolSlot(this.worker.getCitizenData(), toolType);
-			CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, slot);
+			slot = CitizenHelper.getMaxLevelToolSlot(this.worker.getCitizenData(), toolType.toolType());
+		}
+		else
+		{
+			var stack = toolType.stack();
+
+			if (!this.checkIfRequestForItemExistOrCreate(stack, "TEST"))
+			{
+				return true;
+			}
+
+			slot = InventoryUtils.findFirstSlotInItemHandlerWith(this.getInventory(), stack::testType);
+		}
+
+		CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, slot);
+		return false;
+	}
+
+	private boolean checkIfRequestForItemExistOrCreate(IngredientStack stack, String description)
+	{
+		var worker = this.worker;
+		var building = this.building;
+		var invCount = InventoryUtils.getItemCountInItemHandler(worker.getInventoryCitizen(), stack::testType);
+
+		if (invCount >= stack.count())
+		{
+			return true;
+		}
+		else if (!this.walkToBuilding())
+		{
 			return false;
 		}
 
+		var updatedCount = stack.count() - invCount;
+
+		if (InventoryUtils.hasBuildingEnoughElseCount(building, stack::testType, updatedCount) >= updatedCount)
+		{
+			if (InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(building, stack::testType, updatedCount, worker.getInventoryCitizen()))
+			{
+				return true;
+			}
+
+		}
+
+		var deliverable = new IngredientDeliverable(stack.ingredient(), description, stack.count());
+
+		if (building.getOpenRequestsOfTypeFiltered(worker.getCitizenData(), TypeConstants.DELIVERABLE, r -> this.testDeliverable(r.getRequest(), deliverable)).isEmpty() && building.getCompletedRequestsOfTypeFiltered(worker.getCitizenData(), TypeConstants.DELIVERABLE, r -> this.testDeliverable(r.getRequest(), deliverable)).isEmpty())
+		{
+			worker.getCitizenData().createRequest(new CustomizableDeliverable(deliverable));
+		}
+
+		return false;
+	}
+
+	private boolean testDeliverable(IDeliverable deliverable, IngredientDeliverable deliverable2)
+	{
+		if (deliverable instanceof CustomizableDeliverable customizable)
+		{
+			if (customizable.getObject() instanceof IngredientDeliverable other)
+			{
+				return other.getIngredient().getStackingIds().equals(deliverable2.getIngredient().getStackingIds());
+			}
+
+		}
+
+		return false;
 	}
 
 	private void hitBlockWithToolInHand(BlockPos pos)

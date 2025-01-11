@@ -14,6 +14,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
 import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTemplateInventoryScreen;
@@ -68,6 +69,7 @@ public class MineColoniesCompatibility
 		CustomizedRecipeStorageRegistry.INSTANCE.register(SmithingRecipeStorage.ID, SmithingRecipeStorage::serialize, SmithingRecipeStorage::deserialize);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(SmithingTemplateRecipeStorage.ID, SmithingTemplateRecipeStorage::serialize, SmithingTemplateRecipeStorage::deserialize);
 
+		DeliverableObjectRegistry.INSTANCE.register(IngredientDeliverable.ID, IngredientDeliverable::serialize, IngredientDeliverable::deserialize);
 		DeliverableObjectRegistry.INSTANCE.register(Butcherable.ID, Butcherable::serialize, Butcherable::deserialize);
 	}
 

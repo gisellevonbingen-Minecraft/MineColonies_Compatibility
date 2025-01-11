@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +17,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.state.BlockState;
+import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
 
@@ -83,21 +83,21 @@ public abstract class CustomizedButcherable
 	public abstract List<BlockState> getTableIcons();
 
 	@NotNull
-	public List<EquipmentTypeEntry> getToolTypesForIcon()
+	public List<ToolOrIngredientStack> getToolsForIcon()
 	{
-		return Collections.singletonList(ModToolTypes.BUTCHER_TOOL.getToolType());
+		return Collections.singletonList(ToolOrIngredientStack.of(ModToolTypes.BUTCHER_TOOL));
 	}
 
 	@NotNull
-	public EquipmentTypeEntry getBlockToolType(@NotNull ButcherBlockContext context)
+	public ToolOrIngredientStack getBlockTool(@NotNull ButcherBlockContext context)
 	{
-		return ModToolTypes.BUTCHER_TOOL.getToolType();
+		return ToolOrIngredientStack.of(ModToolTypes.BUTCHER_TOOL);
 	}
 
 	@NotNull
-	public EquipmentTypeEntry getTableToolType(@NotNull ButcherBlockContext context)
+	public ToolOrIngredientStack getTableTool(@NotNull ButcherBlockContext context)
 	{
-		return ModToolTypes.BUTCHER_TOOL.getToolType();
+		return ToolOrIngredientStack.of(ModToolTypes.BUTCHER_TOOL);
 	}
 
 	public boolean testItem(@NotNull ItemStack item)

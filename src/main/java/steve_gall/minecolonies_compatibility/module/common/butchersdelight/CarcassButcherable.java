@@ -5,12 +5,11 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
-
 import net.mcreator.butchersdelight.init.ButchersdelightModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
 public abstract class CarcassButcherable extends AbstractButcherable
@@ -21,15 +20,15 @@ public abstract class CarcassButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public @NotNull List<EquipmentTypeEntry> getToolTypesForIcon()
+	public @NotNull List<ToolOrIngredientStack> getToolsForIcon()
 	{
-		return Collections.singletonList(ModToolTypes.BUTCHER_TOOL.getToolType());
+		return Collections.singletonList(ToolOrIngredientStack.of(ModToolTypes.BUTCHER_TOOL));
 	}
 
 	@Override
-	public @NotNull EquipmentTypeEntry getBlockToolType(@NotNull ButcherBlockContext context)
+	public @NotNull ToolOrIngredientStack getBlockTool(@NotNull ButcherBlockContext context)
 	{
-		return ModToolTypes.BUTCHER_TOOL.getToolType();
+		return ToolOrIngredientStack.of(ModToolTypes.BUTCHER_TOOL);
 	}
 
 	@Override

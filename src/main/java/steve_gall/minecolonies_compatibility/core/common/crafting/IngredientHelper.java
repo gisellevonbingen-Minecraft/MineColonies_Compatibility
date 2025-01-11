@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
@@ -14,6 +16,8 @@ import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 
 public class IngredientHelper
 {
+	private static final Gson GSON = new Gson();
+
 	public static List<List<ItemStack>> getStacksList(@NotNull List<Ingredient> ingredients)
 	{
 		return ingredients.stream().map(IngredientHelper::getStacks).toList();
@@ -41,6 +45,16 @@ public class IngredientHelper
 		}
 
 		return ToolType.NONE;
+	}
+
+	public static @NotNull String toJson(@NotNull Ingredient ingredient)
+	{
+		return GSON.toJson(ingredient.toJson());
+	}
+
+	public static @NotNull Ingredient fromJson(@NotNull String json)
+	{
+		return Ingredient.fromJson(GSON.fromJson(json, JsonElement.class));
 	}
 
 	private IngredientHelper()

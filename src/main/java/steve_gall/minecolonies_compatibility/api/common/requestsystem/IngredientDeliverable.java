@@ -5,25 +5,22 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.crafting.IngredientHelper;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
 public class IngredientDeliverable implements IDeliverableObject
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("ingredient");
-	private static final Gson GSON = new Gson();
 
 	public static IngredientDeliverable deserialize(@NotNull CompoundTag tag)
 	{
-		var ingredient = Ingredient.fromJson(GSON.fromJson(tag.getString("ingredient"), JsonElement.class));
+		var ingredient = IngredientHelper.fromJson(tag.getString("ingredient"));
 		var description = tag.getString("description");
 		var count = tag.getInt("count");
 		var minCount = tag.getInt("minCount");
@@ -32,7 +29,7 @@ public class IngredientDeliverable implements IDeliverableObject
 
 	public static void serialize(@NotNull IngredientDeliverable request, @NotNull CompoundTag tag)
 	{
-		tag.putString("ingredient", GSON.toJson(request.ingredient.toJson()));
+		tag.putString("ingredient", IngredientHelper.toJson(request.ingredient));
 		tag.putString("description", request.description);
 		tag.putInt("count", request.count);
 		tag.putInt("minCount", request.minCount);

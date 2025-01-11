@@ -68,6 +68,9 @@
 	"minecolonies_compatibility.text.restrict.set2": "Setted second position of working area.",
 	"minecolonies_compatibility.text.restrict.update": "Setted working area. (X: %1$s ~ %2$s, Y: %3$s ~ %4$s, Z: %5$s ~ %6$s, Volume: %7$s, Max volume: %8$s)",
 	"minecolonies_compatibility.text.restrict.too_big": "Working area is too large. (Setted volume: %1$s, Max volume: %2$s)",
+	"minecolonies_compatibility.text.butchercraft_grinder.ingredient": "Ingredient",
+	"minecolonies_compatibility.text.butchercraft_grinder.attachment": "Attachment",
+	"minecolonies_compatibility.text.butchercraft_grinder.casing": "Casing",
 	
 	"_comment_modules": "Modules",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruits",
@@ -106,6 +109,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press": "[Let's Do] Vinery - Apple Press Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press.menu": "Apple Press Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_brewery_silo.menu": "Silo Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.butchercraft_grinder": "Butchercraft - Grinder Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.butchercraft_grinder.menu": "Grinder Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist": "Butcherables",
 	
 	"_comment_module_settings": "Module Settings",
@@ -113,6 +118,8 @@
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket.tooltip": "If Archer is using Crossbow, requests Firework Rocket as ammo.\nNeed to research 'Consume Arrows'.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "Harvest Only Max Age",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "Orchardist harvests only max age fruits/crops.",
+	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "Skip Blood Bottle/Bucket",
+	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood.tooltip": "Skip steps what getting blood bottle/bucket when dismember Butchercraft's carcasses.",
 	
 	"_comment_interaction": "Interaction Messages",
 	"minecolonies_compatibility.interaction.no_working_block": "My work hut doesn't have any Working Block! Please place it so I have some I can use!",
@@ -120,6 +127,7 @@
 	"minecolonies_compatibility.interaction.no_working_block_and_under_heat_source": "My work hut doesn't have any heated %1$s's %2$s! Please place %2$s and place heat source under it!",
 	"minecolonies_compatibility.interaction.no_fluid_source": "My work hut doesn't have any Fluid Tank with %1$s or Liquid %1$s! Please place it so I have some I can use!",
 	"minecolonies_compatibility.interaction.no_lets_do_bakery_stove": "My work hut doesn't have any [Let's Do] Bakery's Stove or Oven! Please place it so I have some I can use!",
+	"minecolonies_compatibility.interaction.no_butchercraft_grinder_with_attachment": "My work hut doesn't have any %1$s's %2$s with %3$s attached! Please place it so I have some I can use!",
 	
 	"_eof": "EOF"
 }

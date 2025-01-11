@@ -23,6 +23,7 @@ import com.minecolonies.core.colony.buildings.AbstractBuilding;
 import com.minecolonies.core.colony.interactionhandling.StandardInteraction;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
 import com.minecolonies.core.entity.pathfinding.PathfindingUtils;
+import com.minecolonies.core.entity.pathfinding.navigation.EntityNavigationUtils;
 import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.network.messages.client.BlockParticleEffectMessage;
 import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
@@ -64,6 +65,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	private BlockPos butcherPosition = null;
 	private int butcherProgress = 0;
+	private boolean walking = false;
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public EntityAIWorkButcher(@NotNull JobButcher job)
@@ -203,6 +205,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		var result = this.pathResult;
 		this.pathResult = null;
 		this.butcherProgress = 0;
+		this.walking = false;
 		this.job.setTableNeeded(null);
 
 		for (var block : result.blocks)
@@ -383,8 +386,9 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		{
 			return AIWorkerState.START_WORKING;
 		}
-		else if (!this.walkToWorkPos(position))
+		else if (!EntityNavigationUtils.walkToPosInBuilding(worker, position, this.building, this.walking ? EntityNavigationUtils.WOKR_IN_BUILDING_DIST : 0))
 		{
+			this.walking = true;
 			return this.getState();
 		}
 

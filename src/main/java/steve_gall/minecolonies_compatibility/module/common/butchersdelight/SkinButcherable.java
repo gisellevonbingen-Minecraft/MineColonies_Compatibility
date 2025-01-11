@@ -81,7 +81,7 @@ public class SkinButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public Component getTableNotFoundMessage()
+	public @NotNull Component getTableNotFoundMessage()
 	{
 		return InteractionMessageHelper.getWorkingBlockNotFound(ButchersdelightModBlocks.RACK.get());
 	}

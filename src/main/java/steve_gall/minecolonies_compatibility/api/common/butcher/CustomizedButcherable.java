@@ -137,7 +137,7 @@ public abstract class CustomizedButcherable
 		return context.getState().getSoundType(context.getLevel(), context.getPosition(), null).getHitSound();
 	}
 
-	public Component getTableNotFoundMessage()
+	public @NotNull Component getTableNotFoundMessage()
 	{
 		return InteractionMessageHelper.getWorkingBlockNotFound();
 	}

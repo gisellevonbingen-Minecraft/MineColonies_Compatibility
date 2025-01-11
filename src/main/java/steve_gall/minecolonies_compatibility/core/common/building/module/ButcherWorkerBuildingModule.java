@@ -29,14 +29,18 @@ public class ButcherWorkerBuildingModule extends WorkerBuildingModule implements
 	public void alterItemsToBeKept(TriConsumer<Predicate<ItemStack>, Integer, Boolean> consumer)
 	{
 		consumer.accept(is -> ItemStackHelper.isTool(is, ModToolTypes.BUTCHER_TOOL.getToolType()), 1, true);
-		consumer.accept(is -> ItemStackHelper.isTool(is, ModEquipmentTypes.shears.get()), 1, true);
 
-		consumer.accept(is ->
+		if (this.hasAssignedCitizen())
 		{
-			var butcherable = CustomizedButcherable.selectByItem(is);
-			var blacklist = this.building.getModule(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
-			return butcherable != null && (blacklist == null || !blacklist.containsId(butcherable.getId()));
-		}, 8, false);
+			consumer.accept(is -> ItemStackHelper.isTool(is, ModEquipmentTypes.shears.get()), 1, true);
+			consumer.accept(is ->
+			{
+				var butcherable = CustomizedButcherable.selectByItem(is);
+				var blacklist = this.building.getModule(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+				return butcherable != null && (blacklist == null || !blacklist.containsId(butcherable.getId()));
+			}, 8, false);
+
+		}
 
 	}
 

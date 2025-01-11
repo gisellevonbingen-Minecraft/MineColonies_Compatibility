@@ -17,6 +17,7 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.Tuple;
+import com.minecolonies.api.util.constant.CitizenConstants;
 import com.minecolonies.api.util.constant.TypeConstants;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
@@ -63,6 +64,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	private BlockPos butcherPosition = null;
 	private int butcherProgress = 0;
+	private boolean walking = false;
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public EntityAIWorkButcher(@NotNull JobButcher job)
@@ -202,6 +204,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		var result = this.pathResult;
 		this.pathResult = null;
 		this.butcherProgress = 0;
+		this.walking = false;
 		this.job.setTableNeeded(null);
 
 		for (var block : result.blocks)
@@ -382,8 +385,9 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		{
 			return AIWorkerState.START_WORKING;
 		}
-		else if (this.walkToBlock(position))
+		else if (this.walkToBlock(position, this.walking ? CitizenConstants.DEFAULT_RANGE_FOR_DELAY : 0))
 		{
+			this.walking = true;
 			return this.getState();
 		}
 

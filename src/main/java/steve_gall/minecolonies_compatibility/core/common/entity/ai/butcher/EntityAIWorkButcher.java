@@ -45,8 +45,10 @@ import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesComp
 import steve_gall.minecolonies_compatibility.core.common.entity.pathfinding.ButcherPositionsPathResult;
 import steve_gall.minecolonies_compatibility.core.common.entity.pathfinding.PathJobFindButcherPosition;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
+import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.job.JobButcher;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
+import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolType;
 
 public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, AbstractBuilding>
 {
@@ -414,13 +416,14 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 		if (this.getButcheringBlock(position) != null)
 		{
+			this.setDelay(10);
 			worker.decreaseSaturationForContinuousAction();
 			return this.getState();
 		}
 		else
 		{
-			this.incrementActionsDoneAndDecSaturation();
 			this.setDelay(20);
+			this.incrementActionsDoneAndDecSaturation();
 		}
 
 		if (this.job.getActionsDone() >= this.getActionsDoneUntilDumping())
@@ -459,7 +462,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		{
 			var stack = toolType.stack();
 
-			if (!this.checkIfRequestForItemExistOrCreate(stack, "TEST"))
+			if (!this.checkIfRequestForItemExistOrCreate(stack, CustomToolType.getFallbackTranslationKey(ModToolTypes.BUTCHER_TOOL.getName().getPath())))
 			{
 				return true;
 			}

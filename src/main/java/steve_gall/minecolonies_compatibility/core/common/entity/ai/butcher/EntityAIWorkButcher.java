@@ -400,7 +400,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 		if (toolType.isEmpty())
 		{
-			return false;
+			slot = -1;
 		}
 		else if (toolType.isToolType())
 		{

@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -22,6 +20,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherCitizenContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
 
@@ -63,7 +62,7 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	}
 
 	@Override
-	public @NotNull ToolOrIngredientStack getTableTool(@NotNull ButcherBlockContext context)
+	public @NotNull ToolOrIngredientStack getTableTool(@NotNull ButcherBlockContext context, @NotNull ButcherCitizenContext citizen)
 	{
 		return ToolOrIngredientStack.EMPTY;
 	}
@@ -81,17 +80,17 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	}
 
 	@Override
-	public void doButcherBlock(@NotNull ButcherBlockContext context, @NotNull AbstractEntityCitizen worker)
+	public void doButcherBlock(@NotNull ButcherBlockContext context, @NotNull ButcherCitizenContext citizen)
 	{
-		super.doButcherBlock(context, worker);
+		super.doButcherBlock(context, citizen);
 
 		if (context.getLevel() instanceof ServerLevel serverLevel)
 		{
 			var tool = this.getButcherBlockTool();
 			this.setButcherBlockProcess(serverLevel.getBlockEntity(context.getPosition()).getPersistentData());
-			ButchersDelightModule.rightClick(serverLevel, context.getPosition(), worker, tool.copy());
+			ButchersDelightModule.rightClick(serverLevel, context.getPosition(), citizen.getWorker(), tool.copy());
 
-			worker.getCitizenItemHandler().damageItemInHand(InteractionHand.MAIN_HAND, 1);
+			citizen.getWorker().getCitizenItemHandler().damageItemInHand(InteractionHand.MAIN_HAND, 1);
 		}
 
 	}

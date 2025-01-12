@@ -8,8 +8,6 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -84,13 +82,13 @@ public abstract class CustomizedButcherable
 	}
 
 	@NotNull
-	public ToolOrIngredientStack getBlockTool(@NotNull ButcherBlockContext context)
+	public ToolOrIngredientStack getBlockTool(@NotNull ButcherBlockContext context, @NotNull ButcherCitizenContext citizen)
 	{
 		return ToolOrIngredientStack.of(ModToolTypes.BUTCHER_TOOL);
 	}
 
 	@NotNull
-	public ToolOrIngredientStack getTableTool(@NotNull ButcherBlockContext context)
+	public ToolOrIngredientStack getTableTool(@NotNull ButcherBlockContext context, @NotNull ButcherCitizenContext citizen)
 	{
 		return ToolOrIngredientStack.of(ModToolTypes.BUTCHER_TOOL);
 	}
@@ -110,12 +108,12 @@ public abstract class CustomizedButcherable
 		return false;
 	}
 
-	public void doButcherBlock(@NotNull ButcherBlockContext context, @NotNull AbstractEntityCitizen worker)
+	public void doButcherBlock(@NotNull ButcherBlockContext context, @NotNull ButcherCitizenContext citizen)
 	{
 
 	}
 
-	public void doButcherTable(@NotNull ButcherBlockContext context, @NotNull AbstractEntityCitizen worker, @NotNull InteractionHand hand)
+	public void doButcherTable(@NotNull ButcherBlockContext context, @NotNull ButcherCitizenContext citizen, @NotNull InteractionHand itemHand)
 	{
 
 	}

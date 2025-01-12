@@ -9,6 +9,7 @@ import net.mcreator.butchersdelight.init.ButchersdelightModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherCitizenContext;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
@@ -26,7 +27,7 @@ public abstract class CarcassButcherable extends AbstractButcherable
 	}
 
 	@Override
-	public @NotNull ToolOrIngredientStack getBlockTool(@NotNull ButcherBlockContext context)
+	public @NotNull ToolOrIngredientStack getBlockTool(@NotNull ButcherBlockContext context, @NotNull ButcherCitizenContext citizen)
 	{
 		return ToolOrIngredientStack.of(ModToolTypes.BUTCHER_TOOL);
 	}

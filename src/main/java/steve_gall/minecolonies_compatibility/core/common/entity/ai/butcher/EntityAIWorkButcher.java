@@ -36,6 +36,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherCitizenContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.crafting.IngredientStack;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
@@ -322,15 +323,15 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 	private record ButcherInfo(CustomizedButcherable butcherable, boolean isBlock, int slot)
 	{
-		public ToolOrIngredientStack getTool(ButcherBlockContext context)
+		public ToolOrIngredientStack getTool(ButcherBlockContext context, @NotNull ButcherCitizenContext citizen)
 		{
 			if (this.isBlock())
 			{
-				return this.butcherable().getBlockTool(context);
+				return this.butcherable().getBlockTool(context, citizen);
 			}
 			else
 			{
-				return this.butcherable().getTableTool(context);
+				return this.butcherable().getTableTool(context, citizen);
 			}
 
 		}
@@ -348,15 +349,15 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 
 		}
 
-		public void doButcher(ButcherBlockContext context, AbstractEntityCitizen worker, InteractionHand itemHand)
+		public void doButcher(ButcherBlockContext context, ButcherCitizenContext citizen, InteractionHand toolHand)
 		{
 			if (this.isBlock())
 			{
-				this.butcherable().doButcherBlock(context, worker);
+				this.butcherable().doButcherBlock(context, citizen);
 			}
 			else
 			{
-				this.butcherable().doButcherTable(context, worker, itemHand);
+				this.butcherable().doButcherTable(context, citizen, toolHand);
 			}
 
 		}
@@ -381,8 +382,9 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 			return AIWorkerState.START_WORKING;
 		}
 
-		var context = new ButcherBlockContext(level, position, level.getBlockState(position));
-		var toolType = info.getTool(context);
+		var blockContext = new ButcherBlockContext(level, position, level.getBlockState(position));
+		var citizenContext = new ButcherCitizenContext(this, worker);
+		var toolType = info.getTool(blockContext, citizenContext);
 
 		if (this.equipTool(toolType))
 		{
@@ -401,7 +403,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		var delay = config.workDelay.get() - (int) ((this.getPrimarySkillLevel() + this.getSecondarySkillLevel()) * config.workDelayReducePerSkillLevel.get().doubleValue());
 
 		this.hitBlockWithToolInHand(position);
-		worker.queueSound(info.getSound(context), position, 1, 0);
+		worker.queueSound(info.getSound(blockContext), position, 1, 0);
 
 		if (this.butcherProgress < delay)
 		{
@@ -410,7 +412,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		}
 
 		this.butcherProgress = 0;
-		info.doButcher(context, worker, itemHand);
+		info.doButcher(blockContext, citizenContext, itemHand);
 
 		CitizenItemUtils.setHeldItem(worker, itemHand, info.slot());
 		worker.getCitizenExperienceHandler().addExperience(XP_PER_HARVEST);

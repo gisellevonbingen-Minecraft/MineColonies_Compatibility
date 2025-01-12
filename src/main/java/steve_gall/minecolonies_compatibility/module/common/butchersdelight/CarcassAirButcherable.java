@@ -6,14 +6,13 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
-
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
+import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherCitizenContext;
 
 public class CarcassAirButcherable extends CarcassButcherable
 {
@@ -37,13 +36,13 @@ public class CarcassAirButcherable extends CarcassButcherable
 	}
 
 	@Override
-	public void doButcherTable(@NotNull ButcherBlockContext context, @NotNull AbstractEntityCitizen worker, @NotNull InteractionHand hand)
+	public void doButcherTable(@NotNull ButcherBlockContext context, @NotNull ButcherCitizenContext citizen, @NotNull InteractionHand itemHand)
 	{
-		super.doButcherTable(context, worker, hand);
+		super.doButcherTable(context, citizen, itemHand);
 
 		if (context.getLevel() instanceof ServerLevel serverLevel)
 		{
-			ButchersDelightModule.rightClick(serverLevel, context.getPosition().below(), worker, worker.getItemInHand(hand));
+			ButchersDelightModule.rightClick(serverLevel, context.getPosition().below(), citizen.getWorker(), citizen.getWorker().getItemInHand(itemHand));
 		}
 
 	}

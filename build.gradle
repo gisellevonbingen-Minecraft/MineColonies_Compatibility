@@ -161,6 +161,7 @@ dependencies {
     implementation fg.deobf("curse.maven:ewewukeks-musket-mod-354562:${ewewukeks_musket_file}")
     implementation fg.deobf("blank:butchersdelight:${butchersdelight_version}")
     implementation fg.deobf("blank:butchersdelight_foods:${butchersdelight_foods_version}")
+    implementation fg.deobf("curse.maven:butchercraft-265715:${butchercraft_file}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

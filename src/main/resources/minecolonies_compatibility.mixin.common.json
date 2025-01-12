@@ -38,6 +38,8 @@
 		"minecolonies.TileEntityWareHouseMixin",
 		
 		"blue_skies.BrewberryBushBlockAccessor",
+		"butchercraft.ButcherBlockBlockEntityAccessor",
+		"butchercraft.MeatHookBlockEntityAccessor",
 		"cobblemon.BerryBlockAccessor",
 		"cyclic.AppleCropBlockAccessor",
 		"oreberries.OreBerryBushBlockAccessor",

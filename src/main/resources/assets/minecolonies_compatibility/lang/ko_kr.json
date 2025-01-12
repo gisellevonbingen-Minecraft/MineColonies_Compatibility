@@ -68,6 +68,9 @@
 	"minecolonies_compatibility.text.restrict.set2": "작업 구역의 두 번째 위치를 설정했습니다.",
 	"minecolonies_compatibility.text.restrict.update": "작업 구역을 설정했습니다. (X: %1$s ~ %2$s, Y: %3$s ~ %4$s, Z: %5$s ~ %6$s, 블록 수: %7$s, 최대 블록 수: %8$s)",
 	"minecolonies_compatibility.text.restrict.too_big": "작업 구역이 너무 넓습니다. (설정된 블록 수: %1$s, 최대 블록 수: %2$s)",
+	"minecolonies_compatibility.text.butchercraft_grinder.ingredient": "Ingredient",
+	"minecolonies_compatibility.text.butchercraft_grinder.attachment": "Attachment",
+	"minecolonies_compatibility.text.butchercraft_grinder.casing": "Casing",
 	
 	"_comment_modules": "모듈",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "과일 목록",
@@ -111,6 +114,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press.menu": "Apple Press Recipes - Smashing",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press_fermenting": "[Let's Do] Vinery - Apple Press Recipes - Fermenting",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press_fermenting.menu": "Apple Press Recipes - Fermenting",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.butchercraft_grinder": "Butchercraft - Grinder Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.butchercraft_grinder.menu": "Grinder Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist": "도축가능 목록",
 	
 	"_comment_module_settings": "모듈 설정",
@@ -118,6 +123,8 @@
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket.tooltip": "궁수가 쇠뇌를 사용하고 있다면, 폭죽 로켓을 요청합니다.\n'화살 소모'를 연구해야 합니다.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "최대 성장만 수확",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "과수재배꾼이 최대로 성장한 과일/작물만 수확합니다.",
+	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "Skip Blood Bottle/Bucket",
+	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood.tooltip": "Skip steps what getting blood bottle/bucket when dismember Butchercraft's carcasses.",
 	
 	"_comment_interaction": "상호작용 메시지",
 	"minecolonies_compatibility.interaction.no_working_block": "제 건물에 작업에 필요한 블록이 없어요! 사용할 수 있도록 설치해주세요!",
@@ -126,6 +133,7 @@
 	"minecolonies_compatibility.interaction.no_fluid_source": "제 건물에 %1$s이(가) 담긴 유체 탱크 혹은 액체 %1$s이(가) 없어요! 사용할 수 있도록 설치해주세요!",
 	"minecolonies_compatibility.interaction.no_lets_do_bakery_stove": "제 건물에 [Let's Do] Bakery의 오븐 혹은 스토브가 없어요! 사용할 수 있도록 설치해주세요!",
 	"minecolonies_compatibility.interaction.no_lets_do_brewery_silo": "My work hut doesn't have any [Let's Do] Brewery's Silo! Please place it so I have some I can use!",
+	"minecolonies_compatibility.interaction.no_butchercraft_grinder_with_attachment": "My work hut doesn't have any %1$s's %2$s with %3$s attached! Please place it so I have some I can use!",
 	
 	"_eof": "EOF"
 }

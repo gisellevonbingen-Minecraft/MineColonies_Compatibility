@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.minecolonies.api.colony.buildings.ModBuildings;
+import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +19,7 @@ import steve_gall.minecolonies_compatibility.api.common.requestsystem.Ingredient
 import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTemplateInventoryScreen;
+import steve_gall.minecolonies_compatibility.core.common.building.module.InjectBuildingSettingsModuleEvent;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingRecipeStorage;
@@ -61,6 +63,7 @@ public class MineColoniesCompatibility
 		fml_bus.addListener(this::onCustomToolTypeRegister);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
+		forge_bus.addListener(this::onInjectBuildingSettingsModule);
 
 		NETWORK = new NetworkChannel("main");
 		ModuleManager.initialize();
@@ -123,6 +126,25 @@ public class MineColoniesCompatibility
 		e.register(ModToolTypes.RANGER_WEAPON);
 		e.register(ModToolTypes.KNIGHT_WEAPON);
 		e.register(ModToolTypes.BUTCHER_TOOL);
+	}
+
+	private void onInjectBuildingSettingsModule(InjectBuildingSettingsModuleEvent e)
+	{
+		var buildingType = e.getBuilding().getBuildingType();
+
+		if (buildingType == ModBuildings.guardTower.get())
+		{
+			e.register(BuildingModules.GUARD_SETTINGS, ModBuildingModules.GUARD_SETTINGS);
+		}
+		else if (buildingType == ModBuildings.barracksTower.get())
+		{
+			e.register(BuildingModules.GUARD_SETTINGS, ModBuildingModules.GUARD_SETTINGS);
+		}
+		else if (buildingType == ModBuildings.lumberjack.get())
+		{
+			e.register(BuildingModules.FORESTER_SETTINGS, ModBuildingModules.ORCHARDIST_SETTINGS);
+		}
+
 	}
 
 	public static NetworkChannel network()

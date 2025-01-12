@@ -8,13 +8,20 @@ import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
 import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
@@ -62,6 +69,8 @@ public class MineColoniesCompatibility
 		var forge_bus = MinecraftForge.EVENT_BUS;
 		forge_bus.addListener(this::onCustomToolTypeRegister);
 		forge_bus.addListener(this::onInjectBuildingSettingsModule);
+		forge_bus.addListener(this::onRecipesUpdated);
+		forge_bus.addListener(EventPriority.LOWEST, this::onAddReloadListener);
 
 		NETWORK = new NetworkChannel("main");
 		ModuleManager.initialize();
@@ -140,6 +149,29 @@ public class MineColoniesCompatibility
 			e.register(BuildingModules.FORESTER_SETTINGS, ModBuildingModules.ORCHARDIST_SETTINGS);
 		}
 
+	}
+
+	private void onRecipesUpdated(RecipesUpdatedEvent e)
+	{
+		this.reloadRecipeBaseds(e.getRecipeManager());
+	}
+
+	private void onAddReloadListener(AddReloadListenerEvent e)
+	{
+		e.addListener(new ResourceManagerReloadListener()
+		{
+			@Override
+			public void onResourceManagerReload(ResourceManager resourceManager)
+			{
+				reloadRecipeBaseds(e.getServerResources().getRecipeManager());
+			}
+		});
+	}
+
+	private void reloadRecipeBaseds(RecipeManager recipeManager)
+	{
+		CustomizedButcherable.reload(recipeManager);
+		Butcherable.reload();
 	}
 
 	public static NetworkChannel network()

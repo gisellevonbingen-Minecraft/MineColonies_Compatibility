@@ -125,6 +125,7 @@
 	"minecolonies_compatibility.interaction.no_working_block_and_under_heat_source": "제 건물에 달궈진 %1$s의 %2$s이(가) 없어요! %2$s과(와) 그 아래에 열원을 설치해주세요!",
 	"minecolonies_compatibility.interaction.no_fluid_source": "제 건물에 %1$s이(가) 담긴 유체 탱크 혹은 액체 %1$s이(가) 없어요! 사용할 수 있도록 설치해주세요!",
 	"minecolonies_compatibility.interaction.no_lets_do_bakery_stove": "제 건물에 [Let's Do] Bakery의 오븐 혹은 스토브가 없어요! 사용할 수 있도록 설치해주세요!",
+	"minecolonies_compatibility.interaction.no_lets_do_brewery_silo": "My work hut doesn't have any [Let's Do] Brewery's Silo! Please place it so I have some I can use!",
 	
 	"_eof": "EOF"
 }

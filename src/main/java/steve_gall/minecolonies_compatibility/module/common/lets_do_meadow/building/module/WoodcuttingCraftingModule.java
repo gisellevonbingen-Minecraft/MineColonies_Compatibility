@@ -41,12 +41,6 @@ public class WoodcuttingCraftingModule extends AbstractCraftingModuleWithExterna
 	}
 
 	@Override
-	public boolean needWorkingBlock(@NotNull IRecipeStorage recipeStorage)
-	{
-		return true;
-	}
-
-	@Override
 	public @NotNull String getId()
 	{
 		return "lets_do_meadow_woodcutting";

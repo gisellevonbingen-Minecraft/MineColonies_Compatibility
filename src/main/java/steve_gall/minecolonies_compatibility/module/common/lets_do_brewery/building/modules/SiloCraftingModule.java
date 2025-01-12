@@ -39,12 +39,6 @@ public class SiloCraftingModule extends AbstractCraftingModuleWithExternalWorkin
 	}
 
 	@Override
-	public boolean needWorkingBlock(@NotNull IRecipeStorage recipeStorage)
-	{
-		return true;
-	}
-
-	@Override
 	public @NotNull String getId()
 	{
 		return "lets_do_brewery_silo";

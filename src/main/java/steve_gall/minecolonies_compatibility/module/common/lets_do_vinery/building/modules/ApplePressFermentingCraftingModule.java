@@ -42,12 +42,6 @@ public class ApplePressFermentingCraftingModule extends AbstractCraftingModuleWi
 	}
 
 	@Override
-	public boolean needWorkingBlock(@NotNull IRecipeStorage recipeStorage)
-	{
-		return true;
-	}
-
-	@Override
 	public @NotNull String getId()
 	{
 		return "lets_do_vinery_apple_press_fermenting";

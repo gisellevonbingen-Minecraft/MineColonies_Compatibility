@@ -103,6 +103,9 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_meadow_cooking.menu": "Cooking Cauldron Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_meadow_woodcutting": "[Let's Do] Meadow - Woodcutter Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_meadow_woodcutting.menu": "Woodcutter Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press": "[Let's Do] Vinery - Apple Press Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_vinery_apple_press.menu": "Apple Press Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.lets_do_brewery_silo.menu": "Silo Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist": "도축가능 목록",
 	
 	"_comment_module_settings": "모듈 설정",

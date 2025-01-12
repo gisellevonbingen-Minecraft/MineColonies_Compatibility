@@ -58,6 +58,22 @@ public class IngredientHelper
 		return Ingredient.fromJson(GSON.fromJson(json, JsonElement.class));
 	}
 
+	public static boolean isDamageable(@NotNull Ingredient ingredient)
+	{
+		if (ingredient.isEmpty())
+		{
+			return false;
+		}
+		for (var item : ingredient.getItems())
+		{
+			if (!item.isDamageableItem())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	private IngredientHelper()
 	{
 

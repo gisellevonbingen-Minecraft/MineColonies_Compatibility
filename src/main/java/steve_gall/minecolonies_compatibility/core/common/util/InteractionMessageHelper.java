@@ -14,10 +14,15 @@ public class InteractionMessageHelper
 		return WORKING_BLOCK_NOT_FOUND;
 	}
 
-	public static Component getWorkingBlockNotFound(Block block)
+	public static String getModDisplayName(Block block)
 	{
 		var key = ForgeRegistries.BLOCKS.getKey(block);
-		var modDisplayName = ModList.get().getModContainerById(key.getNamespace()).map(c -> c.getModInfo().getDisplayName()).orElse(key.getNamespace());
+		return ModList.get().getModContainerById(key.getNamespace()).map(c -> c.getModInfo().getDisplayName()).orElse(key.getNamespace());
+	}
+
+	public static Component getWorkingBlockNotFound(Block block)
+	{
+		var modDisplayName = getModDisplayName(block);
 		return Component.translatable("minecolonies_compatibility.interaction.no_working_block_2", modDisplayName, Component.translatable(block.getDescriptionId()));
 	}
 

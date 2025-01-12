@@ -41,12 +41,6 @@ public class CookingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	}
 
 	@Override
-	public boolean needWorkingBlock(@NotNull IRecipeStorage recipeStorage)
-	{
-		return true;
-	}
-
-	@Override
 	public @NotNull BlockPos getParticlePosition(@NotNull BlockPos pos)
 	{
 		return super.getParticlePosition(pos).below();

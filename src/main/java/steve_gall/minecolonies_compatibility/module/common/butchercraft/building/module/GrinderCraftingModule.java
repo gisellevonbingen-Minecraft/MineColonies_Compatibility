@@ -67,7 +67,7 @@ public class GrinderCraftingModule extends AbstractCraftingModuleWithExternalWor
 	@Override
 	public Set<CraftingType> getSupportedCraftingTypes()
 	{
-		return (this.building == null || this.building.getBuildingLevel() >= 3) ? Collections.singleton(ModuleCraftingTypes.GRINDER.get()) : ImmutableSet.of();
+		return Collections.singleton(ModuleCraftingTypes.GRINDER.get());
 	}
 
 	@Override

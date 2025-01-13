@@ -25,6 +25,8 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraftforge.common.util.FakePlayer;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
+import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
+import steve_gall.minecolonies_compatibility.module.common.butchercraft.ButchercraftModule;
 
 @Mixin(value = AbstractEntityAIHerder.class, remap = false)
 public abstract class AbstractEntityAIHerderMixin<J extends AbstractJob<?, J>, B extends AbstractBuilding> extends AbstractEntityAIInteract<J, B>
@@ -80,17 +82,20 @@ public abstract class AbstractEntityAIHerderMixin<J extends AbstractJob<?, J>, B
 		if (source.type() == damageType && source.getEntity() instanceof FakePlayer player)
 		{
 			var hand = InteractionHand.MAIN_HAND;
-			var prev = player.getItemInHand(hand);
 			player.setItemInHand(hand, this.worker.getItemInHand(hand).copy());
-			var result = animal.hurt(source, damage);
-			player.setItemInHand(hand, prev);
-			return result;
-		}
-		else
-		{
-			return animal.hurt(source, damage);
+
+			if (ModuleManager.BUTCHERCRAFT.isLoaded())
+			{
+				if (ButchercraftModule.slaughter(player, animal, hand))
+				{
+					return true;
+				}
+
+			}
+
 		}
 
+		return animal.hurt(source, damage);
 	}
 
 }

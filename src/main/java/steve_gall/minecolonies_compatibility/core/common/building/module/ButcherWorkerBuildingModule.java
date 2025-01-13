@@ -17,6 +17,8 @@ import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButche
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
+import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
+import steve_gall.minecolonies_compatibility.module.common.butchercraft.ButchercraftModule;
 
 public class ButcherWorkerBuildingModule extends WorkerBuildingModule implements IAltersRequiredItems
 {
@@ -39,6 +41,11 @@ public class ButcherWorkerBuildingModule extends WorkerBuildingModule implements
 				var blacklist = this.building.getModule(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
 				return butcherable != null && (blacklist == null || !blacklist.containsId(butcherable.getId()));
 			}, 8, false);
+
+			if (ModuleManager.BUTCHERCRAFT.isLoaded())
+			{
+				ButchercraftModule.getItemsToBeKept().forEach(is -> consumer.accept(is2 -> ItemStack.isSameItem(is, is2), 1, true));
+			}
 
 		}
 

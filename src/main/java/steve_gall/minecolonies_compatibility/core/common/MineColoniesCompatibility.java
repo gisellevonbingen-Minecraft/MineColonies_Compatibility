@@ -8,13 +8,10 @@ import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -72,7 +69,7 @@ public class MineColoniesCompatibility
 		var forge_bus = MinecraftForge.EVENT_BUS;
 		forge_bus.addListener(this::onInjectBuildingSettingsModule);
 		forge_bus.addListener(this::onRecipesUpdated);
-		forge_bus.addListener(EventPriority.LOWEST, this::onAddReloadListener);
+		forge_bus.addListener(this::onOnDatapackSync);
 
 		NETWORK = new NetworkChannel("main");
 		ModuleManager.initialize();
@@ -161,16 +158,13 @@ public class MineColoniesCompatibility
 		this.reloadRecipeBaseds(e.getRecipeManager());
 	}
 
-	private void onAddReloadListener(AddReloadListenerEvent e)
+	private void onOnDatapackSync(OnDatapackSyncEvent e)
 	{
-		e.addListener(new ResourceManagerReloadListener()
+		if (e.getPlayer() == null)
 		{
-			@Override
-			public void onResourceManagerReload(ResourceManager resourceManager)
-			{
-				reloadRecipeBaseds(e.getServerResources().getRecipeManager());
-			}
-		});
+			this.reloadRecipeBaseds(e.getPlayerList().getServer().getRecipeManager());
+		}
+
 	}
 
 	private void reloadRecipeBaseds(RecipeManager recipeManager)

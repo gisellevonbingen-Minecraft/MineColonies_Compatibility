@@ -76,6 +76,11 @@ public class Butcherable implements IDeliverableObject
 		return EXAMPLES;
 	}
 
+	public static void reload()
+	{
+		EXAMPLES = null;
+	}
+
 	@Override
 	public Butcherable copyWithCount(int newCount)
 	{

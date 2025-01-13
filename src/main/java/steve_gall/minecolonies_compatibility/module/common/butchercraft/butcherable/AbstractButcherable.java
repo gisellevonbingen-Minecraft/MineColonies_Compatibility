@@ -25,19 +25,7 @@ import steve_gall.minecolonies_compatibility.module.common.butchercraft.init.Mod
 
 public abstract class AbstractButcherable extends CustomizedButcherable
 {
-	private static final List<ItemStack> FIXEDS;
-
-	static
-	{
-		var list = new ArrayList<ItemStack>();
-		list.add(new ItemStack(Items.GLASS_BOTTLE));
-		list.add(new ItemStack(Items.BUCKET));
-		list.add(new ItemStack(ButchercraftItems.BUTCHER_KNIFE.get()));
-		list.add(new ItemStack(ButchercraftItems.SKINNING_KNIFE.get()));
-		list.add(new ItemStack(ButchercraftItems.BONE_SAW.get()));
-		list.add(new ItemStack(ButchercraftItems.GUT_KNIFE.get()));
-		FIXEDS = Collections.unmodifiableList(list);
-	}
+	private static List<ItemStack> FIXEDS;
 
 	public AbstractButcherable()
 	{
@@ -64,6 +52,18 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 	{
 		var tool = itemUse.tool;
 		var count = IngredientHelper.isDamageable(tool) ? itemUse.count : itemUse.count * itemUse.uses;
+
+		if (FIXEDS == null)
+		{
+			var list = new ArrayList<ItemStack>();
+			list.add(new ItemStack(Items.GLASS_BOTTLE));
+			list.add(new ItemStack(Items.BUCKET));
+			list.add(new ItemStack(ButchercraftItems.BUTCHER_KNIFE.get()));
+			list.add(new ItemStack(ButchercraftItems.SKINNING_KNIFE.get()));
+			list.add(new ItemStack(ButchercraftItems.BONE_SAW.get()));
+			list.add(new ItemStack(ButchercraftItems.GUT_KNIFE.get()));
+			FIXEDS = Collections.unmodifiableList(list);
+		}
 
 		for (var fix : FIXEDS)
 		{

@@ -3,13 +3,11 @@ package steve_gall.minecolonies_compatibility.module.client.lets_do_meadow.jei;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
-import net.satisfy.meadow.compat.jei.category.CheesePressCategory;
-import net.satisfy.meadow.compat.jei.category.CookingCauldronCategory;
-import net.satisfy.meadow.compat.jei.category.WoodCutterCategory;
+import net.satisfy.meadow.core.compat.jei.category.CheesePressCategory;
+import net.satisfy.meadow.core.compat.jei.category.CookingCauldronCategory;
 import steve_gall.minecolonies_compatibility.module.client.jei.AbstractModulePlugin;
 import steve_gall.minecolonies_compatibility.module.client.lets_do_meadow.CheeseTeachScreen;
 import steve_gall.minecolonies_compatibility.module.client.lets_do_meadow.CookingTeachScreen;
-import steve_gall.minecolonies_compatibility.module.client.lets_do_meadow.WoodcuttingTeachScreen;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_compatibility.module.common.OptionalModule;
 
@@ -26,7 +24,6 @@ public class ModulePlugin extends AbstractModulePlugin
 
 		registration.addRecipeClickArea(CheeseTeachScreen.class, 91, 26, 22, 15, CheesePressCategory.CHEESE_PRESS);
 		registration.addRecipeClickArea(CookingTeachScreen.class, 86, 26, 22, 15, CookingCauldronCategory.COOKING_CAULDRON);
-		registration.addRecipeClickArea(WoodcuttingTeachScreen.class, 77, 26, 22, 15, WoodCutterCategory.WOODCUTTER);
 	}
 
 	@Override
@@ -40,7 +37,6 @@ public class ModulePlugin extends AbstractModulePlugin
 		var transferHelper = registration.getTransferHelper();
 		registration.addRecipeTransferHandler(new CheeseTeachRecipeTransferHandler(transferHelper), CheesePressCategory.CHEESE_PRESS);
 		registration.addRecipeTransferHandler(new CookingTeachRecipeTransferHandler(transferHelper), CookingCauldronCategory.COOKING_CAULDRON);
-		registration.addRecipeTransferHandler(new WoodcuttingTeachRecipeTransferHandler(transferHelper), WoodCutterCategory.WOODCUTTER);
 	}
 
 	@Override

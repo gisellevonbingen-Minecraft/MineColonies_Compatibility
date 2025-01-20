@@ -8,7 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.satisfy.meadow.recipes.CheeseFormRecipe;
+import net.satisfy.meadow.core.recipes.CheeseFormRecipe;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.crafting.CheeseRecipeStorage;

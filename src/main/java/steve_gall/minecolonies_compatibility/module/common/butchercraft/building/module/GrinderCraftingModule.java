@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableSet;
 import com.lance5057.butchercraft.workstations.grinder.GrinderBlockEntity;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.IColonyManager;

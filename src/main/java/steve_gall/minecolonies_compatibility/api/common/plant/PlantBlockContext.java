@@ -11,6 +11,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
@@ -50,6 +52,12 @@ public class PlantBlockContext extends PlantPositonContext
 		{
 			var state = this.getState();
 			var position = this.getPosition();
+
+			tool = tool.copy();
+			var map = EnchantmentHelper.getEnchantments(tool);
+			map.remove(Enchantments.SILK_TOUCH);
+			EnchantmentHelper.setEnchantments(map, tool);
+
 			return Block.getDrops(state, level, position, null, entity, tool);
 		}
 		else

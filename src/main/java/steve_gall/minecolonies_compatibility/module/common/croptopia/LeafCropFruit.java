@@ -73,7 +73,7 @@ public class LeafCropFruit extends CustomizedFruit
 			level.setBlock(context.getPosition(), newState, Block.UPDATE_CLIENTS);
 		}
 
-		return context.getDrops(null);
+		return context.getDrops(harvester);
 	}
 
 }

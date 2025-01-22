@@ -65,7 +65,7 @@ public class CocoaFruit extends CustomizedFruit
 	@Override
 	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
-		var drops = context.getDrops(null);
+		var drops = context.getDrops(harvester);
 		var newState = context.getState().setValue(CocoaBlock.AGE, 0);
 		PlantBlockContext.replant(context, drops, newState);
 		return drops;

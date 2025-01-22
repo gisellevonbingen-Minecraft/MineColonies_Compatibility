@@ -67,14 +67,12 @@ public class RiceFruit extends CustomizedFruit
 	@Override
 	public @NotNull List<ItemStack> harvest(@NotNull PlantBlockContext context, @NotNull HarvesterContext harvester)
 	{
-		var drops = context.getDrops(null);
-
 		if (context.getLevel() instanceof LevelWriter level)
 		{
 			level.setBlock(context.getPosition(), Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
 		}
 
-		return drops;
+		return context.getDrops(harvester);
 	}
 
 }

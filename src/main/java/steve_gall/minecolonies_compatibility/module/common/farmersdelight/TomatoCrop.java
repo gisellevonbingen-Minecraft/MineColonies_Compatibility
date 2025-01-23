@@ -9,10 +9,8 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -36,13 +34,6 @@ public class TomatoCrop extends CustomizedCrop
 	{
 		var block = context.getState().getBlock();
 		return block == ModBlocks.BUDDING_TOMATO_CROP.get() || block == ModBlocks.TOMATO_CROP.get();
-	}
-
-	@Override
-	@Nullable
-	public BlockState getPlantState(@NotNull PlantSeedContext context)
-	{
-		return ((BlockItem) context.getSeed().getItem()).getBlock().defaultBlockState();
 	}
 
 	@Override

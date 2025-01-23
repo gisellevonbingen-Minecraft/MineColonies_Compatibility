@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import steve_gall.minecolonies_compatibility.module.common.ae2.AppliedEnergistics2Module;
 import steve_gall.minecolonies_compatibility.module.common.aether.AetherModule;
 import steve_gall.minecolonies_compatibility.module.common.ars_nouveau.ArsNouveauModule;
+import steve_gall.minecolonies_compatibility.module.common.atmospheric.AtmosphericModule;
 import steve_gall.minecolonies_compatibility.module.common.blue_skies.BlueSkiesModule;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.ButchercraftModule;
 import steve_gall.minecolonies_compatibility.module.common.butchersdelight.ButchersDelightModule;
@@ -22,6 +23,7 @@ import steve_gall.minecolonies_compatibility.module.common.lets_do_candlelight.L
 import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.LetsDoMeadowModule;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.LetsDoVineryModule;
 import steve_gall.minecolonies_compatibility.module.common.minecraft.MinecraftModule;
+import steve_gall.minecolonies_compatibility.module.common.neapolitan.NeapolitanModule;
 import steve_gall.minecolonies_compatibility.module.common.nethersdelight.NethersDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.oreberries.OreberriesModule;
 import steve_gall.minecolonies_compatibility.module.common.pamhc2trees.PamsHarvestCraft2TreesModule;
@@ -54,6 +56,7 @@ public class ModuleManager
 	public static final OptionalModule<AppliedEnergistics2Module> AE2 = register("ae2", () -> AppliedEnergistics2Module::new);
 	public static final OptionalModule<AetherModule> AETHER = register("aether", () -> AetherModule::new);
 	public static final OptionalModule<ArsNouveauModule> ARS_NOUVEAU = register("ars_nouveau", () -> ArsNouveauModule::new);
+	public static final OptionalModule<AtmosphericModule> ATMOSPHERIC = register("atmospheric", () -> AtmosphericModule::new);
 	public static final OptionalModule<BlueSkiesModule> BLUE_SKIES = register("blue_skies", () -> BlueSkiesModule::new);
 	public static final OptionalModule<ButchercraftModule> BUTCHERCRAFT = register("butchercraft", () -> ButchercraftModule::new);
 	public static final OptionalModule<ButchersDelightModule> BUTCHERSDELIGHT = register("butchersdelight", () -> ButchersDelightModule::new);
@@ -68,6 +71,7 @@ public class ModuleManager
 	public static final OptionalModule<LetsDoCandlelightModule> LETS_DO_CANDLELIGHT = register("candlelight", () -> LetsDoCandlelightModule::new);
 	public static final OptionalModule<LetsDoMeadowModule> LETS_DO_MEADOW = register("meadow", () -> LetsDoMeadowModule::new);
 	public static final OptionalModule<LetsDoVineryModule> LETS_DO_VINERY = register("vinery", () -> LetsDoVineryModule::new);
+	public static final OptionalModule<NeapolitanModule> NEAPOLITAN = register("neapolitan", () -> NeapolitanModule::new);
 	public static final OptionalModule<NethersDelightModule> NETHERS_DELIGHT = register("nethersdelight", () -> NethersDelightModule::new);
 	public static final OptionalModule<OreberriesModule> OREBERRIES = register("oreberriesreplanted", () -> OreberriesModule::new);
 	public static final OptionalModule<PamsHarvestCraft2TreesModule> PHC2TREES = register("pamhc2trees", () -> PamsHarvestCraft2TreesModule::new);

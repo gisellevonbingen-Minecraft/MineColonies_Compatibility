@@ -212,7 +212,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 		}
 
 		job.vertialRange = config.searchVerticalRange.get().intValue();
-		job.needHarvestable = InventoryUtils.getItemCountInItemHandler(worker.getInventoryCitizen(), EntityAIWorkOrchardist::isCompost) == 0;
+		job.canBoneMeal = InventoryUtils.getItemCountInItemHandler(worker.getInventoryCitizen(), EntityAIWorkOrchardist::isCompost) > 0;
 		job.needMaxHarvest = building.getSetting(NEED_MAX_HARVEST).getValue().booleanValue();
 		job.exceptFruits.addAll(building.getModule(ModBuildingModules.FRUITLIST_BLACKLIST).getIds());
 		return (FruitPathResult) ((MinecoloniesAdvancedPathNavigate) worker.getNavigation()).setPathJob(job, null, 1.0D, true);

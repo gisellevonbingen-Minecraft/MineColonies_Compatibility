@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.brewery.block.HopsCropBlock;
 import net.satisfy.brewery.registry.ObjectRegistry;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
@@ -32,12 +31,6 @@ public class HopsCrop extends CustomizedCrop
 	public boolean isCrop(@NotNull PlantBlockContext context)
 	{
 		return context.getState().getBlock() instanceof HopsCropBlock;
-	}
-
-	@Override
-	public @Nullable BlockState getPlantState(@NotNull PlantSeedContext context)
-	{
-		return ObjectRegistry.HOPS_CROP.get().defaultBlockState();
 	}
 
 	@Override

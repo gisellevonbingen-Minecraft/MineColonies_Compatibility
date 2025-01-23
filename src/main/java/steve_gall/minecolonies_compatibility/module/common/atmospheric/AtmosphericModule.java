@@ -12,7 +12,6 @@ public class AtmosphericModule extends AbstractModule
 		super.onFMLCommonSetup(e);
 		e.enqueueWork(() ->
 		{
-			CustomizedFruit.register(new AloeVeraFruit());
 			CustomizedFruit.register(new AloeVeraTallFruit());
 			CustomizedFruit.register(new BarrelCactusFruit());
 			CustomizedFruit.register(new DragonFruit());

@@ -154,6 +154,7 @@ dependencies {
     implementation fg.deobf("curse.maven:butchercraft-265715:${butchercraft_file}")
     implementation fg.deobf("curse.maven:blueprint-382216:${blueprint_file}")
     implementation fg.deobf("curse.maven:atmospheric-362393:${atmospheric_file}")
+    implementation fg.deobf("curse.maven:neapolitan-382016:${neapolitan_file}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

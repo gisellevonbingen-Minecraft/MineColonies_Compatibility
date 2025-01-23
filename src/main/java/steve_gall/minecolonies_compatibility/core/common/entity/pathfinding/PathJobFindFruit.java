@@ -19,7 +19,7 @@ import steve_gall.minecolonies_tweaks.api.common.pathfinding.SimplePathJob;
 public class PathJobFindFruit extends SimplePathJob<FruitPathResult>
 {
 	public int vertialRange = 10;
-	public boolean needHarvestable = true;
+	public boolean canBoneMeal = true;
 	public boolean needMaxHarvest = true;
 	public final Set<ResourceLocation> exceptFruits = new HashSet<>();
 
@@ -74,13 +74,13 @@ public class PathJobFindFruit extends SimplePathJob<FruitPathResult>
 		{
 			return false;
 		}
-		else if (this.needHarvestable)
+		else if (fruit.canHarvest(this.needMaxHarvest))
 		{
-			return fruit.canHarvest(this.needMaxHarvest);
+			return true;
 		}
 		else
 		{
-			return fruit.getContext().getState().getBlock() instanceof BonemealableBlock;
+			return this.canBoneMeal && fruit.getContext().getState().getBlock() instanceof BonemealableBlock;
 		}
 
 	}

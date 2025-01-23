@@ -7,6 +7,8 @@ import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.buildi
 import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.building.module.CheeseCraftingModuleView;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.building.module.CookingCraftingModule;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.building.module.CookingCraftingModuleView;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.building.module.WoodcuttingCraftingModule;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.building.module.WoodcuttingCraftingModuleView;
 
 public class ModuleBuildingModules
 {
@@ -17,6 +19,10 @@ public class ModuleBuildingModules
 	public static final BuildingEntry.ModuleProducer<CookingCraftingModule, CookingCraftingModuleView> CHEF_COOKING = new BuildingEntry.ModuleProducer<>("chef_lets_do_meadow_cooking", //
 			() -> new CookingCraftingModule(ModJobs.chef.get()), //
 			() -> CookingCraftingModuleView::new);//
+
+	public static final BuildingEntry.ModuleProducer<WoodcuttingCraftingModule, WoodcuttingCraftingModuleView> SAWMILL_WOODCUTTING = new BuildingEntry.ModuleProducer<>("sawmill_lets_do_meadow_woodcutting ", //
+			() -> new WoodcuttingCraftingModule(ModJobs.sawmill.get()), //
+			() -> WoodcuttingCraftingModuleView::new);//
 
 	private ModuleBuildingModules()
 	{

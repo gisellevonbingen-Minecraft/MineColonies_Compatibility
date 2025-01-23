@@ -6,6 +6,9 @@
 			"item": "minecolonies_compatibility:citizen_inventory"
 		}
 	],
+	"result": {
+		"item": "minecolonies_compatibility:citizen_inventory"
+	},
 	"pattern": [
 		"dkd",
 		"kck",
@@ -21,8 +24,5 @@
 		"c": {
 			"item": "storagenetwork:inventory"
 		}
-	},
-	"result": {
-		"item": "minecolonies_compatibility:citizen_inventory"
 	}
 }

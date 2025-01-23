@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import steve_gall.minecolonies_compatibility.api.common.event.AnimalHerdingLootEvent;
-import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 
@@ -31,7 +31,7 @@ public class DelightfulModule extends AbstractModule
 		super.onFMLCommonSetup(e);
 		e.enqueueWork(() ->
 		{
-			CustomizedFruit.register(new SalmonberryFruit());
+			CustomizedCrop.register(new SalmonberryCrop());
 		});
 	}
 

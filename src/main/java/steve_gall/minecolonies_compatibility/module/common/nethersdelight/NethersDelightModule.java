@@ -20,6 +20,8 @@ public class NethersDelightModule extends AbstractModule
 		super.onFMLCommonSetup(e);
 		e.enqueueWork(() ->
 		{
+			CustomizedFruit.register(new PropelpPearlFruit());
+
 			for (var block : ForgeRegistries.BLOCKS.getValues())
 			{
 				if (block instanceof FungusColonyBlock fungusColony)

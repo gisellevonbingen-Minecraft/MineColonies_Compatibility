@@ -9,7 +9,7 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.satisfy.meadow.compat.jei.category.WoodCutterCategory;
+//import net.satisfy.meadow.compat.jei.category.WoodCutterCategory;
 import net.satisfy.meadow.core.recipes.WoodcuttingRecipe;
 import steve_gall.minecolonies_compatibility.module.client.jei.TeachRecipeTransferHandler;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.menu.WoodcuttingTeachMenu;
@@ -36,7 +36,8 @@ public class WoodcuttingTeachRecipeTransferHandler extends TeachRecipeTransferHa
 	@Override
 	public RecipeType<WoodcuttingRecipe> getRecipeType()
 	{
-		return WoodCutterCategory.WOODCUTTER;
+		// return WoodCutterCategory.WOODCUTTER;
+		throw new RuntimeException();
 	}
 
 	@Override

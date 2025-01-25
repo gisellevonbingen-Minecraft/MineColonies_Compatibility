@@ -37,7 +37,11 @@ public class IngredientHelper
 	{
 		for (var toolType : ToolType.values())
 		{
-			if (isTool(ingredient, toolType))
+			if (toolType == ToolType.NONE)
+			{
+				continue;
+			}
+			else if (isTool(ingredient, toolType))
 			{
 				return toolType;
 			}

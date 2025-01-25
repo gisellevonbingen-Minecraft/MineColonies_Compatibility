@@ -51,7 +51,11 @@ public class ItemStackHelper
 	{
 		for (var toolType : ToolType.values())
 		{
-			if (isTool(stack, toolType))
+			if (toolType == ToolType.NONE)
+			{
+				continue;
+			}
+			else if (isTool(stack, toolType))
 			{
 				return toolType;
 			}

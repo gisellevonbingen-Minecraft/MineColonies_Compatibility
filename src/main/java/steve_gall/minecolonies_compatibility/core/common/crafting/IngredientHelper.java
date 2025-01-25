@@ -38,7 +38,11 @@ public class IngredientHelper
 	{
 		for (var toolType : IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getValues())
 		{
-			if (isTool(ingredient, toolType))
+			if (toolType == ModEquipmentTypes.none.get())
+			{
+				continue;
+			}
+			else if (isTool(ingredient, toolType))
 			{
 				return toolType;
 			}

@@ -52,7 +52,11 @@ public class ItemStackHelper
 	{
 		for (var toolType : IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getValues())
 		{
-			if (isTool(stack, toolType))
+			if (toolType == ModEquipmentTypes.none.get())
+			{
+				continue;
+			}
+			else if (isTool(stack, toolType))
 			{
 				return toolType;
 			}

@@ -33,11 +33,10 @@ public class GrinderTeachScreen extends TeachRecipeScreen<GrinderTeachMenu, Grin
 	@Override
 	protected ICustomizedRecipeStorage createRecipeStorage(GrinderRecipe recipe, List<ItemStorage> input)
 	{
-		var inputContainer = this.menu.getInputContainer();
-		var ingredient = new ItemStorage(inputContainer.getItem(0));
+		var ingredient = input.get(0);
 		ingredient.setAmount(recipe.count);
-		var attachment = new ItemStorage(inputContainer.getItem(1));
-		var casing = new ItemStorage(inputContainer.getItem(2));
+		var attachment = input.get(1);
+		var casing = input.get(2);
 
 		var resultContainer = this.menu.getResultContainer();
 		var output = resultContainer.getItem(0);

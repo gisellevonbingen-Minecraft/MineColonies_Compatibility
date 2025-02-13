@@ -132,7 +132,7 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 
 		if (recipe != null)
 		{
-			var input = ItemHandlerHelper2.unwrap(new InvWrapper(this.menu.getInputContainer()), false).stream().map(ItemStorage::new).toList();
+			var input = ItemHandlerHelper2.unwrap(new InvWrapper(this.menu.getInputContainer()), true).stream().map(ItemStorage::new).toList();
 			var storage = this.createRecipeStorage(recipe, input).wrap();
 			Network.getNetwork().sendToServer(new AddRemoveRecipeMessage(this.module.getBuildingView(), false, storage, this.module.getProducer().getRuntimeID()));
 		}

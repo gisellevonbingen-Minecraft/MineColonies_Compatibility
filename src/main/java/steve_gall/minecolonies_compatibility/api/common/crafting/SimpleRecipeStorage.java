@@ -1,6 +1,5 @@
 package steve_gall.minecolonies_compatibility.api.common.crafting;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +35,7 @@ public abstract class SimpleRecipeStorage<GENERIC_RECIPE extends SimpleGenericRe
 	public SimpleRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingredients, ItemStack output)
 	{
 		this.recipeId = recipeId;
-		this.ingredients = Collections.unmodifiableList(ingredients);
+		this.ingredients = ItemStorageHelper.filterNotEmpty(ingredients);
 		this.output = output;
 		this.secondaryOutputs = ItemStorageHelper.getCraftingRemainings(ingredients);
 	}

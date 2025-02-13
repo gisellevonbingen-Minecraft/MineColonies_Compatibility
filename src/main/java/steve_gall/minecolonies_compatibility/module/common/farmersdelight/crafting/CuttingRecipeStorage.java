@@ -53,7 +53,7 @@ public class CuttingRecipeStorage extends GenericedRecipeStorage<CuttingGenericR
 	public CuttingRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingreidnts, List<CuttingChanceResult> results, IToolType toolType)
 	{
 		this.recipeId = recipeId;
-		this.ingreidnts = Collections.unmodifiableList(ingreidnts);
+		this.ingreidnts = ItemStorageHelper.filterNotEmpty(ingreidnts);
 		this.results = Collections.unmodifiableList(results);
 		this.toolType = toolType;
 		this.genericRecipe = new CuttingGenericRecipe(recipeId, ItemStorageHelper.getStacksLists(ingreidnts), results, toolType);

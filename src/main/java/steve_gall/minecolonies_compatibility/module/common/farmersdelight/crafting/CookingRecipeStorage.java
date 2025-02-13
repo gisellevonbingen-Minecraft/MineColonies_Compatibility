@@ -1,7 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +50,7 @@ public class CookingRecipeStorage extends GenericedRecipeStorage<CookingGenericR
 	public CookingRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingreidnts, ItemStorage container, ItemStack output)
 	{
 		this.recipeId = recipeId;
-		this.ingreidnts = Collections.unmodifiableList(ingreidnts);
+		this.ingreidnts = ItemStorageHelper.filterNotEmpty(ingreidnts);
 		this.container = container;
 		this.output = output;
 		this.secondaryOutputs = ItemStorageHelper.mapAndFilterNotEmpty(ingreidnts, CookingGenericRecipe::getCraftingRemainingStack);

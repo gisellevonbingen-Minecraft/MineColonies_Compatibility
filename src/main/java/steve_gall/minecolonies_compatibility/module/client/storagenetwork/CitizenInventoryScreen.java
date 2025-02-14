@@ -70,6 +70,7 @@ public class CitizenInventoryScreen extends AbstractContainerScreen<CitizenInven
 
 		}
 
+		this.renderTooltip(poseStack, mouseX, mouseY);
 	}
 
 	@Override

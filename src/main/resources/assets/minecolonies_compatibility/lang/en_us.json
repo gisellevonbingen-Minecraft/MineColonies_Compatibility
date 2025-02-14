@@ -71,6 +71,9 @@
 	"minecolonies_compatibility.text.butchercraft_grinder.ingredient": "Ingredient",
 	"minecolonies_compatibility.text.butchercraft_grinder.attachment": "Attachment",
 	"minecolonies_compatibility.text.butchercraft_grinder.casing": "Casing",
+	"minecolonies_compatibility.text.access_direction.insert": "Insert Only",
+	"minecolonies_compatibility.text.access_direction.extract": "Extract Only",
+	"minecolonies_compatibility.text.access_direction.insert_extract": "Insert and Extract",
 	
 	"_comment_modules": "Modules",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruits",

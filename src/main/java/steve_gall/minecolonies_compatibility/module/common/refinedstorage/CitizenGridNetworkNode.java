@@ -8,11 +8,15 @@ import org.jetbrains.annotations.Nullable;
 
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.security.Permission;
+import com.refinedmods.refinedstorage.api.storage.AccessType;
 import com.refinedmods.refinedstorage.api.storage.cache.IStorageCacheListener;
+import com.refinedmods.refinedstorage.api.storage.cache.InvalidateCause;
 import com.refinedmods.refinedstorage.api.util.Action;
 import com.refinedmods.refinedstorage.api.util.StackListEntry;
 import com.refinedmods.refinedstorage.api.util.StackListResult;
 import com.refinedmods.refinedstorage.apiimpl.network.node.NetworkNode;
+import com.refinedmods.refinedstorage.blockentity.config.IAccessType;
+import com.refinedmods.refinedstorage.util.AccessTypeUtils;
 import com.refinedmods.refinedstorage.util.LevelUtils;
 
 import net.minecraft.core.BlockPos;
@@ -27,7 +31,7 @@ import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNe
 import steve_gall.minecolonies_compatibility.core.common.colony.ColonyHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 
-public class CitizenGridNetworkNode extends NetworkNode
+public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 {
 	private static final String TAG_LINK = "link";
 
@@ -35,6 +39,8 @@ public class CitizenGridNetworkNode extends NetworkNode
 
 	private final StorageView view;
 	private final StorageListener listener;
+
+	private AccessType accessType = AccessType.INSERT_EXTRACT;
 
 	public CitizenGridNetworkNode(Level level, BlockPos pos)
 	{
@@ -118,11 +124,48 @@ public class CitizenGridNetworkNode extends NetworkNode
 	}
 
 	@Override
+	public CompoundTag writeConfiguration(CompoundTag tag)
+	{
+		super.writeConfiguration(tag);
+
+		AccessTypeUtils.writeAccessType(tag, this.accessType);
+
+		return tag;
+	}
+
+	@Override
 	public void read(CompoundTag tag)
 	{
 		super.read(tag);
 
 		this.view.read(tag.getCompound(TAG_LINK));
+	}
+
+	@Override
+	public void readConfiguration(CompoundTag tag)
+	{
+		super.readConfiguration(tag);
+
+		this.accessType = AccessTypeUtils.readAccessType(tag);
+	}
+
+	@Override
+	public AccessType getAccessType()
+	{
+		return this.accessType;
+	}
+
+	@Override
+	public void setAccessType(AccessType value)
+	{
+		this.accessType = value;
+
+		if (this.network != null)
+		{
+			this.network.getItemStorageCache().invalidate(InvalidateCause.DEVICE_CONFIGURATION_CHANGED);
+		}
+
+		this.markDirty();
 	}
 
 	public class StorageView extends QueueNetworkStorageView
@@ -178,13 +221,13 @@ public class CitizenGridNetworkNode extends NetworkNode
 		@Override
 		public boolean canExtract()
 		{
-			return hasPermission(Permission.EXTRACT);
+			return hasPermission(Permission.EXTRACT) && accessType != AccessType.INSERT;
 		}
 
 		@Override
 		public boolean canInsert()
 		{
-			return hasPermission(Permission.INSERT);
+			return hasPermission(Permission.INSERT) && accessType != AccessType.EXTRACT;
 		}
 
 		@Override

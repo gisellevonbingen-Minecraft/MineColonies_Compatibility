@@ -10,6 +10,7 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.network.message.AccessDirectionMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.BucketFillingOpenTeachMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptFluidMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptItemMessage;
@@ -48,6 +49,7 @@ public class NetworkChannel
 		this.registerMessage(RestrictGiveToolMessage.class, RestrictGiveToolMessage::new);
 		this.registerMessage(BucketFillingOpenTeachMessage.class, BucketFillingOpenTeachMessage::new);
 		this.registerMessage(SmithingOpenTeachMessage.class, SmithingOpenTeachMessage::new);
+		this.registerMessage(AccessDirectionMessage.class, AccessDirectionMessage::new);
 	}
 
 	public void sendToServer(AbstractMessage message)

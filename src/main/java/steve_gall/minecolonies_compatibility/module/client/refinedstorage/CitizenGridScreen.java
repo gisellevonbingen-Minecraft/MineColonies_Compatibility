@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.module.client.refinedstorage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.refinedmods.refinedstorage.blockentity.NetworkNodeBlockEntity;
 import com.refinedmods.refinedstorage.screen.BaseScreen;
+import com.refinedmods.refinedstorage.screen.widget.sidebutton.AccessTypeSideButton;
 import com.refinedmods.refinedstorage.screen.widget.sidebutton.RedstoneModeSideButton;
 
 import net.minecraft.network.chat.Component;
@@ -25,6 +26,7 @@ public class CitizenGridScreen extends BaseScreen<CitizenGridContainerMenu>
 	public void onPostInit(int x, int y)
 	{
 		this.addSideButton(new RedstoneModeSideButton(this, NetworkNodeBlockEntity.REDSTONE_MODE));
+		this.addSideButton(new AccessTypeSideButton(this, CitizenGridBlockEntity.ACCESS_TYPE));
 	}
 
 	@Override

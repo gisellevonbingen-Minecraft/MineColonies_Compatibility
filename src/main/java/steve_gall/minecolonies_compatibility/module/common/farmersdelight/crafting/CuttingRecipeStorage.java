@@ -1,12 +1,12 @@
 package steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableList;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.util.constant.IToolType;
@@ -54,7 +54,7 @@ public class CuttingRecipeStorage extends GenericedRecipeStorage<CuttingGenericR
 	{
 		this.recipeId = recipeId;
 		this.ingreidnts = ItemStorageHelper.filterNotEmpty(ingreidnts);
-		this.results = Collections.unmodifiableList(results);
+		this.results = ImmutableList.copyOf(results);
 		this.toolType = toolType;
 		this.genericRecipe = new CuttingGenericRecipe(recipeId, ItemStorageHelper.getStacksLists(ingreidnts), results, toolType);
 	}

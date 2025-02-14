@@ -1,6 +1,5 @@
 package steve_gall.minecolonies_compatibility.api.common.requestsystem;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -72,7 +71,7 @@ public class IngredientDeliverable implements IDeliverableObject
 	@Override
 	public @NotNull List<ItemStack> getDisplayStacks()
 	{
-		return Arrays.asList(this.ingredient.getItems());
+		return IngredientHelper.getStacks(this.ingredient);
 	}
 
 	@Override

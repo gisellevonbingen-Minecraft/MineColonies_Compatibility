@@ -5,13 +5,17 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import steve_gall.minecolonies_compatibility.core.client.gui.AccessDirectionButton;
 import steve_gall.minecolonies_compatibility.core.client.gui.NetworkStorageViewScreenUtils;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.network.message.AccessDirectionMessage;
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.CitizenInventoryMenu;
 
 public class CitizenInventoryScreen extends AbstractContainerScreen<CitizenInventoryMenu>
 {
 	private static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/citizen_inventory.png");
+
+	private AccessDirectionButton accessDirectionButton;
 
 	public CitizenInventoryScreen(CitizenInventoryMenu containerMenu, Inventory inventory, Component title)
 	{
@@ -26,14 +30,42 @@ public class CitizenInventoryScreen extends AbstractContainerScreen<CitizenInven
 	}
 
 	@Override
+	protected void init()
+	{
+		super.init();
+
+		var blockEntity = this.getMenu().getBlockEntity();
+		this.accessDirectionButton = this.addRenderableWidget(new AccessDirectionButton(this.leftPos - 22, this.topPos, b ->
+		{
+			var next = blockEntity.getAccessDirection().next();
+			blockEntity.setAccessDirection(next);
+			MineColoniesCompatibility.network().sendToServer(new AccessDirectionMessage<>(blockEntity, next));
+		}));
+
+		this.accessDirectionButton.setAccessDirection(blockEntity.getAccessDirection());
+	}
+
+	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
 	{
 		this.renderBackground(guiGraphics);
 
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		var view = this.getMenu().getBlockEntity().getView();
-		guiGraphics.drawString(this.font, NetworkStorageViewScreenUtils.getModuleText(view), this.leftPos + 14, this.topPos + 21, 0xFF404040, false);
+		var blockEntity = this.getMenu().getBlockEntity();
+		guiGraphics.drawString(this.font, NetworkStorageViewScreenUtils.getModuleText(blockEntity.getView()), this.leftPos + 14, this.topPos + 21, 0xFF404040, false);
+
+		if (this.accessDirectionButton != null)
+		{
+			var accessDirection = blockEntity.getAccessDirection();
+			this.accessDirectionButton.setAccessDirection(accessDirection);
+
+			if (this.accessDirectionButton.isMouseOver(mouseX, mouseY))
+			{
+				guiGraphics.renderTooltip(this.font, this.accessDirectionButton.getTooltipText(), mouseX, mouseY);
+			}
+
+		}
 
 		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}

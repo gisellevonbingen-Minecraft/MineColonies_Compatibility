@@ -22,6 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.BlockEntityExtension;
+import steve_gall.minecolonies_compatibility.core.common.building.module.AccessDirection;
+import steve_gall.minecolonies_compatibility.core.common.building.module.IAccessDirectionHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackCounter;
@@ -30,12 +32,15 @@ import steve_gall.minecolonies_compatibility.mixin.common.storagenetwork.Network
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.init.ModuleBlockEntities;
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.init.ModuleItems;
 
-public class CitizenInventoryBlockEntity extends TileConnectable
+public class CitizenInventoryBlockEntity extends TileConnectable implements IAccessDirectionHolder
 {
 	private static final String TAG_LINK = "link";
+	private static final String TAG_WAY = "way";
 
 	private final StorageView view;
 	private final ItemStackCounter counter;
+
+	private AccessDirection accessDirection = AccessDirection.INSERT_EXTRACT;
 
 	public CitizenInventoryBlockEntity(BlockPos pos, BlockState state)
 	{
@@ -60,6 +65,7 @@ public class CitizenInventoryBlockEntity extends TileConnectable
 		super.load(compound);
 
 		this.view.read(compound.getCompound(TAG_LINK));
+		this.accessDirection = AccessDirection.deserialize(compound.get(TAG_WAY));
 	}
 
 	@Override
@@ -68,6 +74,7 @@ public class CitizenInventoryBlockEntity extends TileConnectable
 		super.saveAdditional(compound);
 
 		compound.put(TAG_LINK, this.view.write());
+		compound.put(TAG_WAY, this.accessDirection.serialize());
 	}
 
 	@Override
@@ -188,6 +195,24 @@ public class CitizenInventoryBlockEntity extends TileConnectable
 		return this.view;
 	}
 
+	@Override
+	public AccessDirection getAccessDirection()
+	{
+		return this.accessDirection;
+	}
+
+	@Override
+	public void setAccessDirection(AccessDirection value)
+	{
+		if (this.accessDirection != value)
+		{
+			this.accessDirection = value;
+			this.view.requestAll();
+			this.setChanged();
+		}
+
+	}
+
 	public static <BLOCK_ENTITY extends CitizenInventoryBlockEntity> void tick(Level level, BlockPos pos, BlockState state, BLOCK_ENTITY blockEntity)
 	{
 		blockEntity.onTick();
@@ -228,13 +253,13 @@ public class CitizenInventoryBlockEntity extends TileConnectable
 		@Override
 		public boolean canExtract()
 		{
-			return true;
+			return getAccessDirection().canExtract();
 		}
 
 		@Override
 		public boolean canInsert()
 		{
-			return true;
+			return getAccessDirection().canInsert();
 		}
 
 		@Override

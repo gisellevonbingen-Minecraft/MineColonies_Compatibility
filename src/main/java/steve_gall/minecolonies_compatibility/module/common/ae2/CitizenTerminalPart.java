@@ -6,7 +6,10 @@ import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
+import appeng.api.config.Setting;
+import appeng.api.config.Settings;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IStackWatcher;
 import appeng.api.networking.security.IActionSource;
@@ -19,11 +22,14 @@ import appeng.api.parts.IPartModel;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.KeyCounter;
+import appeng.api.util.IConfigManager;
+import appeng.api.util.IConfigurableObject;
 import appeng.items.parts.PartModels;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocators;
 import appeng.parts.PartModel;
 import appeng.parts.reporting.AbstractDisplayPart;
+import appeng.util.ConfigManager;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,7 +48,7 @@ import steve_gall.minecolonies_compatibility.core.common.building.module.Network
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
 import steve_gall.minecolonies_compatibility.module.common.ae2.init.ModuleMenuTypes;
 
-public class CitizenTerminalPart extends AbstractDisplayPart implements IStorageWatcherNode, IGridTickable
+public class CitizenTerminalPart extends AbstractDisplayPart implements IStorageWatcherNode, IGridTickable, IConfigurableObject
 {
 	@PartModels
 	public static final ResourceLocation MODEL_OFF = MineColoniesCompatibility.rl("part/citizen_terminal_off");
@@ -58,6 +64,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	private final StorageView view;
 	private final KeyCounter counter;
 	private final IActionSource action;
+	private final IConfigManager config;
 
 	public CitizenTerminalPart(IPartItem<?> partItem)
 	{
@@ -66,10 +73,18 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		this.view = new StorageView();
 		this.counter = new KeyCounter();
 		this.action = IActionSource.ofMachine(this);
+		this.config = new ConfigManager(this::onSettingChanged);
+		this.config.registerSetting(Settings.ACCESS, AccessRestriction.READ_WRITE);
 
 		var mainNode = this.getMainNode();
 		mainNode.addService(IStorageWatcherNode.class, this);
 		mainNode.addService(IGridTickable.class, this);
+	}
+
+	protected void onSettingChanged(IConfigManager manager, Setting<?> setting)
+	{
+		this.getHost().markForSave();
+		this.view.requestAll();
 	}
 
 	public boolean hasPermission()
@@ -190,6 +205,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		super.readFromNBT(data);
 
 		this.view.read(data.getCompound(TAG_LINK));
+		this.config.readFromNBT(data.getCompound("config"));
 	}
 
 	@Override
@@ -198,6 +214,10 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		super.writeToNBT(data);
 
 		data.put(TAG_LINK, this.view.write());
+
+		var configTag = new CompoundTag();
+		this.config.writeToNBT(configTag);
+		data.put("config", configTag);
 	}
 
 	@Override
@@ -220,6 +240,12 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	public @NotNull INetworkStorageView getView()
 	{
 		return this.view;
+	}
+
+	@Override
+	public IConfigManager getConfigManager()
+	{
+		return this.config;
 	}
 
 	public class StorageView extends QueueNetworkStorageView
@@ -287,13 +313,13 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		@Override
 		public boolean canExtract()
 		{
-			return hasPermission();
+			return hasPermission() && config.getSetting(Settings.ACCESS).isAllowExtraction();
 		}
 
 		@Override
 		public boolean canInsert()
 		{
-			return hasPermission();
+			return hasPermission() && config.getSetting(Settings.ACCESS).isAllowInsertion();
 		}
 
 		@Override

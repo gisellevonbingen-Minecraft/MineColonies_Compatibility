@@ -1,6 +1,8 @@
 package steve_gall.minecolonies_compatibility.module.common.refinedstorage;
 
+import com.refinedmods.refinedstorage.api.storage.AccessType;
 import com.refinedmods.refinedstorage.blockentity.NetworkNodeBlockEntity;
+import com.refinedmods.refinedstorage.blockentity.config.IAccessType;
 import com.refinedmods.refinedstorage.blockentity.data.BlockEntitySynchronizationParameter;
 import com.refinedmods.refinedstorage.blockentity.data.BlockEntitySynchronizationSpec;
 
@@ -22,10 +24,12 @@ public class CitizenGridBlockEntity extends NetworkNodeBlockEntity<CitizenGridNe
 			(initial, p) ->
 			{
 			});
+	public static final BlockEntitySynchronizationParameter<AccessType, CitizenGridBlockEntity> ACCESS_TYPE = IAccessType.createParameter(MineColoniesCompatibility.rl("access_type"));
 
 	public static final BlockEntitySynchronizationSpec SYNC_SPEC = BlockEntitySynchronizationSpec.builder()//
 			.addWatchedParameter(REDSTONE_MODE)//
-			.addWatchedParameter(PAIR).build();
+			.addWatchedParameter(PAIR)//
+			.addWatchedParameter(ACCESS_TYPE).build();
 
 	public CitizenGridBlockEntity(BlockPos pos, BlockState state)
 	{

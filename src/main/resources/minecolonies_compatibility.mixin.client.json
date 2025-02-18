@@ -4,6 +4,8 @@
 	"minVersion": "0.8.5",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
+		"TeachRecipeScreenMixin",
+		
 		"minecolonies.SettingsModuleViewMixin",
 		"minecolonies.SettingsModuleWindow1Mixin",
 		"minecolonies.WindowListRecipes1Mixin",

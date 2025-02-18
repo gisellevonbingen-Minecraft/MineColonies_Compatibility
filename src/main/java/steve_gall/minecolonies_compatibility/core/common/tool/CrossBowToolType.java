@@ -18,13 +18,13 @@ public class CrossBowToolType extends CustomToolType
 	}
 
 	@Override
-	protected boolean isTool(@NotNull ItemStack stack)
+	public boolean isTool(@NotNull ItemStack stack)
 	{
 		return stack.getItem() instanceof CrossbowItem;
 	}
 
 	@Override
-	protected int getToolLevel(@NotNull ItemStack stack)
+	public int getToolLevel(@NotNull ItemStack stack)
 	{
 		return ModEquipmentTypes.durabilityBasedLevel(stack, Items.CROSSBOW.getMaxDamage());
 	}

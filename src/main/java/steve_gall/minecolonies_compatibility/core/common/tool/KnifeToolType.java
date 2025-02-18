@@ -16,7 +16,7 @@ public class KnifeToolType extends CustomToolType
 	}
 
 	@Override
-	protected int getToolLevel(@NotNull ItemStack stack)
+	public int getToolLevel(@NotNull ItemStack stack)
 	{
 		return ModEquipmentTypes.vanillaToolLevel(stack, this.getToolType());
 	}

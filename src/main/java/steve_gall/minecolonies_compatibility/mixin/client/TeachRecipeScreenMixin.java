@@ -3,19 +3,14 @@ package steve_gall.minecolonies_compatibility.mixin.client;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
-import steve_gall.minecolonies_compatibility.mixin.client.minecraft.AbstractContainerScreenMixin;
-import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
+import steve_gall.minecolonies_tweaks.core.client.gui.CloseableContainerScreenExtension;
 
 @Mixin(value = TeachRecipeScreen.class, remap = false)
-public abstract class TeachRecipeScreenMixin extends AbstractContainerScreenMixin implements CloseableWindowExtension
+public abstract class TeachRecipeScreenMixin implements CloseableContainerScreenExtension
 {
 	@Shadow(remap = false)
 	private Button doneButton;
@@ -23,16 +18,10 @@ public abstract class TeachRecipeScreenMixin extends AbstractContainerScreenMixi
 	@Unique
 	private Screen minecolonies_tweaks$parent;
 
-	protected TeachRecipeScreenMixin(Component p_96550_)
-	{
-		super(p_96550_);
-	}
-
 	@Override
-	@Inject(method = "init", remap = true, at = @At(value = "TAIL"))
-	protected void init(CallbackInfo ci)
+	public void minecolonies_tweaks$onInit(int leftPos, int topPos, int imageWidth, int imageHeight, addCloseButton addCloseButton)
 	{
-		this.addCloseButton(this.doneButton.getX() + this.doneButton.getWidth() + 5, this.doneButton.getY(), this.doneButton.getHeight(), this.doneButton.getHeight());
+		addCloseButton.invoke(this.doneButton.getX() + this.doneButton.getWidth() + 5, this.doneButton.getY(), this.doneButton.getHeight(), this.doneButton.getHeight());
 	}
 
 	@Override

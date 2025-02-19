@@ -13,6 +13,7 @@ import com.minecolonies.api.util.constant.ToolType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
+import steve_gall.minecolonies_tweaks.api.common.tool.ToolTypeTags;
 
 public class IngredientHelper
 {
@@ -30,7 +31,7 @@ public class IngredientHelper
 
 	public static boolean isTool(@NotNull Ingredient ingredient, @NotNull IToolType toolType)
 	{
-		return Arrays.stream(ingredient.getItems()).allMatch(stack -> ItemStackHelper.isTool(stack, toolType));
+		return Arrays.stream(ingredient.getItems()).filter(stack -> !ToolTypeTags.isInBlacklist(stack, toolType.getName())).allMatch(stack -> ItemStackHelper.isTool(stack, toolType));
 	}
 
 	public static @NotNull ToolType findFirstToolType(@NotNull Ingredient ingredient)

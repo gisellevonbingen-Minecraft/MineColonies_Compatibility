@@ -44,28 +44,31 @@ public class SmithingCraftingType extends CraftingType
 
 		for (var recipe : level.getRecipeManager().getAllRecipesFor(RecipeType.SMITHING))
 		{
-			var accesor = (SmithingRecipeAccessor) recipe;
-			var template = IngredientHelper.getStacks(accesor.getTemplate());
-			var base = IngredientHelper.getStacks(accesor.getBase());
-			var remainedAddition = new HashSet<>(IngredientHelper.getStacks(accesor.getAddition()));
-
-			for (var i = 0; i < tags.length; i++)
+			if (recipe instanceof SmithingRecipeAccessor accesor)
 			{
-				var tag = tags[i];
-				var levelAddition = remainedAddition.stream().filter(stack -> stack.is(tag)).toList();
+				var template = IngredientHelper.getStacks(accesor.getTemplate());
+				var base = IngredientHelper.getStacks(accesor.getBase());
+				var remainedAddition = new HashSet<>(IngredientHelper.getStacks(accesor.getAddition()));
 
-				if (levelAddition.size() == 0)
+				for (var i = 0; i < tags.length; i++)
 				{
-					continue;
+					var tag = tags[i];
+					var levelAddition = remainedAddition.stream().filter(stack -> stack.is(tag)).toList();
+
+					if (levelAddition.size() == 0)
+					{
+						continue;
+					}
+
+					remainedAddition.removeAll(levelAddition);
+					list.addAll(of(recipe, registryAccess, template, base, levelAddition, i));
 				}
 
-				remainedAddition.removeAll(levelAddition);
-				list.addAll(of(recipe, registryAccess, template, base, levelAddition, i));
-			}
+				if (remainedAddition.size() > 0)
+				{
+					list.addAll(of(recipe, registryAccess, template, base, new ArrayList<>(remainedAddition), -1));
+				}
 
-			if (remainedAddition.size() > 0)
-			{
-				list.addAll(of(recipe, registryAccess, template, base, new ArrayList<>(remainedAddition), -1));
 			}
 
 		}

@@ -8,9 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.inventory.SmithingTemplateInventoryMenu;
-import steve_gall.minecolonies_tweaks.core.client.gui.CloseableWindowExtension;
+import steve_gall.minecolonies_tweaks.core.client.gui.CloseableContainerScreenExtension;
 
-public class SmithingTemplateInventoryScreen extends AbstractContainerScreen<SmithingTemplateInventoryMenu> implements CloseableWindowExtension
+public class SmithingTemplateInventoryScreen extends AbstractContainerScreen<SmithingTemplateInventoryMenu> implements CloseableContainerScreenExtension
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/smithing_template_inventory.png");
 
@@ -19,6 +19,12 @@ public class SmithingTemplateInventoryScreen extends AbstractContainerScreen<Smi
 	public SmithingTemplateInventoryScreen(SmithingTemplateInventoryMenu menu, Inventory inventory, Component title)
 	{
 		super(menu, inventory, title);
+	}
+
+	@Override
+	public void minecolonies_tweaks$onInit(int leftPos, int topPos, int imageWidth, int imageHeight, addCloseButton addCloseButton)
+	{
+		addCloseButton.invoke(leftPos + imageWidth - 20, topPos - 5, 20, 20);
 	}
 
 	@Override

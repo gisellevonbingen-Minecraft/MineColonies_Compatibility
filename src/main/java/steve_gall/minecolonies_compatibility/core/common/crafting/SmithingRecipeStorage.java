@@ -64,11 +64,8 @@ public class SmithingRecipeStorage implements ICustomizedRecipeStorage
 		this.addition = addition;
 		this.result = result;
 
-		var templateInput = template.copy();
-		templateInput.setAmount(templateInput.getAmount() * 2);
-
-		this.input = Arrays.asList(templateInput, base, addition);
-		this.secondaryOutputs = Arrays.asList(this.template.getItemStack());
+		this.input = Arrays.asList(template, base, addition);
+		this.secondaryOutputs = Arrays.asList();
 	}
 
 	@Override

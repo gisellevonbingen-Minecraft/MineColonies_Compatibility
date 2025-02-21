@@ -34,6 +34,7 @@ import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphMo
 public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IItemGhostMenu, IRecipeTransferableMenu<RECIPE>
 {
 	public static final Component TEXT_RECIPE_NOT_FOUND = Component.translatable("minecolonies_compatibility.text.recipe_not_found");
+	public static final Component TEXT_RECIPE_NOT_SUPPORTED = Component.translatable("minecolonies_compatibility.text.recipe_not_supported");
 
 	protected TeachContainer inputContainer;
 	protected List<Slot> inputSlots;

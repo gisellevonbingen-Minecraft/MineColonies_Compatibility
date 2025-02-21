@@ -110,15 +110,23 @@ public class SmithingTeachMenu extends TeachRecipeMenu<UpgradeRecipe>
 	@Override
 	public Component getRecipeError(UpgradeRecipe recipe)
 	{
-		var addition = ((SmithingRecipeAccessor) recipe).getAddition();
-		var error = this.testRequiredLevel(SmithingCraftingType.getRequiredMinLevel(addition));
-
-		if (error != null)
+		if (recipe instanceof SmithingRecipeAccessor accessor)
 		{
-			return error;
+			var addition = accessor.getAddition();
+			var error = this.testRequiredLevel(SmithingCraftingType.getRequiredMinLevel(addition));
+
+			if (error != null)
+			{
+				return error;
+			}
+
+			return super.getRecipeError(recipe);
+		}
+		else
+		{
+			return TEXT_RECIPE_NOT_SUPPORTED;
 		}
 
-		return super.getRecipeError(recipe);
 	}
 
 	public Component testRequiredLevel(int requiredLevel)

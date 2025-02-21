@@ -58,6 +58,7 @@
 	"minecolonies_compatibility.text.linked_pos": "Linked with: %1$s, %2$s, %3$s",
 	"minecolonies_compatibility.text.not_linked": "Not linked",
 	"minecolonies_compatibility.text.recipe_not_found": "Recipe not found",
+	"minecolonies_compatibility.text.recipe_not_supported": "Recipe not supported",
 	"minecolonies_compatibility.text.unsupported_tool": "Unsupported tool",
 	"minecolonies_compatibility.text.no_primary_result_item": "No primary result item",
 	"minecolonies_compatibility.text.smithing_template_inventory": "Template Inventory",

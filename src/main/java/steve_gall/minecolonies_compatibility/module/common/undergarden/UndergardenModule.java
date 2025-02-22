@@ -14,6 +14,7 @@ public class UndergardenModule extends AbstractModule
 		{
 			CustomizedFruit.register(new UnderbeanFruit());
 			CustomizedFruit.register(new BlisterberryFruit());
+			CustomizedFruit.register(new DroopvineFruit());
 		});
 	}
 

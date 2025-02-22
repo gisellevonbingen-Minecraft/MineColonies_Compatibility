@@ -1,0 +1,13 @@
+{
+	"replace": false,
+	"values": [
+		{
+			"required": false,
+			"id": "farmersdelight:organic_compost"
+		},
+		{
+			"required": false,
+			"id": "nethersdelight:soul_compost"
+		}
+	]
+}

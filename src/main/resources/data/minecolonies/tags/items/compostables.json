@@ -1,0 +1,12 @@
+{
+	"values": [
+		{
+			"required": false,
+			"id": "farmersdelight:tree_bark"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:straw"
+		}
+	]
+}

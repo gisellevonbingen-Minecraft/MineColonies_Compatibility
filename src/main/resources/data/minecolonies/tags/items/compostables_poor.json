@@ -1,0 +1,12 @@
+{
+	"values": [
+		{
+			"required": false,
+			"id": "farmersdelight:rotten_tomato"
+		},
+		{
+			"required": false,
+			"id": "vinery:rotten_cherry"
+		}
+	]
+}

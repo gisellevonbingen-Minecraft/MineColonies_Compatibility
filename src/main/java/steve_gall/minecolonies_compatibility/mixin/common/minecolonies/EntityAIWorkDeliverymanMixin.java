@@ -34,6 +34,11 @@ public abstract class EntityAIWorkDeliverymanMixin extends AbstractEntityAIInter
 	@Inject(method = "gatherIfInTileEntity", remap = false, at = @At("TAIL"), cancellable = true)
 	private void gatherIfInTileEntity(BlockEntity entity, ItemStack is, CallbackInfoReturnable<Boolean> cir)
 	{
+		if (entity == null)
+		{
+			return;
+		}
+
 		var warehouse = this.getAndCheckWareHouse();
 
 		if (warehouse == null)

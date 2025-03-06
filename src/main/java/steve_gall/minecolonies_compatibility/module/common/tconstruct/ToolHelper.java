@@ -1,0 +1,151 @@
+package steve_gall.minecolonies_compatibility.module.common.tconstruct;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import com.minecolonies.api.util.constant.BuildingConstants;
+
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import slimeknights.tconstruct.library.materials.MaterialRegistry;
+import slimeknights.tconstruct.library.materials.definition.IMaterial;
+import slimeknights.tconstruct.library.materials.definition.MaterialVariant;
+import slimeknights.tconstruct.library.materials.definition.MaterialVariantId;
+import slimeknights.tconstruct.library.tools.definition.module.material.ToolMaterialHook;
+import slimeknights.tconstruct.library.tools.definition.module.mining.MiningTierToolHook;
+import slimeknights.tconstruct.library.tools.item.IModifiable;
+import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
+import slimeknights.tconstruct.library.tools.nbt.ToolStack;
+import slimeknights.tconstruct.library.tools.stat.ToolStats;
+import slimeknights.tconstruct.tools.TinkerToolParts;
+import steve_gall.minecolonies_compatibility.core.common.inventory.EmptyMenu;
+
+public class ToolHelper
+{
+	public static boolean isBroken(ItemStack stack)
+	{
+		return stack.getItem() instanceof IModifiable && ToolStack.from(stack).isBroken();
+	}
+
+	@SuppressWarnings("deprecation")
+	public static int getTier(ItemStack stack)
+	{
+		if (stack.getItem() instanceof IModifiable)
+		{
+			var tool = ToolStack.from(stack);
+
+			if (tool.isBroken())
+			{
+				return -1;
+			}
+
+			var level = -1;
+
+			if (tool.getStats().hasStat(ToolStats.HARVEST_TIER))
+			{
+				var tier = MiningTierToolHook.getTier(tool);
+				level = tier.getLevel();
+			}
+			else
+			{
+				var materialVariants = ToolHelper.getRepairVariants(tool);
+				level = materialVariants.stream().mapToInt(m -> m.get().getTier()).max().orElse(-1);
+			}
+
+			return Math.min(level, BuildingConstants.CONST_DEFAULT_MAX_BUILDING_LEVEL);
+		}
+
+		return -1;
+	}
+
+	public static List<MaterialVariantId> getRepairVariantIds(IToolStackView tool)
+	{
+		return getRepairVariants(tool).stream().map(v -> v.getVariant()).toList();
+	}
+
+	public static List<MaterialVariant> getRepairVariants(IToolStackView tool)
+	{
+		var materials = tool.getMaterials();
+		var components = ToolMaterialHook.stats(tool.getDefinition());
+
+		var variantIds = new HashSet<String>();
+		var variants = new ArrayList<MaterialVariant>();
+		var registry = MaterialRegistry.getInstance();
+
+		for (int i = 0; i < components.size(); i++)
+		{
+			if (i < materials.size() && registry.canRepair(components.get(i)))
+			{
+				var variant = materials.get(i);
+				var variantId = variant.getVariant();
+
+				if (!IMaterial.UNKNOWN_ID.equals(variantId))
+				{
+					if (variantIds.add(variantId.toString()))
+					{
+						variants.add(variant);
+					}
+
+				}
+
+			}
+
+		}
+
+		return variants;
+	}
+
+	public static ItemStack repair(ItemStack tool, ItemStack repairKit)
+	{
+		var container = new CraftingContainer(EmptyMenu.INSTANCE, 1, 2);
+		container.setItem(0, tool);
+		container.setItem(1, repairKit);
+		return TConstructModule.REPAIR_RECIPE.assemble(container);
+	}
+
+	public static int getRepairCount(ItemStack tool, MaterialVariantId variantId)
+	{
+		var repairKit = TinkerToolParts.repairKit.get().withMaterial(variantId);
+		return getRepairCount(tool, repairKit);
+	}
+
+	public static int getRepairCount(ItemStack tool, ItemStack repairKit)
+	{
+		var oldDamage = ToolStack.from(tool).getDamage();
+
+		for (var i = 0;; i++)
+		{
+			if (oldDamage == 0)
+			{
+				return i;
+			}
+
+			tool = repair(tool, repairKit);
+
+			var newDamage = ToolStack.from(tool).getDamage();
+
+			if (oldDamage == newDamage)
+			{
+				return i;
+			}
+			else
+			{
+				oldDamage = newDamage;
+			}
+
+		}
+
+	}
+
+	public static boolean canRepair(ItemStack tool)
+	{
+		return ToolStack.from(tool).getDamage() > 0;
+	}
+
+	private ToolHelper()
+	{
+
+	}
+
+}

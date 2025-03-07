@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.minecolonies.api.compatibility.tinkers.TinkersToolHelper;
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
@@ -47,35 +46,18 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	@Redirect(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/compatibility/tinkers/TinkersToolHelper.getDamage"))
 	private double getAttackDamage_getDamage(ItemStack stack)
 	{
-		if (!TinkersToolHelper.isTinkersSword(stack))
-		{
-			var amount = this.getAdditionsAmount(stack, Attributes.ATTACK_DAMAGE);
-			return amount + GuardConstants.BASE_PHYSICAL_DAMAGE;
-		}
-		else
-		{
-			return TinkersToolHelper.getDamage(stack);
-		}
-
+		var base = GuardConstants.BASE_PHYSICAL_DAMAGE;
+		var amount = this.getAdditionsAmount(stack, Attributes.ATTACK_DAMAGE);
+		return base + amount;
 	}
 
 	@ModifyConstant(method = "getAttackDelay", remap = false, constant = @Constant(intValue = 32))
 	private int modifyDelay(int KNIGHT_ATTACK_DELAY_BASE)
 	{
-		var stack = user.getItemInHand(InteractionHand.MAIN_HAND);
-
-		if (!TinkersToolHelper.isTinkersSword(stack))
-		{
-			var base = Attributes.ATTACK_SPEED.getDefaultValue();
-			var amount = this.getAdditionsAmount(stack, Attributes.ATTACK_SPEED);
-			return (int) (KNIGHT_ATTACK_DELAY_BASE * ((base - 2.4D) / (base + amount)));
-
-		}
-		else
-		{
-			return KNIGHT_ATTACK_DELAY_BASE;
-		}
-
+		var stack = this.user.getItemInHand(InteractionHand.MAIN_HAND);
+		var base = Attributes.ATTACK_SPEED.getDefaultValue();
+		var amount = this.getAdditionsAmount(stack, Attributes.ATTACK_SPEED);
+		return (int) (KNIGHT_ATTACK_DELAY_BASE * ((base - 2.4D) / (base + amount)));
 	}
 
 	private double getAdditionsAmount(ItemStack stack, Attribute attribute)

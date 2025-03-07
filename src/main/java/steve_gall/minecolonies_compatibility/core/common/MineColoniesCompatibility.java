@@ -150,6 +150,10 @@ public class MineColoniesCompatibility
 		{
 			e.register(BuildingModules.FORESTER_SETTINGS, ModBuildingModules.ORCHARDIST_SETTINGS);
 		}
+		else if (buildingType == ModBuildings.blacksmith.get())
+		{
+			e.register(BuildingModules.SETTINGS_CRAFTER_RECIPE, ModBuildingModules.BLACKSMITH_SETTINGS);
+		}
 
 	}
 

@@ -47,7 +47,14 @@ public class SmithingCraftingType extends CraftingType
 			if (recipe instanceof SmithingRecipeAccessor accesor)
 			{
 				var template = IngredientHelper.getStacks(accesor.getTemplate());
-				var base = IngredientHelper.getStacks(accesor.getBase());
+				var baseList = IngredientHelper.getStacks(accesor.getBase());
+				
+				if (baseList.size() == 0)
+				{
+					continue;
+				}
+				
+				var base = Arrays.asList(baseList.get(0));
 				var remainedAddition = new HashSet<>(IngredientHelper.getStacks(accesor.getAddition()));
 
 				for (var i = 0; i < tags.length; i++)
@@ -118,11 +125,11 @@ public class SmithingCraftingType extends CraftingType
 		}
 
 		var input = new ArrayList<List<ItemStack>>();
-		input.add(Arrays.asList(template.copyWithCount(template.getCount() * 2)));
+		input.add(Arrays.asList(template));
 		input.add(base);
 		input.add(addition);
 		var allResults = getAllResults(recipe, registryAccess, template, base, addition);
-		return new GenericRecipe(recipe.getId(), ItemStack.EMPTY, allResults, Arrays.asList(template), input, 2, Blocks.AIR, null, ModEquipmentTypes.none.get(), null, restrictions, requiredLevel);
+		return new GenericRecipe(recipe.getId(), ItemStack.EMPTY, allResults, Arrays.asList(), input, 2, Blocks.AIR, null, ModEquipmentTypes.none.get(), null, restrictions, requiredLevel);
 	}
 
 	private static List<ItemStack> getAllResults(SmithingRecipe recipe, RegistryAccess registryAccess, ItemStack template, List<ItemStack> bases, List<ItemStack> additions)

@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.core.common.crafting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +46,14 @@ public class SmithingCraftingType extends CraftingType
 		{
 			if (recipe instanceof SmithingRecipeAccessor accesor)
 			{
-				var base = IngredientHelper.getStacks(accesor.getBase());
+				var baseList = IngredientHelper.getStacks(accesor.getBase());
+
+				if (baseList.size() == 0)
+				{
+					continue;
+				}
+
+				var base = Arrays.asList(baseList.get(0));
 				var remainedAddition = new HashSet<>(IngredientHelper.getStacks(accesor.getAddition()));
 
 				for (var i = 0; i < tags.length; i++)

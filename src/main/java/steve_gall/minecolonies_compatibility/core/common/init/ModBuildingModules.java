@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.core.common.init;
 import java.util.Arrays;
 import java.util.List;
 
+import com.minecolonies.api.colony.buildings.HiringMode;
 import com.minecolonies.api.colony.buildings.modules.settings.ISetting;
 import com.minecolonies.api.colony.buildings.modules.settings.ISettingKey;
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
@@ -61,7 +62,12 @@ public class ModBuildingModules
 			}), () -> CombinedHiringLimitModuleView::new);
 
 	public static final BuildingEntry.ModuleProducer<WorkerBuildingModule, WorkerBuildingModuleView> ORCHARDIST_WORK = new BuildingEntry.ModuleProducer<>("orchardist_work", //
-			() -> new WorkerBuildingModule(ModJobs.ORCHARDIST.get(), Skill.Stamina, Skill.Focus, false, b -> 1), //
+			() ->
+			{
+				var module = new WorkerBuildingModule(ModJobs.ORCHARDIST.get(), Skill.Stamina, Skill.Focus, false, b -> 1);
+				module.setHiringMode(HiringMode.MANUAL);
+				return module;
+			}, //
 			() -> WorkerBuildingModuleView::new);
 
 	public static final List<Pair<ISettingKey<?>, ISetting<?>>> ORCHARDIST_SETTINGS = Arrays.asList(//
@@ -78,7 +84,12 @@ public class ModBuildingModules
 			() -> NetworkStorageModuleView::new);
 
 	public static final BuildingEntry.ModuleProducer<CraftingWorkerBuildingModule, WorkerBuildingModuleView> FLUID_MANAGER_WORK = new BuildingEntry.ModuleProducer<>("fluid_manager_work", //
-			() -> new CraftingWorkerBuildingModule(ModJobs.FLUID_MANAGER.get(), Skill.Focus, Skill.Athletics, false, b -> 1), //
+			() ->
+			{
+				var module = new CraftingWorkerBuildingModule(ModJobs.FLUID_MANAGER.get(), Skill.Focus, Skill.Athletics, false, b -> 1);
+				module.setHiringMode(HiringMode.MANUAL);
+				return module;
+			}, //
 			() -> WorkerBuildingModuleView::new);
 
 	public static final BuildingEntry.ModuleProducer<BucketFillingCraftingModule, BucketFillingCraftingModuleView> FLUID_MANAGER_BUCKET_FILLING = new BuildingEntry.ModuleProducer<>("fluid_manager_bucket_filling", //

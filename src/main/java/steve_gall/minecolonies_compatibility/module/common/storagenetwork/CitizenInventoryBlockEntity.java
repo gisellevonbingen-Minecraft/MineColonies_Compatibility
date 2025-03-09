@@ -21,9 +21,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.BlockEntityExtension;
+import steve_gall.minecolonies_compatibility.core.common.block.entity.IAccessDirectionHolder;
+import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.AccessDirection;
-import steve_gall.minecolonies_compatibility.core.common.building.module.IAccessDirectionHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackCounter;
@@ -32,7 +34,7 @@ import steve_gall.minecolonies_compatibility.mixin.common.storagenetwork.Network
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.init.ModuleBlockEntities;
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.init.ModuleItems;
 
-public class CitizenInventoryBlockEntity extends TileConnectable implements IAccessDirectionHolder
+public class CitizenInventoryBlockEntity extends TileConnectable implements INetworkStorageViewHolder, IAccessDirectionHolder
 {
 	private static final String TAG_LINK = "link";
 	private static final String TAG_WAY = "way";
@@ -190,7 +192,8 @@ public class CitizenInventoryBlockEntity extends TileConnectable implements IAcc
 
 	}
 
-	public StorageView getView()
+	@Override
+	public @NotNull INetworkStorageView getNetworkStorageView()
 	{
 		return this.view;
 	}

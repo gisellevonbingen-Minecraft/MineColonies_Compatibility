@@ -6,7 +6,6 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.module.client.refinedstorage.CitizenGridScreen;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.init.ModuleBlockEntities;
@@ -34,7 +33,6 @@ public class RefinedStorageModule extends AbstractModule
 		super.onFMLCommonSetup(e);
 		e.enqueueWork(() ->
 		{
-			NetworkStorageViewRegistry.register((be, direction) -> be instanceof CitizenGridBlockEntity grid ? grid.getNode().getView() : null);
 			API.instance().getNetworkNodeRegistry().add(CitizenGridNetworkNode.ID, CitizenGridNetworkNode::new);
 		});
 	}

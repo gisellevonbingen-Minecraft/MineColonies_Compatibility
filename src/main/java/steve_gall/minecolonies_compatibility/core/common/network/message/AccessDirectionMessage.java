@@ -4,8 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
+import steve_gall.minecolonies_compatibility.core.common.block.entity.IAccessDirectionHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.AccessDirection;
-import steve_gall.minecolonies_compatibility.core.common.building.module.IAccessDirectionHolder;
 import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
 
 public class AccessDirectionMessage<BLOCK_ENTITY extends BlockEntity & IAccessDirectionHolder> extends AbstractMessage

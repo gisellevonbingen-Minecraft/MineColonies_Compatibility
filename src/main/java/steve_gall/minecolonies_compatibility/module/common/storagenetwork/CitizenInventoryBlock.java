@@ -3,14 +3,9 @@ package steve_gall.minecolonies_compatibility.module.common.storagenetwork;
 import com.lothrazar.library.block.EntityBlockFlib;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -20,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
+import steve_gall.minecolonies_compatibility.core.common.inventory.AccessDirectionHolderMenu;
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.init.ModuleBlockEntities;
 
 public class CitizenInventoryBlock extends EntityBlockFlib
@@ -45,28 +40,7 @@ public class CitizenInventoryBlock extends EntityBlockFlib
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
 	{
-		if (!world.isClientSide())
-		{
-			if (world.getBlockEntity(pos) instanceof CitizenInventoryBlockEntity blockEntity)
-			{
-				NetworkHooks.openScreen((ServerPlayer) player, new MenuProvider()
-				{
-					@Override
-					public AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player)
-					{
-						return new CitizenInventoryMenu(windowId, inventory, blockEntity);
-					}
-
-					@Override
-					public Component getDisplayName()
-					{
-						return getName();
-					}
-				}, pos);
-			}
-
-		}
-
+		AccessDirectionHolderMenu.open(world, pos, player);
 		return InteractionResult.SUCCESS;
 	}
 

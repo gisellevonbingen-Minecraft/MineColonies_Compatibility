@@ -1,23 +1,21 @@
-package steve_gall.minecolonies_compatibility.module.client.storagenetwork;
+package steve_gall.minecolonies_compatibility.core.client.gui;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import steve_gall.minecolonies_compatibility.core.client.gui.AccessDirectionButton;
-import steve_gall.minecolonies_compatibility.core.client.gui.NetworkStorageViewScreenUtils;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.inventory.AccessDirectionHolderMenu;
 import steve_gall.minecolonies_compatibility.core.common.network.message.AccessDirectionMessage;
-import steve_gall.minecolonies_compatibility.module.common.storagenetwork.CitizenInventoryMenu;
 
-public class CitizenInventoryScreen extends AbstractContainerScreen<CitizenInventoryMenu>
+public class AccessDirectionHolderScreen extends AbstractContainerScreen<AccessDirectionHolderMenu<?>>
 {
-	private static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/citizen_inventory.png");
+	private static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/access_direction_holder.png");
 
 	private AccessDirectionButton accessDirectionButton;
 
-	public CitizenInventoryScreen(CitizenInventoryMenu containerMenu, Inventory inventory, Component title)
+	public AccessDirectionHolderScreen(AccessDirectionHolderMenu<?> containerMenu, Inventory inventory, Component title)
 	{
 		super(containerMenu, inventory, title);
 
@@ -53,7 +51,7 @@ public class CitizenInventoryScreen extends AbstractContainerScreen<CitizenInven
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		var blockEntity = this.getMenu().getBlockEntity();
-		guiGraphics.drawString(this.font, NetworkStorageViewScreenUtils.getModuleText(blockEntity.getView()), this.leftPos + 14, this.topPos + 21, 0xFF404040, false);
+		guiGraphics.drawString(this.font, NetworkStorageViewScreenUtils.getModuleText(blockEntity.getNetworkStorageView()), this.leftPos + 14, this.topPos + 21, 0xFF404040, false);
 
 		if (this.accessDirectionButton != null)
 		{

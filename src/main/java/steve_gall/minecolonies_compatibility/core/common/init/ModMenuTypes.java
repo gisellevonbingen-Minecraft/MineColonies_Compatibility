@@ -6,6 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.inventory.AccessDirectionHolderMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.BucketFillingTeachMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.SmithingTeachMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.SmithingTemplateInventoryMenu;
@@ -16,6 +17,7 @@ public class ModMenuTypes
 	public static final RegistryObject<MenuType<BucketFillingTeachMenu>> BUCKET_FILLING_TEACH = REGISTER.register("bucket_filling_teach", () -> IForgeMenuType.create(BucketFillingTeachMenu::new));
 	public static final RegistryObject<MenuType<SmithingTeachMenu>> SMITHING_TEACH = REGISTER.register("smithing_teach", () -> IForgeMenuType.create(SmithingTeachMenu::new));
 	public static final RegistryObject<MenuType<SmithingTemplateInventoryMenu>> SMITHING_TEMPLATE_INVENTORY = REGISTER.register("smithing_template_inventory", () -> IForgeMenuType.create(SmithingTemplateInventoryMenu::new));
+	public static final RegistryObject<MenuType<AccessDirectionHolderMenu<?>>> ACCESS_DIRECTION_HOLDER = REGISTER.register("access_direction_holder", () -> IForgeMenuType.create(AccessDirectionHolderMenu::new));
 
 	private ModMenuTypes()
 	{

@@ -1,5 +1,7 @@
 package steve_gall.minecolonies_compatibility.module.common.refinedstorage;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.refinedmods.refinedstorage.api.storage.AccessType;
 import com.refinedmods.refinedstorage.blockentity.NetworkNodeBlockEntity;
 import com.refinedmods.refinedstorage.blockentity.config.IAccessType;
@@ -11,10 +13,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.init.ModuleBlockEntities;
 
-public class CitizenGridBlockEntity extends NetworkNodeBlockEntity<CitizenGridNetworkNode>
+public class CitizenGridBlockEntity extends NetworkNodeBlockEntity<CitizenGridNetworkNode> implements INetworkStorageViewHolder
 {
 	private static final String TAG_LINK = "link";
 
@@ -70,6 +74,12 @@ public class CitizenGridBlockEntity extends NetworkNodeBlockEntity<CitizenGridNe
 		super.readUpdate(tag);
 
 		this.getNode().getView().read(tag.getCompound(TAG_LINK));
+	}
+
+	@Override
+	public @NotNull INetworkStorageView getNetworkStorageView()
+	{
+		return this.getNode().getView();
 	}
 
 }

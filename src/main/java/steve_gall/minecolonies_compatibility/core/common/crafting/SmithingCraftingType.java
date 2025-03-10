@@ -48,12 +48,12 @@ public class SmithingCraftingType extends CraftingType
 			{
 				var template = IngredientHelper.getStacks(accesor.getTemplate());
 				var baseList = IngredientHelper.getStacks(accesor.getBase());
-				
+
 				if (baseList.size() == 0)
 				{
 					continue;
 				}
-				
+
 				var base = Arrays.asList(baseList.get(0));
 				var remainedAddition = new HashSet<>(IngredientHelper.getStacks(accesor.getAddition()));
 

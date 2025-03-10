@@ -1,0 +1,21 @@
+package steve_gall.minecolonies_compatibility.module.common.storagedrawers.init;
+
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+
+public class ModuleItems
+{
+	public static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, MineColoniesCompatibility.MOD_ID);
+
+	public static final RegistryObject<BlockItem> CITIZEN_SLAVE = REGISTER.register("citizen_slave", () -> new BlockItem(ModuleBlocks.CITIZEN_SLAVE.get(), new Item.Properties()));
+
+	private ModuleItems()
+	{
+
+	}
+
+}

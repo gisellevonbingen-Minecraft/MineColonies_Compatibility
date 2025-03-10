@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.util.InventoryUtils;
+import com.minecolonies.core.colony.buildingextensions.FarmField;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingFarmer;
-import com.minecolonies.core.colony.fields.FarmField;
 import com.minecolonies.core.colony.jobs.JobFarmer;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 import com.minecolonies.core.entity.ai.workers.production.agriculture.EntityAIWorkFarmer;

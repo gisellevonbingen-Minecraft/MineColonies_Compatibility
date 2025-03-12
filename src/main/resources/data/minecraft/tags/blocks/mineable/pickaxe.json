@@ -3,6 +3,10 @@
 		{
 			"required": false,
 			"id": "minecolonies_compatibility:citizen_slave"
+		},
+		{
+			"required": false,
+			"id": "minecolonies_compatibility:citizen_extension"
 		}
 	]
 }

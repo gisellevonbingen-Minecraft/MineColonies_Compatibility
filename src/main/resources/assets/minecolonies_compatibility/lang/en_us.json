@@ -49,6 +49,7 @@
 	"block.minecolonies_compatibility.citizen_inventory": "Storage Inventory for Colonist",
 	"block.minecolonies_compatibility.citizen_inventory.tooltip": "Link 'Simple Storage Network' and 'Minecolonies Warehouse'",
 	"block.minecolonies_compatibility.citizen_slave": "Controller Slave for Colonist",
+	"block.minecolonies_compatibility.citizen_extension": "Controller Extension for Colonist",
 	
 	"_comment_items": "Items",
 	"item.minecolonies_compatibility.restrict_tool": "Zoning Tool",

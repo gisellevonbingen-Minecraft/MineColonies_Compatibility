@@ -80,6 +80,65 @@ public class ItemHandlerHelper2
 		return true;
 	}
 
+	public static ItemStack extractItem(IItemHandler itemHandler, ItemStack stack, boolean simulate)
+	{
+		if (stack.isEmpty())
+		{
+			return stack;
+		}
+
+		var extractedCount = 0;
+
+		for (var i = 0; i < itemHandler.getSlots(); i++)
+		{
+			var slot = itemHandler.getStackInSlot(i);
+
+			if (!ItemStackHelper.equalsIgnoreSize(slot, stack))
+			{
+				continue;
+			}
+
+			var extracted = itemHandler.extractItem(i, stack.getCount() - extractedCount, simulate);
+
+			if (!extracted.isEmpty())
+			{
+				extractedCount += extracted.getCount();
+
+				if (stack.getCount() == extractedCount)
+				{
+					break;
+				}
+
+			}
+
+		}
+
+		var copy = stack.copy();
+		copy.setCount(extractedCount);
+		return copy;
+	}
+
+	public static ItemStack insertItem(IItemHandler itemHandler, ItemStack stack, boolean simulate)
+	{
+		if (stack.isEmpty())
+		{
+			return stack;
+		}
+
+		for (var i = 0; i < itemHandler.getSlots(); i++)
+		{
+			stack = itemHandler.insertItem(i, stack, simulate);
+
+			if (stack.isEmpty())
+			{
+				break;
+			}
+
+		}
+
+		return stack;
+	}
+
 	private ItemHandlerHelper2()
 	{
 

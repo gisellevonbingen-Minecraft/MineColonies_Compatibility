@@ -83,6 +83,7 @@ public class ModuleManager
 	public static final OptionalModule<RegionsUnexploredModule> REGIONS_UNEXPLORED = register("regions_unexplored", () -> RegionsUnexploredModule::new);
 	public static final OptionalModule<ReliquaryModule> RELIQUARY = register("reliquary", () -> ReliquaryModule::new);
 	public static final OptionalModule<StorageNetworkModule> STORAGENETWORK = register("storagenetwork", () -> StorageNetworkModule::new);
+	public static final OptionalModule<StorageDrawersModule> STORAGESDRAWERS = register("storagedrawers", () -> StorageDrawersModule::new);
 	public static final OptionalModule<TConstructModule> TCONSTRUCT = register("tconstruct", () -> TConstructModule::new);
 	public static final OptionalModule<ThermalModule> THERMAL = register("thermal", () -> ThermalModule::new);
 	public static final OptionalModule<UndergardenModule> UNDERGARDEN = register("undergarden", () -> UndergardenModule::new);

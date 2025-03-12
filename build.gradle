@@ -159,6 +159,7 @@ dependencies {
     implementation fg.deobf("curse.maven:mantle-74924:${mantle_file}")
     implementation fg.deobf("curse.maven:kiwi-303657:${kiwi_file}")
     implementation fg.deobf("curse.maven:fruit-trees-355467:${fruit_trees_file}")
+    implementation fg.deobf("curse.maven:storage-drawers-223852:${storagedrawers_file}")
 
     // Runtiem Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")

@@ -18,6 +18,7 @@ import steve_gall.minecolonies_compatibility.module.common.delightful.Delightful
 import steve_gall.minecolonies_compatibility.module.common.ewewukeks_musketmod.ewewukekMusketModule;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.fruitfulfun.FruitfulFunModule;
+import steve_gall.minecolonies_compatibility.module.common.functionalstorage.FunctionalStorageModule;
 import steve_gall.minecolonies_compatibility.module.common.ie.IEModule;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.LetsDoBakeryModule;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_candlelight.LetsDoCandlelightModule;
@@ -32,6 +33,7 @@ import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphMo
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.RefinedStorageModule;
 import steve_gall.minecolonies_compatibility.module.common.regions_unexplored.RegionsUnexploredModule;
 import steve_gall.minecolonies_compatibility.module.common.reliquary.ReliquaryModule;
+import steve_gall.minecolonies_compatibility.module.common.storagedrawers.StorageDrawersModule;
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.StorageNetworkModule;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.TConstructModule;
 import steve_gall.minecolonies_compatibility.module.common.thermal.ThermalModule;
@@ -69,6 +71,7 @@ public class ModuleManager
 	public static final OptionalModule<ewewukekMusketModule> EWEWUKEK_MUSKET = register("musketmod", () -> ewewukekMusketModule::new);
 	public static final OptionalModule<FarmersDelightModule> FARMERSDELIGHT = register("farmersdelight", () -> FarmersDelightModule::new);
 	public static final OptionalModule<FruitfulFunModule> FRUITFULFUN = register("fruittrees", () -> FruitfulFunModule::new);
+	public static final OptionalModule<FunctionalStorageModule> FUNCTIONALSTORAGE = register("functionalstorage", () -> FunctionalStorageModule::new);
 	public static final OptionalModule<IEModule> IE = register("immersiveengineering", () -> IEModule::new);
 	public static final OptionalModule<LetsDoBakeryModule> LETS_DO_BAKERY = register("bakery", () -> LetsDoBakeryModule::new);
 	public static final OptionalModule<LetsDoCandlelightModule> LETS_DO_CANDLELIGHT = register("candlelight", () -> LetsDoCandlelightModule::new);
@@ -79,10 +82,11 @@ public class ModuleManager
 	public static final OptionalModule<OreberriesModule> OREBERRIES = register("oreberriesreplanted", () -> OreberriesModule::new);
 	public static final OptionalModule<PamsHarvestCraft2TreesModule> PHC2TREES = register("pamhc2trees", () -> PamsHarvestCraft2TreesModule::new);
 	public static final OptionalModule<PolymorphModule> POLYMORPH = register("polymorph", () -> PolymorphModule::new);
+	public static final OptionalModule<RefinedStorageModule> REFINEDSTORAGE = register("refinedstorage", () -> RefinedStorageModule::new);
 	public static final OptionalModule<RegionsUnexploredModule> REGIONS_UNEXPLORED = register("regions_unexplored", () -> RegionsUnexploredModule::new);
 	public static final OptionalModule<ReliquaryModule> RELIQUARY = register("reliquary", () -> ReliquaryModule::new);
-	public static final OptionalModule<RefinedStorageModule> RS = register("refinedstorage", () -> RefinedStorageModule::new);
-	public static final OptionalModule<StorageNetworkModule> STORAGE_NETWORK = register("storagenetwork", () -> StorageNetworkModule::new);
+	public static final OptionalModule<StorageNetworkModule> STORAGENETWORK = register("storagenetwork", () -> StorageNetworkModule::new);
+	public static final OptionalModule<StorageDrawersModule> STORAGESDRAWERS = register("storagedrawers", () -> StorageDrawersModule::new);
 	public static final OptionalModule<TConstructModule> TCONSTRUCT = register("tconstruct", () -> TConstructModule::new);
 	public static final OptionalModule<ThermalModule> THERMAL = register("thermal", () -> ThermalModule::new);
 	public static final OptionalModule<UndergardenModule> UNDERGARDEN = register("undergarden", () -> UndergardenModule::new);

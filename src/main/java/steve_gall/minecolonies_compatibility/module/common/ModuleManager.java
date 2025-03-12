@@ -83,10 +83,10 @@ public class ModuleManager
 	public static final OptionalModule<OreberriesModule> OREBERRIES = register("oreberriesreplanted", () -> OreberriesModule::new);
 	public static final OptionalModule<PamsHarvestCraft2TreesModule> PHC2TREES = register("pamhc2trees", () -> PamsHarvestCraft2TreesModule::new);
 	public static final OptionalModule<PolymorphModule> POLYMORPH = register("polymorph", () -> PolymorphModule::new);
+	public static final OptionalModule<RefinedStorageModule> REFINEDSTORAGE = register("refinedstorage", () -> RefinedStorageModule::new);
 	public static final OptionalModule<RegionsUnexploredModule> REGIONS_UNEXPLORED = register("regions_unexplored", () -> RegionsUnexploredModule::new);
 	public static final OptionalModule<ReliquaryModule> RELIQUARY = register("reliquary", () -> ReliquaryModule::new);
-	public static final OptionalModule<RefinedStorageModule> RS = register("refinedstorage", () -> RefinedStorageModule::new);
-	public static final OptionalModule<StorageNetworkModule> STORAGE_NETWORK = register("storagenetwork", () -> StorageNetworkModule::new);
+	public static final OptionalModule<StorageNetworkModule> STORAGENETWORK = register("storagenetwork", () -> StorageNetworkModule::new);
 	public static final OptionalModule<TConstructModule> TCONSTRUCT = register("tconstruct", () -> TConstructModule::new);
 	public static final OptionalModule<ThermalModule> THERMAL = register("thermal", () -> ThermalModule::new);
 	public static final OptionalModule<UndergardenModule> UNDERGARDEN = register("undergarden", () -> UndergardenModule::new);

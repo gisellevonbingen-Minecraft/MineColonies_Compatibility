@@ -2,6 +2,10 @@
 	"values": [
 		{
 			"required": false,
+			"id": "butchercraft:butcher_knife"
+		},
+		{
+			"required": false,
 			"id": "croptopia:knife"
 		}
 	]

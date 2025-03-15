@@ -2,10 +2,6 @@
 	"values": [
 		{
 			"required": false,
-			"id": "#farmersdelight:tools/knives"
-		},
-		{
-			"required": false,
 			"id": "butchercraft:butcher_knife"
 		}
 	]

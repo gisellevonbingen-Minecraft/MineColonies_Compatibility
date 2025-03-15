@@ -18,5 +18,5 @@ public class ModToolTypes
 
 	public static final RangerWeaponToolType RANGER_WEAPON = new RangerWeaponToolType(MineColoniesCompatibility.rl("ranger_weapon"), Arrays.asList(() -> ToolType.BOW));
 	public static final KnightWeaponToolType KNIGHT_WEAPON = new KnightWeaponToolType(MineColoniesCompatibility.rl("knight_weapon"), Arrays.asList(() -> ToolType.SWORD));
-	public static final OrToolType BUTCHER_TOOL = new OrToolType(MineColoniesCompatibility.rl("butcher_tool"), Arrays.asList(() -> ToolType.AXE));
+	public static final OrToolType BUTCHER_TOOL = new OrToolType(MineColoniesCompatibility.rl("butcher_tool"), Arrays.asList(() -> ToolType.AXE, () -> KNIFE.getToolType()));
 }

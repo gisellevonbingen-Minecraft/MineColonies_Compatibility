@@ -23,6 +23,7 @@ public class CrossBowToolType extends CustomToolType
 		return stack.getItem() instanceof CrossbowItem;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public int getToolLevel(@NotNull ItemStack stack)
 	{

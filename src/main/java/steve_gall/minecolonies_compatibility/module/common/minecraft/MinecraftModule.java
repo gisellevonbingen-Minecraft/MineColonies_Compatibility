@@ -15,6 +15,7 @@ public class MinecraftModule extends AbstractModule
 			CustomizedFruit.register(new SweetBerryFruit());
 			CustomizedFruit.register(new CocoaFruit());
 			CustomizedFruit.register(new CaveVinesFruit());
+			CustomizedFruit.register(new NetherWartFruit());
 		});
 	}
 

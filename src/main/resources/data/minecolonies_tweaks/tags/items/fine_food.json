@@ -1,0 +1,244 @@
+{
+	"values": [
+		{
+			"required": false,
+			"id": "create:bar_of_chocolate"
+		},
+		{
+			"required": false,
+			"id": "create:builders_tea"
+		},
+		{
+			"required": false,
+			"id": "create:honeyed_apple"
+		},
+		{
+			"required": false,
+			"id": "create:sweet_roll"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:avocado_toast"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:calamari_roll"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:cooked_squid"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:egg_roll"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:pufferfish_roll"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:rice_ball"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:smoked_cut_eggplant"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:smoked_tomato"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:smoked_white_eggplant"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:tortilla"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:tropical_roll"
+		},
+		{
+			"required": false,
+			"id": "delightful:cactus_steak"
+		},
+		{
+			"required": false,
+			"id": "delightful:cantaloupe_bread"
+		},
+		{
+			"required": false,
+			"id": "delightful:cooked_marshmallow_stick"
+		},
+		{
+			"required": false,
+			"id": "delightful:roasted_acorn"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:bacon_sandwich"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:barbecue_stick"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:cabbage_rolls"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:chicken_sandwich"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:cod_roll"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:cooked_rice"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:egg_sandwich"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:ham"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:honey_cookie"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:mixed_salad"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:mutton_wrap"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:nether_salad"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:salmon_roll"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:smoked_ham"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:sweet_berry_cookie"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:tomato_sauce"
+		},
+		{
+			"required": false,
+			"id": "farmersrespite:green_tea_cookie"
+		},
+		{
+			"required": false,
+			"id": "largemeals:cooked_mutton_rack"
+		},
+		{
+			"required": false,
+			"id": "moredelight:hamburger_with_egg"
+		},
+		{
+			"required": false,
+			"id": "moredelight:omelette"
+		},
+		{
+			"required": false,
+			"id": "moredelight:simple_hamburger"
+		},
+		{
+			"required": false,
+			"id": "moredelight:toast"
+		},
+		{
+			"required": false,
+			"id": "moredelight:toast_with_blueberries"
+		},
+		{
+			"required": false,
+			"id": "moredelight:toast_with_chocolate"
+		},
+		{
+			"required": false,
+			"id": "moredelight:toast_with_egg"
+		},
+		{
+			"required": false,
+			"id": "moredelight:toast_with_glow_berries"
+		},
+		{
+			"required": false,
+			"id": "moredelight:toast_with_honey"
+		},
+		{
+			"required": false,
+			"id": "moredelight:toast_with_sweet_berries"
+		},
+		{
+			"required": false,
+			"id": "moredelight:tomato_sandwich"
+		},
+		{
+			"required": false,
+			"id": "tconstruct:bacon"
+		},
+		{
+			"required": false,
+			"id": "tconstruct:cheese_ingot"
+		},
+		{
+			"required": false,
+			"id": "thermal:cheese_wedge"
+		},
+		{
+			"required": false,
+			"id": "thermal:pbj_sandwich"
+		},
+		{
+			"required": false,
+			"id": "thermal:sushi_maki"
+		},
+		{
+			"required": false,
+			"id": "tinkersdelight:cheesecake"
+		},
+		{
+			"required": false,
+			"id": "tinkersdelight:cheesecake_slice"
+		},
+		{
+			"required": false,
+			"id": "tinkersdelight:honey_pie"
+		},
+		{
+			"required": false,
+			"id": "tinkersdelight:honey_pie_slice"
+		},
+		{
+			"required": false,
+			"id": "veggiesdelight:baked_sweet_potato"
+		},
+		{
+			"required": false,
+			"id": "veggiesdelight:cauliflower_bread"
+		},
+		{
+			"required": false,
+			"id": "veggiesdelight:smoked_bellpepper"
+		}
+	]
+}

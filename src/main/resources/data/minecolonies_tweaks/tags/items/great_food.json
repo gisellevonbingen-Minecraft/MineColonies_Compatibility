@@ -1,0 +1,252 @@
+{
+	"values": [
+		{
+			"required": false,
+			"id": "culturaldelights:chicken_taco"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:poached_eggplants"
+		},
+		{
+			"required": false,
+			"id": "culturaldelights:spicy_curry"
+		},
+		{
+			"required": false,
+			"id": "delightful:baklava"
+		},
+		{
+			"required": false,
+			"id": "delightful:baklava_slice"
+		},
+		{
+			"required": false,
+			"id": "delightful:berry_matcha_latte"
+		},
+		{
+			"required": false,
+			"id": "delightful:cactus_chili"
+		},
+		{
+			"required": false,
+			"id": "delightful:cactus_soup"
+		},
+		{
+			"required": false,
+			"id": "delightful:cheeseburger"
+		},
+		{
+			"required": false,
+			"id": "delightful:deluxe_cheeseburger"
+		},
+		{
+			"required": false,
+			"id": "delightful:field_salad"
+		},
+		{
+			"required": false,
+			"id": "delightful:matcha_ice_cream"
+		},
+		{
+			"required": false,
+			"id": "delightful:matcha_milkshake"
+		},
+		{
+			"required": false,
+			"id": "delightful:nut_butter_and_jam_sandwich"
+		},
+		{
+			"required": false,
+			"id": "delightful:salmonberry_ice_cream"
+		},
+		{
+			"required": false,
+			"id": "delightful:salmonberry_milkshake"
+		},
+		{
+			"required": false,
+			"id": "delightful:sinigang"
+		},
+		{
+			"required": false,
+			"id": "delightful:smore"
+		},
+		{
+			"required": false,
+			"id": "delightful:stuffed_cantaloupe"
+		},
+		{
+			"required": false,
+			"id": "delightful:stuffed_cantaloupe_block"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:baked_cod_stew"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:chicken_soup"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:fried_rice"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:honey_glazed_ham"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:honey_glazed_ham_block"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:noodle_soup"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:pasta_with_meatballs"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:pasta_with_mutton_chop"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:pumpkin_soup"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:roast_chicken"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:roast_chicken_block"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:roasted_mutton_chops"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:shepherds_pie"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:shepherds_pie_block"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:squid_ink_pasta"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:steak_and_potatoes"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:stuffed_pumpkin"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:stuffed_pumpkin_block"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:vegetable_noodles"
+		},
+		{
+			"required": false,
+			"id": "farmersrespite:blazing_chili"
+		},
+		{
+			"required": false,
+			"id": "farmersrespite:tea_curry"
+		},
+		{
+			"required": false,
+			"id": "largemeals:chicken_curry"
+		},
+		{
+			"required": false,
+			"id": "largemeals:hearty_lunch"
+		},
+		{
+			"required": false,
+			"id": "largemeals:mushroom_pot_pie"
+		},
+		{
+			"required": false,
+			"id": "largemeals:mushroom_pot_pie_block"
+		},
+		{
+			"required": false,
+			"id": "largemeals:omurice"
+		},
+		{
+			"required": false,
+			"id": "largemeals:omurice_block"
+		},
+		{
+			"required": false,
+			"id": "largemeals:pasta_with_mushroom_sauce"
+		},
+		{
+			"required": false,
+			"id": "largemeals:pufferfish_broth"
+		},
+		{
+			"required": false,
+			"id": "largemeals:roasted_mutton_rack"
+		},
+		{
+			"required": false,
+			"id": "largemeals:roasted_mutton_rack_block"
+		},
+		{
+			"required": false,
+			"id": "moredelight:creamy_pasta_with_chicken_cuts"
+		},
+		{
+			"required": false,
+			"id": "moredelight:creamy_pasta_with_ham"
+		},
+		{
+			"required": false,
+			"id": "moredelight:loaded_hamburger"
+		},
+		{
+			"required": false,
+			"id": "thermal:hearty_stew"
+		},
+		{
+			"required": false,
+			"id": "thermal:spring_salad"
+		},
+		{
+			"required": false,
+			"id": "thermal:xp_stew"
+		},
+		{
+			"required": false,
+			"id": "tinkersdelight:jewel_fruit_salad"
+		},
+		{
+			"required": false,
+			"id": "veggiesdelight:garlic_chicken_stew"
+		},
+		{
+			"required": false,
+			"id": "veggiesdelight:roasted_vegetables"
+		},
+		{
+			"required": false,
+			"id": "veggiesdelight:vegan_pizza"
+		},
+		{
+			"required": false,
+			"id": "veggiesdelight:vegan_pizza_slice"
+		}
+	]
+}

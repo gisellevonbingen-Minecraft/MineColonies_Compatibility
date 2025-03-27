@@ -40,6 +40,7 @@ import steve_gall.minecolonies_compatibility.module.common.storagedrawers.Storag
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.StorageNetworkModule;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.TConstructModule;
 import steve_gall.minecolonies_compatibility.module.common.thermal.ThermalModule;
+import steve_gall.minecolonies_compatibility.module.common.tinkerslevellingaddon.TinkersLevellingAddonModule;
 import steve_gall.minecolonies_compatibility.module.common.undergarden.UndergardenModule;
 
 public class ModuleManager
@@ -93,6 +94,7 @@ public class ModuleManager
 	public static final OptionalModule<StorageDrawersModule> STORAGESDRAWERS = register("storagedrawers", () -> StorageDrawersModule::new);
 	public static final OptionalModule<TConstructModule> TCONSTRUCT = register("tconstruct", () -> TConstructModule::new);
 	public static final OptionalModule<ThermalModule> THERMAL = register("thermal", () -> ThermalModule::new);
+	public static final OptionalModule<TinkersLevellingAddonModule> TINKERSLEVELLINGADDON = register("tinkerslevellingaddon", () -> TinkersLevellingAddonModule::new);
 	public static final OptionalModule<UndergardenModule> UNDERGARDEN = register("undergarden", () -> UndergardenModule::new);
 
 	public static final OptionalModule<CobblemonModule> COBBLEMON = register("cobblemon", () -> CobblemonModule::new);

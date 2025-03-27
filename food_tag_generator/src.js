@@ -1,21 +1,21 @@
-let fs = require('fs');
+let fs = require("fs");
 
 function generate(name, foods) {
 	let jsons = {};
 	for (let namespace in foods) {
-		let key = namespace == 'minecraft' ? namespace : 'mods';
-		let json = jsons[key] ?? (jsons[key] = { 'values': [] });
+		let key = namespace == "minecraft" ? namespace : "mods";
+		let json = jsons[key] ?? (jsons[key] = { "values": [] });
 
 		for (let id of foods[namespace].toSorted().map(i => namespace + ":" + i)) {
-			if (namespace == 'minecraft') {
+			if (namespace == "minecraft") {
 				json.values.push(id);
 			} else {
-				json.values.push({ 'required': false, 'id': id });
+				json.values.push({ "required": false, "id": id });
 			}
 		}
 	}
 	for (let namespace in jsons) {
-		fs.writeFile(namespace + '/' + name + '.json', JSON.stringify(jsons[namespace]), 'utf8', () => { });
+		fs.writeFile(`${namespace}/${name}.json`, JSON.stringify(jsons[namespace], null, 4).replaceAll("    ", "\t"), "utf8", () => { });
 	}
 }
 
@@ -26,15 +26,15 @@ function sort(obj) {
 		keys.push(key);
 	}
 	for (let key of keys.toSorted(compareNamespace)) {
-		json[key] = obj[key].map(i => i.substring(i.indexOf(':') + 1)).toSorted();
+		json[key] = obj[key].map(i => i.substring(i.indexOf(":") + 1)).toSorted();
 	}
 	return json;
 }
 
 function compareNamespace(o1, o2) {
-	if (o1 == 'minecraft') {
+	if (o1 == "minecraft") {
 		return o1 == o2 ? 0 : -1;
-	} else if (o2 == 'minecraft') {
+	} else if (o2 == "minecraft") {
 		return 1;
 	} else {
 		return o1.localeCompare(o2);

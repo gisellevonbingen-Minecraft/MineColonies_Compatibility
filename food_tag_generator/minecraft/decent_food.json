@@ -1,1 +1,9 @@
-{"values":["minecraft:beetroot_soup","minecraft:golden_apple","minecraft:golden_carrot","minecraft:pumpkin_pie","minecraft:rabbit_stew"]}
+{
+	"values": [
+		"minecraft:beetroot_soup",
+		"minecraft:golden_apple",
+		"minecraft:golden_carrot",
+		"minecraft:pumpkin_pie",
+		"minecraft:rabbit_stew"
+	]
+}

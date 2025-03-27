@@ -1,1 +1,16 @@
-{"values":["minecraft:baked_potato","minecraft:bread","minecraft:cooked_beef","minecraft:cooked_chicken","minecraft:cooked_cod","minecraft:cooked_mutton","minecraft:cooked_porkchop","minecraft:cooked_rabbit","minecraft:cooked_salmon","minecraft:cookie","minecraft:honey_bottle","minecraft:mushroom_stew"]}
+{
+	"values": [
+		"minecraft:baked_potato",
+		"minecraft:bread",
+		"minecraft:cooked_beef",
+		"minecraft:cooked_chicken",
+		"minecraft:cooked_cod",
+		"minecraft:cooked_mutton",
+		"minecraft:cooked_porkchop",
+		"minecraft:cooked_rabbit",
+		"minecraft:cooked_salmon",
+		"minecraft:cookie",
+		"minecraft:honey_bottle",
+		"minecraft:mushroom_stew"
+	]
+}

@@ -2,6 +2,22 @@
 	"values": [
 		{
 			"required": false,
+			"id": "corn_delight:boiled_corn"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:cornbread"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:grilled_corn"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:tortilla"
+		},
+		{
+			"required": false,
 			"id": "create:bar_of_chocolate"
 		},
 		{

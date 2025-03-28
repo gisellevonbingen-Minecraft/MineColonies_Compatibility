@@ -2,6 +2,14 @@
 	"values": [
 		{
 			"required": false,
+			"id": "corn_delight:nachos"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:nachos_block"
+		},
+		{
+			"required": false,
 			"id": "culturaldelights:chicken_taco"
 		},
 		{

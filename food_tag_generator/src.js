@@ -26,7 +26,7 @@ function sort(obj) {
 		keys.push(key);
 	}
 	for (let key of keys.toSorted(compareNamespace)) {
-		json[key] = obj[key].map(i => i.substring(i.indexOf(":") + 1)).toSorted();
+		json[key] = obj[key].toSorted();
 	}
 	return json;
 }
@@ -39,6 +39,17 @@ function compareNamespace(o1, o2) {
 	} else {
 		return o1.localeCompare(o2);
 	}
+}
+
+function splitNamespace(list) {
+	let json = { "minecraft": [] };
+	for (let id of list) {
+		let i = id.indexOf(":");
+		let namespace = id.substring(0, i);
+		let values = json[namespace] ?? (json[namespace] = []);
+		values.push(id.substring(i + 1));
+	}
+	return sort(json);
 }
 
 let fine_food = {
@@ -55,6 +66,12 @@ let fine_food = {
 		"cookie",
 		"honey_bottle",
 		"mushroom_stew"
+	],
+	"corn_delight": [
+		"boiled_corn",
+		"cornbread",
+		"grilled_corn",
+		"tortilla"
 	],
 	"create": [
 		"bar_of_chocolate",
@@ -146,6 +163,15 @@ let decent_food = {
 		"golden_carrot",
 		"pumpkin_pie",
 		"rabbit_stew"
+	],
+	"corn_delight": [
+		"classic_corn_dog",
+		"corn_dog",
+		"corn_soup",
+		"cornbread_stuffing",
+		"creamed_corn",
+		"creamy_corn_drink",
+		"taco"
 	],
 	"create": [
 		"chocolate_glazed_berries"
@@ -306,6 +332,10 @@ let decent_food = {
 };
 let great_food = {
 	"minecraft": [],
+	"corn_delight": [
+		"nachos",
+		"nachos_block"
+	],
 	"culturaldelights": [
 		"chicken_taco",
 		"poached_eggplants",

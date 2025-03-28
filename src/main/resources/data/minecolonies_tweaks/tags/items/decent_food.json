@@ -2,6 +2,34 @@
 	"values": [
 		{
 			"required": false,
+			"id": "corn_delight:classic_corn_dog"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:corn_dog"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:corn_soup"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:cornbread_stuffing"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:creamed_corn"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:creamy_corn_drink"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:taco"
+		},
+		{
+			"required": false,
 			"id": "create:chocolate_glazed_berries"
 		},
 		{

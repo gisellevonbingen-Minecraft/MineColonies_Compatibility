@@ -69,7 +69,7 @@ let fine_food = {
 		"egg_roll",
 		"pufferfish_roll",
 		"rice_ball",
-		"smoked_cut_eggplant",
+		"smoked_eggplant",
 		"smoked_tomato",
 		"smoked_white_eggplant",
 		"tortilla",

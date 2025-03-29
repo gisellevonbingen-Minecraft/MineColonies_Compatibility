@@ -18,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
-import steve_gall.minecolonies_compatibility.core.common.block.entity.BlockEntityExtension;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.IAccessDirectionHolder;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.AccessDirection;
@@ -85,18 +84,6 @@ public class CitizenSlaveTile extends BlockEntitySlave implements INetworkStorag
 			this.accessDirection = value;
 			this.view.requestAll();
 			this.setChanged();
-		}
-
-	}
-
-	@Override
-	public void setRemoved()
-	{
-		super.setRemoved();
-
-		if (this instanceof BlockEntityExtension bee && !bee.minecolonies_compatibility$isUnloaded())
-		{
-			this.view.unlink();
 		}
 
 	}

@@ -9,13 +9,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.BlockEntityExtension;
 
-@Mixin(value = BlockEntity.class, remap = false)
+@Mixin(value = BlockEntity.class, remap = true)
 public abstract class BlockEntityMixin implements BlockEntityExtension
 {
 	@Unique
 	private boolean minecolonies_compatibility$unloaded;
 
-	@Inject(method = "onChunkUnloaded", remap = false, at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "onChunkUnloaded", remap = true, at = @At(value = "HEAD"), cancellable = true)
 	private void onChunkUnloaded(CallbackInfo ci)
 	{
 		this.minecolonies_compatibility$unloaded = true;

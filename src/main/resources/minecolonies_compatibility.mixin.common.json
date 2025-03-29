@@ -4,6 +4,7 @@
 	"minVersion": "0.8.5",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"minecraft.BlockBehaviourMixin",
 		"minecraft.BlockEntityMixin",
 		"minecraft.CropBlockAccessor",
 		"minecraft.ItemStackMixin",

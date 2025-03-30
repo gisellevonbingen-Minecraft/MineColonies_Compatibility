@@ -45,6 +45,7 @@
 	"minecolonies_compatibility.tconstruct_repair_kit.desc": "Tinkers' Construct's Repair Kits",
 	
 	"_comment_blocks": "Blocks",
+	"block.minecolonies_compatibility.common_network_storage": "Common Network Storage",
 	"block.minecolonies_compatibility.citizen_grid": "Grid for Colonist",
 	"block.minecolonies_compatibility.citizen_inventory": "Storage Inventory for Colonist",
 	"block.minecolonies_compatibility.citizen_inventory.tooltip": "Link 'Simple Storage Network' and 'Minecolonies Warehouse'",

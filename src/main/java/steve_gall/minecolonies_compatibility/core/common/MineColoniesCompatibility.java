@@ -31,6 +31,8 @@ import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesComp
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher.Butcherable;
+import steve_gall.minecolonies_compatibility.core.common.init.ModBlockEntities;
+import steve_gall.minecolonies_compatibility.core.common.init.ModBlocks;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
@@ -58,7 +60,9 @@ public class MineColoniesCompatibility
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MineColoniesCompatibilityConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		ModBlocks.REGISTER.register(fml_bus);
 		ModItems.REGISTER.register(fml_bus);
+		ModBlockEntities.REGISTER.register(fml_bus);
 		ModGuardTypes.REGISTER.register(fml_bus);
 		ModJobs.REGISTER.register(fml_bus);
 		ModCraftingTypes.REGISTER.register(fml_bus);

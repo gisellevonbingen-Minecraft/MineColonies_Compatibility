@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.minecolonies.api.colony.buildings.ModBuildings;
+import com.minecolonies.api.creativetab.ModCreativeTabs;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -11,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +35,8 @@ import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingR
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingTemplateRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher.Butcherable;
+import steve_gall.minecolonies_compatibility.core.common.init.ModBlockEntities;
+import steve_gall.minecolonies_compatibility.core.common.init.ModBlocks;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
@@ -60,7 +64,9 @@ public class MineColoniesCompatibility
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MineColoniesCompatibilityConfigServer.SPEC);
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		ModBlocks.REGISTER.register(fml_bus);
 		ModItems.REGISTER.register(fml_bus);
+		ModBlockEntities.REGISTER.register(fml_bus);
 		ModGuardTypes.REGISTER.register(fml_bus);
 		ModJobs.REGISTER.register(fml_bus);
 		ModCraftingTypes.REGISTER.register(fml_bus);
@@ -68,6 +74,7 @@ public class MineColoniesCompatibility
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLClientSetup);
 		fml_bus.addListener(this::onCustomToolTypeRegister);
+		fml_bus.addListener(this::onBuildCreativeModeTabContents);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
 		forge_bus.addListener(this::onInjectBuildingSettingsModule);
@@ -138,6 +145,15 @@ public class MineColoniesCompatibility
 		e.register(ModToolTypes.RANGER_WEAPON);
 		e.register(ModToolTypes.KNIGHT_WEAPON);
 		e.register(ModToolTypes.BUTCHER_TOOL);
+	}
+
+	private void onBuildCreativeModeTabContents(BuildCreativeModeTabContentsEvent e)
+	{
+		if (e.getTab() == ModCreativeTabs.GENERAL.get())
+		{
+			e.accept(ModItems.COMMON_NETWORK_STORAGE);
+		}
+
 	}
 
 	private void onInjectBuildingSettingsModule(InjectBuildingSettingsModuleEvent e)

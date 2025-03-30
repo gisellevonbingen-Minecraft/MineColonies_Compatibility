@@ -15,7 +15,7 @@ public abstract class BlockEntityMixin implements BlockEntityExtension
 	@Unique
 	private boolean minecolonies_compatibility$unloaded;
 
-	@Inject(method = "onChunkUnloaded", remap = true, at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "onChunkUnloaded", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void onChunkUnloaded(CallbackInfo ci)
 	{
 		this.minecolonies_compatibility$unloaded = true;

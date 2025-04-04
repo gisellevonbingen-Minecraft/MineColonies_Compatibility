@@ -1,16 +1,17 @@
 package steve_gall.minecolonies_compatibility.mixin.common.minecolonies;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.api.colony.interactionhandling.ChatPriority;
 import com.minecolonies.api.crafting.IRecipeStorage;
+import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
 import com.minecolonies.core.colony.interactionhandling.StandardInteraction;
 import com.minecolonies.core.colony.jobs.AbstractJobCrafter;
@@ -18,8 +19,6 @@ import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraftforge.items.IItemHandler;
 import steve_gall.minecolonies_compatibility.api.common.building.module.ICraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.building.module.ICraftingResultListenerModule;
 
@@ -99,18 +98,17 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 
 	}
 
-	@Redirect(method = "craft", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/crafting/IRecipeStorage;fullfillRecipe(Lnet/minecraft/world/level/storage/loot/LootParams;Ljava/util/List;)Z"))
-	private boolean craft_fullfillRecipe(IRecipeStorage recipeStorage, LootParams context, List<IItemHandler> handlers)
+	@Inject(method = "craft", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/colony/requestsystem/request/IRequest;addDelivery(Lnet/minecraft/world/item/ItemStack;)V"), cancellable = false)
+	private void craft_addDelivery(CallbackInfoReturnable<IAIState> cir)
 	{
-		var result = recipeStorage.fullfillRecipe(context, handlers);
+		var recipeStorage = this.currentRecipeStorage;
 
 		if (this.building.getCraftingModuleForRecipe(recipeStorage.getToken()) instanceof ICraftingResultListenerModule module)
 		{
 			var pos = this.minecolonies_compatibility$workingPosition != null ? this.minecolonies_compatibility$workingPosition : this.building.getPosition();
-			module.onCrafted(this.worker, pos, recipeStorage, result);
+			module.onCrafted(this.worker, pos, recipeStorage);
 		}
 
-		return result;
 	}
 
 }

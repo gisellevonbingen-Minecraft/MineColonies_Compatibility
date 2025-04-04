@@ -10,5 +10,5 @@ import net.minecraft.core.BlockPos;
 
 public interface ICraftingResultListenerModule extends ICraftingBuildingModule
 {
-	void onCrafted(@NotNull AbstractEntityCitizen worker, @NotNull BlockPos workingPos, @NotNull IRecipeStorage recipeStorage, boolean result);
+	void onCrafted(@NotNull AbstractEntityCitizen worker, @NotNull BlockPos workingPos, @NotNull IRecipeStorage recipeStorage);
 }

@@ -130,18 +130,14 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 	}
 
 	@Override
-	public void onCrafted(@NotNull AbstractEntityCitizen worker, @NotNull BlockPos workingPos, @NotNull IRecipeStorage recipeStorage, boolean result)
+	public void onCrafted(@NotNull AbstractEntityCitizen worker, @NotNull BlockPos workingPos, @NotNull IRecipeStorage recipeStorage)
 	{
-		if (result)
+		var recipe = toRecipe(recipeStorage);
+
+		if (recipe != null)
 		{
-			var recipe = toRecipe(recipeStorage);
-
-			if (recipe != null)
-			{
-				var level = worker.level();
-				this.drain(level, workingPos, level.getBlockState(workingPos), recipe, false);
-			}
-
+			var level = worker.level();
+			this.drain(level, workingPos, level.getBlockState(workingPos), recipe, false);
 		}
 
 	}

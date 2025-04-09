@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraftforge.items.IItemHandler;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ISecondaryRollableRecipeStorage;
-import steve_gall.minecolonies_tweaks.api.common.crafting.DelegateRecipeStorage;
+import steve_gall.minecolonies_tweaks.core.common.crafting.RecipeStorageExtension;
 
 @Mixin(value = RecipeStorage.class, remap = false)
 public abstract class RecipeStorageMixin
@@ -27,7 +27,7 @@ public abstract class RecipeStorageMixin
 	@Redirect(method = "insertCraftedItems", at = @At(value = "FIELD", target = "secondaryOutputs", opcode = Opcodes.GETFIELD))
 	private List<ItemStack> insertCraftedItems_secondaryOutputs(RecipeStorage self)
 	{
-		if (self instanceof DelegateRecipeStorage delegate && delegate.getParent().getImpl() instanceof ISecondaryRollableRecipeStorage crafting)
+		if (((RecipeStorageExtension) self).minecolonies_tweaks$getCustomized() instanceof ISecondaryRollableRecipeStorage crafting)
 		{
 			return crafting.rollSecondaryOutputs(this.minecolonies_compatibility$context);
 		}

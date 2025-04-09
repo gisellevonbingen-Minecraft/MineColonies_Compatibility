@@ -129,7 +129,19 @@ public class SmithingCraftingType extends CraftingType
 		input.add(base);
 		input.add(addition);
 		var allResults = getAllResults(recipe, registryAccess, template, base, addition);
-		return new GenericRecipe(recipe.getId(), ItemStack.EMPTY, allResults, Arrays.asList(), input, 2, Blocks.AIR, null, ModEquipmentTypes.none.get(), null, restrictions, requiredLevel);
+		return GenericRecipe.builder()//
+				.withRecipeId(recipe.getId())//
+				.withOutputs(ItemStack.EMPTY, allResults)//
+				.withAdditionalOutputs(Arrays.asList())//
+				.withInputs(input)//
+				.withGridSize(2)//
+				.withIntermediate(Blocks.AIR)//
+				.withLootTable(null)//
+				.withRequiredTool(ModEquipmentTypes.none.get())//
+				.withRequiredEntity(null)//
+				.withRestrictions(restrictions)//
+				.withLevelSort(requiredLevel)//
+				.build();
 	}
 
 	private static List<ItemStack> getAllResults(SmithingRecipe recipe, RegistryAccess registryAccess, ItemStack template, List<ItemStack> bases, List<ItemStack> additions)

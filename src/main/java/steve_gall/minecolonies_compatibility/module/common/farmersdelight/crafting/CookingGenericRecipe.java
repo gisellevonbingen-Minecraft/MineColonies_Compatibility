@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -151,9 +152,9 @@ public class CookingGenericRecipe implements IGenericRecipe
 	}
 
 	@Override
-	public @NotNull List<Component> getRestrictions()
+	public @NotNull Supplier<List<Component>> getRestrictions()
 	{
-		return Collections.emptyList();
+		return Collections::emptyList;
 	}
 
 	@Override

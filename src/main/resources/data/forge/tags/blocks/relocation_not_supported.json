@@ -1,0 +1,22 @@
+{
+	"replace": false,
+	"values": [
+		"minecolonies_compatibility:common_network_storage",
+		{
+			"required": false,
+			"id": "minecolonies_compatibility:citizen_extension"
+		},
+		{
+			"required": false,
+			"id": "minecolonies_compatibility:citizen_grid"
+		},
+		{
+			"required": false,
+			"id": "minecolonies_compatibility:citizen_inventory"
+		},
+		{
+			"required": false,
+			"id": "minecolonies_compatibility:citizen_slave"
+		}
+	]
+}

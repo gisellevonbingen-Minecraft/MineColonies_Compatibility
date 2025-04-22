@@ -115,9 +115,10 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 
 			if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
 			{
+				var user = this.user;
+				user.lookAt(target, (float) GuardConstants.TURN_AROUND, (float) GuardConstants.TURN_AROUND);
 				attack.doAttack(parentAI.getAIContext(), target);
 
-				var user = this.user;
 				target.setLastHurtByMob(user);
 				user.swing(InteractionHand.MAIN_HAND);
 				user.getNavigation().stop();

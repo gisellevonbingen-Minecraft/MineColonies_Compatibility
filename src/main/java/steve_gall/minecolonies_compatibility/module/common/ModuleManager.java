@@ -12,6 +12,7 @@ import steve_gall.minecolonies_compatibility.module.common.atmospheric.Atmospher
 import steve_gall.minecolonies_compatibility.module.common.blue_skies.BlueSkiesModule;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.ButchercraftModule;
 import steve_gall.minecolonies_compatibility.module.common.butchersdelight.ButchersDelightModule;
+import steve_gall.minecolonies_compatibility.module.common.collectorsreap.CollectorsReapModule;
 import steve_gall.minecolonies_compatibility.module.common.croptopia.CroptopiaModule;
 import steve_gall.minecolonies_compatibility.module.common.cyclic.CyclicModule;
 import steve_gall.minecolonies_compatibility.module.common.delightful.DelightfulModule;
@@ -66,6 +67,7 @@ public class ModuleManager
 	public static final OptionalModule<ButchercraftModule> BUTCHERCRAFT = register("butchercraft", () -> ButchercraftModule::new);
 	public static final OptionalModule<ButchersDelightModule> BUTCHERSDELIGHT = register("butchersdelight", () -> ButchersDelightModule::new);
 	public static final OptionalModule<AbstractModule> BUTCHERSDELIGHTFOODS = register("butchersdelightfoods", () -> AbstractModule::new);
+	public static final OptionalModule<CollectorsReapModule> COLLECTORSREAP = register("collectorsreap", () -> CollectorsReapModule::new);
 	public static final OptionalModule<CroptopiaModule> CROPTOPIA = register("croptopia", () -> CroptopiaModule::new);
 	public static final OptionalModule<CyclicModule> CYCLIC = register("cyclic", () -> CyclicModule::new);
 	public static final OptionalModule<DelightfulModule> DELIGHTFUL = register("delightful", () -> DelightfulModule::new);

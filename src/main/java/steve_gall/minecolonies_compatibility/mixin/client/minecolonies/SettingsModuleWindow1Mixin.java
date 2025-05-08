@@ -3,16 +3,15 @@ package steve_gall.minecolonies_compatibility.mixin.client.minecolonies;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.ldtteam.blockui.Pane;
 import com.ldtteam.blockui.PaneBuilders;
 import com.ldtteam.blockui.controls.Text;
-import com.ldtteam.blockui.views.BOWindow;
 import com.minecolonies.api.colony.buildings.modules.settings.ISetting;
 import com.minecolonies.api.colony.buildings.modules.settings.ISettingKey;
-import com.minecolonies.api.colony.buildings.modules.settings.ISettingsModuleView;
-import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.core.client.gui.modules.SettingsModuleWindow;
 
 import net.minecraft.ChatFormatting;
@@ -28,11 +27,9 @@ public class SettingsModuleWindow1Mixin
 	@Unique
 	private final SettingsModuleWindow minecolonies_compatibility$this$0 = ReflectionUtils.getOuter(this);
 
-	@Redirect(method = "updateElement", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/colony/buildings/modules/settings/ISetting.render"))
-	private <S> void setting_render(ISetting<S> setting, ISettingKey<S> key, Pane rowPane, ISettingsModuleView settingsModuleView, IBuildingView building, BOWindow window)
+	@Inject(method = "updateElement", remap = false, at = @At(value = "TAIL"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	private <S> void setting_render(int index, Pane rowPane, CallbackInfo ci, ISettingKey<? extends ISetting<S>> key, ISetting<S> setting)
 	{
-		setting.render(key, rowPane, settingsModuleView, building, window);
-
 		var id = key.getUniqueId();
 
 		if (id.getNamespace().equals(MineColoniesCompatibility.MOD_ID))

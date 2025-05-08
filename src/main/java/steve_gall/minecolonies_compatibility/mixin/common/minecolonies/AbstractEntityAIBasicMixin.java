@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.minecolonies.api.util.ItemStackUtils;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
 import com.minecolonies.core.colony.jobs.AbstractJob;
 import com.minecolonies.core.entity.ai.basic.AbstractAISkeleton;
@@ -63,12 +63,10 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 
 	}
 
-	@Redirect(method = "dumpOneMoreSlot", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/util/ItemStackUtils;isEmpty(Lnet/minecraft/world/item/ItemStack;)Z"))
-	private boolean dumpOneMoreSlot_isEmpty(ItemStack stackToDump)
+	@WrapOperation(method = "dumpOneMoreSlot", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z"))
+	private boolean dumpOneMoreSlot_isEmpty(ItemStack stackToDump, Operation<Boolean> operation)
 	{
-		var empty = ItemStackUtils.isEmpty(stackToDump);
-
-		if (empty)
+		if (operation.call(stackToDump))
 		{
 			return true;
 		}

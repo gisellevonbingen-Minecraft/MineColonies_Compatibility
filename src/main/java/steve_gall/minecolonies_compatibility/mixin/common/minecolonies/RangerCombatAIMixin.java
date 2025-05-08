@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
 import com.minecolonies.api.entity.citizen.Skill;
 import com.minecolonies.api.research.effects.IResearchEffectManager;
@@ -71,8 +73,8 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 
 	}
 
-	@Redirect(method = "doAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/effects/IResearchEffectManager.getEffectStrength"))
-	private double doAttack_getEffectStrength_DOUBLE_ARROWS(IResearchEffectManager researchManager, ResourceLocation id)
+	@WrapOperation(method = "doAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/effects/IResearchEffectManager.getEffectStrength"))
+	private double doAttack_getEffectStrength_DOUBLE_ARROWS(IResearchEffectManager researchManager, ResourceLocation id, Operation<Double> operation)
 	{
 		var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);
 
@@ -85,7 +87,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 
 		}
 
-		return researchManager.getEffectStrength(id);
+		return operation.call(researchManager, id);
 	}
 
 	@Inject(method = "doAttack", remap = false, at = @At(value = "HEAD"), cancellable = true)

@@ -4,10 +4,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.entity.ai.statemachine.states.IState;
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
 import com.minecolonies.api.entity.combat.CombatAIStates;
@@ -64,10 +65,10 @@ public abstract class AttackMoveAIMixin<T extends Mob & IThreatTableEntity> exte
 
 	}
 
-	@Redirect(method = "move", remap = false, at = @At(value = "INVOKE", target = "checkForTarget"))
-	private boolean move_checkForTarget(AttackMoveAI<T> ai)
+	@WrapOperation(method = "move", remap = false, at = @At(value = "INVOKE", target = "checkForTarget"))
+	private boolean move_checkForTarget(AttackMoveAI<T> ai, Operation<Boolean> operation)
 	{
-		if (!this.checkForTarget())
+		if (!operation.call(ai))
 		{
 			return false;
 		}

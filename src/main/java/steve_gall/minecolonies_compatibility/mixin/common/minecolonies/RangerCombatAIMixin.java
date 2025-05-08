@@ -7,10 +7,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
 import com.minecolonies.api.entity.citizen.Skill;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
@@ -51,15 +52,15 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 		super(owner, stateMachine);
 	}
 
-	@Redirect(method = "canAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/InventoryUtils.getFirstSlotOfItemHandlerContainingEquipment"))
-	private int canAttack_getFirstSlotOfItemHandlerContainingEquipment(IItemHandler itemHandler, EquipmentTypeEntry equipmentType, int minimalLevel, int maximumLevel)
+	@WrapOperation(method = "canAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/InventoryUtils.getFirstSlotOfItemHandlerContainingEquipment"))
+	private int canAttack_getFirstSlotOfItemHandlerContainingEquipment(IItemHandler itemHandler, EquipmentTypeEntry equipmentType, int minimalLevel, int maximumLevel, Operation<Integer> operation)
 	{
 		if (equipmentType == ModEquipmentTypes.bow.get())
 		{
 			equipmentType = ModToolTypes.RANGER_WEAPON.getToolType();
 		}
 
-		return InventoryUtils.getFirstSlotOfItemHandlerContainingEquipment(itemHandler, equipmentType, minimalLevel, maximumLevel);
+		return operation.call(itemHandler, equipmentType, minimalLevel, maximumLevel);
 	}
 
 	@ModifyConstant(method = "doAttack", remap = false, constant = @Constant(intValue = 1, ordinal = 0))
@@ -78,8 +79,8 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 
 	}
 
-	@Redirect(method = "doAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/effects/IResearchEffectManager.getEffectStrength"))
-	private double doAttack_getEffectStrength_DOUBLE_ARROWS(IResearchEffectManager researchManager, ResourceLocation id)
+	@WrapOperation(method = "doAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/effects/IResearchEffectManager.getEffectStrength"))
+	private double doAttack_getEffectStrength_DOUBLE_ARROWS(IResearchEffectManager researchManager, ResourceLocation id, Operation<Double> operation)
 	{
 		var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);
 
@@ -92,7 +93,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 
 		}
 
-		return researchManager.getEffectStrength(id);
+		return operation.call(researchManager, id);
 	}
 
 	@Inject(method = "doAttack", remap = false, at = @At(value = "HEAD"), cancellable = true)

@@ -64,7 +64,7 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 
 	}
 
-	@WrapOperation(method = "dumpOneMoreSlot", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z"))
+	@WrapOperation(method = "dumpOneMoreSlot", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z", remap = true))
 	private boolean dumpOneMoreSlot_isEmpty(ItemStack stackToDump, Operation<Boolean> operation)
 	{
 		if (operation.call(stackToDump))

@@ -110,6 +110,10 @@ dependencies {
     // Mod
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_api_version}"
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")) {
+        jarJar.ranged(it, "[${mixin_extras_version},)")
+    }
 
     // Required
     implementation fg.deobf("com.ldtteam:minecolonies:${minecolonies_version}")
@@ -176,7 +180,7 @@ dependencies {
     implementation fg.deobf("curse.maven:tinkers-levelling-addon-709416:${tinkerslevelingaddon_file}")
     implementation fg.deobf("curse.maven:collectors-reap-807101:${collectorsreap_file}")
 
-    // Runtiem Only
+    // Runtime Only
     runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")
     runtimeOnly fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")
     runtimeOnly fg.deobf("curse.maven:configured-457570:${configured_file}")

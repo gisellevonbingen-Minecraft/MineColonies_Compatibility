@@ -7,9 +7,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.core.colony.buildingextensions.FarmField;
@@ -158,8 +159,8 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 
 	}
 
-	@Redirect(method = "harvestIfAble", remap = false, at = @At(value = "INVOKE", target = "mineBlock(Lnet/minecraft/core/BlockPos;)Z"))
-	private boolean harvestIfAble_mineBlock(EntityAIWorkFarmer self, BlockPos position)
+	@WrapOperation(method = "harvestIfAble", remap = false, at = @At(value = "INVOKE", target = "mineBlock(Lnet/minecraft/core/BlockPos;)Z"))
+	private boolean harvestIfAble_mineBlock(EntityAIWorkFarmer self, BlockPos position, Operation<Boolean> operation)
 	{
 		var worker = this.worker;
 		var level = this.world;
@@ -206,11 +207,11 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 
 		}
 
-		return this.mineBlock(position);
+		return operation.call(self, position);
 	}
 
-	@Redirect(method = "createCorrectFarmlandForSeed", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z", remap = true))
-	private boolean createCorrectFarmlandForSeed_setBlockAndUpdate(Level level, BlockPos pos, BlockState next)
+	@WrapOperation(method = "createCorrectFarmlandForSeed", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z", remap = true))
+	private boolean createCorrectFarmlandForSeed_setBlockAndUpdate(Level level, BlockPos pos, BlockState next, Operation<Boolean> operation)
 	{
 		if (next.getBlock() == Blocks.FARMLAND)
 		{
@@ -225,7 +226,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 
 		}
 
-		return level.setBlockAndUpdate(pos, next);
+		return operation.call(level, pos, next);
 	}
 
 	@Inject(method = "findHoeableSurface", remap = false, at = @At(value = "TAIL"), cancellable = true)

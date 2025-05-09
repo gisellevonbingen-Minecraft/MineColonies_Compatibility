@@ -6,9 +6,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.colony.interactionhandling.ChatPriority;
 import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
@@ -40,8 +41,8 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 		super(job);
 	}
 
-	@Redirect(method = "craft", remap = false, at = @At(value = "INVOKE", target = "walkToBuilding"))
-	protected boolean craft_walkToBuilding(AbstractEntityAICrafting<J, B> self)
+	@WrapOperation(method = "craft", remap = false, at = @At(value = "INVOKE", target = "walkToBuilding"))
+	protected boolean craft_walkToBuilding(AbstractEntityAICrafting<J, B> self, Operation<Boolean> operation)
 	{
 		var recipeStorage = this.currentRecipeStorage;
 
@@ -67,11 +68,11 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 		}
 
 		this.minecolonies_compatibility$workingPosition = null;
-		return this.walkToBuilding();
+		return operation.call(self);
 	}
 
-	@Redirect(method = "craft", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/core/colony/buildings/AbstractBuilding;getPosition()Lnet/minecraft/core/BlockPos;", ordinal = 0))
-	private BlockPos craft_building_getPosition_0(B building)
+	@WrapOperation(method = "craft", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/core/colony/buildings/AbstractBuilding;getPosition()Lnet/minecraft/core/BlockPos;", ordinal = 0))
+	private BlockPos craft_building_getPosition_0(B building, Operation<BlockPos> operation)
 	{
 		if (this.minecolonies_compatibility$workingPosition != null)
 		{
@@ -79,13 +80,13 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 		}
 		else
 		{
-			return building.getPosition();
+			return operation.call(building);
 		}
 
 	}
 
-	@Redirect(method = "craft", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/core/colony/buildings/AbstractBuilding;getPosition()Lnet/minecraft/core/BlockPos;", ordinal = 1))
-	private BlockPos craft_building_getPosition_1(B building)
+	@WrapOperation(method = "craft", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/core/colony/buildings/AbstractBuilding;getPosition()Lnet/minecraft/core/BlockPos;", ordinal = 1))
+	private BlockPos craft_building_getPosition_1(B building, Operation<BlockPos> operation)
 	{
 		if (this.minecolonies_compatibility$workingPosition != null)
 		{
@@ -93,7 +94,7 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 		}
 		else
 		{
-			return building.getPosition();
+			return operation.call(building);
 		}
 
 	}

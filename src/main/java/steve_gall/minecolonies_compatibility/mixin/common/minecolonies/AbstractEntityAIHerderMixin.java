@@ -8,9 +8,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.util.constant.ToolType;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
 import com.minecolonies.core.colony.jobs.AbstractJob;
@@ -72,8 +73,8 @@ public abstract class AbstractEntityAIHerderMixin<J extends AbstractJob<?, J>, B
 		return toolType;
 	}
 
-	@Redirect(method = "butcherAnimal", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", remap = true))
-	private boolean butcherAnimal_hurt(Animal animal, DamageSource source, float damage)
+	@WrapOperation(method = "butcherAnimal", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", remap = true))
+	private boolean butcherAnimal_hurt(Animal animal, DamageSource source, float damage, Operation<Boolean> operation)
 	{
 		if (source instanceof EntityDamageSource source2 && source2.getEntity() instanceof FakePlayer player)
 		{
@@ -91,7 +92,7 @@ public abstract class AbstractEntityAIHerderMixin<J extends AbstractJob<?, J>, B
 
 		}
 
-		return animal.hurt(source, damage);
+		return operation.call(animal, source, damage);
 	}
 
 }

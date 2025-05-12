@@ -16,7 +16,7 @@ import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRat
 import com.minecolonies.api.entity.citizen.Skill;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
-import com.minecolonies.api.research.effects.IResearchEffectManager;
+import com.minecolonies.api.research.IResearchEffectManager;
 import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.SoundUtils;
@@ -79,7 +79,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 
 	}
 
-	@WrapOperation(method = "doAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/effects/IResearchEffectManager.getEffectStrength"))
+	@WrapOperation(method = "doAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/research/IResearchEffectManager.getEffectStrength"))
 	private double doAttack_getEffectStrength_DOUBLE_ARROWS(IResearchEffectManager researchManager, ResourceLocation id, Operation<Double> operation)
 	{
 		var weapon = this.user.getItemInHand(InteractionHand.MAIN_HAND);

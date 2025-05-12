@@ -9,11 +9,11 @@ import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.MinecoloniesAPIProxy;
 import com.minecolonies.api.research.IGlobalResearch;
 import com.minecolonies.api.research.IResearchRequirement;
+import com.minecolonies.api.research.requirements.BuildingAlternatesResearchRequirement;
+import com.minecolonies.api.research.requirements.BuildingResearchRequirement;
 import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
-import com.minecolonies.core.research.AlternateBuildingResearchRequirement;
-import com.minecolonies.core.research.BuildingResearchRequirement;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -156,8 +156,8 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 			this.research = research;
 			this.header = MutableComponent.create(branch.getName()).append(" - ").append(level);
 			this.name = MutableComponent.create(research.getName());
-			this.effects = research.getEffects().stream().map(effect -> (Component) MutableComponent.create(effect.getDesc())).toList();
-			this.requirements = research.getResearchRequirement().stream().map(requirement ->
+			this.effects = research.getEffects().stream().map(effect -> (Component) MutableComponent.create(effect.getName())).toList();
+			this.requirements = research.getResearchRequirements().stream().map(requirement ->
 			{
 				return new Tuple<>(requirement, this.getBuildingTuples(requirement).map(tuple ->
 				{
@@ -178,7 +178,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 			this.tooltip.addAll(this.effects);
 			var style = Style.EMPTY.withColor(ResearchConstants.COLOR_TEXT_UNFULFILLED);
 
-			for (var requirement : research.getResearchRequirement())
+			for (var requirement : research.getResearchRequirements())
 			{
 				this.tooltip.add(Component.literal(" - ").append(requirement.getDesc()).withStyle(style));
 			}
@@ -208,7 +208,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 		private Stream<Tuple<String, Integer>> getBuildingTuples(IResearchRequirement requirement)
 		{
-			if (requirement instanceof AlternateBuildingResearchRequirement alternateBuildingRequirement)
+			if (requirement instanceof BuildingAlternatesResearchRequirement alternateBuildingRequirement)
 			{
 				return alternateBuildingRequirement.getBuildings().entrySet().stream().map(entry ->
 				{

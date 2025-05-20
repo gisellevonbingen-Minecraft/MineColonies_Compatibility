@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -89,7 +90,7 @@ public class FruitBushFruit extends CustomizedFruit
 			BlockPos lowerPos = null;
 			BlockState lowerState = null;
 
-			if (state.getValue(FruitBushBlock.HALF) == DoubleBlockHalf.UPPER)
+			if (state.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.UPPER)
 			{
 				lowerPos = context.getPosition().below();
 				lowerState = level.getBlockState(lowerPos);
@@ -104,7 +105,7 @@ public class FruitBushFruit extends CustomizedFruit
 
 			var newLowerState = lowerState.setValue(FruitBushBlock.AGE, FruitBushBlock.MAX_AGE - 2);
 			level.setBlock(lowerPos, newLowerState, Block.UPDATE_CLIENTS);
-			level.setBlock(lowerPos.above(), newLowerState.setValue(FruitBushBlock.HALF, DoubleBlockHalf.UPPER), Block.UPDATE_CLIENTS);
+			level.setBlock(lowerPos.above(), newLowerState.setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER), Block.UPDATE_CLIENTS);
 
 			return drops;
 		}

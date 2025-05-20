@@ -135,7 +135,11 @@ public class HookButcherable extends AbstractButcherable
 		{
 			var player = ColonyHelper.getFakeOwner(citizen.getWorker().getCitizenData().getColony());
 
-			if (blockEntity.maxProgress == 0)
+			if (player == null)
+			{
+				return;
+			}
+			else if (blockEntity.maxProgress == 0)
 			{
 				((MeatHookBlockEntityAccessor) blockEntity).invokeSetupStage(this.recipe, 0);
 			}

@@ -91,7 +91,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 
 		var colony = module.getBuilding().getColony();
 		var owner = ColonyHelper.getFakeOwner(colony);
-		return network.getSecurityManager().hasPermission(permission, owner);
+		return owner != null && network.getSecurityManager().hasPermission(permission, owner);
 	}
 
 	@Override

@@ -101,7 +101,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		var colony = module.getBuilding().getColony();
 		var owner = ColonyHelper.getFakeOwner(colony);
-		return grid.getSecurityService().hasPermission(owner, permissions);
+		return owner != null && grid.getSecurityService().hasPermission(owner, permissions);
 	}
 
 	@Override

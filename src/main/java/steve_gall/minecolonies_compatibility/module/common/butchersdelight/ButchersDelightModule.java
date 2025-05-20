@@ -281,7 +281,7 @@ public class ButchersDelightModule extends AbstractModule
 	public static void rightClick(ServerLevel level, BlockPos position, AbstractEntityCitizen worker, ItemStack stack)
 	{
 		var hand = InteractionHand.MAIN_HAND;
-		var player = ColonyHelper.getFakeOwner(worker.getCitizenData().getColony());
+		var player = ColonyHelper.getFakeOwner(worker.getCitizenData().getColony(), level);
 		var hitVec = new BlockHitResult(Vec3.atCenterOf(position), Direction.UP, position, true);
 
 		player.setItemInHand(hand, stack);

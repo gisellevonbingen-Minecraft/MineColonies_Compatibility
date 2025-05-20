@@ -214,9 +214,10 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	{
 		if (next.getBlock() == Blocks.FARMLAND)
 		{
+			var colony = this.worker.getCitizenData().getColony();
 			var hand = this.worker.getUsedItemHand();
 			var hoe = this.worker.getInventoryCitizen().getHeldItem(hand);
-			var tilled = BlockUtils.getHoeTilledState(level, pos, hand, hoe, false);
+			var tilled = BlockUtils.getHoeTilledState(colony, level, pos, hand, hoe, false);
 
 			if (tilled != null)
 			{
@@ -237,10 +238,11 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		}
 
 		var level = this.world;
+		var colony = this.worker.getCitizenData().getColony();
 		var hand = this.worker.getUsedItemHand();
 		var hoe = this.worker.getInventoryCitizen().getHeldItem(hand);
 		var prev = level.getBlockState(pos);
-		var tilled = BlockUtils.getHoeTilledState(level, pos, hand, hoe, true);
+		var tilled = BlockUtils.getHoeTilledState(colony, level, pos, hand, hoe, true);
 
 		if (tilled == null || tilled == prev)
 		{

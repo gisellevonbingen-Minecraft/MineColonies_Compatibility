@@ -12,6 +12,8 @@ import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.ItemStackUtils;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SmithingTemplateItem;
+import steve_gall.minecolonies_compatibility.core.common.init.ModTags;
 
 public class ItemStackHelper
 {
@@ -74,6 +76,11 @@ public class ItemStackHelper
 	public static boolean equalsIgnoreSize(ItemStack stack1, ItemStack stack2)
 	{
 		return ItemStackUtils.compareItemStacksIgnoreStackSize(stack1, stack2);
+	}
+
+	public static boolean isSmithingTemplate(ItemStack stack)
+	{
+		return stack.getItem() instanceof SmithingTemplateItem || stack.is(ModTags.Items.SMITHING_TEMPLATES);
 	}
 
 	private ItemStackHelper()

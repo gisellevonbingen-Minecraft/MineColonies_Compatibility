@@ -16,11 +16,11 @@ import com.minecolonies.core.colony.buildings.modules.AbstractCraftingBuildingMo
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingTemplateRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackCounter;
+import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackKey;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizableRecipeStorage;
 
@@ -42,7 +42,7 @@ public class SmithingTemplateCraftingModule extends AbstractCraftingBuildingModu
 			@Override
 			public boolean isItemValid(int slot, ItemStack stack)
 			{
-				return stack.getItem() instanceof SmithingTemplateItem;
+				return ItemStackHelper.isSmithingTemplate(stack);
 			}
 
 			@Override
@@ -122,7 +122,7 @@ public class SmithingTemplateCraftingModule extends AbstractCraftingBuildingModu
 	@Override
 	public boolean isRecipeCompatible(@NotNull IGenericRecipe recipe)
 	{
-		return recipe.getPrimaryOutput().getItem() instanceof SmithingTemplateItem && super.isRecipeCompatible(recipe);
+		return ItemStackHelper.isSmithingTemplate(recipe.getPrimaryOutput()) && super.isRecipeCompatible(recipe);
 	}
 
 	@Override

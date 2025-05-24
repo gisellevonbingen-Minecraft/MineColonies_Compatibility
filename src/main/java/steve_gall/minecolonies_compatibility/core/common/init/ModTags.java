@@ -13,6 +13,7 @@ public class ModTags
 	public static class Items
 	{
 		public static final TagKey<Item>[] SMITHING_REQUIRED_LEVEL;
+		public static final TagKey<Item> SMITHING_TEMPLATES;
 
 		static
 		{
@@ -23,6 +24,7 @@ public class ModTags
 				SMITHING_REQUIRED_LEVEL[i] = ItemTags.create(MineColoniesCompatibility.rl("smithing_required_level_" + i));
 			}
 
+			SMITHING_TEMPLATES = ItemTags.create(MineColoniesCompatibility.rl("smithing_templates"));
 		}
 
 	}

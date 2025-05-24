@@ -79,13 +79,17 @@ public abstract class WindowListRecipes1Mixin
 				var currentCount = counter.get(new ItemStackKey(smithingTemplate.getPrimaryOutput()));
 				var needCount = smithingTemplate.getInputTemplateCount();
 
-				var list = new ArrayList<MutableComponent>();
-				list.add(Component.translatable("minecolonies_compatibility.text.smithing_template_needs", smithingTemplate.getPrimaryOutput().getHoverName(), needCount));
-				list.add(Component.translatable("minecolonies_compatibility.text.smithing_template_counts", currentCount, needCount));
-
-				for (var component : list)
+				if (needCount > 0)
 				{
-					((ItemIconExtension) icon).minecolonies_compatibility$addTooltip(component.withStyle(currentCount >= needCount ? ChatFormatting.GREEN : ChatFormatting.RED));
+					var list = new ArrayList<MutableComponent>();
+					list.add(Component.translatable("minecolonies_compatibility.text.smithing_template_needs", smithingTemplate.getPrimaryOutput().getHoverName(), needCount));
+					list.add(Component.translatable("minecolonies_compatibility.text.smithing_template_counts", currentCount, needCount));
+
+					for (var component : list)
+					{
+						((ItemIconExtension) icon).minecolonies_compatibility$addTooltip(component.withStyle(currentCount >= needCount ? ChatFormatting.GREEN : ChatFormatting.RED));
+					}
+
 				}
 
 			}

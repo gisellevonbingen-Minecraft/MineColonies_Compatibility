@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import slimeknights.tconstruct.library.tools.item.IModifiable;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.ProxyMethods;
-import steve_gall.minecolonies_compatibility.module.common.tconstruct.ToolHelper;
+import steve_gall.minecolonies_compatibility.module.common.tconstruct.TConstructToolHelper;
 
 @Mixin(value = EquipmentTypeEntry.class, remap = false)
 public abstract class EquipmentTypeEntryMixin
@@ -42,13 +42,13 @@ public abstract class EquipmentTypeEntryMixin
 		{
 			if (stack.getItem() instanceof IModifiable)
 			{
-				if (ToolHelper.isBroken(stack))
+				if (TConstructToolHelper.isBroken(stack))
 				{
 					cir.setReturnValue(-1);
 				}
 				else
 				{
-					var tier = ToolHelper.getTier(stack);
+					var tier = TConstructToolHelper.getTier(stack);
 					var min = 0;
 
 					if (isDurabilityBasedLevel(this.minecolonies_compatibility$self))

@@ -108,7 +108,7 @@ public class BrokenItem implements IDeliverableObject
 	@Override
 	public boolean matches(@NotNull ItemStack stack)
 	{
-		return this.ai != null && ToolHelper.isBroken(stack) && this.ai.building.getBuildingLevel() >= ToolHelper.getTier(stack);
+		return this.ai != null && TConstructToolHelper.isBroken(stack) && this.ai.building.getBuildingLevel() >= TConstructToolHelper.getTier(stack);
 	}
 
 }

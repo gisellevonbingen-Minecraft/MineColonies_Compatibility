@@ -22,7 +22,7 @@ import slimeknights.tconstruct.library.tools.stat.ToolStats;
 import slimeknights.tconstruct.tools.TinkerToolParts;
 import steve_gall.minecolonies_compatibility.core.common.inventory.EmptyMenu;
 
-public class ToolHelper
+public class TConstructToolHelper
 {
 	public static boolean isBroken(ItemStack stack)
 	{
@@ -50,7 +50,7 @@ public class ToolHelper
 			}
 			else
 			{
-				var materialVariants = ToolHelper.getRepairVariants(tool);
+				var materialVariants = TConstructToolHelper.getRepairVariants(tool);
 				level = materialVariants.stream().mapToInt(m -> m.get().getTier()).max().orElse(-1);
 			}
 
@@ -144,7 +144,7 @@ public class ToolHelper
 		return ToolStack.from(tool).getDamage() > 0;
 	}
 
-	private ToolHelper()
+	private TConstructToolHelper()
 	{
 
 	}

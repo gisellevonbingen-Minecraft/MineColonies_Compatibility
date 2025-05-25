@@ -21,8 +21,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAttack;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
-import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
-import steve_gall.minecolonies_compatibility.module.common.tconstruct.TConstructToolHelper;
+import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 
 @Mixin(value = AbstractEntityAIFight.class, remap = false)
 public abstract class AbstractEntityAIFightMixin<J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends AbstractEntityAIInteract<J, B>
@@ -54,25 +53,22 @@ public abstract class AbstractEntityAIFightMixin<J extends AbstractJobGuard<J>, 
 
 	private void dumpBrokenArmors()
 	{
-		if (ModuleManager.TCONSTRUCT.isLoaded())
+		var inventory = this.worker.getInventoryCitizen();
+
+		for (var slot : Arrays.asList(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.LEGS))
 		{
-			var inventory = this.worker.getInventoryCitizen();
+			var armor = inventory.getArmorInSlot(slot);
+			var system = CustomizedToolSystem.select(armor);
 
-			for (var slot : Arrays.asList(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.LEGS))
+			if (system != null && system.isBroken(armor))
 			{
-				var armor = inventory.getArmorInSlot(slot);
-
-				if (TConstructToolHelper.isBroken(armor))
+				if (InventoryUtils.transferItemStackIntoNextBestSlotInItemHandler(armor, this.getBuildingToDump().getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElseGet(null)))
 				{
-					if (InventoryUtils.transferItemStackIntoNextBestSlotInItemHandler(armor, this.getBuildingToDump().getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElseGet(null)))
-					{
-						inventory.forceClearArmorInSlot(slot, armor);
-					}
-					else
-					{
-						inventory.moveArmorToInventory(slot);
-					}
-
+					inventory.forceClearArmorInSlot(slot, armor);
+				}
+				else
+				{
+					inventory.moveArmorToInventory(slot);
 				}
 
 			}

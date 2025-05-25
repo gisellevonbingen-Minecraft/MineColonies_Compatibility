@@ -45,7 +45,7 @@ public class TConstructRepair extends CustomizedRepair
 		{
 			var item = inventory.getStackInSlot(i);
 
-			if (TConstructToolHelper.isBroken(item))
+			if (TConstructToolHelper.isToolAndBroken(item))
 			{
 				var tool = ToolStack.from(item);
 
@@ -103,11 +103,11 @@ public class TConstructRepair extends CustomizedRepair
 			citizenData.createRequestAsync(new CustomizableDeliverable(new BrokenItem(ai)));
 		}
 
-		var hasTool = InventoryUtils.hasItemInProvider(ai.building, TConstructToolHelper::isBroken);
+		var hasTool = InventoryUtils.hasItemInProvider(ai.building, TConstructToolHelper::isToolAndBroken);
 
 		if (hasTool)
 		{
-			return CheckResult.needsCurrently(new Tuple<>(TConstructToolHelper::isBroken, 1));
+			return CheckResult.needsCurrently(new Tuple<>(TConstructToolHelper::isToolAndBroken, 1));
 		}
 
 		return null;

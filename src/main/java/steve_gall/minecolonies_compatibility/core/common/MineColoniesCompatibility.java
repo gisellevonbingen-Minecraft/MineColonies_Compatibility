@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.creativetab.ModCreativeTabs;
+import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -23,6 +24,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
+import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 import steve_gall.minecolonies_compatibility.core.client.gui.AccessDirectionHolderScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
@@ -96,6 +98,12 @@ public class MineColoniesCompatibility
 	{
 		e.enqueueWork(() ->
 		{
+			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.bow.get());
+			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.fishing_rod.get());
+			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.shears.get());
+			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.shield.get());
+			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.flint_and_steel.get());
+
 			ModBuildings.guardTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_TOWER_WORK);
 			ModBuildings.barracksTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_BARRACKS_WORK);
 

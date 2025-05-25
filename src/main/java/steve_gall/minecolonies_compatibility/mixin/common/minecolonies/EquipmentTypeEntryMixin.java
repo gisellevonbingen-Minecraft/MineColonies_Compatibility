@@ -6,14 +6,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.world.item.ItemStack;
-import slimeknights.tconstruct.library.tools.item.IModifiable;
-import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
-import steve_gall.minecolonies_compatibility.module.common.tconstruct.ProxyMethods;
-import steve_gall.minecolonies_compatibility.module.common.tconstruct.TConstructToolHelper;
+import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 
 @Mixin(value = EquipmentTypeEntry.class, remap = false)
 public abstract class EquipmentTypeEntryMixin
@@ -24,13 +20,15 @@ public abstract class EquipmentTypeEntryMixin
 	@Inject(method = "checkIsEquipment", remap = false, at = @At(value = "HEAD"), cancellable = true)
 	private void checkIsEquipment(ItemStack stack, CallbackInfoReturnable<Boolean> cir)
 	{
-		if (ModuleManager.TCONSTRUCT.isLoaded())
-		{
-			if (ProxyMethods.isSpecialTool(stack, this.minecolonies_compatibility$self))
-			{
-				cir.setReturnValue(true);
-			}
+		var system = CustomizedToolSystem.select(stack);
 
+		if (system == null)
+		{
+			return;
+		}
+		else if (system.isSpecialTool(stack, this.minecolonies_compatibility$self))
+		{
+			cir.setReturnValue(true);
 		}
 
 	}
@@ -38,40 +36,29 @@ public abstract class EquipmentTypeEntryMixin
 	@Inject(method = "getMiningLevel", remap = false, at = @At(value = "HEAD", remap = false), cancellable = true)
 	private void getMiningLevel(ItemStack stack, CallbackInfoReturnable<Integer> cir)
 	{
-		if (ModuleManager.TCONSTRUCT.isLoaded())
+		var system = CustomizedToolSystem.select(stack);
+
+		if (system == null)
 		{
-			if (stack.getItem() instanceof IModifiable)
+			return;
+		}
+		else if (system.isBroken(stack))
+		{
+			cir.setReturnValue(-1);
+		}
+		else
+		{
+			var min = 0;
+			var level = system.getLevel(stack);
+
+			if (CustomizedToolSystem.isDurabilityBasedLevel(this.minecolonies_compatibility$self))
 			{
-				if (TConstructToolHelper.isBroken(stack))
-				{
-					cir.setReturnValue(-1);
-				}
-				else
-				{
-					var tier = TConstructToolHelper.getTier(stack);
-					var min = 0;
-
-					if (isDurabilityBasedLevel(this.minecolonies_compatibility$self))
-					{
-						min = 1;
-					}
-
-					cir.setReturnValue(Math.max(tier, min));
-				}
-
+				min = 1;
 			}
 
+			cir.setReturnValue(Math.max(level, min));
 		}
 
-	}
-
-	private static boolean isDurabilityBasedLevel(EquipmentTypeEntry toolType)
-	{
-		return toolType == ModEquipmentTypes.bow.get()//
-				|| toolType == ModEquipmentTypes.fishing_rod.get()//
-				|| toolType == ModEquipmentTypes.shears.get()//
-				|| toolType == ModEquipmentTypes.shield.get()//
-				|| toolType == ModEquipmentTypes.flint_and_steel.get();
 	}
 
 }

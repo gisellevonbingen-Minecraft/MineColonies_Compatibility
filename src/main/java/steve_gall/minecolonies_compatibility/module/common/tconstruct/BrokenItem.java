@@ -11,13 +11,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import slimeknights.tconstruct.library.tools.item.IModifiable;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
+import steve_gall.minecolonies_compatibility.api.common.repair.ToolSystemBrokenItem;
+import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
-public class BrokenItem implements IDeliverableObject
+public class BrokenItem extends ToolSystemBrokenItem
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("tconstruct_broken_item");
 	public static final Component SHORT_DISPLAY_STRING = Component.translatable(MineColoniesCompatibility.tl("tconstruct_broken_item"));
@@ -25,16 +25,9 @@ public class BrokenItem implements IDeliverableObject
 
 	private static List<ItemStack> EXAMPLES;
 
-	private final EntityAIWorkBlacksmith ai;
-
 	public BrokenItem(EntityAIWorkBlacksmith ai)
 	{
-		this.ai = ai;
-	}
-
-	public EntityAIWorkBlacksmith getAI()
-	{
-		return this.ai;
+		super(ai);
 	}
 
 	@Override
@@ -42,6 +35,12 @@ public class BrokenItem implements IDeliverableObject
 	public ResourceLocation getId()
 	{
 		return ID;
+	}
+
+	@Override
+	public CustomizedToolSystem getToolSystem()
+	{
+		return TConstructToolSystem.INSTANCE;
 	}
 
 	public static BrokenItem deserialize(@NotNull CompoundTag tag)
@@ -74,7 +73,7 @@ public class BrokenItem implements IDeliverableObject
 	{
 		if (EXAMPLES == null)
 		{
-			EXAMPLES = MinecoloniesAPIProxy.getInstance().getColonyManager().getCompatibilityManager().getListOfAllItems().stream().filter(stack -> stack.getItem() instanceof IModifiable).map(stack ->
+			EXAMPLES = MinecoloniesAPIProxy.getInstance().getColonyManager().getCompatibilityManager().getListOfAllItems().stream().filter(TConstructToolSystem.INSTANCE::isTool).map(stack ->
 			{
 				return getBroken(stack);
 			}).toList();
@@ -96,19 +95,7 @@ public class BrokenItem implements IDeliverableObject
 	@Override
 	public BrokenItem copyWithCount(int newCount)
 	{
-		return new BrokenItem(this.ai);
-	}
-
-	@Override
-	public int getCount()
-	{
-		return 1;
-	}
-
-	@Override
-	public boolean matches(@NotNull ItemStack stack)
-	{
-		return this.ai != null && TConstructToolHelper.isBroken(stack) && this.ai.building.getBuildingLevel() >= TConstructToolHelper.getTier(stack);
+		return new BrokenItem(this.getAI());
 	}
 
 }

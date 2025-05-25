@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import com.minecolonies.api.util.constant.BuildingConstants;
-
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -14,50 +12,17 @@ import slimeknights.tconstruct.library.materials.definition.IMaterial;
 import slimeknights.tconstruct.library.materials.definition.MaterialVariant;
 import slimeknights.tconstruct.library.materials.definition.MaterialVariantId;
 import slimeknights.tconstruct.library.tools.definition.module.material.ToolMaterialHook;
-import slimeknights.tconstruct.library.tools.definition.module.mining.MiningTierToolHook;
-import slimeknights.tconstruct.library.tools.item.IModifiable;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
-import slimeknights.tconstruct.library.tools.stat.ToolStats;
 import slimeknights.tconstruct.tools.TinkerToolParts;
 import steve_gall.minecolonies_compatibility.core.common.inventory.EmptyMenu;
 
 public class TConstructToolHelper
 {
-	public static boolean isBroken(ItemStack stack)
+	public static boolean isToolAndBroken(ItemStack stack)
 	{
-		return stack.getItem() instanceof IModifiable && ToolStack.from(stack).isBroken();
-	}
-
-	@SuppressWarnings("deprecation")
-	public static int getTier(ItemStack stack)
-	{
-		if (stack.getItem() instanceof IModifiable)
-		{
-			var tool = ToolStack.from(stack);
-
-			if (tool.isBroken())
-			{
-				return -1;
-			}
-
-			var level = -1;
-
-			if (tool.getStats().hasStat(ToolStats.HARVEST_TIER))
-			{
-				var tier = MiningTierToolHook.getTier(tool);
-				level = tier.getLevel();
-			}
-			else
-			{
-				var materialVariants = TConstructToolHelper.getRepairVariants(tool);
-				level = materialVariants.stream().mapToInt(m -> m.get().getTier()).max().orElse(-1);
-			}
-
-			return Math.min(level, BuildingConstants.CONST_DEFAULT_MAX_BUILDING_LEVEL);
-		}
-
-		return -1;
+		var system = TConstructToolSystem.INSTANCE;
+		return system.isTool(stack) && system.isBroken(stack);
 	}
 
 	public static List<MaterialVariantId> getRepairVariantIds(IToolStackView tool)

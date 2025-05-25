@@ -14,7 +14,7 @@ import slimeknights.tconstruct.library.tools.item.IModifiable;
 import slimeknights.tconstruct.tools.item.ModifiableSwordItem;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.ProxyMethods;
-import steve_gall.minecolonies_compatibility.module.common.tconstruct.ToolHelper;
+import steve_gall.minecolonies_compatibility.module.common.tconstruct.TConstructToolHelper;
 
 @Mixin(value = TinkersToolHelper.class, remap = false)
 public abstract class TinkersToolHelperMixin
@@ -52,13 +52,13 @@ public abstract class TinkersToolHelperMixin
 	{
 		if (ModuleManager.TCONSTRUCT.isLoaded())
 		{
-			if (ToolHelper.isBroken(stack))
+			if (TConstructToolHelper.isBroken(stack))
 			{
 				cir.setReturnValue(-1);
 			}
 			else
 			{
-				cir.setReturnValue(ToolHelper.getTier(stack));
+				cir.setReturnValue(TConstructToolHelper.getTier(stack));
 			}
 
 		}

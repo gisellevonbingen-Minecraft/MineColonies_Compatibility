@@ -45,11 +45,11 @@ public class TConstructRepair extends CustomizedRepair
 		{
 			var item = inventory.getStackInSlot(i);
 
-			if (ToolHelper.isBroken(item))
+			if (TConstructToolHelper.isBroken(item))
 			{
 				var tool = ToolStack.from(item);
 
-				for (var variantId : ToolHelper.getRepairVariantIds(tool))
+				for (var variantId : TConstructToolHelper.getRepairVariantIds(tool))
 				{
 					variantIds.put(variantId.toString(), variantId);
 					toolSlots.put(variantId.toString(), i);
@@ -66,7 +66,7 @@ public class TConstructRepair extends CustomizedRepair
 			Predicate<ItemStack> kitPredicate = stack -> RepairKit.isRepairKitItem(stack, variantId);
 			var kitSlot = InventoryUtils.findFirstSlotInItemHandlerWith(inventory, kitPredicate);
 			var tool = inventory.getStackInSlot(toolSlot);
-			var kitCount = ToolHelper.getRepairCount(tool, variantId);
+			var kitCount = TConstructToolHelper.getRepairCount(tool, variantId);
 
 			if (kitSlot > -1)
 			{
@@ -103,11 +103,11 @@ public class TConstructRepair extends CustomizedRepair
 			citizenData.createRequestAsync(new CustomizableDeliverable(new BrokenItem(ai)));
 		}
 
-		var hasTool = InventoryUtils.hasItemInProvider(ai.building, ToolHelper::isBroken);
+		var hasTool = InventoryUtils.hasItemInProvider(ai.building, TConstructToolHelper::isBroken);
 
 		if (hasTool)
 		{
-			return CheckResult.needsCurrently(new Tuple<>(ToolHelper::isBroken, 1));
+			return CheckResult.needsCurrently(new Tuple<>(TConstructToolHelper::isBroken, 1));
 		}
 
 		return null;
@@ -132,13 +132,13 @@ public class TConstructRepair extends CustomizedRepair
 			var inventory = context.getWorker().getInventoryCitizen();
 			var brokenItem = inventory.getStackInSlot(this.brokenItemSlot);
 
-			if (!ToolHelper.canRepair(brokenItem))
+			if (!TConstructToolHelper.canRepair(brokenItem))
 			{
 				return false;
 			}
 
 			var tool = ToolStack.from(brokenItem);
-			var variantIds = ToolHelper.getRepairVariantIds(tool);
+			var variantIds = TConstructToolHelper.getRepairVariantIds(tool);
 
 			if (!MaterialHelper.anyMatchesVariantId(variantIds, this.variantId))
 			{
@@ -163,14 +163,14 @@ public class TConstructRepair extends CustomizedRepair
 			var brokenItem = inventory.getStackInSlot(this.brokenItemSlot);
 			var repairKit = inventory.getStackInSlot(this.kitSlot);
 
-			var repaired = ToolHelper.repair(brokenItem, repairKit);
+			var repaired = TConstructToolHelper.repair(brokenItem, repairKit);
 			inventory.setStackInSlot(this.brokenItemSlot, repaired);
 			repairKit.shrink(1);
 
 			Predicate<ItemStack> kitPredicate = stack -> RepairKit.isRepairKitItem(stack, this.variantId);
 			var newKitSlot = InventoryUtils.findFirstSlotInItemHandlerWith(inventory, kitPredicate);
 
-			if (newKitSlot == -1 || !ToolHelper.canRepair(repaired))
+			if (newKitSlot == -1 || !TConstructToolHelper.canRepair(repaired))
 			{
 				return RepairResult.completed();
 			}

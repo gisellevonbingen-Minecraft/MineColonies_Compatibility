@@ -22,7 +22,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAttack;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
-import steve_gall.minecolonies_compatibility.module.common.tconstruct.ToolHelper;
+import steve_gall.minecolonies_compatibility.module.common.tconstruct.TConstructToolHelper;
 
 @Mixin(value = AbstractEntityAIFight.class, remap = false)
 public abstract class AbstractEntityAIFightMixin<J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends AbstractEntityAIInteract<J, B>
@@ -62,7 +62,7 @@ public abstract class AbstractEntityAIFightMixin<J extends AbstractJobGuard<J>, 
 			{
 				var armor = inventory.getArmorInSlot(slot);
 
-				if (ToolHelper.isBroken(armor))
+				if (TConstructToolHelper.isBroken(armor))
 				{
 					if (InventoryUtils.transferItemStackIntoNextBestSlotInItemHandler(armor, this.getBuildingToDump().getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElseGet(null)))
 					{

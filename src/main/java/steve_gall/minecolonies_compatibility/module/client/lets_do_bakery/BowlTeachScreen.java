@@ -9,13 +9,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.satisfy.bakery.recipe.CraftingBowlRecipe;
-import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
+import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.crafting.BowlRecipeStorage;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.menu.BowlTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public class BowlTeachScreen extends TeachRecipeScreen<BowlTeachMenu, CraftingBowlRecipe>
+public class BowlTeachScreen extends TeachCraftingRecipeScreen<BowlTeachMenu, CraftingBowlRecipe>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/lets_do_bakery_bowl_teach.png");
 

@@ -9,13 +9,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.satisfy.brewery.recipe.SiloRecipe;
-import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
+import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_brewery.crafting.SiloRecipeStorage;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_brewery.menu.SiloTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public class SiloTeachScreen extends TeachRecipeScreen<SiloTeachMenu, SiloRecipe>
+public class SiloTeachScreen extends TeachCraftingRecipeScreen<SiloTeachMenu, SiloRecipe>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/lets_do_brewery_silo_teach.png");
 

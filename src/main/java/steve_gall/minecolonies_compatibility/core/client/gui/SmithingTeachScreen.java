@@ -14,7 +14,7 @@ import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingRecipe
 import steve_gall.minecolonies_compatibility.core.common.inventory.SmithingTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public class SmithingTeachScreen extends TeachRecipeScreen<SmithingTeachMenu, SmithingRecipe>
+public class SmithingTeachScreen extends TeachCraftingRecipeScreen<SmithingTeachMenu, SmithingRecipe>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/smithing_teach.png");
 

@@ -9,13 +9,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.satisfy.candlelight.recipe.CookingPotRecipe;
-import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
+import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_candlelight.crafting.PotRecipeStorage;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_candlelight.menu.PotTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public class PotTeachScreen extends TeachRecipeScreen<PotTeachMenu, CookingPotRecipe>
+public class PotTeachScreen extends TeachCraftingRecipeScreen<PotTeachMenu, CookingPotRecipe>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/lets_do_candlelight_pot_teach.png");
 

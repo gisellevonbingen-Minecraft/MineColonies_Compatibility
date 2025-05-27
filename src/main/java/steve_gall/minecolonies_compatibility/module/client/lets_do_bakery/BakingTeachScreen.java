@@ -11,13 +11,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import satisfy.bakery.recipe.BakerStationRecipe;
-import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
+import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.crafting.StoveRecipeStorage;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.menu.BakingTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public class BakingTeachScreen extends TeachRecipeScreen<BakingTeachMenu, BakerStationRecipe>
+public class BakingTeachScreen extends TeachCraftingRecipeScreen<BakingTeachMenu, BakerStationRecipe>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/lets_do_bakery_baking_teach.png");
 

@@ -4,11 +4,7 @@ import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.util.constant.Constants;
-import com.minecolonies.api.util.constant.TranslationConstants;
 import com.minecolonies.api.util.constant.translation.BaseGameTranslationConstants;
-import com.minecolonies.core.Network;
-import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
-import com.minecolonies.core.network.messages.server.colony.building.worker.AddRemoveRecipeMessage;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.gui.components.Button;
@@ -23,11 +19,9 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMe
 import steve_gall.minecolonies_compatibility.core.common.item.ItemHandlerHelper2;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuSwitchingMessage;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
-import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
 public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RECIPE> extends AbstractContainerScreen<MENU>
 {
-	private static final Component TEXT_WARNING_MAXIMUM_NUMBER_RECIPES = Component.translatable(TranslationConstants.WARNING_MAXIMUM_NUMBER_RECIPES);
 	private static final Component TEXT_DONE = Component.translatable(BaseGameTranslationConstants.BASE_GUI_DONE);
 
 	private static final ResourceLocation SWITCH_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/craftingswitch.png");
@@ -35,8 +29,6 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 	private static final int SWITCH_HEIGHT = 18;
 	private static final int SWITCH_X_OFFSET = 148;
 	private static final int SWITCH_Y_OFFSET = 43 - (SWITCH_HEIGHT / 2);
-
-	protected final CraftingModuleView module;
 
 	private Button doneButton;
 	private ImageButton switchButton;
@@ -46,8 +38,6 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 	public TeachRecipeScreen(MENU menu, Inventory inventory, Component title)
 	{
 		super(menu, inventory, title);
-
-		this.module = (CraftingModuleView) menu.getModulePos().getModuleView();
 	}
 
 	@Override
@@ -106,11 +96,6 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 
 	protected Component getError()
 	{
-		if (!this.module.canLearn(this.menu.getCraftingType()))
-		{
-			return TEXT_WARNING_MAXIMUM_NUMBER_RECIPES;
-		}
-
 		var recipe = this.menu.getRecipe();
 
 		if (recipe == null)
@@ -133,17 +118,10 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 		if (recipe != null)
 		{
 			var input = ItemHandlerHelper2.unwrap(new InvWrapper(this.menu.getInputContainer()), true).stream().map(ItemStorage::new).toList();
-			var storage = this.createRecipeStorage(recipe, input).wrap();
-			Network.getNetwork().sendToServer(new AddRemoveRecipeMessage(this.module.getBuildingView(), false, storage, this.module.getProducer().getRuntimeID()));
+			this.onDone(recipe, input);
 		}
 
 	}
 
-	protected abstract ICustomizedRecipeStorage createRecipeStorage(RECIPE recipe, List<ItemStorage> input);
-
-	public CraftingModuleView getModule()
-	{
-		return this.module;
-	}
-
+	protected abstract void onDone(RECIPE recipe, List<ItemStorage> input);
 }

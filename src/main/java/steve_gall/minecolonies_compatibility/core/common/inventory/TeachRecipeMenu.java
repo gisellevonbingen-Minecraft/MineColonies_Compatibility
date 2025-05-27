@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -72,8 +71,6 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 		this.recipeIndex = -1;
 		this.recipe = null;
 	}
-
-	public abstract CraftingType getCraftingType();
 
 	protected abstract IMenuRecipeValidator<RECIPE> createRecipeValidator();
 

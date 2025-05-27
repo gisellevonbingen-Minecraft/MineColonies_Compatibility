@@ -8,7 +8,6 @@ import com.lance5057.butchercraft.tags.ButchercraftItemTags;
 import com.lance5057.butchercraft.workstations.grinder.GrinderContainer;
 import com.lance5057.butchercraft.workstations.grinder.GrinderRecipe;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,7 +23,6 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachInputSlo
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
-import steve_gall.minecolonies_compatibility.module.common.butchercraft.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.init.ModuleMenuTypes;
 
 public class GrinderTeachMenu extends TeachRecipeMenu<GrinderRecipe>
@@ -116,12 +114,6 @@ public class GrinderTeachMenu extends TeachRecipeMenu<GrinderRecipe>
 	protected void onRecipeChanged()
 	{
 		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem() : ItemStack.EMPTY);
-	}
-
-	@Override
-	public CraftingType getCraftingType()
-	{
-		return ModuleCraftingTypes.GRINDER.get();
 	}
 
 }

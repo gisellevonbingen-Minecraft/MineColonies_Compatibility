@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.core.client.gui;
 import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.util.constant.TranslationConstants;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
@@ -29,7 +30,7 @@ public abstract class TeachCraftingRecipeScreen<MENU extends TeachRecipeMenu<REC
 	@Override
 	protected Component getError()
 	{
-		if (!this.module.canLearn(this.menu.getCraftingType()))
+		if (!this.module.canLearn(this.getCraftingType()))
 		{
 			return TEXT_WARNING_MAXIMUM_NUMBER_RECIPES;
 		}
@@ -43,6 +44,8 @@ public abstract class TeachCraftingRecipeScreen<MENU extends TeachRecipeMenu<REC
 		var storage = this.createRecipeStorage(recipe, input).wrap();
 		Network.getNetwork().sendToServer(new AddRemoveRecipeMessage(this.module.getBuildingView(), false, storage, this.module.getProducer().getRuntimeID()));
 	}
+
+	public abstract CraftingType getCraftingType();
 
 	protected abstract ICustomizedRecipeStorage createRecipeStorage(RECIPE recipe, List<ItemStorage> input);
 

@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.core.client.gui;
 import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.crafting.registry.CraftingType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.crafting.UpgradeRecipe;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingRecipeStorage;
+import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.inventory.SmithingTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
@@ -26,6 +28,12 @@ public class SmithingTeachScreen extends TeachCraftingRecipeScreen<SmithingTeach
 
 		this.imageWidth = 176;
 		this.imageHeight = 166;
+	}
+
+	@Override
+	public CraftingType getCraftingType()
+	{
+		return ModCraftingTypes.SMITHING.get();
 	}
 
 	@Override

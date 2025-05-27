@@ -6,7 +6,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,7 +20,6 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMe
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressCraftingType;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressDummyRecipe;
-import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.init.ModuleMenuTypes;
 
 public class ApplePressTeachMenu extends TeachRecipeMenu<ApplePressDummyRecipe>
@@ -107,12 +105,6 @@ public class ApplePressTeachMenu extends TeachRecipeMenu<ApplePressDummyRecipe>
 	protected void onRecipeChanged()
 	{
 		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem() : ItemStack.EMPTY);
-	}
-
-	@Override
-	public CraftingType getCraftingType()
-	{
-		return ModuleCraftingTypes.APPLE_PRESS.get();
 	}
 
 }

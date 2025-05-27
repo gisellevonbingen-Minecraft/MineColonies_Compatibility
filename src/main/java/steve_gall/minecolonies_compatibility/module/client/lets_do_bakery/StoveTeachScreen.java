@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.module.client.lets_do_bakery;
 import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.crafting.registry.CraftingType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -14,6 +15,7 @@ import satisfy.bakery.recipe.StoveRecipe;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.crafting.StoveRecipeStorage;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.menu.StoveTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
@@ -27,6 +29,12 @@ public class StoveTeachScreen extends TeachCraftingRecipeScreen<StoveTeachMenu, 
 
 		this.imageWidth = 176;
 		this.imageHeight = 166;
+	}
+
+	@Override
+	public CraftingType getCraftingType()
+	{
+		return ModuleCraftingTypes.STOVE.get();
 	}
 
 	@Override

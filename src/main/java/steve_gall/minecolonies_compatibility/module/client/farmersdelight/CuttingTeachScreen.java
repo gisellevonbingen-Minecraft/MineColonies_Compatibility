@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.module.client.farmersdelight;
 import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.crafting.registry.CraftingType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -15,6 +16,7 @@ import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibili
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting.CuttingChanceResult;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting.CuttingRecipeStorage;
+import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.menu.CuttingTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
@@ -29,6 +31,12 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 
 		this.imageWidth = 176;
 		this.imageHeight = 166;
+	}
+
+	@Override
+	public CraftingType getCraftingType()
+	{
+		return ModuleCraftingTypes.CUTTING.get();
 	}
 
 	@Override

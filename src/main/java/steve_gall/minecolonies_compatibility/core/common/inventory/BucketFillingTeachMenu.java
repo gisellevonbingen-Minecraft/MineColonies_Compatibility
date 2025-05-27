@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,7 +16,6 @@ import net.minecraft.world.entity.player.Inventory;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingCraftingType;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingRecipeStorage;
-import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
 
 public class BucketFillingTeachMenu extends TeachRecipeMenu<BucketFillingRecipeStorage>
@@ -89,12 +87,6 @@ public class BucketFillingTeachMenu extends TeachRecipeMenu<BucketFillingRecipeS
 	protected void onRecipeChanged()
 	{
 
-	}
-
-	@Override
-	public CraftingType getCraftingType()
-	{
-		return ModCraftingTypes.BUCKET_FILLING.get();
 	}
 
 }

@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
 
@@ -30,7 +29,6 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachContaine
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachInputSlot;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
-import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleMenuTypes;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 import vectorwing.farmersdelight.common.crafting.ingredient.ChanceResult;
@@ -160,12 +158,6 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 		}
 
 		return super.getRecipeError(recipe);
-	}
-
-	@Override
-	public CraftingType getCraftingType()
-	{
-		return ModuleCraftingTypes.CUTTING.get();
 	}
 
 	public IToolType getToolType()

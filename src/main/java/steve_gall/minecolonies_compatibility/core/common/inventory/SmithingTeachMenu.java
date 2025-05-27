@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.TranslationConstants;
 
@@ -21,7 +20,6 @@ import net.minecraft.world.item.crafting.UpgradeRecipe;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingCraftingType;
-import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
 import steve_gall.minecolonies_compatibility.mixin.common.minecraft.SmithingRecipeAccessor;
 
@@ -171,12 +169,6 @@ public class SmithingTeachMenu extends TeachRecipeMenu<UpgradeRecipe>
 			this.resultContainer.setItem(0, ItemStack.EMPTY);
 		}
 
-	}
-
-	@Override
-	public CraftingType getCraftingType()
-	{
-		return ModCraftingTypes.SMITHING.get();
 	}
 
 }

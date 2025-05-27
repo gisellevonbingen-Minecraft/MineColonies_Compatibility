@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.module.client.lets_do_candlelight;
 import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -12,6 +13,7 @@ import net.satisfy.candlelight.recipe.CookingPanRecipe;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_candlelight.crafting.PanRecipeStorage;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_candlelight.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_candlelight.menu.PanTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
@@ -25,6 +27,12 @@ public class PanTeachScreen extends TeachCraftingRecipeScreen<PanTeachMenu, Cook
 
 		this.imageWidth = 176;
 		this.imageHeight = 166;
+	}
+
+	@Override
+	public CraftingType getCraftingType()
+	{
+		return ModuleCraftingTypes.PAN.get();
 	}
 
 	@Override

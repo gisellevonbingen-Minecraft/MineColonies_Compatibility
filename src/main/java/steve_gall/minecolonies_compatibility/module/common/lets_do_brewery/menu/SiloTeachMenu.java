@@ -3,7 +3,6 @@ package steve_gall.minecolonies_compatibility.module.common.lets_do_brewery.menu
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +19,6 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachContaine
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachInputSlot;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
-import steve_gall.minecolonies_compatibility.module.common.lets_do_brewery.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_brewery.init.ModuleMenuTypes;
 
 public class SiloTeachMenu extends TeachRecipeMenu<SiloRecipe>
@@ -89,12 +87,6 @@ public class SiloTeachMenu extends TeachRecipeMenu<SiloRecipe>
 	protected void onRecipeChanged()
 	{
 		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem(this.inventory.player.level().registryAccess()) : ItemStack.EMPTY);
-	}
-
-	@Override
-	public CraftingType getCraftingType()
-	{
-		return ModuleCraftingTypes.SILO.get();
 	}
 
 }

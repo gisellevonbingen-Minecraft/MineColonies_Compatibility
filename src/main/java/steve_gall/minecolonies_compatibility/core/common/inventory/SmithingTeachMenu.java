@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.TranslationConstants;
 
@@ -22,7 +21,6 @@ import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeVal
 import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingCraftingType;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingRecipeAccessor;
-import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
 
 public class SmithingTeachMenu extends TeachRecipeMenu<SmithingRecipe>
@@ -177,12 +175,6 @@ public class SmithingTeachMenu extends TeachRecipeMenu<SmithingRecipe>
 			this.resultContainer.setItem(0, ItemStack.EMPTY);
 		}
 
-	}
-
-	@Override
-	public CraftingType getCraftingType()
-	{
-		return ModCraftingTypes.SMITHING.get();
 	}
 
 }

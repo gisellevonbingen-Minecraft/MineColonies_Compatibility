@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.module.client.lets_do_vinery;
 import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -13,6 +14,7 @@ import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipe
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressFermentingGenericRecipe;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.crafting.ApplePressFermentingRecipeStorage;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_vinery.menu.ApplePressFermentingTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
@@ -26,6 +28,12 @@ public class ApplePressFermentingTeachScreen extends TeachCraftingRecipeScreen<A
 
 		this.imageWidth = 176;
 		this.imageHeight = 166;
+	}
+
+	@Override
+	public CraftingType getCraftingType()
+	{
+		return ModuleCraftingTypes.APPLE_PRESS_FERMENTING.get();
 	}
 
 	@Override

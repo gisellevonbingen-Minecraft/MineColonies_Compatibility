@@ -3,7 +3,6 @@ package steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.menu;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,7 +22,6 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachInputSlo
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
-import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.init.ModuleMenuTypes;
 
 public class CookingTeachMenu extends TeachRecipeMenu<CookingPotRecipe>
@@ -110,12 +108,6 @@ public class CookingTeachMenu extends TeachRecipeMenu<CookingPotRecipe>
 	{
 		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem(this.inventory.player.level().registryAccess()) : ItemStack.EMPTY);
 		this.resultContainer.setItem(1, this.recipe != null ? this.recipe.getContainer() : ItemStack.EMPTY);
-	}
-
-	@Override
-	public CraftingType getCraftingType()
-	{
-		return ModuleCraftingTypes.COOKING.get();
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.lance5057.butchercraft.workstations.grinder.GrinderRecipe;
 import com.minecolonies.api.crafting.ItemStorage;
+import com.minecolonies.api.crafting.registry.CraftingType;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -15,6 +16,7 @@ import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipe
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.crafting.ItemStorageHelper;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.crafting.GrinderRecipeStorage;
+import steve_gall.minecolonies_compatibility.module.common.butchercraft.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.menu.GrinderTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
@@ -28,6 +30,12 @@ public class GrinderTeachScreen extends TeachCraftingRecipeScreen<GrinderTeachMe
 
 		this.imageWidth = 176;
 		this.imageHeight = 166;
+	}
+
+	@Override
+	public CraftingType getCraftingType()
+	{
+		return ModuleCraftingTypes.GRINDER.get();
 	}
 
 	@Override

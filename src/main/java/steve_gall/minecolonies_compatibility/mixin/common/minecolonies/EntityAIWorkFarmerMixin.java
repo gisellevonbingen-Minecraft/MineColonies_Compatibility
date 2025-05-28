@@ -40,10 +40,6 @@ import steve_gall.minecolonies_compatibility.core.common.block.BlockUtils;
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
 public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<JobFarmer, BuildingFarmer>
 {
-	@Nullable
-	@Shadow(remap = false)
-	private BlockPos prevPos;
-
 	public EntityAIWorkFarmerMixin(@NotNull JobFarmer job)
 	{
 		super(job);
@@ -99,7 +95,9 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		}
 		else if (stack.getItem() instanceof BlockItem item && item.getBlock() instanceof StemBlock block)
 		{
-			if (this.prevPos != null && !level.isEmptyBlock(this.prevPos.above()))
+			var prevPos = this.building.getPrevPos();
+
+			if (prevPos != null && !level.isEmptyBlock(prevPos.above()))
 			{
 				cir.setReturnValue(true);
 				return;

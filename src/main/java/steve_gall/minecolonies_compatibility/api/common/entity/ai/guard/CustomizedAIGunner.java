@@ -1,7 +1,6 @@
 package steve_gall.minecolonies_compatibility.api.common.entity.ai.guard;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
@@ -51,9 +50,9 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		return ModJobs.GUNNER.get();
 	}
 
-	protected abstract boolean testAmmo(ItemStack stack);
+	protected abstract boolean testAmmo(@NotNull ItemStack stack);
 
-	public int getAmmoSlot(IItemHandler inventory)
+	public int getAmmoSlot(@NotNull IItemHandler inventory)
 	{
 		for (var i = 0; i < inventory.getSlots(); i++)
 		{
@@ -106,16 +105,17 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 
 	}
 
+	@NotNull
 	protected abstract IDeliverableObject createAmmoRequest(int minCount);
 
-	protected abstract boolean isAmmoRequest(IDeliverableObject object);
+	protected abstract boolean isAmmoRequest(@NotNull IDeliverableObject object);
 
 	protected int getAmmoMinCount()
 	{
 		return 16;
 	}
 
-	public boolean takeAmmo(@Nullable AbstractEntityCitizen user)
+	public boolean takeAmmo(@NotNull AbstractEntityCitizen user)
 	{
 		var citizen = user.getCitizenData();
 		var building = citizen.getWorkBuilding();
@@ -220,14 +220,14 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		{
 			this.doMeleeAttack(context, target);
 		}
-		else
+		else if (this.canRangedAttack(context, target))
 		{
 			this.doRangedAttack(context, target);
 		}
 
 	}
 
-	public void doMeleeAttack(CustomizedAIContext context, LivingEntity target)
+	public void doMeleeAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
 	{
 		var damage = this.getMeleeAttackDamage(context, target);
 		damage += EnchantmentHelper.getDamageBonus(context.getWeapon(), target.getMobType()) / 2.5D;
@@ -252,6 +252,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		return this.getAttackDealyConfig().apply(user, this.getSecondarySkillLevel(user));
 	}
 
+	@NotNull
 	protected abstract AttackDelayConfig getAttackDealyConfig();
 
 	@Override

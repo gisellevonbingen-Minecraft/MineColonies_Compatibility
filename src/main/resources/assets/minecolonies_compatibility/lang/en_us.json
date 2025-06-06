@@ -43,6 +43,8 @@
 	"minecolonies_compatibility.tconstruct_broken_item.desc": "Tinkers' Construct's Broken Items",
 	"minecolonies_compatibility.tconstruct_repair_kit": "Repair Kits",
 	"minecolonies_compatibility.tconstruct_repair_kit.desc": "Tinkers' Construct's Repair Kits",
+	"minecolonies_compatibility.tacz_ammo": "TaCZ Ammo",
+	"minecolonies_compatibility.tacz_ammo.desc": "Timeless & Classics Guns: Zero's Ammo",
 	
 	"_comment_blocks": "Blocks",
 	"block.minecolonies_compatibility.common_network_storage": "Common Network Storage",
@@ -57,6 +59,8 @@
 	"item.minecolonies_compatibility.restrict_tool.name": "Building: %s",
 	"item.minecolonies_compatibility.restrict_tool.pos": "Pos: %1$s, %2$s, %3$s",
 	"item.minecolonies_compatibility.citizen_terminal": "ME Terminal for Colonist",
+	"item.minecolonies_compatibility.tacz_dummy_gun": "TaCZ Dummy Gun",
+	"item.minecolonies_compatibility.tacz_dummy_gun.tooltip": "All TaCZ guns can be placed in here",
 	
 	"_comment_texts": "Texts",
 	"minecolonies_compatibility.text.refresh": "Refresh",
@@ -123,6 +127,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.butchercraft_grinder": "Butchercraft - Grinder Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.butchercraft_grinder.menu": "Grinder Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist": "Butcherables",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.tacz_gun_smith_table": "TaCZ - Gun Smith Table Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.tacz_gun_smith_table.menu": "Gun Smith Table Recipes",
 	
 	"_comment_module_settings": "Module Settings",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "Request Firework Rocket",

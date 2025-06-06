@@ -6,16 +6,14 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.core.colony.buildings.AbstractBuildingGuards;
-import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIGuard;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedPathNavigate;
 import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobWalkRandomEdge;
 
-import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.job.JobGunner;
 
-public class EntityAIGunner extends AbstractEntityAIGuard<JobGunner, AbstractBuildingGuards> implements ICustomizableEntityAI
+public class EntityAIGunner extends CustomizableEntityAIGuard<JobGunner, AbstractBuildingGuards>
 {
 	public EntityAIGunner(@NotNull JobGunner job)
 	{

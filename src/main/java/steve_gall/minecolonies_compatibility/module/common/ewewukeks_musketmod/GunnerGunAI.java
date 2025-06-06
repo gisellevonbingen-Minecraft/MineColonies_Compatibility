@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.module.common.ewewukeks_musketmod;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
@@ -33,15 +34,15 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 		}
 
 		@Override
-		public boolean canMeleeAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+		public boolean canMeleeAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 		{
-			return context.getWeapon().getItem() == Items.MUSKET_WITH_BAYONET;
+			return this.getMainHandItem(user).getItem() == Items.MUSKET_WITH_BAYONET;
 		}
 
 		@Override
-		public float getMeleeAttackDamage(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+		public float getMeleeAttackDamage(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 		{
-			var damage = super.getMeleeAttackDamage(context, target);
+			var damage = super.getMeleeAttackDamage(user, target);
 			damage += (Config.bayonetDamage - 1);
 			return damage;
 		}
@@ -63,7 +64,7 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 		}
 
 		@Override
-		public boolean canMeleeAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+		public boolean canMeleeAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 		{
 			return false;
 		}
@@ -84,29 +85,28 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected boolean testAmmo(ItemStack stack)
+	protected boolean testAmmo(@NotNull AbstractEntityCitizen user, @NotNull ItemStack stack)
 	{
 		return stack.getItem() == Items.CARTRIDGE;
 	}
 
 	@Override
-	protected IDeliverableObject createAmmoRequest(int minCount)
+	@Nullable
+	protected IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
 	{
 		return new Cartridge(minCount);
 	}
 
 	@Override
-	protected boolean isAmmoRequest(IDeliverableObject object)
+	protected boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull IDeliverableObject object)
 	{
 		return object instanceof Cartridge;
 	}
 
 	@Override
-	public boolean canRangedAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var user = context.getUser();
-
-		if (!super.canRangedAttack(context, target))
+		if (!super.canRangedAttack(user, target))
 		{
 			return false;
 		}
@@ -173,28 +173,37 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public void doRangedAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public void doRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
+	{
+		var weapon = this.getMainHandItem(user);
+
+		if (weapon.getItem() instanceof GunItem gun)
+		{
+			this.doRangedAttack(user, target, gun, weapon);
+		}
+
+	}
+
+	private void doRangedAttack(AbstractEntityCitizen user, LivingEntity target, GunItem original, ItemStack weapon)
 	{
 		var config = this.getWeaponConfig();
-		var bulletMode = this.getJobConfig().bulletMode.get();
+		var bulletMode = this.getBulletMode();
 
-		var user = context.getUser();
 		var inventory = user.getItemHandlerCitizen();
-		var bulletSlot = this.getAmmoSlot(inventory);
-		var weapon = context.getWeapon();
+		var bulletSlot = this.getAmmoSlot(user, inventory);
 		var bullet = ItemStack.EMPTY;
 		GunItem gun = null;
 
 		if (bulletMode.canUse() && bulletSlot > -1)
 		{
-			gun = (GunItem) weapon.getItem();
+			gun = original;
 			bullet = inventory.extractItem(bulletSlot, 1, false);
 		}
 		else if (bulletMode.canDefault())
 		{
 			var damage = config.defaultBulletDamage.apply(user, this.getPrimarySkillLevel(user));
 			var dummyGun = ModuleItems.DUMMY_GUN.get();
-			dummyGun.setParent((GunItem) weapon.getItem());
+			dummyGun.setParent(original);
 			dummyGun.setDamage((float) damage / Config.mobDamageMultiplier);
 			gun = dummyGun;
 			bullet = ItemStack.EMPTY.copy();
@@ -216,6 +225,7 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
+	@Nullable
 	protected AttackDelayConfig getAttackDealyConfig()
 	{
 		return this.getWeaponConfig().attackDelay;

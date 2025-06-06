@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.module.common.ie;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
@@ -37,35 +38,34 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected boolean testAmmo(ItemStack stack)
+	protected boolean testAmmo(@NotNull AbstractEntityCitizen user, @NotNull ItemStack stack)
 	{
 		return stack.getItem() instanceof BulletItem;
 	}
 
 	@Override
-	protected IDeliverableObject createAmmoRequest(int minCount)
+	@Nullable
+	protected IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
 	{
 		return new Bullet(minCount);
 	}
 
 	@Override
-	protected boolean isAmmoRequest(IDeliverableObject object)
+	protected boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull IDeliverableObject object)
 	{
 		return object instanceof Bullet;
 	}
 
 	@Override
-	public boolean canMeleeAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public boolean canMeleeAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean canRangedAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var user = context.getUser();
-
-		if (!super.canRangedAttack(context, target))
+		if (!super.canRangedAttack(user, target))
 		{
 			return false;
 		}
@@ -103,11 +103,11 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public float getMeleeAttackDamage(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public float getMeleeAttackDamage(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var weapon = context.getWeapon();
+		var weapon = this.getMainHandItem(user);
 		var melee = RevolverItem.getUpgradeValue_d(weapon, "melee");
-		var damage = super.getMeleeAttackDamage(context, target);
+		var damage = super.getMeleeAttackDamage(user, target);
 
 		if (melee != 0.0D)
 		{
@@ -118,15 +118,14 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public void doRangedAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public void doRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
 		var config = this.getWeaponConfig();
-		var bulletMode = this.getJobConfig().bulletMode.get();
+		var bulletMode = this.getBulletMode();
 
-		var user = context.getUser();
 		var inventory = user.getItemHandlerCitizen();
-		var bulletSlot = this.getAmmoSlot(inventory);
-		var weapon = context.getWeapon();
+		var bulletSlot = this.getAmmoSlot(user, inventory);
+		var weapon = this.getMainHandItem(user);
 		var level = user.level();
 
 		ItemStack bullet = null;
@@ -175,16 +174,17 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
+	@Nullable
 	protected AttackDelayConfig getAttackDealyConfig()
 	{
 		return this.getWeaponConfig().attackDelay;
 	}
 
 	@Override
-	public double getAttackDistance(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public double getAttackDistance(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var weapon = context.getWeapon();
-		var distance = super.getAttackDistance(context, target);
+		var weapon = this.getMainHandItem(user);
+		var distance = super.getAttackDistance(user, target);
 
 		if (weapon.getItem() instanceof RevolverItem item && item.canZoom(weapon, null))
 		{
@@ -195,10 +195,10 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public double getHorizontalSearchRange(@NotNull CustomizedAIContext context)
+	public double getHorizontalSearchRange(@NotNull AbstractEntityCitizen user)
 	{
-		var weapon = context.getWeapon();
-		var range = super.getHorizontalSearchRange(context);
+		var weapon = this.getMainHandItem(user);
+		var range = super.getHorizontalSearchRange(user);
 
 		if (weapon.getItem() instanceof RevolverItem item && item.canZoom(weapon, null))
 		{

@@ -19,8 +19,6 @@ import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIFight;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAttack;
-import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
 import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 
 @Mixin(value = AbstractEntityAIFight.class, remap = false)
@@ -37,11 +35,6 @@ public abstract class AbstractEntityAIFightMixin<J extends AbstractJobGuard<J>, 
 	@Inject(method = "atBuildingActions", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void atBuildingActions(CallbackInfo ci)
 	{
-		if (this instanceof ICustomizableEntityAI self && self.getSelectedAI() instanceof CustomizedAIAttack attack)
-		{
-			attack.atBuildingActions(self.getAIContext());
-		}
-
 		this.dumpBrokenArmors();
 	}
 

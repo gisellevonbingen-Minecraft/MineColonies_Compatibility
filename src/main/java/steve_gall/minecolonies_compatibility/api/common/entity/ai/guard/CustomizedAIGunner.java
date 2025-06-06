@@ -1,6 +1,9 @@
 package steve_gall.minecolonies_compatibility.api.common.entity.ai.guard;
 
+import java.util.function.Predicate;
+
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
@@ -19,11 +22,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.core.common.building.BuildingHelper;
 import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDelayConfig;
+import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.BulletMode;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.GunnerConfig;
 import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
@@ -44,19 +47,31 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		return MineColoniesCompatibilityConfigServer.INSTANCE.jobs.gunner;
 	}
 
+	@NotNull
+	public BulletMode getBulletMode()
+	{
+		return this.getJobConfig().bulletMode.get();
+	}
+
 	@Override
 	public @NotNull JobEntry getJobEntry()
 	{
 		return ModJobs.GUNNER.get();
 	}
 
-	protected abstract boolean testAmmo(@NotNull ItemStack stack);
+	protected abstract boolean testAmmo(@NotNull AbstractEntityCitizen user, @NotNull ItemStack stack);
 
-	public int getAmmoSlot(@NotNull IItemHandler inventory)
+	@NotNull
+	protected Predicate<ItemStack> getAmmoPredicate(@NotNull AbstractEntityCitizen user)
+	{
+		return stack -> this.testAmmo(user, stack);
+	}
+
+	public int getAmmoSlot(@NotNull AbstractEntityCitizen user, @NotNull IItemHandler inventory)
 	{
 		for (var i = 0; i < inventory.getSlots(); i++)
 		{
-			if (this.testAmmo(inventory.getStackInSlot(i)))
+			if (this.testAmmo(user, inventory.getStackInSlot(i)))
 			{
 				return i;
 			}
@@ -93,22 +108,25 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	{
 		var citizen = user.getCitizenData();
 
-		if (!CitizenHelper.isRequested(citizen, CustomizableDeliverable.TYPE_TOKEN, r -> this.isAmmoRequest(r.getRequest().getObject())))
+		if (!CitizenHelper.isRequested(citizen, CustomizableDeliverable.TYPE_TOKEN, r -> this.isAmmoRequest(user, r.getRequest().getObject())))
 		{
-			citizen.getWorkBuilding().createRequest(citizen, new CustomizableDeliverable(this.createAmmoRequest(minCount)), async);
-			return true;
-		}
-		else
-		{
-			return false;
+			var request = this.createAmmoRequest(user, minCount);
+
+			if (request != null)
+			{
+				citizen.getWorkBuilding().createRequest(citizen, new CustomizableDeliverable(request), async);
+				return true;
+			}
+
 		}
 
+		return false;
 	}
 
-	@NotNull
-	protected abstract IDeliverableObject createAmmoRequest(int minCount);
+	@Nullable
+	protected abstract IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount);
 
-	protected abstract boolean isAmmoRequest(@NotNull IDeliverableObject object);
+	protected abstract boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull IDeliverableObject object);
 
 	protected int getAmmoMinCount()
 	{
@@ -120,24 +138,31 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		var citizen = user.getCitizenData();
 		var building = citizen.getWorkBuilding();
 		var inventory = citizen.getInventory();
-		return InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(building, this::testAmmo, 64, inventory);
+		return InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(building, this.getAmmoPredicate(user), 64, inventory);
 	}
 
 	@Override
-	public void atBuildingActions(@NotNull CustomizedAIContext context)
+	public void onSelected(@NotNull AbstractEntityCitizen user)
 	{
-		super.atBuildingActions(context);
+		super.onSelected(user);
 
-		var bulletMode = this.getJobConfig().bulletMode.get();
+		this.checkAmmo(user);
+	}
+
+	@Override
+	public void atBuildingActions(@NotNull AbstractEntityCitizen user)
+	{
+		super.atBuildingActions(user);
+
+		var bulletMode = this.getBulletMode();
 
 		if (bulletMode.canUse() && bulletMode.canDefault())
 		{
-			var user = context.getUser();
 			var citizen = user.getCitizenData();
 			this.takeAmmo(user);
 
 			var minCount = this.getAmmoMinCount();
-			var ammoCount = InventoryUtils.getItemCountInItemHandler(citizen.getInventory(), this::testAmmo);
+			var ammoCount = InventoryUtils.getItemCountInItemHandler(citizen.getInventory(), this.getAmmoPredicate(user));
 
 			if (ammoCount < minCount)
 			{
@@ -150,7 +175,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 
 	public boolean checkAmmo(@NotNull AbstractEntityCitizen user)
 	{
-		var bulletMode = this.getJobConfig().bulletMode.get();
+		var bulletMode = this.getBulletMode();
 
 		if (bulletMode.canUse())
 		{
@@ -168,32 +193,30 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 
 	protected boolean isNeedRequestAmmo(@NotNull AbstractEntityCitizen user)
 	{
-		return this.getAmmoSlot(user.getInventoryCitizen()) == -1;
+		return this.getAmmoSlot(user, user.getInventoryCitizen()) == -1;
 	}
 
 	@Override
-	public final boolean canAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public final boolean canAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		if (context.getUser().distanceTo(target) <= GuardConstants.MAX_DISTANCE_FOR_ATTACK && this.canMeleeAttack(context, target))
+		if (user.distanceTo(target) <= GuardConstants.MAX_DISTANCE_FOR_ATTACK && this.canMeleeAttack(user, target))
 		{
 			return true;
 		}
 		else
 		{
-			return this.canRangedAttack(context, target);
+			return this.canRangedAttack(user, target);
 		}
 
 	}
 
-	public boolean canMeleeAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public boolean canMeleeAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
 		return false;
 	}
 
-	public boolean canRangedAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var user = context.getUser();
-
 		if (!this.checkAmmo(user))
 		{
 			return false;
@@ -212,70 +235,75 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	}
 
 	@Override
-	public final void doAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public final void doAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var user = context.getUser();
-
-		if (user.distanceTo(target) <= GuardConstants.MAX_DISTANCE_FOR_ATTACK && this.canMeleeAttack(context, target))
+		if (user.distanceTo(target) <= GuardConstants.MAX_DISTANCE_FOR_ATTACK && this.canMeleeAttack(user, target))
 		{
-			this.doMeleeAttack(context, target);
+			this.doMeleeAttack(user, target);
 		}
-		else if (this.canRangedAttack(context, target))
+		else if (this.canRangedAttack(user, target))
 		{
-			this.doRangedAttack(context, target);
+			this.doRangedAttack(user, target);
 		}
 
 	}
 
-	public void doMeleeAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public void doMeleeAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var damage = this.getMeleeAttackDamage(context, target);
-		damage += EnchantmentHelper.getDamageBonus(context.getWeapon(), target.getMobType()) / 2.5D;
+		var damage = this.getMeleeAttackDamage(user, target);
+		damage += EnchantmentHelper.getDamageBonus(this.getMainHandItem(user), target.getMobType()) / 2.5D;
 
-		var user = context.getUser();
 		var damageType = user.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageSourceKeys.GUARD);
 		var source = new DamageSource(damageType, user);
 		target.hurt(source, damage);
 	}
 
-	public float getMeleeAttackDamage(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public float getMeleeAttackDamage(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
 		return 1.0F;
 	}
 
-	public abstract void doRangedAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target);
+	public abstract void doRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target);
 
 	@Override
-	public int getAttackDelay(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public int getAttackDelay(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var user = context.getUser();
-		return this.getAttackDealyConfig().apply(user, this.getSecondarySkillLevel(user));
+		var config = this.getAttackDealyConfig();
+
+		if (config != null)
+		{
+			return config.apply(user, this.getSecondarySkillLevel(user));
+		}
+		else
+		{
+			return 0;
+		}
+
 	}
 
-	@NotNull
+	@Nullable
 	protected abstract AttackDelayConfig getAttackDealyConfig();
 
 	@Override
-	public double getAttackDistance(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public double getAttackDistance(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
 		var config = this.getJobConfig();
-		var user = context.getUser();
 		return config.attackRange.apply(user, this.getSecondarySkillLevel(user), target);
 	}
 
 	@Override
-	public double getHorizontalSearchRange(@NotNull CustomizedAIContext context)
+	public double getHorizontalSearchRange(@NotNull AbstractEntityCitizen user)
 	{
 		return this.getJobConfig().searchRange.horizontal.get().doubleValue();
 	}
 
 	@Override
-	public double getVerticalSearchRange(@NotNull CustomizedAIContext context)
+	public double getVerticalSearchRange(@NotNull AbstractEntityCitizen user)
 	{
 		var config = this.getJobConfig().searchRange;
 		var range = config.vertical.get().intValue();
 
-		if (BuildingHelper.IsGuardsTask(context.getUser().getCitizenData().getWorkBuilding(), GuardTaskSetting.GUARD))
+		if (BuildingHelper.IsGuardsTask(user.getCitizenData().getWorkBuilding(), GuardTaskSetting.GUARD))
 		{
 			range += config.verticalBonusOnGuard.get().intValue();
 		}
@@ -284,10 +312,9 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	}
 
 	@Override
-	public double getCombatMovementSpeed(@NotNull CustomizedAIContext context)
+	public double getCombatMovementSpeed(@NotNull AbstractEntityCitizen user)
 	{
 		var config = this.getJobConfig().combatMoveSpeed;
-		var user = context.getUser();
 		return config.apply(user, this.getPrimarySkillLevel(user));
 	}
 

@@ -18,10 +18,4 @@ public interface ICustomizableEntityAI
 		return ((AbstractEntityAIBasicExtension) this).minecolonies_compatibility$getSelectedAI();
 	}
 
-	@Nullable
-	default CustomizedAIContext getAIContext()
-	{
-		return ((AbstractEntityAIBasicExtension) this).minecolonies_compatibility$getAIContext();
-	}
-
 }

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
@@ -62,19 +63,20 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected boolean testAmmo(ItemStack stack)
+	protected boolean testAmmo(@NotNull AbstractEntityCitizen user, @NotNull ItemStack stack)
 	{
 		return stack.getItem() instanceof MagazineItem item && item != ModItems.EMPTY_MAGAZINE.get();
 	}
 
 	@Override
-	protected IDeliverableObject createAmmoRequest(int minCount)
+	@Nullable
+	protected IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
 	{
 		return new Magazine(minCount);
 	}
 
 	@Override
-	protected boolean isAmmoRequest(IDeliverableObject object)
+	protected boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull IDeliverableObject object)
 	{
 		return object instanceof Magazine;
 	}
@@ -86,6 +88,7 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 	}
 
 	@Override
+	@Nullable
 	protected AttackDelayConfig getAttackDealyConfig()
 	{
 		return this.getWeaponConfig().attackDelay;
@@ -104,16 +107,15 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public boolean canRangedAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		if (!super.canRangedAttack(context, target))
+		if (!super.canRangedAttack(user, target))
 		{
 			return false;
 		}
 
-		var user = context.getUser();
 		var inventory = user.getInventoryCitizen();
-		var magazineSlot = this.getAmmoSlot(inventory);
+		var magazineSlot = this.getAmmoSlot(user, inventory);
 
 		if (this.getBulletCount(user) <= 0 || (magazineSlot > -1 && this.getMagazineType(user).isEmpty()))
 		{
@@ -124,7 +126,7 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 				this.setPotionEffects(user, XRPotionHelper.getPotionEffectsFromStack(magazine));
 				this.insertItem(user, inventory, new ItemStack(ModItems.EMPTY_MAGAZINE.get()));
 			}
-			else if (this.getJobConfig().bulletMode.get().canDefault())
+			else if (this.getBulletMode().canDefault())
 			{
 				this.setMagazineType(user, "");
 				this.setPotionEffects(user, Collections.emptyList());
@@ -155,13 +157,21 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public void doRangedAttack(@NotNull CustomizedAIContext context, @NotNull LivingEntity target)
+	public void doRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var user = context.getUser();
-		var weapon = context.getWeapon();
+		var weapon = this.getMainHandItem(user);
 
+		if (weapon.getItem() instanceof HandgunItemAccessor accessor)
+		{
+			this.doRangedAttack(user, target, accessor);
+		}
+
+	}
+
+	private void doRangedAttack(AbstractEntityCitizen user, LivingEntity target, HandgunItemAccessor accessor)
+	{
 		var magazineType = this.getMagazineType(user);
-		var magazineShotFactories = ((HandgunItemAccessor) weapon.getItem()).getMagazineShotFactories();
+		var magazineShotFactories = accessor.getMagazineShotFactories();
 		HandgunItem.IShotEntityFactory shotfactory = null;
 
 		if (magazineType.isEmpty())

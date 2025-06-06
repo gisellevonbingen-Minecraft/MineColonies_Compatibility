@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.guard;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
@@ -23,9 +24,9 @@ import com.minecolonies.core.entity.pathfinding.pathjobs.PathJobMoveToLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIAttack;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.ICustomizableEntityAI;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizableAISimpleGuard;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGuard;
 
 public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizableEntityAI, J extends AbstractJobGuard<J>, B extends AbstractBuildingGuards> extends CustomizableAISimpleGuard<T, J, B>
 {
@@ -68,9 +69,9 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 			{
 				var parentAI = this.getParentAI();
 
-				if (parentAI.getSelectedAI() instanceof CustomizedAIAttack attack)
+				if (parentAI.getSelectedAI() instanceof CustomizedAIGuard guard)
 				{
-					var speed = attack.getJobPathSpeed(parentAI.getAIContext());
+					var speed = guard.getJobPathSpeed(user);
 					user.getNavigation().moveAwayFromLivingEntity(target, getAttackDistance() / 2.0D, speed);
 				}
 
@@ -84,13 +85,11 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	@Nullable
-	public PathResult createPathResult(LivingEntity target, EntityCitizen user, double speed)
+	public @Nullable PathResult<?> createPathResult(@NotNull LivingEntity target, double speed)
 	{
-		var job = this.createPathJob(target, user);
-		var pathResult = ((MinecoloniesAdvancedPathNavigate) user.getNavigation()).setPathJob(job, null, speed, true);
+		var job = this.createPathJob(target, this.user);
+		var pathResult = ((MinecoloniesAdvancedPathNavigate) this.user.getNavigation()).setPathJob(job, null, speed, true);
 		job.setPathingOptions(this.combatPathingOptions);
 		return pathResult;
 	}

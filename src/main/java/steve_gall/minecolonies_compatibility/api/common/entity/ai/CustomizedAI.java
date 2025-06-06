@@ -11,6 +11,7 @@ import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
@@ -47,9 +48,25 @@ public abstract class CustomizedAI
 		return this.getJobEntry() == jobEntry;
 	}
 
-	public boolean canDump(@NotNull CustomizedAIContext context, int slot, @NotNull ItemStack stackToDup)
+	public void onSelected(@NotNull AbstractEntityCitizen user)
+	{
+
+	}
+
+	public boolean canDump(@NotNull AbstractEntityCitizen user, int slot, @NotNull ItemStack stackToDup)
 	{
 		return true;
+	}
+
+	public int getMainHandSlot(@NotNull AbstractEntityCitizen user)
+	{
+		return user.getInventoryCitizen().getHeldItemSlot(InteractionHand.MAIN_HAND);
+	}
+
+	@NotNull
+	public ItemStack getMainHandItem(@NotNull AbstractEntityCitizen user)
+	{
+		return user.getInventoryCitizen().getHeldItem(InteractionHand.MAIN_HAND);
 	}
 
 	/**

@@ -15,6 +15,7 @@ import com.minecolonies.core.entity.ai.basic.AbstractAISkeleton;
 import com.minecolonies.core.entity.ai.basic.AbstractEntityAIBasic;
 
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
@@ -29,36 +30,35 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 	private int slotAt;
 
 	@Unique
-	private CustomizedAI minecolonies_compatibility$selectedAI;
+	private CustomizedAI minecolonies_compatibility$selectedAI = null;
 	@Unique
-	private CustomizedAIContext minecolonies_compatibility$aiContext;
+	private int minecolonies_compatibility$lastSlot = -1;
+	@Unique
+	private Item minecolonies_compatibility$lastItem = null;
 
 	protected AbstractEntityAIBasicMixin(@NotNull J job)
 	{
 		super(job);
 	}
 
-	@Override
-	public void minecolonies_compatibility$onTick()
+	private void updateAI(ICustomizableEntityAI self)
 	{
-		if (this instanceof ICustomizableEntityAI self)
+		var worker = this.worker;
+		var toolSlot = CitizenHelper.getMaxLevelToolSlot(worker.getCitizenData(), self.getHandToolType());
+		var context = new CustomizedAIContext(worker, toolSlot);
+
+		this.minecolonies_compatibility$selectedAI = toolSlot == -1 ? null : CustomizedAI.select(context);
+		this.minecolonies_compatibility$lastSlot = toolSlot;
+		this.minecolonies_compatibility$lastItem = worker.getInventoryCitizen().getStackInSlot(toolSlot).getItem();
+
+		if (this.minecolonies_compatibility$selectedAI != null)
 		{
-			var worker = this.worker;
-			var toolSlot = CitizenHelper.getMaxLevelToolSlot(worker.getCitizenData(), self.getHandToolType());
-			var context = new CustomizedAIContext(worker, (AbstractEntityAIBasic<?, ?>) (Object) this, toolSlot);
-			this.minecolonies_compatibility$selectedAI = CustomizedAI.select(context);
-
-			if (this.minecolonies_compatibility$selectedAI != null)
-			{
-				this.minecolonies_compatibility$aiContext = context;
-				worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, this.minecolonies_compatibility$aiContext.getWeaponSlot());
-			}
-			else
-			{
-				this.minecolonies_compatibility$aiContext = null;
-				worker.getCitizenItemHandler().removeHeldItem();
-			}
-
+			worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, toolSlot);
+			this.minecolonies_compatibility$selectedAI.onSelected(worker);
+		}
+		else
+		{
+			worker.getCitizenItemHandler().removeHeldItem();
 		}
 
 	}
@@ -76,13 +76,11 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 
 			if (ai != null)
 			{
-				var context = self.getAIContext();
-
-				if (this.slotAt == context.getWeaponSlot())
+				if (this.slotAt == ai.getMainHandSlot(this.worker))
 				{
 					return true;
 				}
-				else if (!ai.canDump(context, this.slotAt, stackToDump))
+				else if (!ai.canDump(this.worker, this.slotAt, stackToDump))
 				{
 					return true;
 				}
@@ -98,14 +96,40 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 	@Nullable
 	public CustomizedAI minecolonies_compatibility$getSelectedAI()
 	{
-		return this.minecolonies_compatibility$selectedAI;
+		if (this instanceof ICustomizableEntityAI self)
+		{
+			if (this.needUpdateAI())
+			{
+				this.updateAI(self);
+			}
+			else
+			{
+				this.worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, this.minecolonies_compatibility$lastSlot);
+			}
+
+			return this.minecolonies_compatibility$selectedAI;
+		}
+		else
+		{
+			return null;
+		}
+
 	}
 
-	@Override
-	@Nullable
-	public CustomizedAIContext minecolonies_compatibility$getAIContext()
+	private boolean needUpdateAI()
 	{
-		return this.minecolonies_compatibility$aiContext;
+		var slot = this.minecolonies_compatibility$lastSlot;
+
+		if (slot == -1)
+		{
+			return true;
+		}
+		else if (this.worker.getInventoryCitizen().getStackInSlot(slot).getItem() != this.minecolonies_compatibility$lastItem)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 }

@@ -10,7 +10,6 @@
 		"minecraft.ItemStackMixin",
 		"minecraft.SmithingRecipeAccessor",
 		
-		"minecolonies.AbstractAISkeletonMixin",
 		"minecolonies.AbstractBuildingGuardsMixin",
 		"minecolonies.AbstractEntityAIBasicMixin",
 		"minecolonies.AbstractEntityAICraftingAccessor",
@@ -37,7 +36,6 @@
 		"minecolonies.PrivateWorkerCraftingRequestResolverMixin",
 		"minecolonies.RangerCombatAIMixin",
 		"minecolonies.RecipeStorageMixin",
-		"minecolonies.TargetAIMixin",
 		"minecolonies.TileEntityWareHouseMixin",
 		"minecolonies.TinkersToolHelperMixin",
 		

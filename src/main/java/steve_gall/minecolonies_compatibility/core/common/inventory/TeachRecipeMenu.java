@@ -120,7 +120,6 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 			{
 				this.refreshRecipes(container, player);
 				this.setRecipeIndex(0);
-
 			}
 
 		}

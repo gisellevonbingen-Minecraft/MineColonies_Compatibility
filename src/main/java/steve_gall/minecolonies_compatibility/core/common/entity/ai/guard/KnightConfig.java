@@ -6,6 +6,7 @@ public class KnightConfig
 {
 	public KnightConfig(ForgeConfigSpec.Builder builder)
 	{
+
 	}
 
 }

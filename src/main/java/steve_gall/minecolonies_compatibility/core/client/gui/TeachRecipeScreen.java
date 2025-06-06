@@ -127,7 +127,15 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 
 		if (recipe != null)
 		{
-			var input = ItemHandlerHelper2.unwrap(new InvWrapper(this.menu.getInputContainer()), true).stream().map(ItemStorage::new).toList();
+			var input = ItemHandlerHelper2.unwrap(new InvWrapper(this.menu.getInputContainer()), true).stream().map(stack ->
+			{
+				var amount = stack.getCount();
+				stack = stack.copy();
+				stack.setCount(1);
+				var storage = new ItemStorage(stack);
+				storage.setAmount(amount);
+				return storage;
+			}).toList();
 			this.onDone(recipe, input);
 		}
 

@@ -4,10 +4,8 @@ import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.crafting.registry.CraftingType;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -34,6 +32,12 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 	}
 
 	@Override
+	public ResourceLocation getTexture()
+	{
+		return TEXTURE;
+	}
+
+	@Override
 	public CraftingType getCraftingType()
 	{
 		return ModuleCraftingTypes.CUTTING.get();
@@ -47,12 +51,8 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 	}
 
 	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
+	protected void renderTooltip(PoseStack pose, int mouseX, int mouseY)
 	{
-		this.renderBackground(pose);
-
-		super.render(pose, mouseX, mouseY, partialTicks);
-
 		if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem())
 		{
 			var item = this.hoveredSlot.getItem();
@@ -74,11 +74,7 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 	@Override
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY)
 	{
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, TEXTURE);
-
-		this.blit(pose, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+		super.renderBg(pose, partialTicks, mouseX, mouseY);
 
 		var results = this.menu.getResults();
 		var resultSlots = this.menu.getResultSlots();

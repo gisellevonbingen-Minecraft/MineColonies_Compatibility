@@ -88,11 +88,10 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	}
 
 	@Override
-	public final void onRecipeTransfer(@NotNull ServerPlayer player, @NotNull RECIPE recipe, @NotNull CompoundTag payload)
+	public final void onRecipeTransfer(@NotNull RECIPE recipe, @NotNull CompoundTag payload)
 	{
 		this.setContainerByTransfer(recipe, payload);
-		this.refreshRecipes(this.inputContainer, player);
-		this.setRecipeIndex(this.recipes.indexOf(recipe));
+		this.refreshRecipes(recipe);
 	}
 
 	protected void setContainerByTransfer(@NotNull RECIPE recipe, @NotNull CompoundTag payload)
@@ -114,39 +113,45 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	@Override
 	public void slotsChanged(Container container)
 	{
-		if (this.inventory.player instanceof ServerPlayer player)
-		{
-			if (container == this.inputContainer)
-			{
-				this.refreshRecipes(container, player);
-				this.setRecipeIndex(0);
-			}
-
-		}
+		this.onSlotsChanged(container);
 
 		super.slotsChanged(container);
 	}
 
-	protected void refreshRecipes(Container container, ServerPlayer player)
+	protected void onSlotsChanged(Container container)
 	{
-		this.recipes = new ArrayList<>(this.getRecipeValidator().findAll(container, player));
-		var tags = this.recipes.stream().map(this.recipeValidator::serialize).toList();
-		MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewRecipesMessage(tags), player);
-
-		if (ModuleManager.POLYMORPH.isLoaded())
+		if (container == this.inputContainer)
 		{
-			PolymorphModule.sendRecipesList(player, this);
+			this.refreshRecipes(null);
 		}
 
 	}
 
-	public void setRecipes(List<RECIPE> recipes, int index)
+	protected void refreshRecipes(RECIPE show)
 	{
-		this.recipes = new ArrayList<>(recipes);
-		this.setRecipeIndex(index);
+		if (this.inventory.player instanceof ServerPlayer player)
+		{
+			this.recipes = new ArrayList<>(this.getRecipeValidator().findAll(this.inputContainer, player));
+			var tags = this.recipes.stream().map(this.recipeValidator::serialize).toList();
+			MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewRecipesMessage(tags), player);
+
+			if (ModuleManager.POLYMORPH.isLoaded())
+			{
+				PolymorphModule.sendRecipesList(player, this);
+			}
+
+			this.setRecipeIndex(show == null ? 0 : this.recipes.indexOf(show));
+		}
+
 	}
 
-	public void setRecipe(RECIPE recipe)
+	public final void onNewRecipesTransfer(List<RECIPE> recipes)
+	{
+		this.recipes = new ArrayList<>(recipes);
+		this.setRecipeIndex(-1);
+	}
+
+	protected void setRecipe(RECIPE recipe)
 	{
 		this.recipe = recipe;
 		this.onRecipeChanged();
@@ -161,6 +166,20 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 				PolymorphModule.sendHighlightRecipe(player, ((Recipe<?>) recipe).getId());
 			}
 
+		}
+
+	}
+
+	public final void onNewResultTransfer(CompoundTag tag)
+	{
+		if (tag != null)
+		{
+			var recipe = this.getRecipeValidator().deserialize(tag);
+			this.setRecipe(recipe);
+		}
+		else
+		{
+			this.setRecipe(null);
 		}
 
 	}

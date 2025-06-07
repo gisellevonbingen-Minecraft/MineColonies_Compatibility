@@ -4,10 +4,7 @@ import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.crafting.registry.CraftingType;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,6 +28,12 @@ public class SmithingTeachScreen extends TeachCraftingRecipeScreen<SmithingTeach
 	}
 
 	@Override
+	public ResourceLocation getTexture()
+	{
+		return TEXTURE;
+	}
+
+	@Override
 	public CraftingType getCraftingType()
 	{
 		return ModCraftingTypes.SMITHING.get();
@@ -43,26 +46,6 @@ public class SmithingTeachScreen extends TeachCraftingRecipeScreen<SmithingTeach
 		var addition = input.get(1);
 		var result = this.menu.getResultContainer().getItem(0);
 		return new SmithingRecipeStorage(recipe.getId(), base, addition, result);
-	}
-
-	@Override
-	public void render(PoseStack pose, int mouseX, int mouseY, float partialTicks)
-	{
-		this.renderBackground(pose);
-
-		super.render(pose, mouseX, mouseY, partialTicks);
-
-		this.renderTooltip(pose, mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY)
-	{
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, TEXTURE);
-
-		this.blit(pose, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 	}
 
 }

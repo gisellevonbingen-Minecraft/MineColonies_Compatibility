@@ -5,7 +5,6 @@ import java.util.List;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.crafting.registry.CraftingType;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -28,6 +27,12 @@ public class BucketFillingTeachScreen extends TeachCraftingRecipeScreen<BucketFi
 	}
 
 	@Override
+	public ResourceLocation getTexture()
+	{
+		return TEXTURE;
+	}
+
+	@Override
 	public CraftingType getCraftingType()
 	{
 		return ModCraftingTypes.BUCKET_FILLING.get();
@@ -37,22 +42,6 @@ public class BucketFillingTeachScreen extends TeachCraftingRecipeScreen<BucketFi
 	protected ICustomizedRecipeStorage createRecipeStorage(BucketFillingRecipeStorage recipe, List<ItemStorage> input)
 	{
 		return recipe;
-	}
-
-	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
-	{
-		this.renderBackground(graphics);
-
-		super.render(graphics, mouseX, mouseY, partialTicks);
-
-		this.renderTooltip(graphics, mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
-	{
-		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 	}
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.crafting.registry.CraftingType;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,6 +28,12 @@ public class SmithingTeachScreen extends TeachCraftingRecipeScreen<SmithingTeach
 	}
 
 	@Override
+	public ResourceLocation getTexture()
+	{
+		return TEXTURE;
+	}
+
+	@Override
 	public CraftingType getCraftingType()
 	{
 		return ModCraftingTypes.SMITHING.get();
@@ -42,22 +47,6 @@ public class SmithingTeachScreen extends TeachCraftingRecipeScreen<SmithingTeach
 		var addition = input.get(2);
 		var result = this.menu.getResultContainer().getItem(0);
 		return new SmithingRecipeStorage(recipe.getId(), template, base, addition, result);
-	}
-
-	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
-	{
-		this.renderBackground(graphics);
-
-		super.render(graphics, mouseX, mouseY, partialTicks);
-
-		this.renderTooltip(graphics, mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
-	{
-		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 	}
 
 }

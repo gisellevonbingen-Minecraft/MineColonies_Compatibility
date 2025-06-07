@@ -34,7 +34,6 @@ public class TeachRecipeMenuNewResultMessage extends AbstractMessage
 		buffer.writeNullable(this.tag, FriendlyByteBuf::writeNbt);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(Context context)
 	{
@@ -44,16 +43,7 @@ public class TeachRecipeMenuNewResultMessage extends AbstractMessage
 
 		if (mc.player.containerMenu instanceof TeachRecipeMenu menu)
 		{
-			if (this.tag != null)
-			{
-				var recipe = menu.getRecipeValidator().deserialize(this.tag);
-				menu.setRecipe(recipe);
-			}
-			else
-			{
-				menu.setRecipe(null);
-			}
-
+			menu.onNewResultTransfer(this.tag);
 		}
 
 	}

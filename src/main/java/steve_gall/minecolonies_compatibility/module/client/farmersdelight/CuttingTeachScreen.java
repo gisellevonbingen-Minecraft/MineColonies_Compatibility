@@ -32,6 +32,12 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 	}
 
 	@Override
+	public ResourceLocation getTexture()
+	{
+		return TEXTURE;
+	}
+
+	@Override
 	public CraftingType getCraftingType()
 	{
 		return ModuleCraftingTypes.CUTTING.get();
@@ -45,12 +51,8 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
+	protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
 	{
-		this.renderBackground(graphics);
-
-		super.render(graphics, mouseX, mouseY, partialTicks);
-
 		if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem())
 		{
 			var item = this.hoveredSlot.getItem();
@@ -72,7 +74,7 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
 	{
-		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+		super.renderBg(graphics, partialTicks, mouseX, mouseY);
 
 		var results = this.menu.getResults();
 		var resultSlots = this.menu.getResultSlots();

@@ -46,7 +46,7 @@ public class TeachRecipeMenuNewRecipesMessage extends AbstractMessage
 		if (mc.player.containerMenu instanceof TeachRecipeMenu menu)
 		{
 			var recipes = this.recipes.stream().map(menu.getRecipeValidator()::deserialize).toList();
-			menu.setRecipes(recipes, -1);
+			menu.onNewRecipesTransfer(recipes);
 		}
 
 	}

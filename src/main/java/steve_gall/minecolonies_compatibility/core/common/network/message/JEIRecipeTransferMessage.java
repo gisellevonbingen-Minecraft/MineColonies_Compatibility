@@ -48,16 +48,11 @@ public class JEIRecipeTransferMessage<RECIPE> extends AbstractMessage
 
 		var player = context.getSender();
 
-		if (player == null)
-		{
-			return;
-		}
-
-		if (player.containerMenu instanceof IRecipeTransferableMenu menu)
+		if (player != null && player.containerMenu instanceof IRecipeTransferableMenu menu)
 		{
 			var recipe = menu.getRecipeValidator().deserialize(this.tag.getCompound(RECIPE_TRANSFER_TAG_RECIPE));
 			var payload = this.tag.getCompound(RECIPE_TRANSFER_TAG_PAYLOAD);
-			menu.onRecipeTransfer(player, recipe, payload);
+			menu.onRecipeTransfer(recipe, payload);
 		}
 
 	}

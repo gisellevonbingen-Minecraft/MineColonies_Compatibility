@@ -5,7 +5,6 @@ import java.util.List;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.crafting.registry.CraftingType;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,6 +30,12 @@ public class ApplePressFermentingTeachScreen extends TeachCraftingRecipeScreen<A
 	}
 
 	@Override
+	public ResourceLocation getTexture()
+	{
+		return TEXTURE;
+	}
+
+	@Override
 	public CraftingType getCraftingType()
 	{
 		return ModuleCraftingTypes.APPLE_PRESS_FERMENTING.get();
@@ -43,22 +48,6 @@ public class ApplePressFermentingTeachScreen extends TeachCraftingRecipeScreen<A
 		var container = new ItemStorage(ApplePressFermentingGenericRecipe.getContainer(recipe));
 		var output = resultContainer.getItem(0);
 		return new ApplePressFermentingRecipeStorage(recipe.getId(), input, container, output);
-	}
-
-	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
-	{
-		this.renderBackground(graphics);
-
-		super.render(graphics, mouseX, mouseY, partialTicks);
-
-		this.renderTooltip(graphics, mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
-	{
-		graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 	}
 
 }

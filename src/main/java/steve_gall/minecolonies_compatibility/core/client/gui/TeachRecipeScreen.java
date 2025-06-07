@@ -22,13 +22,13 @@ import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 
 public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RECIPE> extends AbstractContainerScreen<MENU>
 {
-	private static final Component TEXT_DONE = Component.translatable(BaseGameTranslationConstants.BASE_GUI_DONE);
+	public static final Component TEXT_DONE = Component.translatable(BaseGameTranslationConstants.BASE_GUI_DONE);
 
-	private static final ResourceLocation SWITCH_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/craftingswitch.png");
-	private static final int SWITCH_WIDTH = 20;
-	private static final int SWITCH_HEIGHT = 18;
-	private static final int SWITCH_X_OFFSET = 148;
-	private static final int SWITCH_Y_OFFSET = 43 - (SWITCH_HEIGHT / 2);
+	public static final ResourceLocation SWITCH_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/craftingswitch.png");
+	public static final int SWITCH_WIDTH = 20;
+	public static final int SWITCH_HEIGHT = 18;
+	public static final int SWITCH_X_OFFSET = 148;
+	public static final int SWITCH_Y_OFFSET = 43 - (SWITCH_HEIGHT / 2);
 
 	private Button doneButton;
 	private ImageButton switchButton;
@@ -82,7 +82,17 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 		}
 
 		this.switchButton.visible = !ModuleManager.POLYMORPH.isLoaded() && this.menu.getRecipes().size() >= 2;
+
+		this.renderTooltip(graphics, mouseX, mouseY);
 	}
+
+	@Override
+	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY)
+	{
+		graphics.blit(this.getTexture(), this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+	}
+
+	public abstract ResourceLocation getTexture();
 
 	@Override
 	protected void containerTick()

@@ -132,34 +132,9 @@ public class GunnerGunAI extends CustomizedAIGunner
 		var operator = IGunOperator.fromLivingEntity(user);
 		var weapon = this.getMainHandItem(user);
 
-		if (weapon.getItem() instanceof IGun gun)
+		if (!operator.getSynIsAiming())
 		{
-			var gunIndex = TimelessAPI.getCommonGunIndex(gun.getGunId(weapon)).orElse(null);
-
-			if (gunIndex != null)
-			{
-				var gunData = gunIndex.getGunData();
-
-				if (gunData.getFireModeSet().contains(FireMode.BURST))
-				{
-					if (target.getHealth() > gunData.getBulletData().getDamageAmount())
-					{
-						gun.setFireMode(weapon, FireMode.BURST);
-					}
-					else
-					{
-						gun.setFireMode(weapon, FireMode.SEMI);
-					}
-
-				}
-
-				if (!operator.getSynIsAiming())
-				{
-					operator.aim(true);
-				}
-
-			}
-
+			operator.aim(true);
 		}
 
 		var result = operator.shoot(user::getXRot, user::getYRot);

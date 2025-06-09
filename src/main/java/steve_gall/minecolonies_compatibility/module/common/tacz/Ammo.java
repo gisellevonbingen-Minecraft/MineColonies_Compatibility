@@ -87,7 +87,7 @@ public class Ammo implements IDeliverableObject
 	@Override
 	public int getCount()
 	{
-		return 64;
+		return this.minCount;
 	}
 
 	public ResourceLocation getAmmoId()

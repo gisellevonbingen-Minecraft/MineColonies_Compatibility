@@ -23,6 +23,10 @@
 		{
 			"required": false,
 			"id": "musketmod:pistol"
+		},
+		{
+			"required": false,
+			"id": "tacz:modern_kinetic_gun"
 		}
 	]
 }

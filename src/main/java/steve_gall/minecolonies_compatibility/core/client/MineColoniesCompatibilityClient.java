@@ -6,7 +6,6 @@ import com.minecolonies.api.sounds.ModSoundEvents;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
@@ -17,10 +16,9 @@ public class MineColoniesCompatibilityClient
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
 		var forge_bus = MinecraftForge.EVENT_BUS;
 
-		forge_bus.addListener(this::onPlaySoundEvent);
+		forge_bus.addListener(EventPriority.HIGH, this::onPlaySoundEvent);
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGH)
 	private void onPlaySoundEvent(PlaySoundEvent event)
 	{
 		if (event.getSound() == null)

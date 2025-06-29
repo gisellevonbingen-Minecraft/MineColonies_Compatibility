@@ -11,10 +11,12 @@ import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -25,6 +27,7 @@ import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkS
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
 import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
+import steve_gall.minecolonies_compatibility.core.client.MineColoniesCompatibilityClient;
 import steve_gall.minecolonies_compatibility.core.client.gui.AccessDirectionHolderScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
@@ -92,6 +95,8 @@ public class MineColoniesCompatibility
 
 		DeliverableObjectRegistry.INSTANCE.register(IngredientDeliverable.ID, IngredientDeliverable::serialize, IngredientDeliverable::deserialize);
 		DeliverableObjectRegistry.INSTANCE.register(Butcherable.ID, Butcherable::serialize, Butcherable::deserialize);
+
+		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesCompatibilityClient::new);
 	}
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)

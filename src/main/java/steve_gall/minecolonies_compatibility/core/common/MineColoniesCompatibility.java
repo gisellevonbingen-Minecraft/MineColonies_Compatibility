@@ -32,6 +32,7 @@ import steve_gall.minecolonies_compatibility.core.client.gui.AccessDirectionHold
 import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTemplateInventoryScreen;
+import steve_gall.minecolonies_compatibility.core.client.gui.StonecutterTeachScreen;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.InjectBuildingSettingsModuleEvent;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
@@ -39,6 +40,7 @@ import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesComp
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingTemplateRecipeStorage;
+import steve_gall.minecolonies_compatibility.core.common.crafting.StonecutterRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher.Butcherable;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBlockEntities;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBlocks;
@@ -92,6 +94,7 @@ public class MineColoniesCompatibility
 		CustomizedRecipeStorageRegistry.INSTANCE.register(BucketFillingRecipeStorage.ID, BucketFillingRecipeStorage::serialize, BucketFillingRecipeStorage::deserialize);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(SmithingRecipeStorage.ID, SmithingRecipeStorage::serialize, SmithingRecipeStorage::deserialize);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(SmithingTemplateRecipeStorage.ID, SmithingTemplateRecipeStorage::serialize, SmithingTemplateRecipeStorage::deserialize);
+		CustomizedRecipeStorageRegistry.INSTANCE.register(StonecutterRecipeStorage.ID, StonecutterRecipeStorage::serialize, StonecutterRecipeStorage::deserialize);
 
 		DeliverableObjectRegistry.INSTANCE.register(IngredientDeliverable.ID, IngredientDeliverable::serialize, IngredientDeliverable::deserialize);
 		DeliverableObjectRegistry.INSTANCE.register(Butcherable.ID, Butcherable::serialize, Butcherable::deserialize);
@@ -137,6 +140,8 @@ public class MineColoniesCompatibility
 			ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
 			ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
 
+			ModBuildings.stoneMason.get().getModuleProducers().add(ModBuildingModules.STONEMASON_STONECUTTING);
+
 			NetworkStorageViewRegistry.register((be, direction) -> be instanceof INetworkStorageViewHolder blockEntity ? blockEntity.getNetworkStorageView() : null);
 		});
 	}
@@ -147,6 +152,7 @@ public class MineColoniesCompatibility
 		MenuScreens.register(ModMenuTypes.SMITHING_TEACH.get(), SmithingTeachScreen::new);
 		MenuScreens.register(ModMenuTypes.SMITHING_TEMPLATE_INVENTORY.get(), SmithingTemplateInventoryScreen::new);
 		MenuScreens.register(ModMenuTypes.ACCESS_DIRECTION_HOLDER.get(), AccessDirectionHolderScreen::new);
+		MenuScreens.register(ModMenuTypes.STONECUTTING_TEACH.get(), StonecutterTeachScreen::new);
 	}
 
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)

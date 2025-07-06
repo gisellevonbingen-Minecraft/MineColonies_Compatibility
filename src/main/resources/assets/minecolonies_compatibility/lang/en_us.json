@@ -97,6 +97,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.smithing.menu": "Gear Upgrading Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.smithing_template_crafting": "Smithing Template Crafting Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.smithing_template_crafting.menu": "Smithing Template Crafting Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.stonecutting": "Stonecutting Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.stonecutting.menu": "Stonecutting Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cutting_axe": "Farmer's Delight - Cutting Recipes(Axe)",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cutting_axe.menu": "Cutting Recipes(Axe)",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.farmers_cutting_pickaxe": "Farmer's Delight - Cutting Recipes(Pickaxe)",

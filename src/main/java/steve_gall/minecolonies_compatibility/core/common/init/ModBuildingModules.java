@@ -33,6 +33,8 @@ import steve_gall.minecolonies_compatibility.core.common.building.module.Network
 import steve_gall.minecolonies_compatibility.core.common.building.module.RestrictableModuleView;
 import steve_gall.minecolonies_compatibility.core.common.building.module.SmithingCraftingModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.SmithingCraftingModuleView;
+import steve_gall.minecolonies_compatibility.core.common.building.module.StonecutterCraftingModule;
+import steve_gall.minecolonies_compatibility.core.common.building.module.StonecutterCraftingModuleView;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist.EntityAIWorkOrchardist;
 
@@ -127,5 +129,9 @@ public class ModBuildingModules
 	public static final BuildingEntry.ModuleProducer<ButcherableListModule, ButcherableListModuleView> BUTCHERABLELIST_BLACKLIST = new BuildingEntry.ModuleProducer<>("butcherablelist_blacklist", //
 			() -> new ButcherableListModule(ModBuildingModules.BUTCHERABLELIST_BLACKLIST.key), //
 			() -> () -> new ButcherableListModuleView("butcherablelist_blacklist", "com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist", true, item -> true));
+
+	public static final BuildingEntry.ModuleProducer<StonecutterCraftingModule, StonecutterCraftingModuleView> STONEMASON_STONECUTTING = new BuildingEntry.ModuleProducer<>("stonemason_stonecutting", //
+			() -> new StonecutterCraftingModule(com.minecolonies.api.colony.jobs.ModJobs.stoneMason.get()), //
+			() -> StonecutterCraftingModuleView::new);
 
 }

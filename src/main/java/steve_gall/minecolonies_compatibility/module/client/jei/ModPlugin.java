@@ -25,6 +25,7 @@ import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButche
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.FruitIconCache;
 import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
+import steve_gall.minecolonies_compatibility.core.client.gui.StonecutterTeachScreen;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
@@ -63,6 +64,7 @@ public class ModPlugin implements IModPlugin
 		registration.addGhostIngredientHandler(TeachRecipeScreen.class, new GhostIngredientHandler<>());
 
 		registration.addRecipeClickArea(SmithingTeachScreen.class, 102, 49, 22, 15, RecipeTypes.SMITHING);
+		registration.addRecipeClickArea(StonecutterTeachScreen.class, 77, 36, 22, 15, RecipeTypes.STONECUTTING);
 	}
 
 	@Override
@@ -72,6 +74,7 @@ public class ModPlugin implements IModPlugin
 		var recipeType = createRecipeType(ModJobs.FLUID_MANAGER.get());
 		registration.addRecipeTransferHandler(new BucketFillingTeachRecipeTransferHandler(transferHelper, recipeType), recipeType);
 		registration.addRecipeTransferHandler(new SmithingTeachRecipeTransferHandler(transferHelper), RecipeTypes.SMITHING);
+		registration.addRecipeTransferHandler(new StonecutterTeachRecipeTransferHandler(transferHelper), RecipeTypes.STONECUTTING);
 	}
 
 	public Stream<IGlobalResearch> getGlobalResearches()

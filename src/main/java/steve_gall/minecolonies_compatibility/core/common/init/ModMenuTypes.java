@@ -9,6 +9,7 @@ import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibili
 import steve_gall.minecolonies_compatibility.core.common.inventory.AccessDirectionHolderMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.BucketFillingTeachMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.SmithingTeachMenu;
+import steve_gall.minecolonies_compatibility.core.common.inventory.StonecutterTeachMenu;
 
 public class ModMenuTypes
 {
@@ -16,6 +17,7 @@ public class ModMenuTypes
 	public static final RegistryObject<MenuType<BucketFillingTeachMenu>> BUCKET_FILLING_TEACH = REGISTER.register("bucket_filling_teach", () -> IForgeMenuType.create(BucketFillingTeachMenu::new));
 	public static final RegistryObject<MenuType<SmithingTeachMenu>> SMITHING_TEACH = REGISTER.register("smithing_teach_teach", () -> IForgeMenuType.create(SmithingTeachMenu::new));
 	public static final RegistryObject<MenuType<AccessDirectionHolderMenu<?>>> ACCESS_DIRECTION_HOLDER = REGISTER.register("access_direction_holder", () -> IForgeMenuType.create(AccessDirectionHolderMenu::new));
+	public static final RegistryObject<MenuType<StonecutterTeachMenu>> STONECUTTING_TEACH = REGISTER.register("stonecutting_teach_teach", () -> IForgeMenuType.create(StonecutterTeachMenu::new));
 
 	private ModMenuTypes()
 	{

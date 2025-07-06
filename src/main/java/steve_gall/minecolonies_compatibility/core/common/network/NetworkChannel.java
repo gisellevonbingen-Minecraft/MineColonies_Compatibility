@@ -21,6 +21,7 @@ import steve_gall.minecolonies_compatibility.core.common.network.message.Restric
 import steve_gall.minecolonies_compatibility.core.common.network.message.RestrictSetAreaMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.RestrictSetEnabledMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.SmithingOpenTeachMessage;
+import steve_gall.minecolonies_compatibility.core.common.network.message.StonecutterOpenTeachMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuNewRecipesMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuNewResultMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuSwitchingMessage;
@@ -50,6 +51,7 @@ public class NetworkChannel
 		this.registerMessage(BucketFillingOpenTeachMessage.class, BucketFillingOpenTeachMessage::new);
 		this.registerMessage(SmithingOpenTeachMessage.class, SmithingOpenTeachMessage::new);
 		this.registerMessage(AccessDirectionMessage.class, AccessDirectionMessage::new);
+		this.registerMessage(StonecutterOpenTeachMessage.class, StonecutterOpenTeachMessage::new);
 	}
 
 	public void sendToServer(AbstractMessage message)

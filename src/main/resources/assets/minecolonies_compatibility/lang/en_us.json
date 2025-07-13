@@ -86,6 +86,8 @@
 	"minecolonies_compatibility.text.access_direction.insert": "Insert Only",
 	"minecolonies_compatibility.text.access_direction.extract": "Extract Only",
 	"minecolonies_compatibility.text.access_direction.insert_extract": "Insert and Extract",
+	"minecolonies_compatibility.text.pickup_requested": "Pickup Requested",
+	"minecolonies_compatibility.text.delivery_requested": "Delivery Requested",
 	
 	"_comment_modules": "Modules",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruits",
@@ -149,6 +151,11 @@
 	"minecolonies_compatibility.interaction.no_fluid_source": "My work hut doesn't have any Fluid Tank with %1$s or Liquid %1$s! Please place it so I have some I can use!",
 	"minecolonies_compatibility.interaction.no_lets_do_bakery_stove": "My work hut doesn't have any [Let's Do] Bakery's Stove or Oven! Please place it so I have some I can use!",
 	"minecolonies_compatibility.interaction.no_butchercraft_grinder_with_attachment": "My work hut doesn't have any %1$s's %2$s with %3$s attached! Please place it so I have some I can use!",
+	
+	"_comment_jade_configs": "Jade Configs",
+	"config.jade.plugin_minecolonies_compatibility.stash.requested": "Stash Requested",
+	"config.jade.plugin_minecolonies_compatibility.postbox.requested": "Postbox Requested",
+	"config.jade.plugin_minecolonies_compatibility.crop.age": "MineColonies Crop Age",
 	
 	"_eof": "EOF"
 }

@@ -71,6 +71,8 @@
 	"minecolonies_compatibility.text.butchercraft_grinder.ingredient": "Ingredient",
 	"minecolonies_compatibility.text.butchercraft_grinder.attachment": "Attachment",
 	"minecolonies_compatibility.text.butchercraft_grinder.casing": "Casing",
+	"minecolonies_compatibility.text.pickup_requested": "픽업 요청됨",
+	"minecolonies_compatibility.text.delivery_requested": "배달 요청됨",
 	
 	"_comment_modules": "모듈",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "과일 목록",

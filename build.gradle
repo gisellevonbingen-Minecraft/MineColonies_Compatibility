@@ -180,9 +180,9 @@ dependencies {
     implementation fg.deobf("curse.maven:tinkers-levelling-addon-709416:${tinkerslevelingaddon_file}")
     implementation fg.deobf("curse.maven:collectors-reap-807101:${collectorsreap_file}")
     implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:${tacz_file}-sources-${tacz_source_file}")
+    implementation fg.deobf("curse.maven:jade-324717:${jade_file}")
 
     // Runtime Only
-    runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_file}")
     runtimeOnly fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")
     runtimeOnly fg.deobf("curse.maven:configured-457570:${configured_file}")
 }

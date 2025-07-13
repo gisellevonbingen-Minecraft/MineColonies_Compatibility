@@ -23,6 +23,7 @@ import steve_gall.minecolonies_compatibility.module.common.farmersdelight.Farmer
 import steve_gall.minecolonies_compatibility.module.common.fruitfulfun.FruitfulFunModule;
 import steve_gall.minecolonies_compatibility.module.common.functionalstorage.FunctionalStorageModule;
 import steve_gall.minecolonies_compatibility.module.common.ie.IEModule;
+import steve_gall.minecolonies_compatibility.module.common.jade.JadeModule;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.LetsDoBakeryModule;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_brewery.LetsDoBreweryModule;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_candlelight.LetsDoCandlelightModule;
@@ -80,6 +81,7 @@ public class ModuleManager
 	public static final OptionalModule<FruitfulFunModule> FRUITFULFUN = register("fruitfulfun", () -> FruitfulFunModule::new);
 	public static final OptionalModule<FunctionalStorageModule> FUNCTIONALSTORAGE = register("functionalstorage", () -> FunctionalStorageModule::new);
 	public static final OptionalModule<IEModule> IE = register("immersiveengineering", () -> IEModule::new);
+	public static final OptionalModule<JadeModule> JADE = register("jade", () -> JadeModule::new);
 	public static final OptionalModule<LetsDoBakeryModule> LETS_DO_BAKERY = register("bakery", LetsDoLegacyModule::new, () -> LetsDoBakeryModule::new);
 	public static final OptionalModule<LetsDoBreweryModule> LETS_DO_BREWERY = register("brewery", LetsDoLegacyModule::new, () -> LetsDoBreweryModule::new);
 	public static final OptionalModule<LetsDoCandlelightModule> LETS_DO_CANDLELIGHT = register("candlelight", LetsDoLegacyModule::new, () -> LetsDoCandlelightModule::new);

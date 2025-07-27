@@ -112,7 +112,7 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 		}
 		else
 		{
-			return new PathJobCanSee(user, target, level, ((AbstractBuildingGuards) user.getCitizenData().getWorkBuilding()).getGuardPos(), 40);
+			return new PathJobCanSee(user, target, level, ((AbstractBuildingGuards) user.getCitizenData().getWorkBuilding()).getGuardPos(user), 40);
 		}
 
 	}

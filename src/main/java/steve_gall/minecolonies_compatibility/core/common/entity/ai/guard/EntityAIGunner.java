@@ -38,14 +38,14 @@ public class EntityAIGunner extends CustomizableEntityAIGuard<JobGunner, Abstrac
 
 		if (worker.getRandom().nextInt(3) < 1)
 		{
-			this.walkToSafePos(buildingGuards.getGuardPos());
+			this.walkToSafePos(buildingGuards.getGuardPos(worker));
 			return;
 		}
 
-		if ((BlockPosUtil.dist(buildingGuards.getGuardPos(), worker.blockPosition()) <= 10.0D || walkToSafePos(buildingGuards.getGuardPos())) || Math.abs(buildingGuards.getGuardPos().getY() - worker.blockPosition().getY()) > 3)
+		if ((BlockPosUtil.dist(buildingGuards.getGuardPos(worker), worker.blockPosition()) <= 10.0D || walkToSafePos(buildingGuards.getGuardPos(worker))) || Math.abs(buildingGuards.getGuardPos(worker).getY() - worker.blockPosition().getY()) > 3)
 		{
 			// Moves the ranger randomly to close edges, for better vision to mobs
-			((MinecoloniesAdvancedPathNavigate) worker.getNavigation()).setPathJob(new PathJobWalkRandomEdge(this.world, buildingGuards.getGuardPos(), 20, worker), null, 1.0, true);
+			((MinecoloniesAdvancedPathNavigate) worker.getNavigation()).setPathJob(new PathJobWalkRandomEdge(this.world, buildingGuards.getGuardPos(worker), 20, worker), null, 1.0, true);
 		}
 
 	}

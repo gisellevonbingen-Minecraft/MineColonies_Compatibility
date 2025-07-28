@@ -10,8 +10,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import reliquary.entities.shot.NeutralShotEntity;
-import reliquary.entities.shot.ShotEntityBase;
+import reliquary.entity.shot.NeutralShotEntity;
+import reliquary.entity.shot.ShotEntityBase;
 import steve_gall.minecolonies_compatibility.module.common.reliquary.GunnerHandgunAI;
 
 @Mixin(value = NeutralShotEntity.class, remap = false)

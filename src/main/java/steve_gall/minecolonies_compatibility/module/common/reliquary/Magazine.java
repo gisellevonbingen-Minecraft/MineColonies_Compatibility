@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import reliquary.init.ModItems;
-import reliquary.items.MagazineItem;
+import reliquary.item.MagazineItem;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 

@@ -1,0 +1,29 @@
+{
+	"type": "botanypots:crop",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "botanypots"
+		}
+	],
+	"seed": {
+		"item": "minecolonies:corn"
+	},
+	"categories": [
+		"dirt"
+	],
+	"growthTicks": 1200,
+	"display": {
+		"block": "minecolonies:corn"
+	},
+	"drops": [
+		{
+			"chance": 1.00,
+			"output": {
+				"item": "minecolonies:corn"
+			},
+			"minRolls": 1,
+			"maxRolls": 2
+		}
+	]
+}

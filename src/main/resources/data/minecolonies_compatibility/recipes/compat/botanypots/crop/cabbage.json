@@ -1,0 +1,29 @@
+{
+	"type": "botanypots:crop",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "botanypots"
+		}
+	],
+	"seed": {
+		"item": "minecolonies:cabbage"
+	},
+	"categories": [
+		"dirt"
+	],
+	"growthTicks": 1200,
+	"display": {
+		"block": "minecolonies:cabbage"
+	},
+	"drops": [
+		{
+			"chance": 1.00,
+			"output": {
+				"item": "minecolonies:cabbage"
+			},
+			"minRolls": 1,
+			"maxRolls": 2
+		}
+	]
+}

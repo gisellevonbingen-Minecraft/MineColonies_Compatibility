@@ -41,7 +41,7 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 		super(job);
 	}
 
-	@WrapOperation(method = "craft", remap = false, at = @At(value = "INVOKE", target = "walkToBuilding"))
+	@WrapOperation(method = "craft", remap = false, at = @At(value = "INVOKE", target = "walkToTaggedWorkPos"))
 	protected boolean craft_walkToBuilding(AbstractEntityAICrafting<J, B> self, Operation<Boolean> operation)
 	{
 		var recipeStorage = this.currentRecipeStorage;
@@ -61,7 +61,7 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 			else
 			{
 				this.worker.getCitizenData().triggerInteraction(new StandardInteraction(module.getWorkingBlockNotFoundMessage(recipeStorage), ChatPriority.BLOCKING));
-				this.walkToBuilding();
+				this.walkToTaggedWorkPos();
 				return false;
 			}
 

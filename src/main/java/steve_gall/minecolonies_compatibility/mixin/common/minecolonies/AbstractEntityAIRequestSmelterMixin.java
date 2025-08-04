@@ -18,7 +18,7 @@ public abstract class AbstractEntityAIRequestSmelterMixin<J extends AbstractJobC
 		super(job);
 	}
 
-	@WrapOperation(method = "craft", remap = false, at = @At(value = "INVOKE", target = "walkToBuilding"))
+	@WrapOperation(method = "craft", remap = false, at = @At(value = "INVOKE", target = "walkToTaggedWorkPos"))
 	protected boolean craft_walkToBuilding(AbstractEntityAIRequestSmelter<J, B> self, Operation<Boolean> operation)
 	{
 		return super.craft_walkToBuilding(self, operation);

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.crafting.IGenericRecipe;
+import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.OptionalPredicate;
 
@@ -28,12 +29,12 @@ public class AnimalHerdingLootGenericRecipe implements IGenericRecipe
 	private final List<List<ItemStack>> breedingItems;
 	private final EquipmentTypeEntry toolType;
 
-	public AnimalHerdingLootGenericRecipe(EntityType<?> entityType, List<List<ItemStack>> breedingItems, ResourceLocation lootTable, EquipmentTypeEntry toolType)
+	public AnimalHerdingLootGenericRecipe(EntityType<?> entityType, List<List<ItemStorage>> breedingItems, ResourceLocation lootTable, EquipmentTypeEntry toolType)
 	{
 		this.entityType = entityType;
 		this.entityTypeKey = ForgeRegistries.ENTITY_TYPES.getKey(entityType);
 		this.lootTable = lootTable;
-		this.breedingItems = breedingItems.stream().map(l -> l.stream().map(ItemStack::copy).toList()).toList();
+		this.breedingItems = breedingItems.stream().map(l -> l.stream().map(ItemStorage::getItemStack).toList()).toList();
 		this.toolType = toolType;
 	}
 

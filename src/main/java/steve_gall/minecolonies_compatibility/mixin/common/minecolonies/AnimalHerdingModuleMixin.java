@@ -14,11 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModule;
 import com.minecolonies.api.crafting.IGenericRecipe;
+import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.core.colony.buildings.modules.AnimalHerdingModule;
 
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import steve_gall.minecolonies_compatibility.api.common.event.AnimalHerdingToolEvent;
 import steve_gall.minecolonies_compatibility.core.common.crafting.AnimalHerdingLootGenericRecipe;
@@ -27,7 +27,7 @@ import steve_gall.minecolonies_compatibility.core.common.crafting.AnimalHerdingL
 public abstract class AnimalHerdingModuleMixin extends AbstractBuildingModule
 {
 	@Shadow(remap = false)
-	abstract @NotNull List<ItemStack> getBreedingItems();
+	abstract @NotNull List<ItemStorage> getBreedingItems();
 
 	@Inject(method = "getRecipesForDisplayPurposesOnly", remap = false, at = @At(value = "TAIL"), cancellable = true)
 	private void getRecipesForDisplayPurposesOnly(@NotNull Animal animal, CallbackInfoReturnable<List<IGenericRecipe>> cir)

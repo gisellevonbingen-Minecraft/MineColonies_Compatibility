@@ -59,6 +59,18 @@ public class CitizenGridBlockEntity extends NetworkNodeBlockEntity<CitizenGridNe
 	}
 
 	@Override
+	protected void saveAdditional(CompoundTag tag)
+	{
+		super.saveAdditional(tag);
+	}
+
+	@Override
+	public void load(CompoundTag tag)
+	{
+		super.load(tag);
+	}
+
+	@Override
 	public CompoundTag writeUpdate(CompoundTag tag)
 	{
 		super.writeUpdate(tag);

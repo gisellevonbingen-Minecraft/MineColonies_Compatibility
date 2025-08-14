@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 
 public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 {
-	private static final int DEQUEUE_COUNT = 18;
+	public static final int DEQUEUE_COUNT = 18;
 
 	private final Queue<ItemStack> queue = new ArrayDeque<>();
 	private boolean allRequested = false;

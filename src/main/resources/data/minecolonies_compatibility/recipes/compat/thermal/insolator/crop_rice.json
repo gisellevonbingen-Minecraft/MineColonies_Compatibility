@@ -1,0 +1,19 @@
+{
+	"type": "thermal:insolator",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "thermal"
+		}
+	],
+	"ingredient": {
+		"item": "minecolonies:rice"
+	},
+	"result": [
+		{
+			"item": "minecolonies:rice",
+			"chance": 2.5
+		}
+	],
+	"experience": 0.15
+}

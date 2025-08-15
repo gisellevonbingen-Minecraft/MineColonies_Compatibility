@@ -1,0 +1,19 @@
+{
+	"type": "thermal:insolator",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "thermal"
+		}
+	],
+	"ingredient": {
+		"item": "minecolonies:mint"
+	},
+	"result": [
+		{
+			"item": "minecolonies:mint",
+			"chance": 2.5
+		}
+	],
+	"experience": 0.15
+}

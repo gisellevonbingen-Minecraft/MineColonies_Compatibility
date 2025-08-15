@@ -1,0 +1,26 @@
+{
+	"type": "immersiveengineering:cloche",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "immersiveengineering"
+		}
+	],
+	"results": [
+		{
+			"item": "minecolonies:nether_pepper",
+			"count": 2
+		}
+	],
+	"input": {
+		"item": "minecolonies:nether_pepper"
+	},
+	"soil": {
+		"item": "minecraft:dirt"
+	},
+	"time": 800,
+	"render": {
+		"type": "crop",
+		"block": "minecolonies:nether_pepper"
+	}
+}

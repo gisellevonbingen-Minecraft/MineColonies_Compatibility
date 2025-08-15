@@ -1,0 +1,26 @@
+{
+	"type": "immersiveengineering:cloche",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "immersiveengineering"
+		}
+	],
+	"results": [
+		{
+			"item": "minecolonies:butternut_squash",
+			"count": 2
+		}
+	],
+	"input": {
+		"item": "minecolonies:butternut_squash"
+	},
+	"soil": {
+		"item": "minecraft:dirt"
+	},
+	"time": 800,
+	"render": {
+		"type": "crop",
+		"block": "minecolonies:butternut_squash"
+	}
+}

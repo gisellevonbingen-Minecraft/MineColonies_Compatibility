@@ -1,0 +1,26 @@
+{
+	"type": "immersiveengineering:cloche",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "immersiveengineering"
+		}
+	],
+	"results": [
+		{
+			"item": "minecolonies:rice",
+			"count": 2
+		}
+	],
+	"input": {
+		"item": "minecolonies:rice"
+	},
+	"soil": {
+		"item": "minecraft:dirt"
+	},
+	"time": 800,
+	"render": {
+		"type": "crop",
+		"block": "minecolonies:rice"
+	}
+}

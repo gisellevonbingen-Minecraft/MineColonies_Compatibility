@@ -12,6 +12,7 @@ import com.aetherteam.aether.AetherConfig;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 
 @Mixin(value = ConfigValue.class)
 public abstract class ConfigValueMixin<T> implements Supplier<T>
@@ -25,17 +26,21 @@ public abstract class ConfigValueMixin<T> implements Supplier<T>
 	@Inject(method = "get", at = @At(value = "HEAD"), cancellable = true)
 	private void get_Head(CallbackInfoReturnable<T> cir)
 	{
-		if (((ForgeConfigSpecAccessor) this.spec).getChildConfig() == null)
+		if (ModuleManager.AETHER.isLoaded())
 		{
-			@SuppressWarnings("unchecked")
-			var self = (ConfigValue<T>) (Object) this;
-
-			if (self != AetherConfig.SERVER.healing_gummy_swets)
+			if (((ForgeConfigSpecAccessor) this.spec).getChildConfig() == null)
 			{
-				return;
+				@SuppressWarnings("unchecked")
+				var self = (ConfigValue<T>) (Object) this;
+
+				if (self != AetherConfig.SERVER.healing_gummy_swets)
+				{
+					return;
+				}
+
+				cir.setReturnValue(this.getDefault());
 			}
 
-			cir.setReturnValue(this.getDefault());
 		}
 
 	}

@@ -104,36 +104,28 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
+	public boolean reload(@NotNull AbstractEntityCitizen user, boolean forRangedAttack)
 	{
-		if (!super.canRangedAttack(user, target))
-		{
-			return false;
-		}
-
 		if (!this.isLoaded(user))
 		{
-			if (!this.reload(user))
-			{
-				return false;
-			}
-
+			this.startReloadTimer(user);
+			return false;
 		}
 
 		return true;
 	}
 
 	@Override
-	protected void onReloadStarted(@NotNull AbstractEntityCitizen user)
+	protected void onReloadTimerStarted(@NotNull AbstractEntityCitizen user)
 	{
-		super.onReloadStarted(user);
+		super.onReloadTimerStarted(user);
 		this.setLoadingPhase(user, 0);
 	}
 
 	@Override
-	protected boolean onReloading(@NotNull AbstractEntityCitizen user)
+	protected boolean onReloadTimerRunning(@NotNull AbstractEntityCitizen user)
 	{
-		var time = this.getReloadingTime(user);
+		var time = this.getReloadTimerElapsed(user);
 		var phase = this.getLoadingPhase(user);
 
 		if (phase == 0 && time >= GunnerGunConfig.STAGE_DURATION_1)
@@ -157,13 +149,13 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 			this.setLoadingPhase(user, 4);
 		}
 
-		return super.onReloading(user);
+		return super.onReloadTimerRunning(user);
 	}
 
 	@Override
-	protected void onReloadStopped(@NotNull AbstractEntityCitizen user, boolean complete)
+	protected void onReloadTimerStopped(@NotNull AbstractEntityCitizen user, boolean complete)
 	{
-		super.onReloadStopped(user, complete);
+		super.onReloadTimerStopped(user, complete);
 
 		if (complete)
 		{
@@ -232,7 +224,7 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected int getReloadDuration()
+	protected int getReloadTimerDuration()
 	{
 		return GunnerGunConfig.RELOAD_DURATION;
 	}

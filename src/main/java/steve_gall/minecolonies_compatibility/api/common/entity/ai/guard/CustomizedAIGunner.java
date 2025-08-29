@@ -108,7 +108,11 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	{
 		var citizen = user.getCitizenData();
 
-		if (!CitizenHelper.isRequested(citizen, CustomizableDeliverable.TYPE_TOKEN, r -> this.isAmmoRequest(user, r.getRequest().getObject())))
+		if (!CitizenHelper.isRequested(citizen, CustomizableDeliverable.TYPE_TOKEN, r ->
+		{
+			return this.isAmmoRequest(user, r.getRequest().getObject())//
+					&& async == citizen.getJob().getAsyncRequests().contains(r.getId());
+		}))
 		{
 			var request = this.createAmmoRequest(user, minCount);
 
@@ -123,12 +127,17 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		return false;
 	}
 
+	public boolean requestAmmo(@NotNull AbstractEntityCitizen user, boolean spare)
+	{
+		return this.requestAmmo(user, this.getAmmoMinRequestCount(user), spare || this.getBulletMode().canDefault());
+	}
+
 	@Nullable
 	protected abstract IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount);
 
 	protected abstract boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull IDeliverableObject object);
 
-	protected int getAmmoMinCount()
+	protected int getAmmoMinRequestCount(@NotNull AbstractEntityCitizen user)
 	{
 		return 16;
 	}
@@ -150,27 +159,41 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	}
 
 	@Override
+	public void tick(@NotNull AbstractEntityCitizen user)
+	{
+		super.tick(user);
+
+		if (this.isReloadTimerRunning(user))
+		{
+			this.onReloadTimerRunning(user);
+		}
+
+	}
+
+	@Override
 	public void atBuildingActions(@NotNull AbstractEntityCitizen user)
 	{
 		super.atBuildingActions(user);
 
 		var bulletMode = this.getBulletMode();
 
-		if (bulletMode.canUse() && bulletMode.canDefault())
+		if (bulletMode.canUse())
 		{
 			var citizen = user.getCitizenData();
 			this.takeAmmo(user);
 
-			var minCount = this.getAmmoMinCount();
+			var minCount = this.getAmmoMinRequestCount(user);
 			var ammoCount = InventoryUtils.getItemCountInItemHandler(citizen.getInventory(), this.getAmmoPredicate(user));
 
 			if (ammoCount < minCount)
 			{
-				this.requestAmmo(user, minCount, true);
+				var async = bulletMode.canDefault();
+				this.requestAmmo(user, minCount, async);
 			}
 
 		}
 
+		this.reload(user, false);
 	}
 
 	public boolean checkAmmo(@NotNull AbstractEntityCitizen user)
@@ -181,9 +204,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		{
 			if (this.isNeedRequestAmmo(user))
 			{
-				var async = bulletMode.canDefault();
-				this.requestAmmo(user, 16, async);
-				return async;
+				return this.requestAmmo(user, false);
 			}
 
 		}
@@ -194,6 +215,24 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	protected boolean isNeedRequestAmmo(@NotNull AbstractEntityCitizen user)
 	{
 		return this.getAmmoSlot(user, user.getInventoryCitizen()) == -1;
+	}
+
+	@Override
+	public void onTargetChange(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
+	{
+		super.onTargetChange(user, target);
+
+		this.reload(user, false);
+		this.requestAmmo(user, true);
+	}
+
+	@Override
+	public void onTargetReset(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
+	{
+		super.onTargetReset(user, target);
+
+		this.reload(user, false);
+		this.requestAmmo(user, true);
 	}
 
 	@Override
@@ -215,6 +254,8 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		return false;
 	}
 
+	public abstract boolean reload(@NotNull AbstractEntityCitizen user, boolean forRangedAttack);
+
 	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
 		if (!this.checkAmmo(user))
@@ -222,13 +263,18 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 			return false;
 		}
 
-		if (this.isReloading(user))
+		if (this.isReloadTimerRunning(user))
 		{
-			if (!this.onReloading(user))
+			if (!this.onReloadTimerRunning(user))
 			{
 				return false;
 			}
 
+		}
+
+		if (!this.reload(user, true))
+		{
+			return false;
 		}
 
 		return true;
@@ -318,21 +364,11 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		return config.apply(user, this.getPrimarySkillLevel(user));
 	}
 
-	public boolean reload(@NotNull AbstractEntityCitizen user)
+	protected boolean onReloadTimerRunning(@NotNull AbstractEntityCitizen user)
 	{
-		if (!this.isReloading(user))
+		if (this.isReloadTimerComplete(user))
 		{
-			this.startReload(user);
-		}
-
-		return this.onReloading(user);
-	}
-
-	protected boolean onReloading(@NotNull AbstractEntityCitizen user)
-	{
-		if (this.isReloadComplete(user))
-		{
-			this.stopReload(user, true);
+			this.stopReloadTimer(user, true);
 			return true;
 		}
 		else
@@ -342,52 +378,52 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 
 	}
 
-	protected void onReloadStarted(@NotNull AbstractEntityCitizen user)
+	protected void onReloadTimerStarted(@NotNull AbstractEntityCitizen user)
 	{
 		user.swing(InteractionHand.MAIN_HAND);
 	}
 
-	protected void onReloadStopped(@NotNull AbstractEntityCitizen user, boolean complete)
+	protected void onReloadTimerStopped(@NotNull AbstractEntityCitizen user, boolean complete)
 	{
 		user.swing(InteractionHand.MAIN_HAND);
 	}
 
-	protected int getReloadDuration()
+	protected int getReloadTimerDuration()
 	{
 		return 0;
 	}
 
-	public boolean isReloadComplete(@NotNull AbstractEntityCitizen user)
+	protected boolean isReloadTimerComplete(@NotNull AbstractEntityCitizen user)
 	{
-		var reloadTime = this.getReloadingTime(user);
-		var reloadDuration = this.getReloadDuration();
+		var reloadTime = this.getReloadTimerElapsed(user);
+		var reloadDuration = this.getReloadTimerDuration();
 		return reloadTime >= reloadDuration;
 	}
 
-	public int getReloadingTime(@NotNull AbstractEntityCitizen user)
+	protected int getReloadTimerElapsed(@NotNull AbstractEntityCitizen user)
 	{
 		var current = user.level().getGameTime();
 		var started = this.getOrEmptyTag(user).getLong("reloadStarted");
 		return (int) (current - started);
 	}
 
-	public boolean isReloading(@NotNull AbstractEntityCitizen user)
+	protected boolean isReloadTimerRunning(@NotNull AbstractEntityCitizen user)
 	{
 		return this.getOrEmptyTag(user).getLong("reloadStarted") > 0;
 	}
 
-	public void startReload(@NotNull AbstractEntityCitizen user)
+	protected void startReloadTimer(@NotNull AbstractEntityCitizen user)
 	{
 		this.getOrCreateTag(user).putLong("reloadStarted", user.level().getGameTime());
 
-		this.onReloadStarted(user);
+		this.onReloadTimerStarted(user);
 	}
 
-	public void stopReload(@NotNull AbstractEntityCitizen user, boolean complete)
+	protected void stopReloadTimer(@NotNull AbstractEntityCitizen user, boolean complete)
 	{
 		this.getOrCreateTag(user).remove("reloadStarted");
 
-		this.onReloadStopped(user, complete);
+		this.onReloadTimerStopped(user, complete);
 	}
 
 }

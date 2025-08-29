@@ -53,6 +53,11 @@ public abstract class CustomizedAI
 
 	}
 
+	public void tick(@NotNull AbstractEntityCitizen user)
+	{
+
+	}
+
 	public boolean canDump(@NotNull AbstractEntityCitizen user, int slot, @NotNull ItemStack stackToDup)
 	{
 		return true;

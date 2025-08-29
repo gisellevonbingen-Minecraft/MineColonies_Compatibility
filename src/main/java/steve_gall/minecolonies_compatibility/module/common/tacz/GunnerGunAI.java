@@ -58,6 +58,26 @@ public class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
+	protected int getAmmoMinRequestCount(@NotNull AbstractEntityCitizen user)
+	{
+		var weapon = this.getMainHandItem(user);
+
+		if (weapon.getItem() instanceof IGun gun)
+		{
+			var gunIndex = TimelessAPI.getCommonGunIndex(gun.getGunId(weapon)).orElse(null);
+
+			if (gunIndex != null)
+			{
+				var gunData = gunIndex.getGunData();
+				return gunData.getAmmoAmount() * 2;
+			}
+
+		}
+
+		return 0;
+	}
+
+	@Override
 	@Nullable
 	protected IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
 	{
@@ -70,7 +90,7 @@ public class GunnerGunAI extends CustomizedAIGunner
 			if (gunIndex != null)
 			{
 				var gunData = gunIndex.getGunData();
-				return new Ammo(gunData.getAmmoId(), gunData.getAmmoAmount() * 2);
+				return new Ammo(gunData.getAmmoId(), minCount);
 			}
 
 		}
@@ -115,13 +135,14 @@ public class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
+	public boolean reload(@NotNull AbstractEntityCitizen user, boolean forRangedAttack)
 	{
-		if (!super.canRangedAttack(user, target))
+		if (!forRangedAttack)
 		{
-			return false;
+			var operator = IGunOperator.fromLivingEntity(user);
+			operator.reload();
 		}
-
+		
 		return true;
 	}
 

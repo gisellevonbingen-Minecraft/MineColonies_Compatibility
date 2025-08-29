@@ -17,6 +17,18 @@ public abstract class CustomizableEntityAIGuard<J extends AbstractJobGuard<J>, B
 	}
 
 	@Override
+	public void tick()
+	{
+		super.tick();
+
+		if (this.getSelectedAI() instanceof CustomizedAIGuard guard)
+		{
+			guard.tick(this.worker);
+		}
+		
+	}
+	
+	@Override
 	protected void atBuildingActions()
 	{
 		super.atBuildingActions();

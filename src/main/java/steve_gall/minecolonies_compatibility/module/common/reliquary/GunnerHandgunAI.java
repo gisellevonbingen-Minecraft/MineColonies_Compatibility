@@ -82,7 +82,7 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected int getAmmoMinCount()
+	protected int getAmmoMinRequestCount(@NotNull AbstractEntityCitizen user)
 	{
 		return 2;
 	}
@@ -95,7 +95,7 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected int getReloadDuration()
+	protected int getReloadTimerDuration()
 	{
 		return this.getWeaponConfig().reloadDuration.get().intValue();
 	}
@@ -107,13 +107,8 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
+	public boolean reload(@NotNull AbstractEntityCitizen user, boolean forRangedAttack)
 	{
-		if (!super.canRangedAttack(user, target))
-		{
-			return false;
-		}
-
 		var inventory = user.getInventoryCitizen();
 		var magazineSlot = this.getAmmoSlot(user, inventory);
 
@@ -137,21 +132,17 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 			}
 
 			this.setBulletCount(user, 8);
-
-			if (!this.reload(user))
-			{
-				return false;
-			}
-
+			this.startReloadTimer(user);
+			return false;
 		}
 
 		return true;
 	}
 
 	@Override
-	protected void onReloadStarted(@NotNull AbstractEntityCitizen user)
+	protected void onReloadTimerStarted(@NotNull AbstractEntityCitizen user)
 	{
-		super.onReloadStarted(user);
+		super.onReloadTimerStarted(user);
 
 		user.playSound(ModSounds.HANDGUN_LOAD.get(), 0.25F, 1.0F);
 	}

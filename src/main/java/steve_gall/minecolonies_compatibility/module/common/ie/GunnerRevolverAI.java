@@ -63,37 +63,29 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
+	public boolean reload(@NotNull AbstractEntityCitizen user, boolean forRangedAttack)
 	{
-		if (!super.canRangedAttack(user, target))
-		{
-			return false;
-		}
-
 		if (this.getWeaponConfig().needReload.get().booleanValue() && this.getBulletCount(user) <= 0)
 		{
-			if (!this.reload(user))
-			{
-				return false;
-			}
-
+			this.startReloadTimer(user);
+			return false;
 		}
 
 		return true;
 	}
 
 	@Override
-	protected void onReloadStarted(@NotNull AbstractEntityCitizen user)
+	protected void onReloadTimerStarted(@NotNull AbstractEntityCitizen user)
 	{
-		super.onReloadStarted(user);
+		super.onReloadTimerStarted(user);
 
 		user.playSound(IESounds.revolverReload.get(), 1.0F, 1.0F);
 	}
 
 	@Override
-	protected void onReloadStopped(@NotNull AbstractEntityCitizen user, boolean complete)
+	protected void onReloadTimerStopped(@NotNull AbstractEntityCitizen user, boolean complete)
 	{
-		super.onReloadStopped(user, complete);
+		super.onReloadTimerStopped(user, complete);
 
 		if (complete)
 		{
@@ -231,7 +223,7 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected int getReloadDuration()
+	protected int getReloadTimerDuration()
 	{
 		return this.getWeaponConfig().reloadDuration.get().intValue();
 	}

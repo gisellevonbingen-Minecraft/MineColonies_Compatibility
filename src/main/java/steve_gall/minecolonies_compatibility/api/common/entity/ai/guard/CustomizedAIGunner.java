@@ -202,7 +202,9 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		{
 			if (this.isNeedRequestAmmo(user))
 			{
-				return this.requestAmmo(user, false);
+				var async = bulletMode.canDefault();
+				this.requestAmmo(user, async);
+				return async;
 			}
 
 		}

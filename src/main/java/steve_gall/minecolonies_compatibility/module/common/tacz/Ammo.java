@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.tacz.guns.api.item.IAmmo;
 import com.tacz.guns.api.item.builder.AmmoItemBuilder;
 
@@ -39,14 +40,14 @@ public class Ammo implements IDeliverableObject
 		return ID;
 	}
 
-	public static Ammo deserialize(@NotNull CompoundTag tag)
+	public static Ammo deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var ammoId = new ResourceLocation(tag.getString("ammoId"));
 		var minCount = tag.getInt("minCount");
 		return new Ammo(ammoId, minCount);
 	}
 
-	public static void serialize(Ammo request, @NotNull CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, Ammo request)
 	{
 		tag.putString("ammoId", request.ammoId.toString());
 		tag.putInt("minCount", request.minCount);

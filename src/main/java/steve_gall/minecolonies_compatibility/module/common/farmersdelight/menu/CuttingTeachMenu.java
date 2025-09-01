@@ -11,6 +11,7 @@ import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -112,7 +113,7 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(RegistryAccess registryAccess)
 	{
 		var prevSlots = this.resultSlots.size();
 		this.results.clear();

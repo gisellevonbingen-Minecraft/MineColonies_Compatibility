@@ -1,6 +1,5 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher;
 
-import static com.minecolonies.api.util.constant.CitizenConstants.BLOCK_BREAK_PARTICLE_RANGE;
 import static com.minecolonies.api.util.constant.CitizenConstants.FACING_DELTA_YAW;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +16,7 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.Tuple;
+import com.minecolonies.api.util.constant.CitizenConstants;
 import com.minecolonies.api.util.constant.TypeConstants;
 import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
@@ -537,7 +537,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		var vector = pos.subtract(worker.blockPosition());
 		var facing = BlockPosUtil.directionFromDelta(vector.getX(), vector.getY(), vector.getZ()).getOpposite();
 
-		Network.getNetwork().sendToPosition(new BlockParticleEffectMessage(pos, blockState, facing.ordinal()), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), BLOCK_BREAK_PARTICLE_RANGE, worker.level().dimension()));
+		Network.getNetwork().sendToPosition(new BlockParticleEffectMessage(pos, blockState, facing.ordinal()), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), CitizenConstants.BLOCK_BREAK_PARTICLE_RANGE, worker.level().dimension()));
 	}
 
 }

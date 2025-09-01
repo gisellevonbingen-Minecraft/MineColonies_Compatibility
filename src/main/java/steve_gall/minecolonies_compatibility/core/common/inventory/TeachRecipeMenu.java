@@ -8,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -74,7 +76,7 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 
 	protected abstract IMenuRecipeValidator<RECIPE> createRecipeValidator();
 
-	protected abstract void onRecipeChanged();
+	protected abstract void onRecipeChanged(RegistryAccess registryAccess);
 
 	@Override
 	public IMenuRecipeValidator<RECIPE> getRecipeValidator()
@@ -131,8 +133,9 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	{
 		if (this.inventory.player instanceof ServerPlayer player)
 		{
-			this.recipes = new ArrayList<>(this.getRecipeValidator().findAll(this.inputContainer, player));
-			var tags = this.recipes.stream().map(this.recipeValidator::serialize).toList();
+			var recipeValidator = this.getRecipeValidator();
+			this.recipes = new ArrayList<>(recipeValidator.findAll(this.inputContainer, player));
+			var tags = this.recipes.stream().map(r -> recipeValidator.serialize(StandardFactoryController.getInstance(), r)).toList();
 			MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewRecipesMessage(tags), player);
 
 			if (ModuleManager.POLYMORPH.isLoaded())
@@ -154,11 +157,11 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	protected void setRecipe(RECIPE recipe)
 	{
 		this.recipe = recipe;
-		this.onRecipeChanged();
+		this.onRecipeChanged(this.inventory.player.level().registryAccess());
 
 		if (this.inventory.player instanceof ServerPlayer player)
 		{
-			var tag = recipe != null ? this.getRecipeValidator().serialize(recipe) : null;
+			var tag = recipe != null ? this.getRecipeValidator().serialize(StandardFactoryController.getInstance(), recipe) : null;
 			MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewResultMessage(tag), player);
 
 			if (ModuleManager.POLYMORPH.isLoaded() && recipe instanceof Recipe<?>)
@@ -174,7 +177,7 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	{
 		if (tag != null)
 		{
-			var recipe = this.getRecipeValidator().deserialize(tag);
+			var recipe = this.getRecipeValidator().deserialize(StandardFactoryController.getInstance(), tag);
 			this.setRecipe(recipe);
 		}
 		else

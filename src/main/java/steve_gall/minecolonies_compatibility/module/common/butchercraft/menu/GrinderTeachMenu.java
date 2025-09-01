@@ -9,6 +9,7 @@ import com.lance5057.butchercraft.workstations.grinder.GrinderContainer;
 import com.lance5057.butchercraft.workstations.grinder.GrinderRecipe;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -111,9 +112,9 @@ public class GrinderTeachMenu extends TeachRecipeMenu<GrinderRecipe>
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(RegistryAccess registryAccess)
 	{
-		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem(this.inventory.player.level().registryAccess()) : ItemStack.EMPTY);
+		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem(registryAccess) : ItemStack.EMPTY);
 	}
 
 }

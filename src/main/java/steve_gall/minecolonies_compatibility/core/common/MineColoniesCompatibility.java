@@ -8,7 +8,6 @@ import com.minecolonies.api.creativetab.ModCreativeTabs;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,7 +19,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
@@ -28,11 +26,6 @@ import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButche
 import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
 import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 import steve_gall.minecolonies_compatibility.core.client.MineColoniesCompatibilityClient;
-import steve_gall.minecolonies_compatibility.core.client.gui.AccessDirectionHolderScreen;
-import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
-import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
-import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTemplateInventoryScreen;
-import steve_gall.minecolonies_compatibility.core.client.gui.StonecutterTeachScreen;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.InjectBuildingSettingsModuleEvent;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
@@ -52,9 +45,10 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModItems;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
-import steve_gall.minecolonies_compatibility.core.common.network.NetworkChannel;
+import steve_gall.minecolonies_compatibility.core.common.network.ModMessagesRegistrar;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizedRecipeStorageRegistry;
+import steve_gall.minecolonies_tweaks.api.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.DeliverableObjectRegistry;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeRegisterEvent;
 
@@ -81,7 +75,6 @@ public class MineColoniesCompatibility
 		ModMenuTypes.REGISTER.register(fml_bus);
 		ModInteractions.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
-		fml_bus.addListener(this::onFMLClientSetup);
 		fml_bus.addListener(this::onCustomToolTypeRegister);
 		fml_bus.addListener(this::onBuildCreativeModeTabContents);
 
@@ -90,7 +83,8 @@ public class MineColoniesCompatibility
 		forge_bus.addListener(this::onRecipesUpdated);
 		forge_bus.addListener(this::onOnDatapackSync);
 
-		NETWORK = new NetworkChannel("main");
+		NETWORK = new NetworkChannel(MOD_ID, "main");
+		ModMessagesRegistrar.register(NETWORK);
 		ModuleManager.initialize();
 
 		CustomizedRecipeStorageRegistry.INSTANCE.register(BucketFillingRecipeStorage.ID, BucketFillingRecipeStorage::serialize, BucketFillingRecipeStorage::deserialize);
@@ -146,15 +140,6 @@ public class MineColoniesCompatibility
 
 			NetworkStorageViewRegistry.register((be, direction) -> be instanceof INetworkStorageViewHolder blockEntity ? blockEntity.getNetworkStorageView() : null);
 		});
-	}
-
-	private void onFMLClientSetup(FMLClientSetupEvent e)
-	{
-		MenuScreens.register(ModMenuTypes.BUCKET_FILLING_TEACH.get(), BucketFillingTeachScreen::new);
-		MenuScreens.register(ModMenuTypes.SMITHING_TEACH.get(), SmithingTeachScreen::new);
-		MenuScreens.register(ModMenuTypes.SMITHING_TEMPLATE_INVENTORY.get(), SmithingTemplateInventoryScreen::new);
-		MenuScreens.register(ModMenuTypes.ACCESS_DIRECTION_HOLDER.get(), AccessDirectionHolderScreen::new);
-		MenuScreens.register(ModMenuTypes.STONECUTTING_TEACH.get(), StonecutterTeachScreen::new);
 	}
 
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)

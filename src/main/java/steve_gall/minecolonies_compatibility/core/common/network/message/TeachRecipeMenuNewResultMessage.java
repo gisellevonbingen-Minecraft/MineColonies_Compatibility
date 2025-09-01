@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
-import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 
 public class TeachRecipeMenuNewResultMessage extends AbstractMessage
 {

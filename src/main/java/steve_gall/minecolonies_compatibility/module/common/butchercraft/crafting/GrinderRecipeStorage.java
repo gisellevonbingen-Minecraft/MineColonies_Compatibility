@@ -3,7 +3,7 @@ package steve_gall.minecolonies_compatibility.module.common.butchercraft.craftin
 import java.util.Collections;
 import java.util.List;
 
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 
 import net.minecraft.nbt.CompoundTag;
@@ -19,11 +19,11 @@ public class GrinderRecipeStorage extends SimpleRecipeStorage<GrinderGenericReci
 
 	private final ItemStorage attachment;
 
-	public GrinderRecipeStorage(CompoundTag tag)
+	public GrinderRecipeStorage(IFactoryController controller, CompoundTag tag)
 	{
-		super(tag);
+		super(controller, tag);
 
-		this.attachment = StandardFactoryController.getInstance().deserialize(tag.getCompound("attachment"));
+		this.attachment = controller.deserialize(tag.getCompound("attachment"));
 	}
 
 	public GrinderRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingredients, ItemStorage attachment, ItemStack output)
@@ -34,11 +34,11 @@ public class GrinderRecipeStorage extends SimpleRecipeStorage<GrinderGenericReci
 	}
 
 	@Override
-	public void serialize(CompoundTag tag)
+	public void serialize(IFactoryController controller, CompoundTag tag)
 	{
-		super.serialize(tag);
+		super.serialize(controller, tag);
 
-		tag.put("attachment", StandardFactoryController.getInstance().serialize(this.attachment));
+		tag.put("attachment", controller.serialize(this.attachment));
 	}
 
 	@Override

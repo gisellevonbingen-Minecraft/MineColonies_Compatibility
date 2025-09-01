@@ -7,6 +7,7 @@ import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.TranslationConstants;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -164,11 +165,11 @@ public class SmithingTeachMenu extends TeachRecipeMenu<SmithingRecipe>
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(RegistryAccess registryAccess)
 	{
 		if (this.recipe != null)
 		{
-			this.resultContainer.setItem(0, this.recipe.assemble(this.inputContainer, this.inventory.player.level().registryAccess()));
+			this.resultContainer.setItem(0, this.recipe.assemble(this.inputContainer, registryAccess));
 		}
 		else
 		{

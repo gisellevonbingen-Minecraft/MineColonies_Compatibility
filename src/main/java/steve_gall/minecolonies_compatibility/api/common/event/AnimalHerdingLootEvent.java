@@ -4,9 +4,13 @@ import java.util.function.Consumer;
 
 import com.minecolonies.core.colony.crafting.LootTableAnalyzer;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 import steve_gall.minecolonies_compatibility.core.common.crafting.AnimalHerdingLootGenericRecipe;
 
+/**
+ * {@link MinecraftForge#EVENT_BUS}
+ */
 public class AnimalHerdingLootEvent extends Event
 {
 	private final AnimalHerdingLootGenericRecipe recipe;

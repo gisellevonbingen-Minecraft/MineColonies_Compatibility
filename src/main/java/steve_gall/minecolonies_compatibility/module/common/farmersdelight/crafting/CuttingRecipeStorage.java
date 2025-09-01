@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.minecolonies.api.IMinecoloniesAPI;
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
@@ -27,20 +27,20 @@ public class CuttingRecipeStorage extends GenericedRecipeStorage<CuttingGenericR
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("farmerdelight_cutting");
 
-	public static void serialize(CuttingRecipeStorage recipe, CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, CuttingRecipeStorage recipe)
 	{
 		tag.putString("recipeId", recipe.recipeId.toString());
-		NBTUtils2.serializeCollection(tag, "ingreidnts", recipe.ingreidnts, StandardFactoryController.getInstance()::serialize);
-		NBTUtils2.serializeCollection(tag, "results", recipe.results, CuttingChanceResult::serializeNBT);
+		NBTUtils2.serializeCollection(tag, "ingreidnts", recipe.ingreidnts, controller::serialize);
+		NBTUtils2.serializeCollection(tag, "results", recipe.results, CuttingChanceResult::serialize);
 		tag.putString("toolType", recipe.toolType.getRegistryName().toString());
 		tag.putInt("version", 1);
 	}
 
-	public static CuttingRecipeStorage deserialize(CompoundTag tag)
+	public static CuttingRecipeStorage deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var recipeId = new ResourceLocation(tag.getString("recipeId"));
-		List<ItemStorage> ingreidnts = NBTUtils2.deserializeList(tag, "ingreidnts", StandardFactoryController.getInstance()::deserialize);
-		var results = NBTUtils2.deserializeList(tag, "results", CuttingChanceResult::new);
+		List<ItemStorage> ingreidnts = NBTUtils2.deserializeList(tag, "ingreidnts", controller::deserialize);
+		var results = NBTUtils2.deserializeList(tag, "results", CuttingChanceResult::deserialize);
 		var version = tag.getInt("version");
 		EquipmentTypeEntry toolType;
 

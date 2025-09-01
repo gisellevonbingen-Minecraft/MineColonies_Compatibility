@@ -11,6 +11,7 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.crafting.GunSmithTableRecipe;
 import com.tacz.guns.init.ModRecipe;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -195,7 +196,7 @@ public class GunSmithTableTeachMenu extends TeachRecipeMenu<GunSmithTableRecipe>
 				if (this.test(stack, recipe))
 				{
 					this.recipe = recipe;
-					this.onRecipeChanged();
+					this.onRecipeChanged(this.inventory.player.level().registryAccess());
 					this.refreshRecipes(recipe);
 					break;
 				}
@@ -234,11 +235,11 @@ public class GunSmithTableTeachMenu extends TeachRecipeMenu<GunSmithTableRecipe>
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(RegistryAccess registryAccess)
 	{
 		if (this.recipe != null)
 		{
-			this.resultContainer.setItem(0, this.recipe.getResultItem(this.inventory.player.level().registryAccess()));
+			this.resultContainer.setItem(0, this.recipe.getResultItem(registryAccess));
 
 			var inputs = this.recipe.getInputs();
 

@@ -4,7 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent.Context;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostMenu;
-import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 
 public class JEIGhostAcceptItemMessage extends AbstractMessage
 {
@@ -50,9 +50,7 @@ public class JEIGhostAcceptItemMessage extends AbstractMessage
 			return;
 		}
 
-		var menu = player.containerMenu;
-
-		if (menu instanceof IItemGhostMenu ghostMenu)
+		if (player.containerMenu instanceof IItemGhostMenu ghostMenu)
 		{
 			ghostMenu.onGhostAcceptItem(this.slotNumber, this.stack, this.isVirtual);
 		}

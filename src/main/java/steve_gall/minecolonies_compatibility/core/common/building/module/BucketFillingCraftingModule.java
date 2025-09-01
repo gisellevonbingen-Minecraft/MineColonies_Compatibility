@@ -117,7 +117,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 	}
 
 	@Override
-	public boolean canBlockRecipeWorking(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
+	public boolean canBlockRecipeWorking(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
 	{
 		var recipe = toRecipe(recipeStorage);
 
@@ -142,7 +142,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 	}
 
-	public boolean drain(LevelReader level, BlockPos pos, BlockState state, BucketFillingRecipeStorage recipe, boolean simulate)
+	public boolean drain(Level level, BlockPos pos, BlockState state, BucketFillingRecipeStorage recipe, boolean simulate)
 	{
 		var blockEntity = level.getBlockEntity(pos);
 

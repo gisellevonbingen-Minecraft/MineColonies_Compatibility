@@ -23,11 +23,10 @@ public class CrossBowToolType extends CustomToolType
 		return stack.getItem() instanceof CrossbowItem;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public int getToolLevel(@NotNull ItemStack stack)
 	{
-		return ModEquipmentTypes.durabilityBasedLevel(stack, Items.CROSSBOW.getMaxDamage());
+		return ModEquipmentTypes.durabilityBasedLevel(stack, Items.CROSSBOW.getMaxDamage(stack));
 	}
 
 }

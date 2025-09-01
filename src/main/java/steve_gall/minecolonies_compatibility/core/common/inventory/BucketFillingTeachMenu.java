@@ -3,11 +3,10 @@ package steve_gall.minecolonies_compatibility.core.common.inventory;
 import java.util.Collections;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,29 +53,29 @@ public class BucketFillingTeachMenu extends TeachRecipeMenu<BucketFillingRecipeS
 		return new IMenuRecipeValidator<>()
 		{
 			@Override
-			public @Nullable List<BucketFillingRecipeStorage> findAll(Container container, ServerPlayer player)
+			public List<BucketFillingRecipeStorage> findAll(Container container, ServerPlayer player)
 			{
 				var recipe = BucketFillingCraftingType.parse(container.getItem(0));
 				return recipe != null ? Collections.singletonList(recipe) : Collections.emptyList();
 			}
 
 			@Override
-			public @NotNull BucketFillingRecipeStorage deserialize(@NotNull CompoundTag tag)
+			public BucketFillingRecipeStorage deserialize(IFactoryController controller, CompoundTag tag)
 			{
-				return BucketFillingRecipeStorage.deserialize(tag);
+				return BucketFillingRecipeStorage.deserialize(controller, tag);
 			}
 
-			public @NotNull CompoundTag serialize(@NotNull BucketFillingRecipeStorage recipe)
+			public CompoundTag serialize(IFactoryController controller, BucketFillingRecipeStorage recipe)
 			{
 				var tag = new CompoundTag();
-				BucketFillingRecipeStorage.serialize(recipe, tag);
+				BucketFillingRecipeStorage.serialize(controller, tag, recipe);
 				return tag;
 			}
 		};
 	}
 
 	@Override
-	protected void setContainerByTransfer(@NotNull BucketFillingRecipeStorage recipe, @NotNull CompoundTag payload)
+	protected void setContainerByTransfer(BucketFillingRecipeStorage recipe, CompoundTag payload)
 	{
 		super.setContainerByTransfer(recipe, payload);
 
@@ -84,7 +83,7 @@ public class BucketFillingTeachMenu extends TeachRecipeMenu<BucketFillingRecipeS
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(RegistryAccess registryAccess)
 	{
 
 	}

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
@@ -30,19 +30,19 @@ public class SmithingTemplateRecipeStorage implements ICustomizedRecipeStorage
 	public static final String TAG_PRIMARY_OUTPUT = "primaryOutput";
 	public static final String TAG_SECONDARY_OUTPUTS = "secondaryOutputs";
 
-	public static void serialize(SmithingTemplateRecipeStorage recipe, CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, SmithingTemplateRecipeStorage recipe)
 	{
 		tag.putInt(TAG_GRID_SIZE, recipe.gridSize);
-		NBTUtils2.serializeCollection(tag, TAG_INPUT, recipe.input, StandardFactoryController.getInstance()::serialize);
+		NBTUtils2.serializeCollection(tag, TAG_INPUT, recipe.input, controller::serialize);
 		tag.putInt(TAG_INPUT_TEMPLATE_COUNT, recipe.inputTemplateCount);
 		tag.put(TAG_PRIMARY_OUTPUT, recipe.primaryOutput.serializeNBT());
 		NBTUtils2.serializeCollection(tag, TAG_SECONDARY_OUTPUTS, recipe.secondaryOutputs, ItemStack::serializeNBT);
 	}
 
-	public static SmithingTemplateRecipeStorage deserialize(CompoundTag tag)
+	public static SmithingTemplateRecipeStorage deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var gridSize = tag.getInt(TAG_GRID_SIZE);
-		List<ItemStorage> input = NBTUtils2.deserializeList(tag, TAG_INPUT, StandardFactoryController.getInstance()::deserialize);
+		List<ItemStorage> input = NBTUtils2.deserializeList(tag, TAG_INPUT, controller::deserialize);
 		var inputTemplateCount = tag.getInt(TAG_INPUT_TEMPLATE_COUNT);
 		var primaryOutput = ItemStack.of(tag.getCompound(TAG_PRIMARY_OUTPUT));
 		var secondaryOutputs = NBTUtils2.deserializeList(tag, TAG_SECONDARY_OUTPUTS, ItemStack::of);

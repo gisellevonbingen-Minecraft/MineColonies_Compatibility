@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 
 import net.minecraft.nbt.CompoundTag;
@@ -24,15 +24,15 @@ public abstract class SimpleRecipeStorage<GENERIC_RECIPE extends SimpleGenericRe
 
 	private GENERIC_RECIPE genericRecipe;
 
-	public SimpleRecipeStorage(CompoundTag tag)
+	public SimpleRecipeStorage(@NotNull IFactoryController controller, @NotNull CompoundTag tag)
 	{
 		this.recipeId = new ResourceLocation(tag.getString("recipeId"));
-		this.ingredients = NBTUtils2.deserializeList(tag, "ingredients", StandardFactoryController.getInstance()::deserialize);
+		this.ingredients = NBTUtils2.deserializeList(tag, "ingredients", controller::deserialize);
 		this.output = ItemStack.of(tag.getCompound("output"));
 		this.secondaryOutputs = ItemStorageHelper.getCraftingRemainings(this.ingredients);
 	}
 
-	public SimpleRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingredients, ItemStack output)
+	public SimpleRecipeStorage(@NotNull ResourceLocation recipeId, @NotNull List<ItemStorage> ingredients, @NotNull ItemStack output)
 	{
 		this.recipeId = recipeId;
 		this.ingredients = ItemStorageHelper.filterNotEmpty(ingredients);
@@ -40,10 +40,10 @@ public abstract class SimpleRecipeStorage<GENERIC_RECIPE extends SimpleGenericRe
 		this.secondaryOutputs = ItemStorageHelper.getCraftingRemainings(ingredients);
 	}
 
-	public void serialize(CompoundTag tag)
+	public void serialize(@NotNull IFactoryController controller, @NotNull CompoundTag tag)
 	{
 		tag.putString("recipeId", this.recipeId.toString());
-		NBTUtils2.serializeCollection(tag, "ingredients", this.ingredients, StandardFactoryController.getInstance()::serialize);
+		NBTUtils2.serializeCollection(tag, "ingredients", this.ingredients, controller::serialize);
 		tag.put("output", this.output.serializeNBT());
 	}
 
@@ -54,7 +54,7 @@ public abstract class SimpleRecipeStorage<GENERIC_RECIPE extends SimpleGenericRe
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(@NotNull Object o)
 	{
 		if (this == o)
 		{
@@ -68,30 +68,35 @@ public abstract class SimpleRecipeStorage<GENERIC_RECIPE extends SimpleGenericRe
 		return false;
 	}
 
+	@NotNull
 	public ResourceLocation getRecipeId()
 	{
 		return this.recipeId;
 	}
 
 	@Override
+	@NotNull
 	public List<ItemStorage> getInput()
 	{
 		return this.ingredients;
 	}
 
 	@Override
+	@NotNull
 	public List<ItemStack> getSecondaryOutputs()
 	{
 		return this.secondaryOutputs;
 	}
 
+	@NotNull
 	public List<ItemStorage> getIngredients()
 	{
 		return this.ingredients;
 	}
 
 	@Override
-	public @NotNull GENERIC_RECIPE getGenericRecipe()
+	@NotNull
+	public GENERIC_RECIPE getGenericRecipe()
 	{
 		if (this.genericRecipe == null)
 		{
@@ -101,11 +106,13 @@ public abstract class SimpleRecipeStorage<GENERIC_RECIPE extends SimpleGenericRe
 		return this.genericRecipe;
 	}
 
+	@NotNull
 	protected abstract GenericRecipeFactory<GENERIC_RECIPE> getGenericRecipeFactory();
 
 	public interface GenericRecipeFactory<GENERIC_RECIPE>
 	{
-		GENERIC_RECIPE create(ResourceLocation recipeId, List<List<ItemStack>> ingredients, ItemStack output);
+		@NotNull
+		GENERIC_RECIPE create(@NotNull ResourceLocation recipeId, @NotNull List<List<ItemStack>> ingredients, @NotNull ItemStack output);
 	}
 
 }

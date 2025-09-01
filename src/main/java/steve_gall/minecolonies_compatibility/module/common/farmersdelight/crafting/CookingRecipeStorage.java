@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 
 import net.minecraft.nbt.CompoundTag;
@@ -22,19 +22,19 @@ public class CookingRecipeStorage extends GenericedRecipeStorage<CookingGenericR
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("farmerdelight_cooking");
 
-	public static void serialize(CookingRecipeStorage recipe, CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, CookingRecipeStorage recipe)
 	{
 		tag.putString("recipeId", recipe.recipeId.toString());
-		NBTUtils2.serializeCollection(tag, "ingreidnts", recipe.ingreidnts, StandardFactoryController.getInstance()::serialize);
-		tag.put("container", StandardFactoryController.getInstance().serialize(recipe.container));
+		NBTUtils2.serializeCollection(tag, "ingreidnts", recipe.ingreidnts, controller::serialize);
+		tag.put("container", controller.serialize(recipe.container));
 		tag.put("output", recipe.output.serializeNBT());
 	}
 
-	public static CookingRecipeStorage deserialize(CompoundTag tag)
+	public static CookingRecipeStorage deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var recipeId = new ResourceLocation(tag.getString("recipeId"));
-		List<ItemStorage> ingreidnts = NBTUtils2.deserializeList(tag, "ingreidnts", StandardFactoryController.getInstance()::deserialize);
-		ItemStorage container = StandardFactoryController.getInstance().deserialize(tag.getCompound("container"));
+		List<ItemStorage> ingreidnts = NBTUtils2.deserializeList(tag, "ingreidnts", controller::deserialize);
+		ItemStorage container = controller.deserialize(tag.getCompound("container"));
 		var output = ItemStack.of(tag.getCompound("output"));
 		return new CookingRecipeStorage(recipeId, ingreidnts, container, output);
 	}

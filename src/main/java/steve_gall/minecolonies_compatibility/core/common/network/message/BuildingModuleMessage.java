@@ -4,8 +4,8 @@ import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 
 import net.minecraft.network.FriendlyByteBuf;
-import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
 import steve_gall.minecolonies_tweaks.api.common.building.module.ModulePos;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 
 public abstract class BuildingModuleMessage extends AbstractMessage
 {

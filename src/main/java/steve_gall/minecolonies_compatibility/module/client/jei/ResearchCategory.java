@@ -190,14 +190,13 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 		}
 
-		private ItemLike getBuildingItem(String buildingName)
+		private ItemLike getBuildingItem(ResourceLocation buildingName)
 		{
-			var buildingPath = new ResourceLocation(Constants.MOD_ID, buildingName);
 			var buildingRegistry = IMinecoloniesAPI.getInstance().getBuildingRegistry();
 
-			if (buildingRegistry.containsKey(buildingPath))
+			if (buildingRegistry.containsKey(buildingName))
 			{
-				return buildingRegistry.getValue(buildingPath).getBuildingBlock();
+				return buildingRegistry.getValue(buildingName).getBuildingBlock();
 			}
 			else
 			{
@@ -206,13 +205,20 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 		}
 
-		private Stream<Tuple<String, Integer>> getBuildingTuples(IResearchRequirement requirement)
+		private Stream<Tuple<ResourceLocation, Integer>> getBuildingTuples(IResearchRequirement requirement)
 		{
 			if (requirement instanceof BuildingAlternatesResearchRequirement alternateBuildingRequirement)
 			{
 				return alternateBuildingRequirement.getBuildings().entrySet().stream().map(entry ->
 				{
-					return new Tuple<>(entry.getKey(), entry.getValue());
+					var rl = ResourceLocation.tryParse(entry.getKey());
+
+					if (rl == null)
+					{
+						rl = new ResourceLocation(Constants.MOD_ID, entry.getKey());
+					}
+
+					return new Tuple<>(rl, entry.getValue());
 				});
 			}
 			else if (requirement instanceof BuildingResearchRequirement buildingRequirement)

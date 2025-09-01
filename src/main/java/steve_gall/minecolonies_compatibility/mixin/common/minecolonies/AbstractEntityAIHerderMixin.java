@@ -75,19 +75,25 @@ public abstract class AbstractEntityAIHerderMixin<J extends AbstractJob<?, J>, B
 		return toolType;
 	}
 
-	@WrapOperation(method = "butcherAnimal", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", remap = true))
-	private boolean butcherAnimal_hurt(Animal animal, DamageSource source, float damage, Operation<Boolean> operation)
+	@WrapOperation(method = "butcherAnimal", remap = false, at = @At(value = "INVOKE", target = "getFakePlayer"))
+	private FakePlayer butcherAnimal_getFakePlayer(AbstractEntityAIHerder<?, ?> self, Operation<FakePlayer> operation)
+	{
+		var player = operation.call(self);
+		var hand = InteractionHand.MAIN_HAND;
+		player.setItemInHand(hand, this.worker.getItemInHand(hand).copy());
+		return player;
+	}
+
+	@WrapOperation(method = "butcherSwing", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", remap = true))
+	private boolean butcherSwing_hurt(Animal animal, DamageSource source, float damage, Operation<Boolean> operation)
 	{
 		var damageType = this.worker.level().registryAccess().registry(Registries.DAMAGE_TYPE).get().get(DamageTypes.PLAYER_ATTACK);
 
 		if (source.type() == damageType && source.getEntity() instanceof FakePlayer player)
 		{
-			var hand = InteractionHand.MAIN_HAND;
-			player.setItemInHand(hand, this.worker.getItemInHand(hand).copy());
-
 			if (ModuleManager.BUTCHERCRAFT.isLoaded())
 			{
-				if (ButchercraftModule.slaughter(player, animal, hand))
+				if (ButchercraftModule.slaughter(player, animal, InteractionHand.MAIN_HAND))
 				{
 					return true;
 				}

@@ -146,7 +146,7 @@ public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<
 	}
 
 	@Override
-	protected void onTargetChange()
+	protected void onTargetChange(LivingEntity newTarget)
 	{
 		CombatUtils.notifyGuardsOfTarget(this.user, this.target, AbstractEntityAIGuard.PATROL_DEVIATION_RAID_POINT);
 

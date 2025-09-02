@@ -14,6 +14,7 @@ import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.core.research.AlternateBuildingResearchRequirement;
 import com.minecolonies.core.research.BuildingResearchRequirement;
+import com.minecolonies.core.research.ResearchResearchRequirement;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -82,21 +83,18 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 		for (var tuple : cache.requirements)
 		{
-			for (var building : tuple.getB())
+			var xi = requirementIndex % 9;
+			var yi = requirementIndex / 9;
+			var slotBuilder = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 8 + 18 * xi, 22 + 18 * yi);
+			slotBuilder.setBackground(this.slot, -1, -1);
+			slotBuilder.addItemStacks(tuple.getB());
+			slotBuilder.addTooltipCallback((recipeSlotView, tooltip) ->
 			{
-				var xi = requirementIndex % 9;
-				var yi = requirementIndex / 9;
-				var slotBuilder = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 8 + 18 * xi, 22 + 18 * yi);
-				slotBuilder.setBackground(this.slot, -1, -1);
-				slotBuilder.addItemStack(building);
-				slotBuilder.addTooltipCallback((recipeSlotView, tooltip) ->
-				{
-					tooltip.clear();
-					tooltip.add(tuple.getA().getDesc());
-				});
-				requirementIndex++;
-			}
+				tooltip.clear();
+				tooltip.add(tuple.getA().getDesc());
+			});
 
+			requirementIndex++;
 		}
 
 		var costs = cache.costs;
@@ -159,12 +157,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 			this.effects = research.getEffects().stream().map(effect -> (Component) MutableComponent.create(effect.getDesc())).toList();
 			this.requirements = research.getResearchRequirement().stream().map(requirement ->
 			{
-				return new Tuple<>(requirement, this.getBuildingTuples(requirement).map(tuple ->
-				{
-					var stack = new ItemStack(this.getBuildingItem(tuple.getA()));
-					stack.setCount(tuple.getB());
-					return stack;
-				}).toList());
+				return new Tuple<>(requirement, this.getDisplayItemStacks(requirement).toList());
 			}).toList();
 
 			this.costs = research.getCostList().stream().map(cost -> cost.getItems().stream().map(item ->
@@ -206,18 +199,22 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 		}
 
-		private Stream<Tuple<String, Integer>> getBuildingTuples(IResearchRequirement requirement)
+		private Stream<ItemStack> getDisplayItemStacks(IResearchRequirement requirement)
 		{
 			if (requirement instanceof AlternateBuildingResearchRequirement alternateBuildingRequirement)
 			{
 				return alternateBuildingRequirement.getBuildings().entrySet().stream().map(entry ->
 				{
-					return new Tuple<>(entry.getKey(), entry.getValue());
+					return new ItemStack(this.getBuildingItem(entry.getKey()), entry.getValue());
 				});
 			}
 			else if (requirement instanceof BuildingResearchRequirement buildingRequirement)
 			{
-				return Stream.of(new Tuple<>(buildingRequirement.getBuilding(), buildingRequirement.getBuildingLevel()));
+				return Stream.of(new ItemStack(this.getBuildingItem(buildingRequirement.getBuilding()), buildingRequirement.getBuildingLevel()));
+			}
+			else if (requirement instanceof ResearchResearchRequirement)
+			{
+				return Stream.of(new ItemStack(Items.BOOK, 1));
 			}
 
 			return Stream.empty();

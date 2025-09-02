@@ -83,21 +83,18 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 		for (var tuple : cache.requirements)
 		{
-			for (var building : tuple.getB())
+			var xi = requirementIndex % 9;
+			var yi = requirementIndex / 9;
+			var slotBuilder = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 8 + 18 * xi, 22 + 18 * yi);
+			slotBuilder.setBackground(this.slot, -1, -1);
+			slotBuilder.addItemStacks(tuple.getB());
+			slotBuilder.addTooltipCallback((recipeSlotView, tooltip) ->
 			{
-				var xi = requirementIndex % 9;
-				var yi = requirementIndex / 9;
-				var slotBuilder = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 8 + 18 * xi, 22 + 18 * yi);
-				slotBuilder.setBackground(this.slot, -1, -1);
-				slotBuilder.addItemStack(building);
-				slotBuilder.addTooltipCallback((recipeSlotView, tooltip) ->
-				{
-					tooltip.clear();
-					tooltip.add(tuple.getA().getDesc());
-				});
-				requirementIndex++;
-			}
+				tooltip.clear();
+				tooltip.add(tuple.getA().getDesc());
+			});
 
+			requirementIndex++;
 		}
 
 		var costs = cache.costs;

@@ -11,6 +11,7 @@ import com.minecolonies.api.research.IGlobalResearch;
 import com.minecolonies.api.research.IResearchRequirement;
 import com.minecolonies.api.research.requirements.BuildingAlternatesResearchRequirement;
 import com.minecolonies.api.research.requirements.BuildingResearchRequirement;
+import com.minecolonies.api.research.requirements.ResearchResearchRequirement;
 import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
@@ -159,12 +160,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 			this.effects = research.getEffects().stream().map(effect -> (Component) MutableComponent.create(effect.getName())).toList();
 			this.requirements = research.getResearchRequirements().stream().map(requirement ->
 			{
-				return new Tuple<>(requirement, this.getBuildingTuples(requirement).map(tuple ->
-				{
-					var stack = new ItemStack(this.getBuildingItem(tuple.getA()));
-					stack.setCount(tuple.getB());
-					return stack;
-				}).toList());
+				return new Tuple<>(requirement, this.getDisplayItemStacks(requirement).toList());
 			}).toList();
 
 			this.costs = research.getCostList().stream().map(cost -> cost.getItems().stream().map(item ->
@@ -205,25 +201,22 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 		}
 
-		private Stream<Tuple<ResourceLocation, Integer>> getBuildingTuples(IResearchRequirement requirement)
+		private Stream<ItemStack> getDisplayItemStacks(IResearchRequirement requirement)
 		{
 			if (requirement instanceof BuildingAlternatesResearchRequirement alternateBuildingRequirement)
 			{
-				return alternateBuildingRequirement.getBuildings().entrySet().stream().map(entry ->
+				return alternateBuildingRequirement.getBuildings().stream().map(name ->
 				{
-					var rl = ResourceLocation.tryParse(entry.getKey());
-
-					if (rl == null)
-					{
-						rl = new ResourceLocation(Constants.MOD_ID, entry.getKey());
-					}
-
-					return new Tuple<>(rl, entry.getValue());
+					return new ItemStack(this.getBuildingItem(name), alternateBuildingRequirement.getBuildingLevel());
 				});
 			}
 			else if (requirement instanceof BuildingResearchRequirement buildingRequirement)
 			{
-				return Stream.of(new Tuple<>(buildingRequirement.getBuilding(), buildingRequirement.getBuildingLevel()));
+				return Stream.of(new ItemStack(this.getBuildingItem(buildingRequirement.getBuilding()), buildingRequirement.getBuildingLevel()));
+			}
+			else if (requirement instanceof ResearchResearchRequirement)
+			{
+				return Stream.of(new ItemStack(Items.BOOK, 1));
 			}
 
 			return Stream.empty();

@@ -2,14 +2,6 @@
 	"values": [
 		{
 			"required": false,
-			"id": "corn_delight:nachos"
-		},
-		{
-			"required": false,
-			"id": "corn_delight:nachos_block"
-		},
-		{
-			"required": false,
 			"id": "culturaldelights:chicken_taco"
 		},
 		{
@@ -82,14 +74,6 @@
 		},
 		{
 			"required": false,
-			"id": "delightful:stuffed_cantaloupe"
-		},
-		{
-			"required": false,
-			"id": "delightful:stuffed_cantaloupe_block"
-		},
-		{
-			"required": false,
 			"id": "farmersdelight:baked_cod_stew"
 		},
 		{
@@ -99,14 +83,6 @@
 		{
 			"required": false,
 			"id": "farmersdelight:fried_rice"
-		},
-		{
-			"required": false,
-			"id": "farmersdelight:honey_glazed_ham"
-		},
-		{
-			"required": false,
-			"id": "farmersdelight:honey_glazed_ham_block"
 		},
 		{
 			"required": false,
@@ -126,23 +102,7 @@
 		},
 		{
 			"required": false,
-			"id": "farmersdelight:roast_chicken"
-		},
-		{
-			"required": false,
-			"id": "farmersdelight:roast_chicken_block"
-		},
-		{
-			"required": false,
 			"id": "farmersdelight:roasted_mutton_chops"
-		},
-		{
-			"required": false,
-			"id": "farmersdelight:shepherds_pie"
-		},
-		{
-			"required": false,
-			"id": "farmersdelight:shepherds_pie_block"
 		},
 		{
 			"required": false,
@@ -151,14 +111,6 @@
 		{
 			"required": false,
 			"id": "farmersdelight:steak_and_potatoes"
-		},
-		{
-			"required": false,
-			"id": "farmersdelight:stuffed_pumpkin"
-		},
-		{
-			"required": false,
-			"id": "farmersdelight:stuffed_pumpkin_block"
 		},
 		{
 			"required": false,
@@ -182,35 +134,11 @@
 		},
 		{
 			"required": false,
-			"id": "largemeals:mushroom_pot_pie"
-		},
-		{
-			"required": false,
-			"id": "largemeals:mushroom_pot_pie_block"
-		},
-		{
-			"required": false,
-			"id": "largemeals:omurice"
-		},
-		{
-			"required": false,
-			"id": "largemeals:omurice_block"
-		},
-		{
-			"required": false,
 			"id": "largemeals:pasta_with_mushroom_sauce"
 		},
 		{
 			"required": false,
 			"id": "largemeals:pufferfish_broth"
-		},
-		{
-			"required": false,
-			"id": "largemeals:roasted_mutton_rack"
-		},
-		{
-			"required": false,
-			"id": "largemeals:roasted_mutton_rack_block"
 		},
 		{
 			"required": false,

@@ -1,0 +1,76 @@
+{
+	"values": [
+		{
+			"required": false,
+			"id": "corn_delight:nachos"
+		},
+		{
+			"required": false,
+			"id": "corn_delight:nachos_block"
+		},
+		{
+			"required": false,
+			"id": "delightful:stuffed_cantaloupe"
+		},
+		{
+			"required": false,
+			"id": "delightful:stuffed_cantaloupe_block"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:honey_glazed_ham"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:honey_glazed_ham_block"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:roast_chicken"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:roast_chicken_block"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:shepherds_pie"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:shepherds_pie_block"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:stuffed_pumpkin"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:stuffed_pumpkin_block"
+		},
+		{
+			"required": false,
+			"id": "largemeals:mushroom_pot_pie"
+		},
+		{
+			"required": false,
+			"id": "largemeals:mushroom_pot_pie_block"
+		},
+		{
+			"required": false,
+			"id": "largemeals:omurice"
+		},
+		{
+			"required": false,
+			"id": "largemeals:omurice_block"
+		},
+		{
+			"required": false,
+			"id": "largemeals:roasted_mutton_rack"
+		},
+		{
+			"required": false,
+			"id": "largemeals:roasted_mutton_rack_block"
+		}
+	]
+}

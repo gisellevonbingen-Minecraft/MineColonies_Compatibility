@@ -72,6 +72,12 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 	{
 		return BuildingDeliveryman.class;
 	}
+	
+	@Override
+	public boolean hasWorkToDo()
+	{
+		return true;
+	}
 
 	@Override
 	protected IAIState decide()

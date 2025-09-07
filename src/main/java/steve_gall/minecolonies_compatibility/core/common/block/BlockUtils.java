@@ -15,8 +15,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import steve_gall.minecolonies_compatibility.core.common.colony.ColonyHelper;
 
 public class BlockUtils
@@ -24,11 +24,11 @@ public class BlockUtils
 	@Nullable
 	public static BlockState getHoeTilledState(@Nullable IColony colony, Level level, BlockPos pos, InteractionHand hand, ItemStack tool, boolean simulate)
 	{
-		return getToolModifiedState(colony, level, pos, Direction.UP, hand, tool, ToolActions.HOE_TILL, simulate);
+		return getToolModifiedState(colony, level, pos, Direction.UP, hand, tool, ItemAbilities.HOE_TILL, simulate);
 	}
 
 	@Nullable
-	public static BlockState getToolModifiedState(@Nullable IColony colony, Level level, BlockPos pos, Direction direction, InteractionHand hand, ItemStack tool, ToolAction toolAction, boolean simulate)
+	public static BlockState getToolModifiedState(@Nullable IColony colony, Level level, BlockPos pos, Direction direction, InteractionHand hand, ItemStack tool, ItemAbility itemAbility, boolean simulate)
 	{
 		Player player = null;
 
@@ -41,7 +41,7 @@ public class BlockUtils
 
 		var prev = level.getBlockState(pos);
 		var context = new UseOnContext(level, player, hand, tool, new BlockHitResult(Vec3.atCenterOf(pos), direction, pos, simulate));
-		return prev.getToolModifiedState(context, toolAction, false);
+		return prev.getToolModifiedState(context, itemAbility, false);
 	}
 
 	private BlockUtils()

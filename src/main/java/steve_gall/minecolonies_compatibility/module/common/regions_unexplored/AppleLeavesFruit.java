@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -22,7 +23,7 @@ public class AppleLeavesFruit extends CustomizedFruit
 	@Override
 	public @NotNull ResourceLocation getId()
 	{
-		return RuBlocks.APPLE_OAK_LEAVES.getId();
+		return BuiltInRegistries.BLOCK.getKey(RuBlocks.APPLE_OAK_LEAVES.get());
 	}
 
 	@Override

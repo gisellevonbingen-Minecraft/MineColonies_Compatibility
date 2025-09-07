@@ -6,19 +6,20 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.util.IItemHandlerCapProvider;
 import com.minecolonies.api.util.WorldUtil;
 
 import it.unimi.dsi.fastutil.objects.Object2LongMap.Entry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.building.module.AccessDirection;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
@@ -54,24 +55,24 @@ public class CommonNetworkStorageBlockEntity extends BlockEntity implements INet
 
 	@NotNull
 	@Override
-	public CompoundTag getUpdateTag()
+	public CompoundTag getUpdateTag(HolderLookup.Provider provider)
 	{
-		return this.saveWithId();
+		return this.saveWithId(provider);
 	}
 
 	@Override
-	public void load(CompoundTag compound)
+	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider provider)
 	{
-		super.load(compound);
+		super.loadAdditional(compound, provider);
 
 		this.view.read(compound.getCompound("view"));
 		this.accessDirection = AccessDirection.deserialize(compound.get("accessDirection"));
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag compound)
+	protected void saveAdditional(CompoundTag compound, HolderLookup.Provider provider)
 	{
-		super.saveAdditional(compound);
+		super.saveAdditional(compound, provider);
 
 		compound.put("view", this.view.write());
 		compound.put("accessDirection", this.accessDirection.serialize());
@@ -161,17 +162,11 @@ public class CommonNetworkStorageBlockEntity extends BlockEntity implements INet
 
 			if (be != null)
 			{
-				var cap = be.getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite());
+				var handler = IItemHandlerCapProvider.wrap(be).getItemHandlerCap(direction.getOpposite());
 
-				if (cap != null && cap.isPresent())
+				if (handler != null)
 				{
-					var handler = cap.orElse(null);
-
-					if (handler != null)
-					{
-						handlers.add(handler);
-					}
-
+					handlers.add(handler);
 				}
 
 			}

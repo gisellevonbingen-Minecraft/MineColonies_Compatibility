@@ -8,11 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mrbysco.oreberriesreplanted.block.OreBerryBushBlock;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -30,7 +30,7 @@ public class OreBerryFruit extends CustomizedFruit
 	@Override
 	public @NotNull ResourceLocation getId()
 	{
-		return ForgeRegistries.BLOCKS.getKey(this.block);
+		return BuiltInRegistries.BLOCK.getKey(this.block);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import com.minecolonies.api.crafting.RecipeStorage;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ISecondaryRollableRecipeStorage;
 import steve_gall.minecolonies_tweaks.core.common.crafting.RecipeStorageExtension;
 

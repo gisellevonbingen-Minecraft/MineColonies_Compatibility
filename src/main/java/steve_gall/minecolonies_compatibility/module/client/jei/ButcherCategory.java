@@ -13,7 +13,6 @@ import com.minecolonies.core.compatibility.jei.RenderHelper;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -24,10 +23,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherableIconCache;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.init.ModItems;
 
 public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache>
 {
@@ -46,14 +44,12 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 	protected static final int OUTPUT_X = CITIZEN_X + CITIZEN_W + 8;
 	protected static final int OUTPUT_Y = CITIZEN_Y + CITIZEN_H - 34;
 
-	private final IDrawableStatic icon;
 	private final IDrawableStatic arrow;
 
 	public ButcherCategory(@NotNull IJob<?> job, @NotNull RecipeType<ButcherableIconCache> type, @NotNull IGuiHelper guiHelper)
 	{
-		super(job, type, new ItemStack(Blocks.STONE), guiHelper);
+		super(job, type, new ItemStack(ModItems.BUTCHERABLE_ICON.get()), guiHelper);
 
-		this.icon = guiHelper.drawableBuilder(MineColoniesCompatibility.rl("textures/jei/butcher.png"), 0, 0, 16, 16).setTextureSize(16, 16).build();
 		this.arrow = guiHelper.createDrawable(TEXTURE, 20, 121, ARROW_WIDTH, ARROW_HEIGHT);
 	}
 
@@ -128,7 +124,7 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 		var tableIcons = recipe.getTableIcons();
 		for (var i = 0; i < tableIcons.size(); i++)
 		{
-			RenderHelper.renderBlock(graphics.pose(), tableIcons.get(i), BLOCK_X + i * 32, BLOCK_Y, 100, -30F, 30F, 16F);
+			RenderHelper.renderBlock(graphics, tableIcons.get(i), BLOCK_X + i * 32, BLOCK_Y, 100, -30F, 30F, 16F);
 		}
 
 	}
@@ -137,8 +133,8 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 	public @NotNull List<Component> getTooltipStrings(@NotNull ButcherableIconCache recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY)
 	{
 		var tooltips = super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
-
 		var tableIcons = recipe.getTableIcons();
+
 		for (var i = 0; i < tableIcons.size(); i++)
 		{
 			if (new Rect2i(BLOCK_X2 + i * 32, BLOCK_Y2, 24, 24).contains((int) mouseX, (int) mouseY))
@@ -155,12 +151,6 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 	protected @NotNull List<Component> generateInfoBlocks(@NotNull ButcherableIconCache recipe)
 	{
 		return Collections.emptyList();
-	}
-
-	@Override
-	public @NotNull IDrawable getIcon()
-	{
-		return this.icon;
 	}
 
 }

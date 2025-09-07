@@ -3,14 +3,13 @@ package steve_gall.minecolonies_compatibility.core.common.network.message;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraftforge.network.NetworkEvent.Context;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public abstract class ModuleMenuOpenMessage extends BuildingModuleMessage
 {
@@ -23,7 +22,7 @@ public abstract class ModuleMenuOpenMessage extends BuildingModuleMessage
 		this.desc = module.getDesc();
 	}
 
-	public ModuleMenuOpenMessage(FriendlyByteBuf buffer)
+	public ModuleMenuOpenMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
@@ -31,7 +30,7 @@ public abstract class ModuleMenuOpenMessage extends BuildingModuleMessage
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
@@ -39,17 +38,11 @@ public abstract class ModuleMenuOpenMessage extends BuildingModuleMessage
 	}
 
 	@Override
-	public void handle(Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
-		var player = context.getSender();
-
-		if (player == null)
-		{
-			return;
-		}
-
+		var player = context.player();
 		var module = this.getModule();
 
 		if (module == null)
@@ -57,7 +50,7 @@ public abstract class ModuleMenuOpenMessage extends BuildingModuleMessage
 			return;
 		}
 
-		NetworkHooks.openScreen(player, new MenuProvider()
+		player.openMenu(new MenuProvider()
 		{
 			@Override
 			public Component getDisplayName()
@@ -81,7 +74,7 @@ public abstract class ModuleMenuOpenMessage extends BuildingModuleMessage
 
 	protected abstract AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player, IBuildingModule module);
 
-	protected void toBuffer(FriendlyByteBuf buffer, IBuildingModule module)
+	protected void toBuffer(RegistryFriendlyByteBuf buffer, IBuildingModule module)
 	{
 		this.getModulePos().serializeBuffer(buffer);
 	}

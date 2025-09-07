@@ -1,7 +1,7 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public class SearchRangeConfig
 {
@@ -10,7 +10,7 @@ public class SearchRangeConfig
 
 	public final IntValue verticalBonusOnGuard;
 
-	public SearchRangeConfig(ForgeConfigSpec.Builder builder, int verticalBonusOnGuard)
+	public SearchRangeConfig(ModConfigSpec.Builder builder, int verticalBonusOnGuard)
 	{
 		this.horizontal = builder.defineInRange("horizontal", 16, 0, 32);
 		this.vertical = builder.defineInRange("vertical", 3, 0, 32);

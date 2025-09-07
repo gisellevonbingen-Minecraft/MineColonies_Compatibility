@@ -1,7 +1,9 @@
 package steve_gall.minecolonies_compatibility.module.common;
 
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import steve_gall.minecolonies_tweaks.api.common.network.MessageRegistrar;
 
 public class AbstractModule
 {
@@ -16,6 +18,16 @@ public class AbstractModule
 	}
 
 	protected void onFMLClientSetup(FMLClientSetupEvent e)
+	{
+
+	}
+
+	protected void onRegisterMenuScreens(RegisterMenuScreensEvent e)
+	{
+
+	}
+
+	protected void onRegisterNetwork(MessageRegistrar channel)
 	{
 
 	}

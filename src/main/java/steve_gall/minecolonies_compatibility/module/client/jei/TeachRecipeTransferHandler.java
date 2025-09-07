@@ -14,11 +14,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIRecipeTransferMessage;
 
-public abstract class TeachRecipeTransferHandler<MENU extends TeachRecipeMenu<RECIPE>, RECIPE, CATEGORY_RECIPE> implements IRecipeTransferHandler<MENU, CATEGORY_RECIPE>
+public abstract class TeachRecipeTransferHandler<MENU extends TeachRecipeMenu<RECIPE, RECIPE_INPUT>, RECIPE, RECIPE_INPUT, CATEGORY_RECIPE> implements IRecipeTransferHandler<MENU, CATEGORY_RECIPE>
 {
 	private final IRecipeTransferHandlerHelper recipeTransferHandlerHelper;
 
@@ -48,7 +48,7 @@ public abstract class TeachRecipeTransferHandler<MENU extends TeachRecipeMenu<RE
 		{
 			var tag = new CompoundTag();
 			this.serializePayload(menu, recipe, recipeSlots, player, tag);
-			MineColoniesCompatibility.network().sendToServer(new JEIRecipeTransferMessage<>(menu, recipe, tag));
+			PacketDistributor.sendToServer(new JEIRecipeTransferMessage<>(menu, recipe, tag));
 		}
 
 		return null;

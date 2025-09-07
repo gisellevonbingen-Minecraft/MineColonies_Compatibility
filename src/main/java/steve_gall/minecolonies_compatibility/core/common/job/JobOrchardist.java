@@ -10,6 +10,7 @@ import com.minecolonies.core.colony.buildings.modules.WorkerBuildingModule;
 import com.minecolonies.core.colony.jobs.AbstractJob;
 import com.minecolonies.core.util.AttributeModifierUtils;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -42,7 +43,7 @@ public class JobOrchardist extends AbstractJob<EntityAIWorkOrchardist, JobOrchar
 		var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.orchardist;
 		var module = (WorkerBuildingModule) this.getWorkModule();
 		var amount = citizen.getCitizenSkillHandler().getLevel(module.getSecondarySkill()) * config.moveSpeedBonusPerSkillLevel.get().doubleValue();
-		var speedModifier = new AttributeModifier(CitizenConstants.SKILL_BONUS_ADD, amount, AttributeModifier.Operation.ADDITION);
+		var speedModifier = new AttributeModifier(CitizenConstants.SKILL_BONUS_ADD_NAME, amount, AttributeModifier.Operation.ADD_VALUE);
 		AttributeModifierUtils.addModifier(worker, speedModifier, Attributes.MOVEMENT_SPEED);
 	}
 
@@ -56,13 +57,13 @@ public class JobOrchardist extends AbstractJob<EntityAIWorkOrchardist, JobOrchar
 
 	private void onRemoval(AbstractEntityCitizen worker)
 	{
-		AttributeModifierUtils.removeModifier(worker, CitizenConstants.SKILL_BONUS_ADD, Attributes.MOVEMENT_SPEED);
+		AttributeModifierUtils.removeModifier(worker, CitizenConstants.SKILL_BONUS_ADD_NAME, Attributes.MOVEMENT_SPEED);
 	}
 
 	@Override
-	public CompoundTag serializeNBT()
+	public CompoundTag serializeNBT(HolderLookup.Provider provider)
 	{
-		var compound = super.serializeNBT();
+		var compound = super.serializeNBT(provider);
 
 		if (this.fruit != null)
 		{
@@ -75,9 +76,9 @@ public class JobOrchardist extends AbstractJob<EntityAIWorkOrchardist, JobOrchar
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag compound)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
-		super.deserializeNBT(compound);
+		super.deserializeNBT(provider, compound);
 
 		if (compound.contains(TAG_FRUIT))
 		{

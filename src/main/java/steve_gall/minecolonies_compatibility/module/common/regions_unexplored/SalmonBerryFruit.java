@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelWriter;
@@ -22,7 +23,7 @@ public class SalmonBerryFruit extends CustomizedFruit
 	@Override
 	public @NotNull ResourceLocation getId()
 	{
-		return RuBlocks.SALMONBERRY_BUSH.getId();
+		return BuiltInRegistries.BLOCK.getKey(RuBlocks.SALMONBERRY_BUSH.get());
 	}
 
 	@Override

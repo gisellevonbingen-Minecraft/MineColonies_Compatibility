@@ -7,9 +7,10 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -18,11 +19,11 @@ public abstract class SimpleContainerRecipeStorage<GENERIC_RECIPE extends Simple
 {
 	private final ItemStorage container;
 
-	public SimpleContainerRecipeStorage(CompoundTag tag)
+	public SimpleContainerRecipeStorage(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag)
 	{
-		super(tag);
+		super(provider, controller, tag);
 
-		this.container = StandardFactoryController.getInstance().deserialize(tag.getCompound("container"));
+		this.container = controller.deserializeTag(provider, tag.getCompound("container"));
 	}
 
 	public SimpleContainerRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingredients, ItemStorage container, ItemStack output)
@@ -45,6 +46,7 @@ public abstract class SimpleContainerRecipeStorage<GENERIC_RECIPE extends Simple
 		return input;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return Objects.hash(super.hashCode(), this.container);
@@ -65,11 +67,12 @@ public abstract class SimpleContainerRecipeStorage<GENERIC_RECIPE extends Simple
 		return false;
 	}
 
-	public void serialize(CompoundTag tag)
+	@Override
+	public void serialize(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag)
 	{
-		super.serialize(tag);
+		super.serialize(provider, controller, tag);
 
-		tag.put("container", StandardFactoryController.getInstance().serialize(this.container));
+		tag.put("container", controller.serializeTag(provider, this.container));
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class ItemStackKey
 	public ItemStackKey(ItemStack stack)
 	{
 		this.stack = stack.copy();
-		this.hashCode = Objects.hash(stack.getItem(), stack.getTag());
+		this.hashCode = Objects.hash(stack.getItem(), stack.getComponents().toString());
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class ItemStackKey
 		}
 		else
 		{
-			return obj instanceof ItemStackKey other && ItemStack.isSameItemSameTags(this.stack, other.stack);
+			return obj instanceof ItemStackKey other && ItemStack.isSameItemSameComponents(this.stack, other.stack);
 		}
 
 	}

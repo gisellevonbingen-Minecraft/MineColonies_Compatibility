@@ -2,33 +2,41 @@ package steve_gall.minecolonies_compatibility.module.common.ie;
 
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import blusunrize.immersiveengineering.api.tool.BulletHandler.CodecsAndDefault;
 import blusunrize.immersiveengineering.api.tool.BulletHandler.IBullet;
 import blusunrize.immersiveengineering.common.entities.RevolvershotEntity;
 import blusunrize.immersiveengineering.common.util.IEDamageSources;
+import malte0811.dualcodecs.DualCodec;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
-import steve_gall.minecolonies_compatibility.core.common.util.PersistentDataHelper;
 
-public class DefaultBullet implements IBullet
+public class DefaultBullet implements IBullet<DefaultBullet.Data>
 {
+	public static final CodecsAndDefault<Data> DATA_CODEC = new CodecsAndDefault<>(new DualCodec<>(Data.CODEC, Data.STREAM_CODEC), new Data(0.0D));
+
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("ie_default");
 	public static final DefaultBullet INSTANCE = new DefaultBullet();
-
-	public static final String TAG_KEY = MineColoniesCompatibility.rl("bullet/ie_default").toString();
 
 	private final ResourceLocation[] textures;
 
 	private DefaultBullet()
 	{
-		this.textures = new ResourceLocation[]{new ResourceLocation("immersiveengineering:item/bullet_casull")};
+		this.textures = new ResourceLocation[]{ResourceLocation.parse("immersiveengineering:item/bullet_casull")};
 	}
 
 	@Override
@@ -38,20 +46,7 @@ public class DefaultBullet implements IBullet
 	}
 
 	@Override
-	public Entity getProjectile(Player shooter, ItemStack cartridge, Entity projectile, boolean charged)
-	{
-		var payload = PersistentDataHelper.getOrEmpty(cartridge, TAG_KEY);
-		projectile.getPersistentData().put(TAG_KEY, payload);
-		return projectile;
-	}
-
-	public static void putDamage(ItemStack cartridge, double damage)
-	{
-		PersistentDataHelper.getOrCreate(cartridge, TAG_KEY).putDouble("Damage", damage);
-	}
-
-	@Override
-	public void onHitTarget(Level level, HitResult rtr, UUID shooterUUID, Entity projectile, boolean headshot)
+	public void onHitTarget(Level level, HitResult rtr, @Nullable UUID shooterUUID, Entity projectile, boolean headshot, Data data)
 	{
 		if (level.isClientSide())
 		{
@@ -82,7 +77,7 @@ public class DefaultBullet implements IBullet
 			shooter = serverLevel.getEntity(shooterUUID);
 		}
 
-		var damage = PersistentDataHelper.getOrEmpty(projectile, TAG_KEY).getDouble("Damage");
+		var damage = data.damage();
 
 		if (headshot)
 		{
@@ -105,9 +100,21 @@ public class DefaultBullet implements IBullet
 	}
 
 	@Override
-	public int getColour(ItemStack stack, int layer)
+	public CodecsAndDefault<Data> getCodec()
 	{
-		return 0xFFFFFFFF;
+		return DATA_CODEC;
+	}
+
+	public record Data(double damage)
+	{
+		public static final Codec<Data> CODEC = RecordCodecBuilder.create(builder -> builder.group(//
+				Codec.DOUBLE.fieldOf("damage").forGetter(Data::damage) //
+		).apply(builder, Data::new));
+
+		public static final StreamCodec<RegistryFriendlyByteBuf, Data> STREAM_CODEC = StreamCodec.composite(//
+				ByteBufCodecs.DOUBLE, Data::damage, //
+				Data::new);
+
 	}
 
 }

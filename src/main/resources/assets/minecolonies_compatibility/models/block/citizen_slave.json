@@ -1,6 +1,0 @@
-{
-	"parent": "block/cube_all",
-	"textures": {
-		"all": "minecolonies_compatibility:block/citizen_slave"
-	}
-}

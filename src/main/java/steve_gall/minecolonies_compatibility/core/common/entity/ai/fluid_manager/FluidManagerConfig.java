@@ -1,8 +1,8 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.fluid_manager;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public class FluidManagerConfig
 {
@@ -13,7 +13,7 @@ public class FluidManagerConfig
 	public final IntValue pickupDelay;
 	public final DoubleValue pickupDelayReducePerSkillLevel;
 
-	public FluidManagerConfig(ForgeConfigSpec.Builder builder)
+	public FluidManagerConfig(ModConfigSpec.Builder builder)
 	{
 		this.searchRange = builder.defineInRange("searchRange", 120, 0, 240);
 		this.searchVerticalRange = builder.defineInRange("searchVerticalRange", 10, 0, 20);

@@ -15,9 +15,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class BucketFillingCraftingType extends CraftingType
 {
@@ -49,7 +49,7 @@ public class BucketFillingCraftingType extends CraftingType
 
 				if (fillResult.isSuccess() && ItemStack.matches(fillResult.getResult(), filledBucket))
 				{
-					return new BucketFillingRecipeStorage(emptyBucket, fluid, fluidStack.getTag(), filledBucket);
+					return new BucketFillingRecipeStorage(emptyBucket, fluid, fluidStack.getComponentsPatch(), filledBucket);
 				}
 
 			}

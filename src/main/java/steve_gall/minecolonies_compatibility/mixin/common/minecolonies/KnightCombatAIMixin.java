@@ -16,13 +16,16 @@ import com.minecolonies.core.entity.ai.combat.AttackMoveAI;
 import com.minecolonies.core.entity.ai.workers.guard.KnightCombatAI;
 import com.minecolonies.core.entity.citizen.EntityCitizen;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.neoforged.neoforge.items.IItemHandler;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
 @Mixin(value = KnightCombatAI.class, remap = false)
@@ -47,35 +50,41 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 	@Redirect(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/compatibility/tinkers/TinkersToolHelper.getDamage"))
 	private double getAttackDamage_getDamage(ItemStack stack)
 	{
-		var base = GuardConstants.BASE_PHYSICAL_DAMAGE;
-		var amount = this.getAdditionsAmount(stack, Attributes.ATTACK_DAMAGE);
-		return base + amount;
+		if (stack.getItem() instanceof DiggerItem)
+		{
+			return this.user.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * this.getSpeedFactor(stack);
+		}
+		else
+		{
+			return this.compute(stack, EquipmentSlotGroup.MAINHAND, EquipmentSlot.MAINHAND, Attributes.ATTACK_DAMAGE, GuardConstants.BASE_PHYSICAL_DAMAGE);
+		}
+
 	}
 
 	@ModifyConstant(method = "getAttackDelay", remap = false, constant = @Constant(intValue = 32))
 	private int modifyDelay(int KNIGHT_ATTACK_DELAY_BASE)
 	{
 		var stack = this.user.getItemInHand(InteractionHand.MAIN_HAND);
-		var base = Attributes.ATTACK_SPEED.getDefaultValue();
-		var amount = this.getAdditionsAmount(stack, Attributes.ATTACK_SPEED);
-		return (int) (KNIGHT_ATTACK_DELAY_BASE * ((base - 2.4D) / (base + amount)));
+		return (int) (KNIGHT_ATTACK_DELAY_BASE * this.getSpeedFactor(stack));
 	}
 
-	private double getAdditionsAmount(ItemStack stack, Attribute attribute)
+	private double getSpeedFactor(ItemStack stack)
 	{
-		var amount = 0.0D;
-		var modifiers = stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(attribute);
+		var speed = this.compute(stack, EquipmentSlotGroup.MAINHAND, EquipmentSlot.MAINHAND, Attributes.ATTACK_SPEED, Attributes.ATTACK_SPEED.value().getDefaultValue());
+		return 1.6D / speed;
+	}
 
-		for (var modifier : modifiers)
+	private double compute(ItemStack stack, EquipmentSlotGroup group, EquipmentSlot slot, Holder<Attribute> attribute, double base)
+	{
+		var builder = ItemAttributeModifiers.builder();
+		stack.forEachModifier(group, (holder, modifier) ->
 		{
-			if (modifier.getOperation() == AttributeModifier.Operation.ADDITION)
+			if (holder == attribute)
 			{
-				amount += modifier.getAmount();
+				builder.add(holder, modifier, group);
 			}
-
-		}
-
-		return amount;
+		});
+		return builder.build().compute(base, slot);
 	}
 
 }

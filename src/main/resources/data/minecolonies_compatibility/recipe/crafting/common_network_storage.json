@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"result": {
+		"id": "minecolonies_compatibility:common_network_storage"
+	},
+	"ingredients": [
+		{
+			"tag": "c:chests"
+		},
+		{
+			"tag": "c:gems/diamond"
+		},
+		{
+			"item": "minecolonies:blockhutwarehouse"
+		}
+	]
+}

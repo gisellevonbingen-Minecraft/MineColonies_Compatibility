@@ -2,7 +2,7 @@
 	<image
 		source="minecolonies:textures/gui/builderhut/builder_paper.png"
 		size="190 244" />
-	<label id="desc" size="130 11" pos="30 14" color="black"
+	<text id="desc" size="130 11" pos="30 14" color="black"
 		textalign="MIDDLE" />
 	<input id="input" size="150 18" pos="20 30" maxlength="25" />
 
@@ -13,29 +13,29 @@
 				source="minecolonies_compatibility:textures/gui/arrow.png"
 				size="16 16" pos="16 0" />
 			<itemicon id="outputIcon" size="16 16" pos="32 0" />
-			<label id="outputName" size="77 12" pos="52 1" color="white" />
-			<buttonimage
+			<text id="outputName" size="77 12" pos="52 1" color="white" />
+			<button
 				label="$(com.minecolonies.coremod.gui.workerhuts.retrieveOn)"
 				id="switch" pos="129 1" size="29 15"
 				source="minecolonies:textures/gui/builderhut/builder_button_very_small.png"
-				textcolor="black" />
+				color="black" />
 		</box>
 	</list>
-	<buttonimage
+	<button
 		label="$(com.minecolonies.coremod.gui.workerhuts.resetdefault)"
 		id="resetDefault" size="86 17" pos="50 194"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		textcolor="black" />
+		color="black" />
 
-	<buttonimage
+	<button
 		label="$(minecolonies_tweaks.gui.toogle_in_current)"
 		id="toggleInCurrent" size="80 17" pos="14 211"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		textcolor="black" />
+		color="black" />
 
-	<buttonimage
+	<button
 		label="$(minecolonies_tweaks.gui.reset_in_current)"
 		id="resetInCurrent" size="80 17" pos="98 211"
 		source="minecolonies:textures/gui/builderhut/builder_button_medium.png"
-		textcolor="black" />
+		color="black" />
 </window>

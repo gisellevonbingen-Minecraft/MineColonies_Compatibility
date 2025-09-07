@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.IPlantable;
 
 public abstract class CustomizedCrop
 {
@@ -44,15 +43,7 @@ public abstract class CustomizedCrop
 	{
 		if (context.getSeed().getItem() instanceof BlockItem item)
 		{
-			if (item.getBlock() instanceof IPlantable plantable)
-			{
-				return plantable.getPlant(context.getLevel(), context.getPosition());
-			}
-			else
-			{
-				return item.getBlock().defaultBlockState();
-			}
-
+			return item.getBlock().defaultBlockState();
 		}
 		else
 		{

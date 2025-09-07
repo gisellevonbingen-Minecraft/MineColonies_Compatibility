@@ -11,22 +11,23 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.crafting.IGenericRecipe;
 import com.minecolonies.api.crafting.RecipeCraftingType;
 
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public class SimpleCraftingType<CONTAINER extends Container, RECIPE extends Recipe<CONTAINER>, GENERIC_RECIPE extends IGenericRecipe> extends RecipeCraftingType<CONTAINER, RECIPE>
+public class SimpleCraftingType<RECIPE_INPUT extends RecipeInput, RECIPE extends Recipe<RECIPE_INPUT>, GENERIC_RECIPE extends IGenericRecipe> extends RecipeCraftingType<RECIPE_INPUT, RECIPE>
 {
 	@NotNull
 	private final Supplier<RecipeType<RECIPE>> recipeType;
 	@NotNull
-	private final BiFunction<RECIPE, RegistryAccess, GENERIC_RECIPE> genericRecipeFunc;
+	private final BiFunction<RecipeHolder<RECIPE>, HolderLookup.Provider, GENERIC_RECIPE> genericRecipeFunc;
 
-	public SimpleCraftingType(@NotNull ResourceLocation id, @NotNull Supplier<RecipeType<RECIPE>> recipeType, @NotNull BiFunction<RECIPE, RegistryAccess, GENERIC_RECIPE> genericRecipeFunc)
+	public SimpleCraftingType(@NotNull ResourceLocation id, @NotNull Supplier<RecipeType<RECIPE>> recipeType, @NotNull BiFunction<RecipeHolder<RECIPE>, HolderLookup.Provider, GENERIC_RECIPE> genericRecipeFunc)
 	{
 		super(id, null, null);
 
@@ -42,7 +43,7 @@ public class SimpleCraftingType<CONTAINER extends Container, RECIPE extends Reci
 
 		for (var recipe : recipeManager.getAllRecipesFor(this.getRecipeType()))
 		{
-			if (this.testRecipe(recipe, registryAccess))
+			if (this.testRecipe(recipe.value(), registryAccess))
 			{
 				recipes.add(this.createGenericRecipe(recipe, registryAccess));
 			}
@@ -52,15 +53,15 @@ public class SimpleCraftingType<CONTAINER extends Container, RECIPE extends Reci
 		return recipes;
 	}
 
-	protected boolean testRecipe(@NotNull RECIPE recipe, @NotNull RegistryAccess registryAccess)
+	protected boolean testRecipe(@NotNull RECIPE recipe, @NotNull HolderLookup.Provider provider)
 	{
 		return true;
 	}
 
 	@NotNull
-	protected GENERIC_RECIPE createGenericRecipe(@NotNull RECIPE recipe, @NotNull RegistryAccess registryAccess)
+	protected GENERIC_RECIPE createGenericRecipe(@NotNull RecipeHolder<RECIPE> holder, @NotNull HolderLookup.Provider provider)
 	{
-		return this.genericRecipeFunc.apply(recipe, registryAccess);
+		return this.genericRecipeFunc.apply(holder, provider);
 	}
 
 	@NotNull

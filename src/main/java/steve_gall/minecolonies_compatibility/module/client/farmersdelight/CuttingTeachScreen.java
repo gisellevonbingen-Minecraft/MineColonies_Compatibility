@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.FarmersDelightModule;
@@ -19,7 +20,7 @@ import steve_gall.minecolonies_compatibility.module.common.farmersdelight.menu.C
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
 
-public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMenu, CuttingBoardRecipe>
+public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMenu, RecipeHolder<CuttingBoardRecipe>>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/farmers_cutting_teach.png");
 
@@ -44,10 +45,10 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 	}
 
 	@Override
-	protected ICustomizedRecipeStorage createRecipeStorage(CuttingBoardRecipe recipe, List<ItemStorage> input)
+	protected ICustomizedRecipeStorage createRecipeStorage(RecipeHolder<CuttingBoardRecipe> recipe, List<ItemStorage> input)
 	{
 		var results = this.menu.getResults().stream().map(CuttingChanceResult::new).toList();
-		return new CuttingRecipeStorage(recipe.getId(), input, results, this.menu.getToolType());
+		return new CuttingRecipeStorage(recipe.id(), input, results, this.menu.getToolType());
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 
 			if (resultIndex > -1)
 			{
-				tooltip.addAll(1, FarmersDelightModule.getChanceTooltip(this.menu.getResults().get(resultIndex).getChance()));
+				tooltip.addAll(1, FarmersDelightModule.getChanceTooltip(this.menu.getResults().get(resultIndex).chance()));
 			}
 
 			graphics.renderTooltip(this.font, tooltip, tooltipImage, mouseX, mouseY);
@@ -82,7 +83,7 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 		for (int i = 0; i < results.size(); i++)
 		{
 			var slot = resultSlots.get(i);
-			var alt = results.get(i).getChance() < 1.0F;
+			var alt = results.get(i).chance() < 1.0F;
 			graphics.blit(TEXTURE, this.leftPos + slot.x - 1, this.topPos + slot.y - 1, this.imageWidth + (alt ? 18 : 0), 0, 18, 18);
 		}
 

@@ -1,7 +1,8 @@
 package steve_gall.minecolonies_compatibility.core.common.block;
 
+import com.mojang.serialization.MapCodec;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -19,6 +20,14 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.AccessDirecti
 
 public class CommonNetworkStorageBlock extends BaseEntityBlock
 {
+	public static final MapCodec<CommonNetworkStorageBlock> CODEC = simpleCodec(CommonNetworkStorageBlock::new);
+
+	@Override
+	public MapCodec<CommonNetworkStorageBlock> codec()
+	{
+		return CODEC;
+	}
+
 	public CommonNetworkStorageBlock(BlockBehaviour.Properties properites)
 	{
 		super(properites);
@@ -31,7 +40,7 @@ public class CommonNetworkStorageBlock extends BaseEntityBlock
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+	protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult result)
 	{
 		AccessDirectionHolderMenu.open(world, pos, player);
 		return InteractionResult.SUCCESS;

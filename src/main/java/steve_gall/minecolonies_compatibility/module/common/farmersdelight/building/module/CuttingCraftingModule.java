@@ -14,7 +14,7 @@ import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,11 +41,11 @@ public class CuttingCraftingModule extends AbstractCraftingModuleWithExternalWor
 	}
 
 	@Override
-	public void serializeToView(@NotNull FriendlyByteBuf buf, boolean fullSync)
+	public void serializeToView(RegistryFriendlyByteBuf buf, boolean fullSync)
 	{
 		super.serializeToView(buf, fullSync);
 
-		buf.writeRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry(), this.getToolType());
+		buf.writeResourceLocation(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getKey(this.getToolType()));
 	}
 
 	@Override

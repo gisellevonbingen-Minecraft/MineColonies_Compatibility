@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.minecolonies.api.inventory.container.ContainerCrafting;
-import com.minecolonies.api.util.Tuple;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -16,8 +15,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphModule;
@@ -44,14 +41,7 @@ public abstract class ContainerCraftingMixin extends AbstractContainerMenu
 	{
 		if (!this.world.isClientSide && ModuleManager.POLYMORPH.isLoaded())
 		{
-			var registryAccess = this.world.registryAccess();
-			var notlimited = !this.world.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING);
-			var player = (ServerPlayer) this.inv.player;
-			var tuples = this.world.getRecipeManager().getRecipesFor(RecipeType.CRAFTING, this.craftMatrix, this.world).stream().filter(//
-					recipe -> recipe.isSpecial() || (notlimited || player.getRecipeBook().contains(recipe) || player.isCreative())//
-			).map(recipe -> new Tuple<>(recipe, recipe.assemble(this.craftMatrix, registryAccess))).toList();
-			var output = this.craftResultSlot.getItem();
-			PolymorphModule.sendRecipesList(player, tuples, output);
+			PolymorphModule.sendRecipesList((ServerPlayer) this.inv.player, this.craftMatrix.asCraftInput(), this.craftResultSlot.getItem());
 		}
 
 	}

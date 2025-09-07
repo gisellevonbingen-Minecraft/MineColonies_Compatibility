@@ -1,14 +1,14 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 
 public class CommonJobConfig
 {
 	public final BooleanValue canUseCrossbow;
 	public final BooleanValue canUseAxe;
 
-	public CommonJobConfig(ForgeConfigSpec.Builder builder)
+	public CommonJobConfig(ModConfigSpec.Builder builder)
 	{
 		builder.push("ranger");
 		this.canUseCrossbow = builder.define("canUseCrossbow", true);

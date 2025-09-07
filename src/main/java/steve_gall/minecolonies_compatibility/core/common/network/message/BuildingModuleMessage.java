@@ -3,9 +3,9 @@ package steve_gall.minecolonies_compatibility.core.common.network.message;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 
-import net.minecraft.network.FriendlyByteBuf;
-import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import steve_gall.minecolonies_tweaks.api.common.building.module.ModulePos;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 
 public abstract class BuildingModuleMessage extends AbstractMessage
 {
@@ -21,7 +21,7 @@ public abstract class BuildingModuleMessage extends AbstractMessage
 		this.modulePos = new ModulePos(module);
 	}
 
-	public BuildingModuleMessage(FriendlyByteBuf buffer)
+	public BuildingModuleMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
@@ -29,7 +29,7 @@ public abstract class BuildingModuleMessage extends AbstractMessage
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 

@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
@@ -43,7 +43,7 @@ public abstract class CustomizedButcherable
 		VOLATILE.clear();
 
 		var e = new CustomizedBucherableRegisterEvent(CustomizedButcherable::registerVolatile, recipeManager);
-		MinecraftForge.EVENT_BUS.post(e);
+		NeoForge.EVENT_BUS.post(e);
 	}
 
 	public static Map<ResourceLocation, CustomizedButcherable> getRegistry()

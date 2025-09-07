@@ -10,8 +10,8 @@ import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
 
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModuleView;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.network.message.RestrictGiveToolMessage;
 
 public class RestrictableModuleWindow extends AbstractModuleWindow
@@ -53,7 +53,7 @@ public class RestrictableModuleWindow extends AbstractModuleWindow
 		}
 		else if (button.getID().equals("giveTool"))
 		{
-			MineColoniesCompatibility.network().sendToServer(new RestrictGiveToolMessage(this.module, Component.translatable(this.module.getDesc())));
+			PacketDistributor.sendToServer(new RestrictGiveToolMessage(this.module, this.module.getDesc()));
 		}
 
 	}

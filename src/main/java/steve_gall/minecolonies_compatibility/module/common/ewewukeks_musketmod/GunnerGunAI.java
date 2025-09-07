@@ -210,7 +210,7 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 		}
 		else
 		{
-			user.playSound(SoundEvents.NOTE_BLOCK_HAT.get(), 1.0F, 1.0F);
+			user.playSound(SoundEvents.NOTE_BLOCK_HAT.value(), 1.0F, 1.0F);
 		}
 
 		this.setLoaded(user, false);

@@ -3,27 +3,31 @@ package steve_gall.minecolonies_compatibility.module.common.farmersdelight.netwo
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.network.message.ModuleMenuOpenMessage;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.menu.CookingTeachMenu;
 
 public class CookingOpenTeachMessage extends ModuleMenuOpenMessage
 {
+	public static final CustomPacketPayload.Type<CookingOpenTeachMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesCompatibility.rl("farmerdelight_cooking_open_teach"));
+
 	public CookingOpenTeachMessage(IBuildingModuleView module)
 	{
 		super(module);
 	}
 
-	public CookingOpenTeachMessage(FriendlyByteBuf buffer)
+	public CookingOpenTeachMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 	}
@@ -35,9 +39,15 @@ public class CookingOpenTeachMessage extends ModuleMenuOpenMessage
 	}
 
 	@Override
-	protected void toBuffer(FriendlyByteBuf buffer, IBuildingModule module)
+	protected void toBuffer(RegistryFriendlyByteBuf buffer, IBuildingModule module)
 	{
 		super.toBuffer(buffer, module);
+	}
+
+	@Override
+	public CustomPacketPayload.Type<CookingOpenTeachMessage> type()
+	{
+		return TYPE;
 	}
 
 }

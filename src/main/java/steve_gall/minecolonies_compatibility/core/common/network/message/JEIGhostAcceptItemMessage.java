@@ -1,13 +1,18 @@
 package steve_gall.minecolonies_compatibility.core.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostMenu;
-import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
 public class JEIGhostAcceptItemMessage extends AbstractMessage
 {
+	public static final CustomPacketPayload.Type<JEIGhostAcceptItemMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesCompatibility.rl("jei_ghost_accept_item"));
+
 	private final int slotNumber;
 	private final ItemStack stack;
 	private final boolean isVirtual;
@@ -19,44 +24,43 @@ public class JEIGhostAcceptItemMessage extends AbstractMessage
 		this.isVirtual = isVirtual;
 	}
 
-	public JEIGhostAcceptItemMessage(FriendlyByteBuf buffer)
+	public JEIGhostAcceptItemMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
 		this.slotNumber = buffer.readInt();
-		this.stack = buffer.readItem();
+		this.stack = ItemSerializationHelper.deserialize(buffer);
 		this.isVirtual = buffer.readBoolean();
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
 		buffer.writeInt(this.slotNumber);
-		buffer.writeItem(this.stack);
+		ItemSerializationHelper.serialize(buffer, this.stack);
 		buffer.writeBoolean(this.isVirtual);
 	}
 
 	@Override
-	public void handle(Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
-		var player = context.getSender();
+		var player = context.player();
 
-		if (player == null)
-		{
-			return;
-		}
-
-		var menu = player.containerMenu;
-
-		if (menu instanceof IItemGhostMenu ghostMenu)
+		if (player.containerMenu instanceof IItemGhostMenu ghostMenu)
 		{
 			ghostMenu.onGhostAcceptItem(this.slotNumber, this.stack, this.isVirtual);
 		}
 
+	}
+
+	@Override
+	public CustomPacketPayload.Type<JEIGhostAcceptItemMessage> type()
+	{
+		return TYPE;
 	}
 
 	public boolean isVirtual()

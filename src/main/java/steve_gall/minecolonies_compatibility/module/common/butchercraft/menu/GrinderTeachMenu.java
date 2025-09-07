@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.module.common.butchercraft.menu;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.lance5057.butchercraft.ButchercraftItems;
 import com.lance5057.butchercraft.ButchercraftRecipes;
@@ -9,12 +10,14 @@ import com.lance5057.butchercraft.workstations.grinder.GrinderContainer;
 import com.lance5057.butchercraft.workstations.grinder.GrinderRecipe;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
@@ -24,8 +27,9 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMe
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.init.ModuleMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
-public class GrinderTeachMenu extends TeachRecipeMenu<GrinderRecipe>
+public class GrinderTeachMenu extends TeachRecipeMenu<RecipeHolder<GrinderRecipe>, GrinderContainer>
 {
 	public static final int INVENTORY_X = 8;
 	public static final int INVENTORY_Y = 84;
@@ -45,7 +49,7 @@ public class GrinderTeachMenu extends TeachRecipeMenu<GrinderRecipe>
 		this.setup();
 	}
 
-	public GrinderTeachMenu(int windowId, Inventory inventory, FriendlyByteBuf buffer)
+	public GrinderTeachMenu(int windowId, Inventory inventory, RegistryFriendlyByteBuf buffer)
 	{
 		super(ModuleMenuTypes.GRINDER_TEACH.get(), windowId, inventory, buffer);
 		this.setup();
@@ -65,7 +69,7 @@ public class GrinderTeachMenu extends TeachRecipeMenu<GrinderRecipe>
 	}
 
 	@Override
-	protected IMenuRecipeValidator<GrinderRecipe> createRecipeValidator()
+	protected IMenuRecipeValidator<RecipeHolder<GrinderRecipe>, GrinderContainer> createRecipeValidator()
 	{
 		return new MenuRecipeValidatorRecipe<>(this.inventory.player.level())
 		{
@@ -76,18 +80,23 @@ public class GrinderTeachMenu extends TeachRecipeMenu<GrinderRecipe>
 			}
 
 			@Override
-			protected boolean test(GrinderRecipe recipe, Container container, ServerPlayer player)
+			public @NotNull GrinderContainer getInput(@NotNull Container container, @Nullable RecipeHolder<GrinderRecipe> recipe)
 			{
-				var ingredient = container.getItem(0);
-				var attachment = container.getItem(1);
-				var casing = container.getItem(2);
-				var grinderContainer = new GrinderContainer(ingredient, attachment);
+				return new GrinderContainer(container.getItem(0), container.getItem(1));
+			}
 
-				if (!recipe.matches(grinderContainer, player.level()))
+			@Override
+			protected boolean test(RecipeHolder<GrinderRecipe> recipeHolder, Container container, ServerPlayer player)
+			{
+				if (!super.test(recipeHolder, container, player))
 				{
 					return false;
 				}
-				else if (attachment.is(ButchercraftItems.EXTRUDER_TIP.get()))
+
+				var attachment = container.getItem(1);
+				var casing = container.getItem(2);
+
+				if (attachment.is(ButchercraftItems.EXTRUDER_TIP.get()))
 				{
 					return casing.is(ButchercraftItemTags.SAUSAGE_CASING);
 				}
@@ -96,24 +105,26 @@ public class GrinderTeachMenu extends TeachRecipeMenu<GrinderRecipe>
 					return casing.isEmpty();
 				}
 			}
+
 		};
+
 	}
 
 	@Override
-	protected void setContainerByTransfer(@NotNull GrinderRecipe recipe, @NotNull CompoundTag payload)
+	protected void setContainerByTransfer(@NotNull HolderLookup.Provider provider, @NotNull RecipeHolder<GrinderRecipe> recipe, @NotNull CompoundTag payload)
 	{
-		super.setContainerByTransfer(recipe, payload);
+		super.setContainerByTransfer(provider, recipe, payload);
 
-		var input = NBTUtils2.deserializeList(payload, "input", ItemStack::of);
+		var input = NBTUtils2.deserializeList(payload, "input", ItemSerializationHelper.deserializerTag(provider));
 		this.inputContainer.setItem(0, input.get(0));
 		this.inputContainer.setItem(1, input.get(1));
 		this.inputContainer.setItem(2, input.get(2));
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(HolderLookup.Provider provider, GrinderContainer input)
 	{
-		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem(this.inventory.player.level().registryAccess()) : ItemStack.EMPTY);
+		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.value().assemble(input, provider) : ItemStack.EMPTY);
 	}
 
 }

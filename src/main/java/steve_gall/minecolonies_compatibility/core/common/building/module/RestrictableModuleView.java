@@ -7,9 +7,10 @@ import com.ldtteam.blockui.views.BOWindow;
 import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModuleView;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModuleView;
 import steve_gall.minecolonies_compatibility.core.client.gui.RestrictableModuleWindow;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
@@ -26,11 +27,11 @@ public class RestrictableModuleView extends AbstractBuildingModuleView implement
 	private BlockPos restrictPos2 = null;
 
 	@Override
-	public void deserialize(@NotNull FriendlyByteBuf buf)
+	public void deserialize(RegistryFriendlyByteBuf buf)
 	{
 		this.restrictEnabled = buf.readBoolean();
-		this.restrictPos1 = buf.readNullable(FriendlyByteBuf::readBlockPos);
-		this.restrictPos2 = buf.readNullable(FriendlyByteBuf::readBlockPos);
+		this.restrictPos1 = buf.readNullable(RegistryFriendlyByteBuf::readBlockPos);
+		this.restrictPos2 = buf.readNullable(RegistryFriendlyByteBuf::readBlockPos);
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class RestrictableModuleView extends AbstractBuildingModuleView implement
 	public void setRestrictEnabled(boolean enabled)
 	{
 		this.restrictEnabled = enabled;
-		MineColoniesCompatibility.network().sendToServer(new RestrictSetEnabledMessage(this, enabled));
+		PacketDistributor.sendToServer(new RestrictSetEnabledMessage(this, enabled));
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class RestrictableModuleView extends AbstractBuildingModuleView implement
 	{
 		this.restrictPos1 = pos1;
 		this.restrictPos2 = pos2;
-		MineColoniesCompatibility.network().sendToServer(new RestrictSetAreaMessage(this, pos1, pos2));
+		PacketDistributor.sendToServer(new RestrictSetAreaMessage(this, pos1, pos2));
 	}
 
 	@Override

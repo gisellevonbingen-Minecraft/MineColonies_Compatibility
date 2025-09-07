@@ -10,11 +10,12 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingGenericRecipe;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.inventory.BucketFillingTeachMenu;
 
-public class BucketFillingTeachRecipeTransferHandler extends TeachRecipeTransferHandler<BucketFillingTeachMenu, BucketFillingRecipeStorage, IGenericRecipe>
+public class BucketFillingTeachRecipeTransferHandler extends TeachRecipeTransferHandler<BucketFillingTeachMenu, BucketFillingRecipeStorage, SingleRecipeInput, IGenericRecipe>
 {
 	private final RecipeType<IGenericRecipe> recipeType;
 
@@ -47,7 +48,7 @@ public class BucketFillingTeachRecipeTransferHandler extends TeachRecipeTransfer
 	{
 		if (categoryRecipe instanceof BucketFillingGenericRecipe fillingRecipe)
 		{
-			return new BucketFillingRecipeStorage(fillingRecipe.getEmptyBucket(), fillingRecipe.getFluid(), fillingRecipe.getFluidTag(), fillingRecipe.getFilledBucket());
+			return new BucketFillingRecipeStorage(fillingRecipe.getEmptyBucket(), fillingRecipe.getFluid(), fillingRecipe.getDataComponentPatch(), fillingRecipe.getFilledBucket());
 		}
 		else
 		{

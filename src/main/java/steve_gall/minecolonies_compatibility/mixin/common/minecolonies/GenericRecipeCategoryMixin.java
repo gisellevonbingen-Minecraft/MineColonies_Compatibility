@@ -20,15 +20,15 @@ import com.minecolonies.core.compatibility.jei.JobBasedRecipeCategory;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidType;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.fluids.FluidType;
 import steve_gall.minecolonies_compatibility.api.common.crafting.IRecipeSlotModifiableGenericRecipe;
 import steve_gall.minecolonies_compatibility.api.common.crafting.RecipeSlotRole;
 import steve_gall.minecolonies_compatibility.api.common.event.AnimalHerdingLootEvent;
@@ -65,7 +65,7 @@ public abstract class GenericRecipeCategoryMixin extends JobBasedRecipeCategory<
 	private int outputSlotY;
 
 	@Shadow(remap = false)
-	private static List<LootTableAnalyzer.LootDrop> getLootDrops(@NotNull ResourceLocation lootTableId)
+	private static List<LootTableAnalyzer.LootDrop> getLootDrops(@NotNull ResourceKey<LootTable> lootTableId)
 	{
 		throw new AssertionError();
 	}
@@ -77,7 +77,7 @@ public abstract class GenericRecipeCategoryMixin extends JobBasedRecipeCategory<
 	}
 
 	@Redirect(method = "setLootBasedRecipe", remap = false, at = @At(value = "INVOKE", target = "getLootDrops"))
-	private List<LootTableAnalyzer.LootDrop> setLootBasedRecipe_getLootDrops(@NotNull ResourceLocation lootTableId)
+	private List<LootTableAnalyzer.LootDrop> setLootBasedRecipe_getLootDrops(@NotNull ResourceKey<LootTable> lootTableId)
 	{
 		var list = getLootDrops(lootTableId);
 
@@ -85,7 +85,7 @@ public abstract class GenericRecipeCategoryMixin extends JobBasedRecipeCategory<
 		{
 			var drops = new ArrayList<LootTableAnalyzer.LootDrop>();
 			var event = new AnimalHerdingLootEvent(minecolonies_compatibility$animalHerdingLoot, drops::add);
-			MinecraftForge.EVENT_BUS.post(event);
+			NeoForge.EVENT_BUS.post(event);
 
 			if (drops.size() > 0)
 			{
@@ -114,18 +114,31 @@ public abstract class GenericRecipeCategoryMixin extends JobBasedRecipeCategory<
 		if (recipe instanceof BucketFillingGenericRecipe fillingRecipe)
 		{
 			var slot = builder.addSlot(RecipeIngredientRole.INPUT, this.outputSlotX, CITIZEN_Y + 1);
-			slot.addFluidStack(fillingRecipe.getFluid(), FluidType.BUCKET_VOLUME, fillingRecipe.getFluidTag());
+			slot.addFluidStack(fillingRecipe.getFluid(), FluidType.BUCKET_VOLUME, fillingRecipe.getDataComponentPatch());
 			slot.setFluidRenderer(FluidType.BUCKET_VOLUME, false, 16, 16);
 			slot.setBackground(this.slot, -1, -1);
 		}
 
 	}
 
-	@Redirect(method = "setNormalRecipe", remap = false, at = @At(value = "INVOKE", target = "Lmezz/jei/api/gui/builder/IRecipeLayoutBuilder;addSlot"))
-	private IRecipeSlotBuilder setNormalRecipe_addSlot(IRecipeLayoutBuilder builder, RecipeIngredientRole recipeIngredientRole, int x, int y)
+	@Redirect(method = "setNormalRecipe", remap = false, at = @At(value = "INVOKE", target = "Lmezz/jei/api/gui/builder/IRecipeLayoutBuilder;addInputSlot"))
+	private IRecipeSlotBuilder setNormalRecipe_addInputSlot(IRecipeLayoutBuilder builder, int x, int y)
 	{
-		var slotBuilder = builder.addSlot(recipeIngredientRole, x, y);
+		var slotBuilder = builder.addInputSlot(x, y);
+		this.setNormalRecipe_addSlot(slotBuilder, RecipeIngredientRole.INPUT);
+		return slotBuilder;
+	}
 
+	@Redirect(method = "setNormalRecipe", remap = false, at = @At(value = "INVOKE", target = "Lmezz/jei/api/gui/builder/IRecipeLayoutBuilder;addOutputSlot"))
+	private IRecipeSlotBuilder setNormalRecipe_addOutputSlot(IRecipeLayoutBuilder builder, int x, int y)
+	{
+		var slotBuilder = builder.addOutputSlot(x, y);
+		this.setNormalRecipe_addSlot(slotBuilder, RecipeIngredientRole.OUTPUT);
+		return slotBuilder;
+	}
+
+	private void setNormalRecipe_addSlot(IRecipeSlotBuilder slotBuilder, RecipeIngredientRole recipeIngredientRole)
+	{
 		if (this.minecolonies_compatibility$recipe != null)
 		{
 			RecipeSlotRole role = null;
@@ -173,11 +186,10 @@ public abstract class GenericRecipeCategoryMixin extends JobBasedRecipeCategory<
 			this.minecolonies_compatibility$role = null;
 		}
 
-		return slotBuilder;
 	}
 
-	@Redirect(method = "setNormalRecipe", remap = false, at = @At(value = "INVOKE", target = "Lmezz/jei/api/gui/builder/IRecipeSlotBuilder;setBackground"))
-	private IRecipeSlotBuilder setNormalRecipe_setBackground(IRecipeSlotBuilder builder, IDrawable background, int xOffset, int yOffset)
+	@Redirect(method = "setNormalRecipe", remap = false, at = @At(value = "INVOKE", target = "Lmezz/jei/api/gui/builder/IRecipeSlotBuilder;setStandardSlotBackground"))
+	private IRecipeSlotBuilder setNormalRecipe_setStandardSlotBackground(IRecipeSlotBuilder builder)
 	{
 		var recipe = this.minecolonies_compatibility$recipe;
 		var role = this.minecolonies_compatibility$role;
@@ -193,7 +205,7 @@ public abstract class GenericRecipeCategoryMixin extends JobBasedRecipeCategory<
 
 		}
 
-		return builder.setBackground(background, xOffset, yOffset);
+		return builder.setStandardSlotBackground();
 	}
 
 }

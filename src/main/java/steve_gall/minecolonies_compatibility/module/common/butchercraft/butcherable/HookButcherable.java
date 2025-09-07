@@ -16,12 +16,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherCitizenContext;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
 import steve_gall.minecolonies_compatibility.core.common.colony.ColonyHelper;
 import steve_gall.minecolonies_compatibility.core.common.inventory.InventoryHelper;
+import steve_gall.minecolonies_compatibility.core.common.network.message.BlockEntityRequestModelDataUpdateMessage;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
 import steve_gall.minecolonies_compatibility.mixin.common.butchercraft.MeatHookBlockEntityAccessor;
 
@@ -34,14 +37,14 @@ public class HookButcherable extends AbstractButcherable
 	private final List<BlockState> tableIcons;
 	private final List<ToolOrIngredientStack> toolIcons;
 
-	public HookButcherable(HookRecipe recipe)
+	public HookButcherable(RecipeHolder<HookRecipe> recipe)
 	{
-		this.id = recipe.getId();
-		this.recipe = recipe;
+		this.id = recipe.id();
+		this.recipe = recipe.value();
 
-		this.itemIcons = Arrays.asList(recipe.getCarcassIn().getItems());
+		this.itemIcons = Arrays.asList(this.recipe.carcass().getItems());
 		this.tableIcons = Collections.singletonList(ButchercraftBlocks.MEAT_HOOK.get().defaultBlockState());
-		this.toolIcons = this.getToolIcons(recipe.getRecipeToolsIn());
+		this.toolIcons = this.getToolIcons(this.recipe.tools());
 	}
 
 	@Override
@@ -59,7 +62,7 @@ public class HookButcherable extends AbstractButcherable
 	@Override
 	public @NotNull List<Ingredient> getOutputIcons()
 	{
-		return this.recipe.getDummyList();
+		return this.recipe.jei();
 	}
 
 	@Override
@@ -77,7 +80,7 @@ public class HookButcherable extends AbstractButcherable
 	@Override
 	public boolean testItem(@NotNull ItemStack item)
 	{
-		return this.recipe.getCarcassIn().test(item);
+		return this.recipe.carcass().test(item);
 	}
 
 	@Override
@@ -99,6 +102,7 @@ public class HookButcherable extends AbstractButcherable
 		if (context.getLevel().getBlockEntity(context.getPosition()) instanceof MeatHookBlockEntity blockEntity)
 		{
 			blockEntity.insertItem(citizen.getWorker().getItemInHand(itemHand));
+			PacketDistributor.sendToPlayersTrackingEntity(citizen.getWorker(), new BlockEntityRequestModelDataUpdateMessage(blockEntity));
 		}
 
 	}
@@ -120,7 +124,7 @@ public class HookButcherable extends AbstractButcherable
 	{
 		if (context.getLevel().getBlockEntity(context.getPosition()) instanceof MeatHookBlockEntity blockEntity)
 		{
-			return this.recipe.getCarcassIn().test(blockEntity.getInsertedItem());
+			return this.recipe.carcass().test(blockEntity.getInsertedItem());
 		}
 
 		return false;
@@ -133,7 +137,8 @@ public class HookButcherable extends AbstractButcherable
 
 		if (context.getLevel().getBlockEntity(context.getPosition()) instanceof MeatHookBlockEntity blockEntity)
 		{
-			var player = ColonyHelper.getFakeOwner(citizen.getWorker().getCitizenData().getColony());
+			var worker = citizen.getWorker();
+			var player = ColonyHelper.getFakeOwner(worker.getCitizenData().getColony());
 
 			if (player == null)
 			{
@@ -145,13 +150,15 @@ public class HookButcherable extends AbstractButcherable
 			}
 
 			var stage = blockEntity.stage;
-			var itemUse = this.recipe.getRecipeToolsIn().get(stage);
+			var tools = this.recipe.tools();
+			var itemUse = tools.get(stage);
 
-			if (this.trySkip(itemUse.tool::test, citizen.getAI()))
+			if (this.trySkip(itemUse.tool()::test, citizen.getAI()))
 			{
-				if (stage + 1 < this.recipe.getRecipeToolsIn().size())
+				if (stage + 1 < tools.size())
 				{
 					((MeatHookBlockEntityAccessor) blockEntity).invokeSetupStage(this.recipe, stage + 1);
+					PacketDistributor.sendToPlayersTrackingEntity(worker, new BlockEntityRequestModelDataUpdateMessage(blockEntity));
 				}
 				else
 				{
@@ -166,7 +173,7 @@ public class HookButcherable extends AbstractButcherable
 				var maxProgress = blockEntity.maxProgress;
 				var maxToolCount = blockEntity.toolCount * maxProgress;
 				var toolHand = InteractionHand.MAIN_HAND;
-				var tool = citizen.getWorker().getItemInHand(toolHand).copy();
+				var tool = worker.getItemInHand(toolHand).copy();
 				tool.setCount(maxToolCount);
 
 				blockEntity.progress = maxProgress;
@@ -174,11 +181,11 @@ public class HookButcherable extends AbstractButcherable
 
 				if (tool.isDamageableItem())
 				{
-					CitizenItemUtils.damageItemInHand(citizen.getWorker(), toolHand, maxProgress);
+					CitizenItemUtils.damageItemInHand(worker, toolHand, maxProgress);
 				}
 				else
 				{
-					var inventory = citizen.getWorker().getInventoryCitizen();
+					var inventory = worker.getInventoryCitizen();
 					var toolType = this.getTool(itemUse);
 					InventoryHelper.removeStacksFromItemHandler(inventory, maxToolCount, toolType::testType);
 				}

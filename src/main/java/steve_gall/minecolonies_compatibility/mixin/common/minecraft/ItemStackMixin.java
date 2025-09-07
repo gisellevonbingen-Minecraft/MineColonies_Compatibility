@@ -7,23 +7,22 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.minecolonies.core.entity.citizen.EntityCitizen;
-
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
-import steve_gall.minecolonies_compatibility.module.common.tinkerslevellingaddon.TinkersLevellingAddonModule;
 
 @Mixin(value = ItemStack.class, remap = true)
 public abstract class ItemStackMixin
 {
-	@Inject(method = "hurtAndBreak", remap = true, at = @At(value = "HEAD"), cancellable = false)
-	private <T extends LivingEntity> void hurtAndBreak(int damage, T entity, Consumer<T> consumer, CallbackInfo ci)
+	@Inject(method = "hurtAndBreak(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V", remap = true, at = @At(value = "HEAD"), cancellable = false)
+	private void hurtAndBreak(int damage, ServerLevel level, LivingEntity entity, Consumer<Item> consumer, CallbackInfo ci)
 	{
-		if (ModuleManager.TINKERSLEVELLINGADDON.isLoaded() && entity instanceof EntityCitizen citizen)
-		{
-			TinkersLevellingAddonModule.onHurtAndBreak((ItemStack) (Object) this, damage, citizen, consumer);
-		}
+		// TODO: ModuleManager.TINKERSLEVELLINGADDON
+		// if (ModuleManager.TINKERSLEVELLINGADDON.isLoaded() && entity instanceof EntityCitizen citizen)
+		// {
+		// TinkersLevellingAddonModule.onHurtAndBreak((ItemStack) (Object) this, damage, citizen, consumer);
+		// }
 
 	}
 

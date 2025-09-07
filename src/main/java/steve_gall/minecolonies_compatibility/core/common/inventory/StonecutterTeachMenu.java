@@ -4,20 +4,23 @@ import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
-public class StonecutterTeachMenu extends TeachRecipeMenu<StonecutterRecipe>
+public class StonecutterTeachMenu extends TeachRecipeMenu<RecipeHolder<StonecutterRecipe>, SingleRecipeInput>
 {
 	public static final int INVENTORY_X = 8;
 	public static final int INVENTORY_Y = 84;
@@ -53,7 +56,7 @@ public class StonecutterTeachMenu extends TeachRecipeMenu<StonecutterRecipe>
 	}
 
 	@Override
-	protected IMenuRecipeValidator<StonecutterRecipe> createRecipeValidator()
+	protected IMenuRecipeValidator<RecipeHolder<StonecutterRecipe>, SingleRecipeInput> createRecipeValidator()
 	{
 		return new MenuRecipeValidatorRecipe<>(this.inventory.player.level())
 		{
@@ -64,28 +67,29 @@ public class StonecutterTeachMenu extends TeachRecipeMenu<StonecutterRecipe>
 			}
 
 			@Override
-			protected boolean test(StonecutterRecipe recipe, Container container, ServerPlayer player)
+			public SingleRecipeInput getInput(Container container, RecipeHolder<StonecutterRecipe> recipe)
 			{
-				return recipe.matches(container, this.level);
+				return new SingleRecipeInput(container.getItem(0));
 			}
+
 		};
 	}
 
 	@Override
-	protected void setContainerByTransfer(@NotNull StonecutterRecipe recipe, @NotNull CompoundTag payload)
+	protected void setContainerByTransfer(@NotNull HolderLookup.Provider provider, @NotNull RecipeHolder<StonecutterRecipe> recipe, @NotNull CompoundTag payload)
 	{
-		super.setContainerByTransfer(recipe, payload);
+		super.setContainerByTransfer(provider, recipe, payload);
 
 		var input = payload.getList("input", Tag.TAG_COMPOUND);
-		this.inputContainer.setItem(0, ItemStack.of(input.getCompound(0)));
+		this.inputContainer.setItem(0, ItemSerializationHelper.deserializeTag(provider, input.getCompound(0)));
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(HolderLookup.Provider provider, SingleRecipeInput input)
 	{
 		if (this.recipe != null)
 		{
-			this.resultContainer.setItem(0, this.recipe.assemble(this.inputContainer, this.inventory.player.level().registryAccess()));
+			this.resultContainer.setItem(0, this.recipe.value().assemble(input, provider));
 		}
 		else
 		{

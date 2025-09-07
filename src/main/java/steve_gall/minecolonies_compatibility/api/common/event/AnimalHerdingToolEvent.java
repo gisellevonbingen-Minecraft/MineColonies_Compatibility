@@ -5,8 +5,12 @@ import java.util.function.Consumer;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.neoforge.common.NeoForge;
 
+/**
+ * {@link NeoForge#EVENT_BUS}
+ */
 public class AnimalHerdingToolEvent extends Event
 {
 	private final Animal animal;

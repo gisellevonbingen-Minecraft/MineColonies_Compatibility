@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -24,7 +25,7 @@ public class RiceFruit extends CustomizedFruit
 	@Override
 	public @NotNull ResourceLocation getId()
 	{
-		return ModBlocks.RICE_CROP_PANICLES.getId();
+		return BuiltInRegistries.BLOCK.getKey(ModBlocks.RICE_CROP_PANICLES.get());
 	}
 
 	@Override

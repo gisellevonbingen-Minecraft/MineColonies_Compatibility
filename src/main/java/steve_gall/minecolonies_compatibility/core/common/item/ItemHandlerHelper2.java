@@ -6,9 +6,9 @@ import java.util.List;
 import com.minecolonies.api.crafting.ItemStorage;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import steve_gall.minecolonies_compatibility.core.common.crafting.ItemStorageHelper;
 
 public class ItemHandlerHelper2

@@ -14,23 +14,22 @@ import com.lance5057.butchercraft.workstations.hook.HookRecipe;
 import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.FakePlayer;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedBucherableRegisterEvent;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.InjectBuildingSettingsModuleEvent;
 import steve_gall.minecolonies_compatibility.module.client.butchercraft.GrinderTeachScreen;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
@@ -42,6 +41,7 @@ import steve_gall.minecolonies_compatibility.module.common.butchercraft.init.Mod
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.init.ModuleMenuTypes;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.network.GrinderOpenTeachMessage;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizedRecipeStorageRegistry;
+import steve_gall.minecolonies_tweaks.api.common.network.MessageRegistrar;
 
 public class ButchercraftModule extends AbstractModule
 {
@@ -50,14 +50,11 @@ public class ButchercraftModule extends AbstractModule
 	{
 		super.onLoad();
 
-		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		var fml_bus = ModLoadingContext.get().getActiveContainer().getEventBus();
 		ModuleCraftingTypes.REGISTER.register(fml_bus);
 		ModuleMenuTypes.REGISTER.register(fml_bus);
 
-		var network = MineColoniesCompatibility.network();
-		network.registerMessage(GrinderOpenTeachMessage.class, GrinderOpenTeachMessage::new);
-
-		var forge_bus = MinecraftForge.EVENT_BUS;
+		var forge_bus = NeoForge.EVENT_BUS;
 		forge_bus.addListener(this::onCustomizedBucherableRegister);
 		forge_bus.addListener(this::onInjectBuildingSettingsModule);
 
@@ -75,22 +72,30 @@ public class ButchercraftModule extends AbstractModule
 	}
 
 	@Override
-	protected void onFMLClientSetup(FMLClientSetupEvent e)
+	protected void onRegisterMenuScreens(RegisterMenuScreensEvent e)
 	{
-		super.onFMLClientSetup(e);
+		super.onRegisterMenuScreens(e);
 
-		MenuScreens.register(ModuleMenuTypes.GRINDER_TEACH.get(), GrinderTeachScreen::new);
+		e.register(ModuleMenuTypes.GRINDER_TEACH.get(), GrinderTeachScreen::new);
 	}
 
-	private <RECIPE extends Recipe<CONTAINER>, CONTAINER extends Container, BUTCHERABLE extends CustomizedButcherable> void registerAll(CustomizedBucherableRegisterEvent e, RecipeType<RECIPE> recipeType, Function<RECIPE, Ingredient> ingredientFunc, Function<RECIPE, BUTCHERABLE> butcherableFactory)
+	@Override
+	protected void onRegisterNetwork(MessageRegistrar channel)
 	{
-		for (var recipe : e.getRecipeManager().getAllRecipesFor(recipeType))
+		super.onRegisterNetwork(channel);
+
+		channel.playToServer(GrinderOpenTeachMessage.TYPE, GrinderOpenTeachMessage::new);
+	}
+
+	private <RECIPE extends Recipe<RECIPE_INPUT>, RECIPE_INPUT extends RecipeInput, BUTCHERABLE extends CustomizedButcherable> void registerAll(CustomizedBucherableRegisterEvent e, RecipeType<RECIPE> recipeType, Function<RECIPE, Ingredient> ingredientFunc, Function<RecipeHolder<RECIPE>, BUTCHERABLE> butcherableFactory)
+	{
+		for (var recipeHolder : e.getRecipeManager().getAllRecipesFor(recipeType))
 		{
-			var ingredient = ingredientFunc.apply(recipe);
+			var ingredient = ingredientFunc.apply(recipeHolder.value());
 
 			if (Arrays.stream(ingredient.getItems()).allMatch(this::testItem))
 			{
-				var butcherable = butcherableFactory.apply(recipe);
+				var butcherable = butcherableFactory.apply(recipeHolder);
 				e.register(butcherable);
 			}
 
@@ -116,8 +121,8 @@ public class ButchercraftModule extends AbstractModule
 
 	private void onCustomizedBucherableRegister(CustomizedBucherableRegisterEvent e)
 	{
-		this.registerAll(e, ButchercraftRecipes.BUTCHER_BLOCK.get(), ButcherBlockRecipe::getCarcassIn, ButcherBlockButcherable::new);
-		this.registerAll(e, ButchercraftRecipes.HOOK.get(), HookRecipe::getCarcassIn, HookButcherable::new);
+		this.registerAll(e, ButchercraftRecipes.BUTCHER_BLOCK.get(), ButcherBlockRecipe::carcass, ButcherBlockButcherable::new);
+		this.registerAll(e, ButchercraftRecipes.HOOK.get(), HookRecipe::carcass, HookButcherable::new);
 	}
 
 	private void onInjectBuildingSettingsModule(InjectBuildingSettingsModuleEvent e)

@@ -9,12 +9,15 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import steve_gall.minecolonies_compatibility.module.client.jei.TeachRecipeTransferHandler;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.menu.CuttingTeachMenu;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
+import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipeInput;
 import vectorwing.farmersdelight.integration.jei.FDRecipeTypes;
 
-public class CuttingTeachRecipeTransferHandler extends TeachRecipeTransferHandler<CuttingTeachMenu, CuttingBoardRecipe, CuttingBoardRecipe>
+public class CuttingTeachRecipeTransferHandler extends TeachRecipeTransferHandler<CuttingTeachMenu, RecipeHolder<CuttingBoardRecipe>, CuttingBoardRecipeInput, RecipeHolder<CuttingBoardRecipe>>
 {
 	public CuttingTeachRecipeTransferHandler(IRecipeTransferHandlerHelper recipeTransferHandlerHelper)
 	{
@@ -34,22 +37,22 @@ public class CuttingTeachRecipeTransferHandler extends TeachRecipeTransferHandle
 	}
 
 	@Override
-	public RecipeType<CuttingBoardRecipe> getRecipeType()
+	public RecipeType<RecipeHolder<CuttingBoardRecipe>> getRecipeType()
 	{
 		return FDRecipeTypes.CUTTING;
 	}
 
 	@Override
-	protected CuttingBoardRecipe getRecipe(CuttingTeachMenu menu, CuttingBoardRecipe categoryRecipe, IRecipeSlotsView recipeSlots, Player player)
+	protected RecipeHolder<CuttingBoardRecipe> getRecipe(CuttingTeachMenu menu, RecipeHolder<CuttingBoardRecipe> categoryRecipe, IRecipeSlotsView recipeSlots, Player player)
 	{
 		return categoryRecipe;
 	}
 
 	@Override
-	protected void serializePayload(CuttingTeachMenu menu, CuttingBoardRecipe recipe, IRecipeSlotsView recipeSlots, Player player, CompoundTag tag)
+	protected void serializePayload(CuttingTeachMenu menu, RecipeHolder<CuttingBoardRecipe> recipe, IRecipeSlotsView recipeSlots, Player player, CompoundTag tag)
 	{
 		var input = this.getDisplayedItemStacks(recipeSlots, RecipeIngredientRole.INPUT);
-		tag.put("input", input.get(1).serializeNBT());
+		tag.put("input", ItemSerializationHelper.serializeTag(player.registryAccess(), input.get(1)));
 	}
 
 }

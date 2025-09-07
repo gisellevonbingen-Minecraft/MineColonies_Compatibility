@@ -8,6 +8,7 @@ import com.minecolonies.api.crafting.registry.CraftingType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SmithingRecipe;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingRecipeStorage;
@@ -15,7 +16,7 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.inventory.SmithingTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public class SmithingTeachScreen extends TeachCraftingRecipeScreen<SmithingTeachMenu, SmithingRecipe>
+public class SmithingTeachScreen extends TeachCraftingRecipeScreen<SmithingTeachMenu, RecipeHolder<SmithingRecipe>>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/smithing_teach.png");
 
@@ -40,13 +41,13 @@ public class SmithingTeachScreen extends TeachCraftingRecipeScreen<SmithingTeach
 	}
 
 	@Override
-	protected ICustomizedRecipeStorage createRecipeStorage(SmithingRecipe recipe, List<ItemStorage> input)
+	protected ICustomizedRecipeStorage createRecipeStorage(RecipeHolder<SmithingRecipe> recipe, List<ItemStorage> input)
 	{
 		var template = input.get(0);
 		var base = input.get(1);
 		var addition = input.get(2);
 		var result = this.menu.getResultContainer().getItem(0);
-		return new SmithingRecipeStorage(recipe.getId(), template, base, addition, result);
+		return new SmithingRecipeStorage(recipe.id(), template, base, addition, result);
 	}
 
 }

@@ -14,6 +14,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import steve_gall.minecolonies_compatibility.api.common.crafting.SimpleGenericRecipe;
 
@@ -21,9 +22,9 @@ public class GrinderGenericRecipe extends SimpleGenericRecipe
 {
 	private final List<ItemStack> attachment;
 
-	public GrinderGenericRecipe(GrinderRecipe recipe, RegistryAccess registryAccess)
+	public GrinderGenericRecipe(RecipeHolder<GrinderRecipe> recipe, RegistryAccess registryAccess)
 	{
-		this(recipe.getId(), Collections.singletonList(ingredients(recipe.ingredient, recipe.count)), recipe.getResultItem(registryAccess), recipe.attachment);
+		this(recipe.id(), Collections.singletonList(ingredients(recipe.value().ingredient(), recipe.value().count())), recipe.value().getResultItem(registryAccess), recipe.value().attachment());
 	}
 
 	public GrinderGenericRecipe(ResourceLocation recipeId, List<List<ItemStack>> ingredients, ItemStack output, Ingredient attachment)

@@ -6,65 +6,65 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.fluids.FluidStack;
 import steve_gall.minecolonies_compatibility.api.common.crafting.GenericedRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
 public class BucketFillingRecipeStorage extends GenericedRecipeStorage<BucketFillingGenericRecipe>
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("bucket_filling");
 	public static String TAG_EMPTY_BUCKET = "emptyBucket";
 	public static String TAG_FLUID = "fluid";
-	public static String TAG_FLUID_TAG = "fluidTag";
+	public static String TAG_DATA_COMPONENT_PATCH = "dataComponentPatch";
 	public static String TAG_FILLED_BUCKET = "filledBucket";
 
-	public static void serialize(BucketFillingRecipeStorage recipe, CompoundTag tag)
+	public static void serialize(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag, BucketFillingRecipeStorage recipe)
 	{
-		tag.put(TAG_EMPTY_BUCKET, recipe.emptyBucket.serializeNBT());
-		tag.putString(TAG_FLUID, ForgeRegistries.FLUIDS.getKey(recipe.fluid).toString());
-
-		if (recipe.fluidTag != null)
-		{
-			tag.put(TAG_FLUID_TAG, recipe.fluidTag);
-		}
-
-		tag.put(TAG_FILLED_BUCKET, recipe.filledBucket.serializeNBT());
+		tag.put(TAG_EMPTY_BUCKET, ItemSerializationHelper.serializeTag(provider, recipe.emptyBucket));
+		tag.putString(TAG_FLUID, BuiltInRegistries.FLUID.getKey(recipe.fluid).toString());
+		tag.put(TAG_DATA_COMPONENT_PATCH, DataComponentPatch.CODEC.encodeStart(NbtOps.INSTANCE, recipe.dataComponentPatch).getOrThrow());
+		tag.put(TAG_FILLED_BUCKET, ItemSerializationHelper.serializeTag(provider, recipe.filledBucket));
 	}
 
-	public static BucketFillingRecipeStorage deserialize(CompoundTag tag)
+	public static BucketFillingRecipeStorage deserialize(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag)
 	{
-		var emptyBucket = ItemStack.of(tag.getCompound(TAG_EMPTY_BUCKET));
-		var fluidId = new ResourceLocation(tag.getString(TAG_FLUID));
-		var fluid = ForgeRegistries.FLUIDS.getValue(fluidId);
-		var fluidTag = tag.contains(TAG_FLUID_TAG) ? tag.getCompound(TAG_FLUID_TAG) : null;
-		var filledBucket = ItemStack.of(tag.getCompound(TAG_FILLED_BUCKET));
-		return new BucketFillingRecipeStorage(emptyBucket, fluid, fluidTag, filledBucket);
+		var emptyBucket = ItemSerializationHelper.deserializeTag(provider, tag.getCompound(TAG_EMPTY_BUCKET));
+		var fluidId = ResourceLocation.parse(tag.getString(TAG_FLUID));
+		var fluid = BuiltInRegistries.FLUID.get(fluidId);
+		var dataComponentPatch = DataComponentPatch.CODEC.decode(NbtOps.INSTANCE, tag.getCompound(TAG_DATA_COMPONENT_PATCH)).getOrThrow().getFirst();
+		var filledBucket = ItemSerializationHelper.deserializeTag(provider, tag.getCompound(TAG_FILLED_BUCKET));
+		return new BucketFillingRecipeStorage(emptyBucket, fluid, dataComponentPatch, filledBucket);
 	}
 
 	private final ItemStack emptyBucket;
 	private final Fluid fluid;
-	private final CompoundTag fluidTag;
+	private final DataComponentPatch dataComponentPatch;
 	private final ItemStack filledBucket;
 
 	private final List<ItemStorage> input;
 	private final BucketFillingGenericRecipe recipe;
 
-	public BucketFillingRecipeStorage(ItemStack emptyBucket, Fluid fluid, CompoundTag fluidTag, ItemStack filledBucket)
+	public BucketFillingRecipeStorage(ItemStack emptyBucket, Fluid fluid, DataComponentPatch dataComponentPatch, ItemStack filledBucket)
 	{
 		this.emptyBucket = emptyBucket;
 		this.fluid = fluid;
-		this.fluidTag = fluidTag;
+		this.dataComponentPatch = dataComponentPatch;
 		this.filledBucket = filledBucket;
 
 		this.input = Collections.singletonList(new ItemStorage(emptyBucket));
-		this.recipe = new BucketFillingGenericRecipe(emptyBucket, fluid, fluidTag, filledBucket);
+		this.recipe = new BucketFillingGenericRecipe(emptyBucket, fluid, dataComponentPatch, filledBucket);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class BucketFillingRecipeStorage extends GenericedRecipeStorage<BucketFil
 		return Objects.hash(//
 				this.emptyBucket.getItem().hashCode(), //
 				this.fluid.hashCode(), //
-				this.fluidTag == null ? 0 : this.fluidTag.hashCode(), //
+				this.dataComponentPatch == null ? 0 : this.dataComponentPatch.hashCode(), //
 				this.filledBucket.getItem().hashCode()//
 		);
 	}
@@ -89,7 +89,7 @@ public class BucketFillingRecipeStorage extends GenericedRecipeStorage<BucketFil
 		{
 			return ItemStack.matches(this.emptyBucket, other.emptyBucket)//
 					&& this.fluid == other.fluid//
-					&& Objects.equals(this.fluidTag, other.fluidTag)//
+					&& Objects.equals(this.dataComponentPatch, other.dataComponentPatch)//
 					&& ItemStack.matches(this.filledBucket, other.filledBucket);
 		}
 
@@ -112,14 +112,16 @@ public class BucketFillingRecipeStorage extends GenericedRecipeStorage<BucketFil
 		return this.fluid;
 	}
 
-	public CompoundTag getFluidTag()
+	public DataComponentPatch getDataComponentPatch()
 	{
-		return this.fluidTag;
+		return this.dataComponentPatch;
 	}
 
 	public FluidStack getFluidStack(int amount)
 	{
-		return new FluidStack(this.fluid, amount, this.fluidTag);
+		var stack = new FluidStack(this.fluid, amount);
+		stack.applyComponents(this.dataComponentPatch);
+		return stack;
 	}
 
 	public ItemStack getFilledBucket()

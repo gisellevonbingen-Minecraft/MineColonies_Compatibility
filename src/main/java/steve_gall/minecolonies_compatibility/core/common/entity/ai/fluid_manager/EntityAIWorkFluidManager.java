@@ -10,7 +10,6 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.entity.citizen.VisibleCitizenStatus;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.constant.Constants;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingDeliveryman;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
 import com.minecolonies.core.entity.pathfinding.PathfindingUtils;
@@ -36,7 +35,7 @@ import steve_gall.minecolonies_compatibility.core.common.job.JobFluidManager;
 
 public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidManager, BuildingDeliveryman>
 {
-	public static final VisibleCitizenStatus SEARCH = new VisibleCitizenStatus(new ResourceLocation(Constants.MOD_ID, "textures/icons/work/lumberjack_search.png"), "com.minecolonies.gui.visiblestatus.lumberjack_search");
+	public static final VisibleCitizenStatus SEARCH = new VisibleCitizenStatus(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/icons/work/lumberjack_search.png"), "com.minecolonies.gui.visiblestatus.lumberjack_search");
 	public static final double XP_PER_HARVEST = 0.5D;
 
 	@Nullable
@@ -207,7 +206,7 @@ public class EntityAIWorkFluidManager extends AbstractEntityAICrafting<JobFluidM
 		var delay = config.pickupDelay.get().intValue() - (int) (this.getSecondarySkillLevel() * config.pickupDelayReducePerSkillLevel.get().doubleValue());
 
 		this.hitBlockWithToolInHand(this.cauldronPos);
-		Network.getNetwork().sendToTrackingEntity(new LocalizedParticleEffectMessage(new ItemStack(Items.LAVA_BUCKET), this.cauldronPos), this.worker);
+		new LocalizedParticleEffectMessage(new ItemStack(Items.LAVA_BUCKET), this.cauldronPos).sendToTrackingEntity(this.worker);
 
 		if (this.pickupProgress < delay)
 		{

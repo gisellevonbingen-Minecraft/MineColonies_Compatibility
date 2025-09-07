@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.module.client.jei;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,6 +14,7 @@ import com.minecolonies.api.research.requirements.BuildingAlternatesResearchRequ
 import com.minecolonies.api.research.requirements.BuildingResearchRequirement;
 import com.minecolonies.api.research.requirements.ResearchResearchRequirement;
 import com.minecolonies.api.research.util.ResearchConstants;
+import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.Tuple;
 import com.minecolonies.api.util.constant.Constants;
 
@@ -160,10 +162,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 				return new Tuple<>(requirement, this.getDisplayItemStacks(requirement).toList());
 			}).toList();
 
-			this.costs = research.getCostList().stream().map(cost -> cost.getItems().stream().map(item ->
-			{
-				return new ItemStack(item, cost.getCount());
-			}).toList()).toList();
+			this.costs = research.getCostList().stream().map(cost -> Arrays.asList(cost.getItems())).toList();
 
 			this.tooltip = new ArrayList<>();
 			this.tooltip.add(this.header);
@@ -178,7 +177,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 			for (var cost : research.getCostList())
 			{
-				this.tooltip.add(Component.literal(" - ").append(Component.translatable("com.minecolonies.coremod.research.limit.requirement", cost.getCount(), cost.getTranslatedName())).withStyle(style));
+				this.tooltip.add(Component.literal(" - ").append(Component.translatable("com.minecolonies.coremod.research.limit.cost", cost.count(), ItemStackUtils.getTranslatedName(cost))).withStyle(style));
 			}
 
 		}
@@ -189,7 +188,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 			if (buildingRegistry.containsKey(buildingName))
 			{
-				return buildingRegistry.getValue(buildingName).getBuildingBlock();
+				return buildingRegistry.get(buildingName).getBuildingBlock();
 			}
 			else
 			{

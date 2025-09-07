@@ -14,14 +14,16 @@ import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.OptionalPredicate;
 
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.LootTable;
 import steve_gall.minecolonies_compatibility.core.common.crafting.GenericRecipeHelper;
 import steve_gall.minecolonies_compatibility.core.common.crafting.IngredientHelper;
 
@@ -36,9 +38,9 @@ public class SimpleGenericRecipe implements IGenericRecipe
 	@NotNull
 	private final List<ItemStack> additionalOutputs;
 
-	public SimpleGenericRecipe(@NotNull Recipe<?> recipe, @NotNull RegistryAccess registryAccess)
+	public SimpleGenericRecipe(@NotNull RecipeHolder<?> recipeHolder, @NotNull HolderLookup.Provider provider)
 	{
-		this(recipe.getId(), IngredientHelper.getStacksList(recipe.getIngredients()), recipe.getResultItem(registryAccess));
+		this(recipeHolder.id(), IngredientHelper.getStacksList(recipeHolder.value().getIngredients()), recipeHolder.value().getResultItem(provider));
 	}
 
 	public SimpleGenericRecipe(@NotNull ResourceLocation recipeId, @NotNull List<List<ItemStack>> ingredients, @NotNull ItemStack output)
@@ -109,7 +111,7 @@ public class SimpleGenericRecipe implements IGenericRecipe
 	}
 
 	@Override
-	public @Nullable ResourceLocation getLootTable()
+	public @Nullable ResourceKey<LootTable> getLootTable()
 	{
 		return null;
 	}

@@ -1,6 +1,6 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher.ButcherConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.fluid_manager.FluidManagerConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.GunnerConfig;
@@ -17,7 +17,7 @@ public class ServerJobConfig
 	public final FluidManagerConfig fluidManager;
 	public final ButcherConfig butcher;
 
-	public ServerJobConfig(ForgeConfigSpec.Builder builder)
+	public ServerJobConfig(ModConfigSpec.Builder builder)
 	{
 		builder.push("ranger");
 		this.ranger = new RangerConfig(builder);

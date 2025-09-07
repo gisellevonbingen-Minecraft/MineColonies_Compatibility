@@ -3,7 +3,7 @@ package steve_gall.minecolonies_compatibility.core.common.item;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class CombinedItemHandler implements IItemHandler
 {

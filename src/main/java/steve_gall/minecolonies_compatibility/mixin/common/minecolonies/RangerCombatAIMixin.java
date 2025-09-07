@@ -20,6 +20,7 @@ import com.minecolonies.api.research.IResearchEffectManager;
 import com.minecolonies.api.research.util.ResearchConstants;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.SoundUtils;
+import com.minecolonies.api.util.Utils;
 import com.minecolonies.api.util.constant.GuardConstants;
 import com.minecolonies.core.entity.ai.combat.AttackMoveAI;
 import com.minecolonies.core.entity.ai.combat.CombatUtils;
@@ -38,11 +39,12 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.CombatUtils2;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
+import steve_gall.minecolonies_compatibility.mixin.common.minecraft.AbstractArrowAccessor;
 
 @Mixin(value = RangerCombatAI.class, remap = false)
 public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
@@ -103,7 +105,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 
 		if (ItemStackHelper.isTool(weapon, ModToolTypes.CROSSBOW.getToolType()))
 		{
-			var amountOfProjectiles = weapon.getEnchantmentLevel(Enchantments.MULTISHOT) == 0 ? 1 : 3;
+			var amountOfProjectiles = weapon.getEnchantmentLevel(Utils.getRegistryValue(Enchantments.MULTISHOT, this.user.level())) == 0 ? 1 : 3;
 			var researchEffects = this.user.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects();
 			var config = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger;
 			var ammoSlot = -1;
@@ -147,12 +149,11 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 		else
 		{
 			var arrow = CombatUtils.createArrowForShooter(this.user);
-			arrow.setShotFromCrossbow(true);
 
 			if (i == 0)
 			{
 				var researchEffects = this.user.getCitizenColonyHandler().getColony().getResearchManager().getResearchEffects();
-				var piercing = weapon.getEnchantmentLevel(Enchantments.PIERCING);
+				var piercing = weapon.getEnchantmentLevel(Utils.getRegistryValue(Enchantments.PIERCING, this.user.level()));
 
 				if (researchEffects.getEffectStrength(ResearchConstants.ARROW_PIERCE) > 0)
 				{
@@ -161,7 +162,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 
 				if (piercing > 0)
 				{
-					arrow.setPierceLevel((byte) Math.min(piercing, Byte.MAX_VALUE));
+					((AbstractArrowAccessor) arrow).invokeSetPierceLevel((byte) Math.min(piercing, Byte.MAX_VALUE));
 				}
 
 				arrow.setBaseDamage(this.calculateDamage(arrow));
@@ -169,7 +170,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 			else
 			{
 				var first = (AbstractArrow) projectiles[0];
-				arrow.setPierceLevel(first.getPierceLevel());
+				((AbstractArrowAccessor) arrow).invokeSetPierceLevel(first.getPierceLevel());
 				arrow.setBaseDamage(first.getBaseDamage());
 			}
 
@@ -207,7 +208,7 @@ public abstract class RangerCombatAIMixin extends AttackMoveAI<EntityCitizen>
 			return;
 		}
 
-		var i = weapon.getEnchantmentLevel(Enchantments.QUICK_CHARGE);
+		var i = weapon.getEnchantmentLevel(Utils.getRegistryValue(Enchantments.QUICK_CHARGE, this.user.level()));
 
 		if (i > 0)
 		{

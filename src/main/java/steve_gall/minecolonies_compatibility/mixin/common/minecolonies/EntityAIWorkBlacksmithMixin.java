@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.minecolonies.api.entity.ai.statemachine.AITarget;
 import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.workerbuildings.BuildingBlacksmith;
 import com.minecolonies.core.colony.jobs.JobBlacksmith;
 import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting;
@@ -24,7 +23,6 @@ import steve_gall.minecolonies_compatibility.api.common.repair.RepairTransaction
 import steve_gall.minecolonies_compatibility.api.common.repair.RepairTransaction.RepairResult;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AIRepairState;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
-import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 
 @Mixin(value = EntityAIWorkBlacksmith.class)
 public abstract class EntityAIWorkBlacksmithMixin extends AbstractEntityAICrafting<JobBlacksmith, BuildingBlacksmith>
@@ -43,16 +41,12 @@ public abstract class EntityAIWorkBlacksmithMixin extends AbstractEntityAICrafti
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"), cancellable = false)
 	private void init(JobBlacksmith blacksmith, CallbackInfo ci)
 	{
-		if (ModuleManager.TCONSTRUCT.isLoaded())
+		this.registerTarget(new AIInterruptEventTarget(() ->
 		{
-			this.registerTarget(new AIInterruptEventTarget(() ->
-			{
-				var state = this.getState();
-				return state == AIWorkerState.IDLE || state == AIWorkerState.START_WORKING;
-			}, this::checkRepairableItem, 20));
-			this.registerTarget(new AITarget(AIRepairState.REPAIR, this::repair, HIT_DELAY));
-		}
-
+			var state = this.getState();
+			return state == AIWorkerState.IDLE || state == AIWorkerState.START_WORKING;
+		}, this::checkRepairableItem, 20));
+		this.registerTarget(new AITarget(AIRepairState.REPAIR, this::repair, HIT_DELAY));
 	}
 
 	private IAIState checkRepairableItem()
@@ -113,7 +107,7 @@ public abstract class EntityAIWorkBlacksmithMixin extends AbstractEntityAICrafti
 
 		if (!mainHeld.isEmpty())
 		{
-			Network.getNetwork().sendToTrackingEntity(new LocalizedParticleEffectMessage(mainHeld, this.building.getPosition().above()), this.worker);
+			new LocalizedParticleEffectMessage(mainHeld, this.building.getPosition().above()).sendToTrackingEntity(this.worker);
 		}
 
 		if (this.minecolonies_compatibility$hitCount >= ((AbstractEntityAICraftingAccessor) this).invokeGetRequiredProgressForMakingRawMaterial())

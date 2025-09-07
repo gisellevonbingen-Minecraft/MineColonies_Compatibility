@@ -17,6 +17,7 @@ import com.minecolonies.api.util.Tuple;
 import com.minecolonies.core.colony.interactionhandling.ServerCitizenInteraction;
 import com.minecolonies.core.colony.interactionhandling.StandardInteraction;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_compatibility.api.common.building.module.ICraftingModuleWithExternalWorkingBlocks;
@@ -27,10 +28,10 @@ public class WorkingBlockInteraction extends ServerCitizenInteraction
 {
 	@SuppressWarnings("unchecked")
 	private static final Tuple<Component, Component>[] tuples = new Tuple[]{//
-			new Tuple<>(Component.translatable(StandardInteraction.INTERACTION_R_OKAY), null), //
-			new Tuple<>(Component.translatable(StandardInteraction.INTERACTION_R_IGNORE), null), //
-			new Tuple<>(Component.translatable(StandardInteraction.INTERACTION_R_REMIND), null), //
-			new Tuple<>(Component.translatable(StandardInteraction.INTERACTION_R_SKIP), null)//
+			new Tuple<>(Component.translatable(StandardInteraction.INTERACTION_R_OKAY), Component.empty()), //
+			new Tuple<>(Component.translatable(StandardInteraction.INTERACTION_R_IGNORE), Component.empty()), //
+			new Tuple<>(Component.translatable(StandardInteraction.INTERACTION_R_REMIND), Component.empty()), //
+			new Tuple<>(Component.translatable(StandardInteraction.INTERACTION_R_SKIP), Component.empty())//
 	};
 
 	private ModulePos modulePos;
@@ -85,26 +86,26 @@ public class WorkingBlockInteraction extends ServerCitizenInteraction
 	}
 
 	@Override
-	public CompoundTag serializeNBT()
+	public CompoundTag serializeNBT(HolderLookup.Provider provider)
 	{
 		var controller = StandardFactoryController.getInstance();
-		var tag = super.serializeNBT();
+		var tag = super.serializeNBT(provider);
 		tag.put("modulePos", this.modulePos.serializeNBT());
-		tag.put("recipeId", controller.serialize(this.recipeId));
-		tag.put("requestId", controller.serialize(this.requestId));
+		tag.put("recipeId", controller.serializeTag(provider, this.recipeId));
+		tag.put("requestId", controller.serializeTag(provider, this.requestId));
 
 		return tag;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag tag)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag)
 	{
 		var controller = StandardFactoryController.getInstance();
-		super.deserializeNBT(tag);
+		super.deserializeNBT(provider, tag);
 
 		this.modulePos = new ModulePos(tag.getCompound("modulePos"));
-		this.recipeId = controller.deserialize(tag.getCompound("recipeId"));
-		this.requestId = controller.deserialize(tag.getCompound("requestId"));
+		this.recipeId = controller.deserializeTag(provider, tag.getCompound("recipeId"));
+		this.requestId = controller.deserializeTag(provider, tag.getCompound("requestId"));
 	}
 
 	@Override

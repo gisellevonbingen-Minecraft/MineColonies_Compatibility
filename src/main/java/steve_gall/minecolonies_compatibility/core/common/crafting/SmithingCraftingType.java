@@ -18,12 +18,13 @@ import com.minecolonies.api.util.constant.TranslationConstants;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import steve_gall.minecolonies_compatibility.core.common.init.ModTags;
@@ -42,9 +43,9 @@ public class SmithingCraftingType extends CraftingType
 		var tags = ModTags.Items.SMITHING_REQUIRED_LEVEL;
 		var registryAccess = level.registryAccess();
 
-		for (var recipe : level.getRecipeManager().getAllRecipesFor(RecipeType.SMITHING))
+		for (var holder : level.getRecipeManager().getAllRecipesFor(RecipeType.SMITHING))
 		{
-			if (recipe instanceof SmithingRecipeAccessor accesor)
+			if (holder.value() instanceof SmithingRecipeAccessor accesor)
 			{
 				var template = IngredientHelper.getStacks(accesor.getTemplate());
 				var baseList = IngredientHelper.getStacks(accesor.getBase());
@@ -68,12 +69,12 @@ public class SmithingCraftingType extends CraftingType
 					}
 
 					remainedAddition.removeAll(levelAddition);
-					list.addAll(of(recipe, registryAccess, template, base, levelAddition, i));
+					list.addAll(of(holder, registryAccess, template, base, levelAddition, i));
 				}
 
 				if (remainedAddition.size() > 0)
 				{
-					list.addAll(of(recipe, registryAccess, template, base, new ArrayList<>(remainedAddition), -1));
+					list.addAll(of(holder, registryAccess, template, base, new ArrayList<>(remainedAddition), -1));
 				}
 
 			}
@@ -105,12 +106,12 @@ public class SmithingCraftingType extends CraftingType
 		return -1;
 	}
 
-	public static List<IGenericRecipe> of(SmithingRecipe recipe, RegistryAccess registryAccess, List<ItemStack> template, List<ItemStack> base, List<ItemStack> addition, int requiredLevel)
+	public static List<IGenericRecipe> of(RecipeHolder<SmithingRecipe> recipe, RegistryAccess registryAccess, List<ItemStack> template, List<ItemStack> base, List<ItemStack> addition, int requiredLevel)
 	{
 		return template.stream().map(t -> of(recipe, registryAccess, t, base, addition, requiredLevel)).toList();
 	}
 
-	public static IGenericRecipe of(SmithingRecipe recipe, RegistryAccess registryAccess, ItemStack template, List<ItemStack> base, List<ItemStack> addition, int requiredLevel)
+	public static IGenericRecipe of(RecipeHolder<SmithingRecipe> recipe, RegistryAccess registryAccess, ItemStack template, List<ItemStack> base, List<ItemStack> addition, int requiredLevel)
 	{
 		var maxLevel = Constants.MAX_BUILDING_LEVEL;
 		var restrictions = new ArrayList<Component>();
@@ -130,7 +131,7 @@ public class SmithingCraftingType extends CraftingType
 		input.add(addition);
 		var allResults = getAllResults(recipe, registryAccess, template, base, addition);
 		return GenericRecipe.builder()//
-				.withRecipeId(recipe.getId())//
+				.withRecipeId(recipe.id())//
 				.withOutputs(ItemStack.EMPTY, allResults)//
 				.withAdditionalOutputs(Arrays.asList())//
 				.withInputs(input)//
@@ -144,7 +145,7 @@ public class SmithingCraftingType extends CraftingType
 				.build();
 	}
 
-	private static List<ItemStack> getAllResults(SmithingRecipe recipe, RegistryAccess registryAccess, ItemStack template, List<ItemStack> bases, List<ItemStack> additions)
+	private static List<ItemStack> getAllResults(RecipeHolder<SmithingRecipe> recipe, RegistryAccess registryAccess, ItemStack template, List<ItemStack> bases, List<ItemStack> additions)
 	{
 		var list = new ArrayList<ItemStack>();
 
@@ -152,11 +153,7 @@ public class SmithingCraftingType extends CraftingType
 		{
 			for (var addition : additions)
 			{
-				var container = new SimpleContainer(3);
-				container.setItem(0, template);
-				container.setItem(1, base);
-				container.setItem(2, addition);
-				list.add(recipe.assemble(container, registryAccess));
+				list.add(recipe.value().assemble(new SmithingRecipeInput(template, base, addition), registryAccess));
 			}
 
 		}

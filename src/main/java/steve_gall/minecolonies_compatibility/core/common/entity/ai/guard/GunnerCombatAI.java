@@ -33,7 +33,7 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 {
 	public static final int FLEE_CHANCE = 3;
 
-	private final static VisibleCitizenStatus ARCHER_COMBAT = new VisibleCitizenStatus(new ResourceLocation(Constants.MOD_ID, "textures/icons/work/archer_combat.png"), "com.minecolonies.gui.visiblestatus.archer_combat");
+	private final static VisibleCitizenStatus ARCHER_COMBAT = new VisibleCitizenStatus(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/icons/work/archer_combat.png"), "com.minecolonies.gui.visiblestatus.archer_combat");
 
 	private final PathingOptions combatPathingOptions;
 

@@ -10,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
+import com.mojang.serialization.JsonOps;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -37,7 +38,7 @@ public class IngredientHelper
 
 	public static @NotNull EquipmentTypeEntry findFirstToolType(@NotNull Ingredient ingredient)
 	{
-		for (var toolType : IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getValues())
+		for (var toolType : IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry())
 		{
 			if (toolType == ModEquipmentTypes.none.get())
 			{
@@ -55,12 +56,12 @@ public class IngredientHelper
 
 	public static @NotNull String toJson(@NotNull Ingredient ingredient)
 	{
-		return GSON.toJson(ingredient.toJson());
+		return GSON.toJson(Ingredient.CODEC.encodeStart(JsonOps.COMPRESSED, ingredient).getOrThrow());
 	}
 
 	public static @NotNull Ingredient fromJson(@NotNull String json)
 	{
-		return Ingredient.fromJson(GSON.fromJson(json, JsonElement.class));
+		return Ingredient.CODEC.decode(JsonOps.COMPRESSED, GSON.fromJson(json, JsonElement.class)).getOrThrow().getFirst();
 	}
 
 	public static boolean isDamageable(@NotNull Ingredient ingredient)

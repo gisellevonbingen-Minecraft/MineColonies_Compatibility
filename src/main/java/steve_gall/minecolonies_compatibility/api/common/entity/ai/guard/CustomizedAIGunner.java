@@ -14,14 +14,15 @@ import com.minecolonies.api.util.constant.GuardConstants;
 import com.minecolonies.core.colony.buildings.modules.settings.GuardTaskSetting;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import steve_gall.minecolonies_compatibility.core.common.building.BuildingHelper;
 import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
@@ -298,11 +299,12 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 
 	public void doMeleeAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var damage = this.getMeleeAttackDamage(user, target);
-		damage += EnchantmentHelper.getDamageBonus(this.getMainHandItem(user), target.getMobType()) / 2.5D;
-
 		var damageType = user.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageSourceKeys.GUARD);
 		var source = new DamageSource(damageType, user);
+
+		var damage = this.getMeleeAttackDamage(user, target);
+		damage += EnchantmentHelper.modifyDamage((ServerLevel) user.level(), this.getMainHandItem(user), target, source, damage) / 2.5D;
+
 		target.hurt(source, damage);
 	}
 

@@ -1,0 +1,40 @@
+modLoader="javafml"
+loaderVersion="[${neoforge_loader_version},)"
+license="${mod_license}"
+issueTrackerURL="${mod_issues}"
+
+[[mixins]]
+config="${mod_id}.mixin.client.json"
+
+[[mixins]]
+config="${mod_id}.mixin.common.json"
+
+[[mods]]
+    modId="${mod_id}"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    displayURL="${mod_homepage}"
+    authors="gisellevonbingen, supernova0102"
+    logoFile="icon.png"
+    description='''${mod_description}'''
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="[${mc_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neoforge_api_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecolonies"
+    type="required"
+    versionRange="[${minecolonies_version},)"
+    ordering="NONE"
+    side="BOTH"

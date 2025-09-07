@@ -1,29 +1,27 @@
 package steve_gall.minecolonies_compatibility.module.common.reliquary;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
+import com.minecolonies.api.util.Utils;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.registries.ForgeRegistries;
-import reliquary.entity.shot.NeutralShotEntity;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
+import reliquary.entity.shot.NeutralShot;
 import reliquary.init.ModItems;
 import reliquary.init.ModSounds;
 import reliquary.item.HandgunItem;
 import reliquary.item.MagazineItem;
-import reliquary.util.potions.XRPotionHelper;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGunner;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
@@ -117,14 +115,14 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 			if (magazineSlot > -1)
 			{
 				var magazine = inventory.extractItem(magazineSlot, 1, false);
-				this.setMagazineType(user, ForgeRegistries.ITEMS.getKey(magazine.getItem()).toString());
-				this.setPotionEffects(user, XRPotionHelper.getPotionEffectsFromStack(magazine));
+				this.setMagazineType(user, BuiltInRegistries.ITEM.getKey(magazine.getItem()).toString());
+				this.setPotionContents(user, magazine.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY));
 				this.insertItem(user, inventory, new ItemStack(ModItems.EMPTY_MAGAZINE.get()));
 			}
 			else if (this.getBulletMode().canDefault())
 			{
 				this.setMagazineType(user, "");
-				this.setPotionEffects(user, Collections.emptyList());
+				this.setPotionContents(user, PotionContents.EMPTY);
 			}
 			else
 			{
@@ -161,15 +159,16 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 
 	private void doRangedAttack(AbstractEntityCitizen user, LivingEntity target, HandgunItemAccessor accessor)
 	{
-		var magazineType = this.getMagazineType(user);
+		String rawMagazineType = this.getMagazineType(user);
+		var magazineType = ResourceLocation.tryParse(rawMagazineType);
 		var magazineShotFactories = accessor.getMagazineShotFactories();
-		HandgunItem.IShotEntityFactory shotfactory = null;
+		HandgunItem.IShotFactory shotfactory = null;
 
-		if (magazineType.isEmpty())
+		if (rawMagazineType.isEmpty())
 		{
 			shotfactory = (level, player, hand) ->
 			{
-				var shot = new NeutralShotEntity(level, player, hand);
+				var shot = new NeutralShot(level, player, hand);
 				var damage = this.getWeaponConfig().defaultBulletDamage.apply(user, this.getPrimarySkillLevel(user));
 				shot.getPersistentData().putInt(TAG_DAMAGE, (int) damage);
 				return shot;
@@ -188,8 +187,8 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 			player.setXRot(user.getXRot());
 			player.setYRot(user.getYRot());
 
-			var potionEffects = this.getPotionEffects(user);
-			var shot = shotfactory.createShot(level, player, InteractionHand.MAIN_HAND).addPotionEffects(potionEffects);
+			var potionContents = this.getPotionContents(user);
+			var shot = shotfactory.createShot(level, player, InteractionHand.MAIN_HAND).addPotionContents(potionContents);
 			var motionX = -Mth.sin(player.getYRot() / 180.0F * (float) Math.PI) * Mth.cos(player.getXRot() / 180.0F * (float) Math.PI);
 			var motionZ = Mth.cos(player.getYRot() / 180.0F * (float) Math.PI) * Mth.cos(player.getXRot() / 180.0F * (float) Math.PI);
 			var motionY = -Mth.sin(player.getXRot() / 180.0F * (float) Math.PI);
@@ -199,10 +198,10 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 		}
 		else
 		{
-			user.playSound(SoundEvents.NOTE_BLOCK_HAT.get(), 1.0F, 1.0F);
+			user.playSound(SoundEvents.NOTE_BLOCK_HAT.value(), 1.0F, 1.0F);
 		}
 
-		if (!magazineType.isEmpty())
+		if (!rawMagazineType.isEmpty())
 		{
 			this.insertItem(user, user.getInventoryCitizen(), new ItemStack(ModItems.EMPTY_BULLET.get()));
 		}
@@ -230,17 +229,17 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 		this.getOrCreateTag(user).putString("magazineType", magazine);
 	}
 
-	public void setPotionEffects(@NotNull AbstractEntityCitizen user, List<MobEffectInstance> effects)
+	public void setPotionContents(@NotNull AbstractEntityCitizen user, PotionContents contents)
 	{
-		var tag = new CompoundTag();
-		XRPotionHelper.addPotionEffectsToCompoundTag(tag, effects);
-		this.getOrCreateTag(user).put("potionEffects", tag);
+		var tag = Utils.serializeCodecMess(PotionContents.CODEC, user.registryAccess(), contents);
+		this.getOrCreateTag(user).put("potionContents", tag);
 	}
 
-	public List<MobEffectInstance> getPotionEffects(@NotNull AbstractEntityCitizen user)
+	public PotionContents getPotionContents(@NotNull AbstractEntityCitizen user)
 	{
-		var tag = this.getOrEmptyTag(user).getCompound("potionEffects");
-		return XRPotionHelper.getPotionEffectsFromCompoundTag(tag);
+		var tag = this.getOrEmptyTag(user).getCompound("potionContents");
+		var contents = Utils.deserializeCodecMess(PotionContents.CODEC, user.registryAccess(), tag);
+		return contents;
 	}
 
 }

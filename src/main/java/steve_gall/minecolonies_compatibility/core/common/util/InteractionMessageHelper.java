@@ -1,9 +1,9 @@
 package steve_gall.minecolonies_compatibility.core.common.util;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.fml.ModList;
 
 public class InteractionMessageHelper
 {
@@ -16,7 +16,7 @@ public class InteractionMessageHelper
 
 	public static String getModDisplayName(Block block)
 	{
-		var key = ForgeRegistries.BLOCKS.getKey(block);
+		var key = BuiltInRegistries.BLOCK.getKey(block);
 		return ModList.get().getModContainerById(key.getNamespace()).map(c -> c.getModInfo().getDisplayName()).orElse(key.getNamespace());
 	}
 
@@ -28,7 +28,7 @@ public class InteractionMessageHelper
 
 	public static Component getWorkingBlockAndUnderHeatSourceNotFound(Block block)
 	{
-		var key = ForgeRegistries.BLOCKS.getKey(block);
+		var key = BuiltInRegistries.BLOCK.getKey(block);
 		var modDisplayName = ModList.get().getModContainerById(key.getNamespace()).map(c -> c.getModInfo().getDisplayName()).orElse(key.getNamespace());
 		return Component.translatable("minecolonies_compatibility.interaction.no_working_block_and_under_heat_source", modDisplayName, Component.translatable(block.getDescriptionId()));
 	}

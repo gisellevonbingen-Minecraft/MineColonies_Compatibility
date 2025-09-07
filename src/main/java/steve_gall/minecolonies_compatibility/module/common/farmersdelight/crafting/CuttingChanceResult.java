@@ -2,32 +2,44 @@ package steve_gall.minecolonies_compatibility.module.common.farmersdelight.craft
 
 import java.util.Objects;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 import vectorwing.farmersdelight.common.crafting.ingredient.ChanceResult;
 
 public class CuttingChanceResult
 {
+	public static CuttingChanceResult deserialize(HolderLookup.Provider provider, CompoundTag tag)
+	{
+		var stack = ItemSerializationHelper.deserializeTag(provider, tag.getCompound("stack"));
+		var chance = tag.getFloat("chance");
+		return new CuttingChanceResult(stack, chance);
+	}
+
+	public static CompoundTag serialize(HolderLookup.Provider provider, CuttingChanceResult result)
+	{
+		var tag = new CompoundTag();
+		tag.put("stack", ItemSerializationHelper.serializeTag(provider, result.stack));
+		tag.putFloat("chance", result.chance);
+
+		return tag;
+	}
+
 	private final ItemStack stack;
 	private final float chance;
 
 	public CuttingChanceResult(ChanceResult original)
 	{
-		this.stack = original.getStack();
-		this.chance = original.getChance();
+		this.stack = original.stack();
+		this.chance = original.chance();
 	}
 
 	public CuttingChanceResult(ItemStack stack, float chance)
 	{
 		this.stack = stack;
 		this.chance = chance;
-	}
-
-	public CuttingChanceResult(CompoundTag tag)
-	{
-		this.stack = ItemStack.of(tag.getCompound("stack"));
-		this.chance = tag.getFloat("chance");
 	}
 
 	@Override
@@ -56,15 +68,6 @@ public class CuttingChanceResult
 			return false;
 		}
 
-	}
-
-	public CompoundTag serializeNBT()
-	{
-		var tag = new CompoundTag();
-		tag.put("stack", this.stack.serializeNBT());
-		tag.putFloat("chance", this.chance);
-
-		return tag;
 	}
 
 	public ItemStack getStack()

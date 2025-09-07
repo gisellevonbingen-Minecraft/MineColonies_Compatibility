@@ -1,31 +1,38 @@
 package steve_gall.minecolonies_compatibility.core.common.network.message;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
-import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
-import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 
-public class JEIRecipeTransferMessage<RECIPE> extends AbstractMessage
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
+
+public class JEIRecipeTransferMessage<RECIPE, RECIPE_INPUT> extends AbstractMessage
 {
+	public static final CustomPacketPayload.Type<JEIRecipeTransferMessage<?, ?>> TYPE = new CustomPacketPayload.Type<>(MineColoniesCompatibility.rl("jei_recipe_transfer"));
+
 	public static final String RECIPE_TRANSFER_TAG_RECIPE = "recipe";
 	public static final String RECIPE_TRANSFER_TAG_PAYLOAD = "payload";
 
 	private final CompoundTag tag;
 
-	public JEIRecipeTransferMessage(IRecipeTransferableMenu<RECIPE> menu, RECIPE recipe)
+	public JEIRecipeTransferMessage(IRecipeTransferableMenu<RECIPE, RECIPE_INPUT> menu, RECIPE recipe)
 	{
 		this(menu, recipe, new CompoundTag());
 	}
 
-	public JEIRecipeTransferMessage(IRecipeTransferableMenu<RECIPE> menu, RECIPE recipe, CompoundTag payload)
+	public JEIRecipeTransferMessage(IRecipeTransferableMenu<RECIPE, RECIPE_INPUT> menu, RECIPE recipe, CompoundTag payload)
 	{
+		var registryAccess = menu.getInventory().player.registryAccess();
 		this.tag = new CompoundTag();
-		this.tag.put(RECIPE_TRANSFER_TAG_RECIPE, menu.getRecipeValidator().serialize(recipe));
+		this.tag.put(RECIPE_TRANSFER_TAG_RECIPE, menu.getRecipeValidator().serialize(registryAccess, StandardFactoryController.getInstance(), recipe));
 		this.tag.put(RECIPE_TRANSFER_TAG_PAYLOAD, payload);
 	}
 
-	public JEIRecipeTransferMessage(FriendlyByteBuf buffer)
+	public JEIRecipeTransferMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
@@ -33,7 +40,7 @@ public class JEIRecipeTransferMessage<RECIPE> extends AbstractMessage
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
@@ -42,19 +49,26 @@ public class JEIRecipeTransferMessage<RECIPE> extends AbstractMessage
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handle(Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
-		var player = context.getSender();
+		var player = context.player();
 
-		if (player != null && player.containerMenu instanceof IRecipeTransferableMenu menu)
+		if (player.containerMenu instanceof IRecipeTransferableMenu menu)
 		{
-			var recipe = menu.getRecipeValidator().deserialize(this.tag.getCompound(RECIPE_TRANSFER_TAG_RECIPE));
+			var registryAccess = menu.getInventory().player.registryAccess();
+			var recipe = menu.getRecipeValidator().deserialize(registryAccess, StandardFactoryController.getInstance(), this.tag.getCompound(RECIPE_TRANSFER_TAG_RECIPE));
 			var payload = this.tag.getCompound(RECIPE_TRANSFER_TAG_PAYLOAD);
 			menu.onRecipeTransfer(recipe, payload);
 		}
 
+	}
+
+	@Override
+	public CustomPacketPayload.Type<JEIRecipeTransferMessage<?, ?>> type()
+	{
+		return TYPE;
 	}
 
 	public CompoundTag getTag()

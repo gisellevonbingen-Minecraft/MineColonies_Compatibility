@@ -8,6 +8,7 @@ import com.minecolonies.api.crafting.registry.CraftingType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.crafting.StonecutterRecipeStorage;
@@ -15,7 +16,7 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.inventory.StonecutterTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public class StonecutterTeachScreen extends TeachCraftingRecipeScreen<StonecutterTeachMenu, StonecutterRecipe>
+public class StonecutterTeachScreen extends TeachCraftingRecipeScreen<StonecutterTeachMenu, RecipeHolder<StonecutterRecipe>>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/stonecutter_teach.png");
 
@@ -40,11 +41,11 @@ public class StonecutterTeachScreen extends TeachCraftingRecipeScreen<Stonecutte
 	}
 
 	@Override
-	protected ICustomizedRecipeStorage createRecipeStorage(StonecutterRecipe recipe, List<ItemStorage> input)
+	protected ICustomizedRecipeStorage createRecipeStorage(RecipeHolder<StonecutterRecipe> recipe, List<ItemStorage> input)
 	{
 		var ingredient = input.get(0);
 		var result = this.menu.getResultContainer().getItem(0);
-		return new StonecutterRecipeStorage(recipe.getId(), ingredient, result);
+		return new StonecutterRecipeStorage(recipe.id(), ingredient, result);
 	}
 
 }

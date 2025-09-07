@@ -1,45 +1,48 @@
 package steve_gall.minecolonies_compatibility.core.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModuleView;
 
 public class NetworkStorageRefreshMessage extends BuildingModuleMessage
 {
+	public static final CustomPacketPayload.Type<NetworkStorageRefreshMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesCompatibility.rl("network_storage_refresh"));
+
 	public NetworkStorageRefreshMessage(NetworkStorageModuleView module)
 	{
 		super(module);
 	}
 
-	public NetworkStorageRefreshMessage(FriendlyByteBuf buffer)
+	public NetworkStorageRefreshMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 	}
 
 	@Override
-	public void handle(Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
-
-		var player = context.getSender();
-
-		if (player == null)
-		{
-			return;
-		}
 
 		if (this.getModule() instanceof NetworkStorageModule module)
 		{
 			module.requestFindWorkingBlocks();
 		}
 
+	}
+
+	@Override
+	public CustomPacketPayload.Type<NetworkStorageRefreshMessage> type()
+	{
+		return TYPE;
 	}
 
 }

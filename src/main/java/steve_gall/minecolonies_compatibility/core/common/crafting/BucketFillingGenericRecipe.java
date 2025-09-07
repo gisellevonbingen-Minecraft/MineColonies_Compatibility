@@ -13,32 +13,34 @@ import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.OptionalPredicate;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.level.storage.loot.LootTable;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
 public class BucketFillingGenericRecipe implements IGenericRecipe
 {
 	private final ItemStack emptyBucket;
 	private final Fluid fluid;
-	private final CompoundTag fluidTag;
+	private final DataComponentPatch dataComponentPatch;
 	private final ItemStack filledBucket;
 
 	private final List<ItemStack> allMultiOutputs;
 	private final List<List<ItemStack>> inputs;
 
-	public BucketFillingGenericRecipe(ItemStack emptyBucket, Fluid fluid, CompoundTag fluidTag, ItemStack filledBucket)
+	public BucketFillingGenericRecipe(ItemStack emptyBucket, Fluid fluid, DataComponentPatch dataComponentPatch, ItemStack filledBucket)
 	{
 		this.emptyBucket = emptyBucket;
 		this.fluid = fluid;
-		this.fluidTag = fluidTag;
+		this.dataComponentPatch = dataComponentPatch;
 		this.filledBucket = filledBucket;
 
 		this.allMultiOutputs = Collections.singletonList(this.getPrimaryOutput());
@@ -49,9 +51,9 @@ public class BucketFillingGenericRecipe implements IGenericRecipe
 	public @Nullable ResourceLocation getRecipeId()
 	{
 		return MineColoniesCompatibility.rl("bucket_filling."//
-				+ this.getSegment(ForgeRegistries.ITEMS.getKey(this.emptyBucket.getItem())) + "."//
-				+ this.getSegment(ForgeRegistries.FLUIDS.getKey(this.getFluid())) + "."//
-				+ this.getSegment(ForgeRegistries.ITEMS.getKey(this.filledBucket.getItem()))//
+				+ this.getSegment(BuiltInRegistries.ITEM.getKey(this.emptyBucket.getItem())) + "."//
+				+ this.getSegment(BuiltInRegistries.FLUID.getKey(this.getFluid())) + "."//
+				+ this.getSegment(BuiltInRegistries.ITEM.getKey(this.filledBucket.getItem()))//
 		);
 	}
 
@@ -65,9 +67,9 @@ public class BucketFillingGenericRecipe implements IGenericRecipe
 		return this.fluid;
 	}
 
-	public CompoundTag getFluidTag()
+	public DataComponentPatch getDataComponentPatch()
 	{
-		return this.fluidTag;
+		return this.dataComponentPatch;
 	}
 
 	public ItemStack getFilledBucket()
@@ -129,7 +131,7 @@ public class BucketFillingGenericRecipe implements IGenericRecipe
 	}
 
 	@Override
-	public @Nullable ResourceLocation getLootTable()
+	public @Nullable ResourceKey<LootTable> getLootTable()
 	{
 		return null;
 	}

@@ -8,8 +8,9 @@ import com.minecolonies.api.colony.buildings.modules.IPersistentModule;
 import com.minecolonies.api.util.BlockPosUtil;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModule;
 
 public abstract class RestrictableModule extends AbstractBuildingModule implements IRestrictableModule, IPersistentModule
@@ -61,7 +62,7 @@ public abstract class RestrictableModule extends AbstractBuildingModule implemen
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag compound)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
 		this.restrictEnabled = compound.getBoolean(TAG_RESTRICT_ENABLED);
 
@@ -78,7 +79,7 @@ public abstract class RestrictableModule extends AbstractBuildingModule implemen
 	}
 
 	@Override
-	public void serializeNBT(CompoundTag compound)
+	public void serializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
 		compound.putBoolean(TAG_RESTRICT_ENABLED, this.restrictEnabled);
 
@@ -95,13 +96,13 @@ public abstract class RestrictableModule extends AbstractBuildingModule implemen
 	}
 
 	@Override
-	public void serializeToView(FriendlyByteBuf buf)
+	public void serializeToView(RegistryFriendlyByteBuf buf)
 	{
 		super.serializeToView(buf);
 
 		buf.writeBoolean(this.restrictEnabled);
-		buf.writeNullable(this.restrictPos1, FriendlyByteBuf::writeBlockPos);
-		buf.writeNullable(this.restrictPos2, FriendlyByteBuf::writeBlockPos);
+		buf.writeNullable(this.restrictPos1, RegistryFriendlyByteBuf::writeBlockPos);
+		buf.writeNullable(this.restrictPos2, RegistryFriendlyByteBuf::writeBlockPos);
 	}
 
 }

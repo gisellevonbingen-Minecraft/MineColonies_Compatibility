@@ -6,6 +6,7 @@ import com.minecolonies.api.client.render.modeltype.ModModelTypes;
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.core.colony.jobs.AbstractJob;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -35,9 +36,9 @@ public class JobButcher extends AbstractJob<EntityAIWorkButcher, JobButcher>
 	}
 
 	@Override
-	public CompoundTag serializeNBT()
+	public CompoundTag serializeNBT(HolderLookup.Provider provider)
 	{
-		var compound = super.serializeNBT();
+		var compound = super.serializeNBT(provider);
 
 		if (this.tableNeeded != null)
 		{
@@ -48,13 +49,13 @@ public class JobButcher extends AbstractJob<EntityAIWorkButcher, JobButcher>
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag compound)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
-		super.deserializeNBT(compound);
+		super.deserializeNBT(provider, compound);
 
 		if (compound.contains(TAG_TABLE_NEEDED, Tag.TAG_STRING))
 		{
-			this.tableNeeded = CustomizedButcherable.getRegistry().get(new ResourceLocation(compound.getString(TAG_TABLE_NEEDED)));
+			this.tableNeeded = CustomizedButcherable.getRegistry().get(ResourceLocation.parse(compound.getString(TAG_TABLE_NEEDED)));
 		}
 
 	}

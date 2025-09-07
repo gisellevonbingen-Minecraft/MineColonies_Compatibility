@@ -5,7 +5,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
 
 public class PersistentDataHelper
 {
@@ -31,28 +30,6 @@ public class PersistentDataHelper
 	public static CompoundTag getOrEmpty(@NotNull Entity entity, @NotNull String key)
 	{
 		return NBTUtils2.getOrEmpty(entity.getPersistentData(), key);
-	}
-
-	@NotNull
-	public static CompoundTag getOrCreate(@NotNull ItemStack stack, @NotNull String key)
-	{
-		return NBTUtils2.getOrCreate(stack.getOrCreateTag(), key);
-	}
-
-	@NotNull
-	public static CompoundTag getOrEmpty(@NotNull ItemStack stack, @NotNull String key)
-	{
-		var tag = stack.getTag();
-
-		if (tag == null)
-		{
-			return new CompoundTag();
-		}
-		else
-		{
-			return NBTUtils2.getOrEmpty(tag, key);
-		}
-
 	}
 
 	private PersistentDataHelper()

@@ -17,6 +17,7 @@ import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.core.entity.pathfinding.Pathfinding;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,14 +37,14 @@ public abstract class AbstractModuleWithExternalWorkingBlocks extends AbstractBu
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag compound)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
 		this.workingPositions.clear();
 		this.workingPositions.addAll(BlockPosUtil.readPosListFromNBT(compound, TAG_REGISTERED_POSITIONS));
 	}
 
 	@Override
-	public void serializeNBT(@NotNull CompoundTag compound)
+	public void serializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
 		BlockPosUtil.writePosListToNBT(compound, TAG_REGISTERED_POSITIONS, new ArrayList<>(this.workingPositions));
 	}

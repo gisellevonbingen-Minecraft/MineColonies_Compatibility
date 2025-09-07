@@ -8,10 +8,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.items.IBlockOverlayItem;
-import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.MessageUtils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,17 +26,12 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModule;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModuleView;
-import steve_gall.minecolonies_compatibility.core.common.util.PersistentDataHelper;
+import steve_gall.minecolonies_compatibility.core.common.init.ModDataComponents;
 import steve_gall.minecolonies_tweaks.api.common.building.module.ModulePos;
+import steve_gall.minecolonies_tweaks.core.common.init.MCTweaksDataComponents;
 
 public class RestrictToolItem extends Item implements IBlockOverlayItem
 {
-	public static final String TAG_RESTRICT = "restrict";
-	public static final String TAG_MODULE = "module";
-	public static final String TAG_MODULE_NAME = "moduleName";
-	public static final String TAG_POS_1 = "pos1";
-	public static final String TAG_POS_2 = "pos2";
-
 	public RestrictToolItem(Item.Properties properties)
 	{
 		super(properties.stacksTo(1));
@@ -72,26 +68,22 @@ public class RestrictToolItem extends Item implements IBlockOverlayItem
 
 	public void setModule(ItemStack stack, IRestrictableModule module, Component moduleDesc)
 	{
-		stack.setHoverName(Component.empty().append(super.getName(stack)).append(": ").append(moduleDesc));
-		stack.removeTagKey(TAG_RESTRICT);
-
-		var tag = PersistentDataHelper.getOrCreate(stack, TAG_RESTRICT);
-		tag.put(TAG_MODULE, new ModulePos(module).serializeNBT());
-		tag.putString(TAG_MODULE_NAME, module.getBuilding().getBuildingDisplayName());
+		stack.set(DataComponents.CUSTOM_NAME, Component.empty().append(super.getName(stack)).append(": ").append(moduleDesc));
+		stack.set(MCTweaksDataComponents.MODULE_POS, new ModulePos(module));
+		stack.set(ModDataComponents.BUILDING_NAME, module.getBuilding().getBuildingDisplayName());
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag)
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag)
 	{
-		super.appendHoverText(stack, level, tooltip, flag);
+		super.appendHoverText(stack, context, tooltip, flag);
 
 		var modulePos = this.getModulePos(stack);
 
 		if (modulePos != null)
 		{
 			var pos = modulePos.getBuildingId();
-			var name = PersistentDataHelper.getOrEmpty(stack, TAG_RESTRICT).getString(TAG_MODULE_NAME);
-			tooltip.add(Component.translatable("item.minecolonies_compatibility.restrict_tool.name", Component.translatable(name)));
+			tooltip.add(Component.translatable("item.minecolonies_compatibility.restrict_tool.name", Component.translatable(stack.getOrDefault(ModDataComponents.BUILDING_NAME, ""))));
 			tooltip.add(Component.translatable("item.minecolonies_compatibility.restrict_tool.pos", pos.getX(), pos.getY(), pos.getZ()));
 		}
 
@@ -100,8 +92,7 @@ public class RestrictToolItem extends Item implements IBlockOverlayItem
 	@Nullable
 	public ModulePos getModulePos(ItemStack stack)
 	{
-		var tag = stack.getTagElement(TAG_RESTRICT);
-		return tag != null ? new ModulePos(tag.getCompound(TAG_MODULE)) : null;
+		return stack.get(MCTweaksDataComponents.MODULE_POS);
 	}
 
 	@Nullable
@@ -154,46 +145,45 @@ public class RestrictToolItem extends Item implements IBlockOverlayItem
 		module.setRestrictArea(pos1, pos2);
 	}
 
-	protected void setPos(ItemStack stack, String key, @Nullable BlockPos pos)
+	protected void setPos(ItemStack stack, DataComponentType<BlockPos> key, @Nullable BlockPos pos)
 	{
 		if (pos == null)
 		{
-			PersistentDataHelper.getOrEmpty(stack, TAG_RESTRICT).remove(key);
+			stack.remove(key);
 		}
 		else
 		{
-			BlockPosUtil.write(PersistentDataHelper.getOrCreate(stack, TAG_RESTRICT), key, pos);
+			stack.set(key, pos);
 		}
 
 	}
 
 	@Nullable
-	protected BlockPos getPos(ItemStack stack, String key)
+	protected BlockPos getPos(ItemStack stack, DataComponentType<BlockPos> key)
 	{
-		var tag = PersistentDataHelper.getOrEmpty(stack, TAG_RESTRICT);
-		return tag.contains(key) ? BlockPosUtil.read(tag, key) : null;
+		return stack.get(key);
 	}
 
 	public void setPos1(ItemStack stack, @Nullable BlockPos pos)
 	{
-		this.setPos(stack, TAG_POS_1, pos);
+		this.setPos(stack, ModDataComponents.RESTRICT_POS_1.get(), pos);
 	}
 
 	public void setPos2(ItemStack stack, @Nullable BlockPos pos)
 	{
-		this.setPos(stack, TAG_POS_2, pos);
+		this.setPos(stack, ModDataComponents.RESTRICT_POS_2.get(), pos);
 	}
 
 	@Nullable
 	public BlockPos getPos1(ItemStack stack)
 	{
-		return this.getPos(stack, TAG_POS_1);
+		return this.getPos(stack, ModDataComponents.RESTRICT_POS_1.get());
 	}
 
 	@Nullable
 	public BlockPos getPos2(ItemStack stack)
 	{
-		return this.getPos(stack, TAG_POS_2);
+		return this.getPos(stack, ModDataComponents.RESTRICT_POS_2.get());
 	}
 
 	@Override

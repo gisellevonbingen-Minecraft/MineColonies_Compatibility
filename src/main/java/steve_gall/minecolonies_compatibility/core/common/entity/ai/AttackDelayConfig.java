@@ -3,9 +3,9 @@ package steve_gall.minecolonies_compatibility.core.common.entity.ai;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.constant.GuardConstants;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public class AttackDelayConfig
 {
@@ -13,7 +13,7 @@ public class AttackDelayConfig
 	public final DoubleValue decreasePerSkillLevel;
 	public final DoubleValue decreasePerBuildingLevel;
 
-	public AttackDelayConfig(ForgeConfigSpec.Builder builder, DefaultValues defaultValues)
+	public AttackDelayConfig(ModConfigSpec.Builder builder, DefaultValues defaultValues)
 	{
 		this.base = builder.defineInRange("base", defaultValues.base(), GuardConstants.PHYSICAL_ATTACK_DELAY_MIN, 200);
 		this.decreasePerSkillLevel = builder.defineInRange("decreasePerSkillLevel", defaultValues.decreasePerSkillLevel(), 0.0D, 200.0D);

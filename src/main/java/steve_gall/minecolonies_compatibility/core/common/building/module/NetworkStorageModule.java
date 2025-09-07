@@ -17,19 +17,20 @@ import com.minecolonies.api.colony.requestsystem.request.IRequest;
 import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.ItemStackUtils;
+import com.minecolonies.api.util.NBTUtils;
 import com.minecolonies.api.util.Tuple;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
 import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
@@ -153,9 +154,9 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag compound)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
-		super.deserializeNBT(compound);
+		super.deserializeNBT(provider, compound);
 
 		var directionsTag = compound.getList(TAG_POSTION_DIRECTIONS, Tag.TAG_COMPOUND);
 		this.directions.clear();
@@ -163,7 +164,7 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 		for (var i = 0; i < directionsTag.size(); i++)
 		{
 			var entryTag = directionsTag.getCompound(i);
-			var pos = NbtUtils.readBlockPos(entryTag.getCompound("pos"));
+			var pos = NBTUtils.readBlockPos(entryTag.getCompound("pos"));
 			var direction = entryTag.getString("direction");
 			this.directions.put(pos, Direction.byName(direction));
 		}
@@ -171,9 +172,9 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	}
 
 	@Override
-	public void serializeNBT(@NotNull CompoundTag compound)
+	public void serializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
-		super.serializeNBT(compound);
+		super.serializeNBT(provider, compound);
 
 		var directionsTag = new ListTag();
 		compound.put(TAG_POSTION_DIRECTIONS, directionsTag);
@@ -181,7 +182,7 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 		for (var entry : this.directions.entrySet())
 		{
 			var entryTag = new CompoundTag();
-			entryTag.put("pos", NbtUtils.writeBlockPos(entry.getKey()));
+			entryTag.put("pos", NBTUtils.writeBlockPos(entry.getKey()));
 			entryTag.putString("direction", entry.getValue().getSerializedName());
 			directionsTag.add(entryTag);
 		}
@@ -189,11 +190,11 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	}
 
 	@Override
-	public void serializeToView(FriendlyByteBuf buf)
+	public void serializeToView(RegistryFriendlyByteBuf buf)
 	{
 		super.serializeToView(buf);
 
-		buf.writeCollection(this.getWorkingBlocks().toList(), FriendlyByteBuf::writeBlockPos);
+		buf.writeCollection(this.getWorkingBlocks().toList(), RegistryFriendlyByteBuf::writeBlockPos);
 		buf.writeCollection(this.directions.entrySet(), (buf2, data) ->
 		{
 			buf2.writeBlockPos(data.getKey());

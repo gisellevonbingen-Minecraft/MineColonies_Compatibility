@@ -17,19 +17,18 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.building.module.ICraftingResultListenerModule;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingCraftingType;
@@ -57,8 +56,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 		if (blockEntity != null)
 		{
-			var capability = blockEntity.getCapability(ForgeCapabilities.FLUID_HANDLER);
-			var fluidHandler = capability != null ? capability.orElse(null) : null;
+			var fluidHandler = blockEntity.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, pos, state, blockEntity, null);
 
 			if (fluidHandler != null)
 			{
@@ -110,14 +108,14 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 		if (recipe != null)
 		{
-			return Component.translatable("minecolonies_compatibility.interaction.no_fluid_source", recipe.getFluidStack(FluidType.BUCKET_VOLUME).getDisplayName());
+			return Component.translatable("minecolonies_compatibility.interaction.no_fluid_source", recipe.getFluidStack(FluidType.BUCKET_VOLUME).getHoverName());
 		}
 
 		return super.getWorkingBlockNotFoundMessage(recipeStorage);
 	}
 
 	@Override
-	public boolean canBlockRecipeWorking(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
+	public boolean canBlockRecipeWorking(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
 	{
 		var recipe = toRecipe(recipeStorage);
 
@@ -142,7 +140,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 	}
 
-	public boolean drain(LevelReader level, BlockPos pos, BlockState state, BucketFillingRecipeStorage recipe, boolean simulate)
+	public boolean drain(Level level, BlockPos pos, BlockState state, BucketFillingRecipeStorage recipe, boolean simulate)
 	{
 		var blockEntity = level.getBlockEntity(pos);
 
@@ -150,8 +148,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 		{
 			for (var direction : Direction.values())
 			{
-				var capability = blockEntity.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
-				var fluidHandler = capability != null ? capability.orElse(null) : null;
+				var fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, direction);
 
 				if (fluidHandler != null)
 				{
@@ -164,13 +161,13 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 		}
 
-		if (recipe.getFluidTag() == null && state.getBlock() instanceof LiquidBlock liquid)
+		if (recipe.getDataComponentPatch().isEmpty() && state.getBlock() instanceof LiquidBlock liquid)
 		{
-			if (state.getFluidState().isSource() && liquid.getFluid() == recipe.getFluid())
+			if (state.getFluidState().isSource() && liquid.fluid == recipe.getFluid())
 			{
 				if (!simulate)
 				{
-					((LevelWriter) level).setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+					level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
 				}
 
 				return true;
@@ -186,7 +183,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 	{
 		var recipes = new ArrayList<IGenericRecipe>();
 
-		for (var fluid : ForgeRegistries.FLUIDS.getValues())
+		for (var fluid : BuiltInRegistries.FLUID)
 		{
 			if (!fluid.isSource(fluid.defaultFluidState()))
 			{

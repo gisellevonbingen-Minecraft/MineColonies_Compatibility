@@ -2,8 +2,8 @@ package steve_gall.minecolonies_compatibility.core.common.entity.ai;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 
 public class AttackDamageConfig
 {
@@ -11,7 +11,7 @@ public class AttackDamageConfig
 	public final DoubleValue increasePerSkillLevel;
 	public final DoubleValue increasePerBuildingLevel;
 
-	public AttackDamageConfig(ForgeConfigSpec.Builder builder, DefaultValues defaultValues)
+	public AttackDamageConfig(ModConfigSpec.Builder builder, DefaultValues defaultValues)
 	{
 		this.base = builder.defineInRange("base", defaultValues.base(), 0.0D, Integer.MAX_VALUE);
 		this.increasePerSkillLevel = builder.defineInRange("increasePerSkillLevel", defaultValues.increasePerSkillLevel(), 0.0D, Integer.MAX_VALUE);

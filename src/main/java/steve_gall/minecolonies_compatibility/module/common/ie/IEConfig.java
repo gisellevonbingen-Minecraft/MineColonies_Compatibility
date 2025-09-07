@@ -1,9 +1,9 @@
 package steve_gall.minecolonies_compatibility.module.common.ie;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDamageConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDelayConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.GunnerConfig;
@@ -13,7 +13,7 @@ public class IEConfig extends AbstractModuleConfig
 {
 	public final JobConfig job;
 
-	public IEConfig(ForgeConfigSpec.Builder builder)
+	public IEConfig(ModConfigSpec.Builder builder)
 	{
 		super(builder);
 
@@ -26,7 +26,7 @@ public class IEConfig extends AbstractModuleConfig
 	{
 		public final GunnerRevolverConfig gunnerRevolver;
 
-		public JobConfig(ForgeConfigSpec.Builder builder)
+		public JobConfig(ModConfigSpec.Builder builder)
 		{
 			builder.push("gunner_revolver");
 			this.gunnerRevolver = new GunnerRevolverConfig(builder);
@@ -45,7 +45,7 @@ public class IEConfig extends AbstractModuleConfig
 			public final AttackDamageConfig defaultBulletDamage;
 			public final DoubleValue defaultBulletHeadshotMultiplier;
 
-			public GunnerRevolverConfig(ForgeConfigSpec.Builder builder)
+			public GunnerRevolverConfig(ModConfigSpec.Builder builder)
 			{
 				builder.comment("Citizen will have reload time after every 8 shots");
 				this.needReload = builder.define("needReload", true);

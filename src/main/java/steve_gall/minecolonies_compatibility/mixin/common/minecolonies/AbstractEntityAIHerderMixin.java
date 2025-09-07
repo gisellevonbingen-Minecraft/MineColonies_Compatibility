@@ -24,7 +24,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraftforge.common.util.FakePlayer;
+import net.neoforged.neoforge.common.util.FakePlayer;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.ButchercraftModule;
@@ -84,8 +84,8 @@ public abstract class AbstractEntityAIHerderMixin<J extends AbstractJob<?, J>, B
 		return player;
 	}
 
-	@WrapOperation(method = "butcherSwing", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", remap = true))
-	private boolean butcherSwing_hurt(Animal animal, DamageSource source, float damage, Operation<Boolean> operation)
+	@WrapOperation(method = "butcherAnimal", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", remap = true))
+	private boolean butcherAnimal_hurt(Animal animal, DamageSource source, float damage, Operation<Boolean> operation)
 	{
 		var damageType = this.worker.level().registryAccess().registry(Registries.DAMAGE_TYPE).get().get(DamageTypes.PLAYER_ATTACK);
 

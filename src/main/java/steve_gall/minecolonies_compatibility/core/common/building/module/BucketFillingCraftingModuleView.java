@@ -2,7 +2,7 @@ package steve_gall.minecolonies_compatibility.core.common.building.module;
 
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.core.common.network.message.BucketFillingOpenTeachMessage;
 
 public class BucketFillingCraftingModuleView extends CraftingModuleView
@@ -15,7 +15,7 @@ public class BucketFillingCraftingModuleView extends CraftingModuleView
 	@Override
 	public void openCraftingGUI()
 	{
-		MineColoniesCompatibility.network().sendToServer(new BucketFillingOpenTeachMessage(this));
+		PacketDistributor.sendToServer(new BucketFillingOpenTeachMessage(this));
 	}
 
 }

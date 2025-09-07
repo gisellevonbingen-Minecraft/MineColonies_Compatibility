@@ -9,6 +9,7 @@ import com.minecolonies.core.client.gui.modules.WindowListRecipes;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.SmithingTemplateCraftingModuleView;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackCounter;
@@ -27,10 +28,9 @@ public class WindowListSmithingTemplateRecipes extends WindowListRecipes
 		var button = this.inventoryButton = new ButtonImage();
 		button.setID(MineColoniesCompatibility.rl("smithing_template_inventory").toString());
 		button.setColors(0xFF000000, 0xFF000000, 0xFF000000);
-		button.setImage(new ResourceLocation("minecolonies:textures/gui/builderhut/builder_button_medium_large.png"), false);
+		button.setImage(ResourceLocation.parse("minecolonies:textures/gui/builderhut/builder_button_medium_large.png"));
 		button.setText(Component.translatable("minecolonies_compatibility.text.smithing_template_inventory"));
 		button.setSize(129, 17);
-		button.setTextSize(129, 17);
 		button.setPosition(30, 217);
 		this.addChild(button);
 	}
@@ -42,7 +42,7 @@ public class WindowListSmithingTemplateRecipes extends WindowListRecipes
 
 		if (button == this.inventoryButton)
 		{
-			MineColoniesCompatibility.network().sendToServer(new SmithingTemplateOpenInventoryMessage(this.module));
+			PacketDistributor.sendToServer(new SmithingTemplateOpenInventoryMessage(this.module));
 		}
 
 	}

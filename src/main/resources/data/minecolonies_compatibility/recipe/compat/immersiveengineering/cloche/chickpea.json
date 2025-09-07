@@ -1,0 +1,26 @@
+{
+	"type": "immersiveengineering:cloche",
+	"neoforge:conditions": [
+		{
+			"type": "neoforge:mod_loaded",
+			"modid": "immersiveengineering"
+		}
+	],
+	"results": [
+		{
+			"item": "minecolonies:chickpea",
+			"count": 2
+		}
+	],
+	"input": {
+		"item": "minecolonies:chickpea"
+	},
+	"soil": {
+		"item": "minecraft:dirt"
+	},
+	"time": 800,
+	"render": {
+		"type": "crop",
+		"block": "minecolonies:chickpea"
+	}
+}

@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.inventory.AccessDirectionHolderMenu;
 import steve_gall.minecolonies_compatibility.core.common.network.message.AccessDirectionMessage;
@@ -37,7 +38,7 @@ public class AccessDirectionHolderScreen extends AbstractContainerScreen<AccessD
 		{
 			var next = blockEntity.getAccessDirection().next();
 			blockEntity.setAccessDirection(next);
-			MineColoniesCompatibility.network().sendToServer(new AccessDirectionMessage<>(blockEntity, next));
+			PacketDistributor.sendToServer(new AccessDirectionMessage<>(blockEntity, next));
 		}));
 
 		this.accessDirectionButton.setAccessDirection(blockEntity.getAccessDirection());
@@ -46,8 +47,6 @@ public class AccessDirectionHolderScreen extends AbstractContainerScreen<AccessD
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
 	{
-		this.renderBackground(guiGraphics);
-
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		var blockEntity = this.getMenu().getBlockEntity();

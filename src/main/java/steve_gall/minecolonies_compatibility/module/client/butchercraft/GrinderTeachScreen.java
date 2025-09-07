@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.crafting.ItemStorageHelper;
@@ -20,7 +21,7 @@ import steve_gall.minecolonies_compatibility.module.common.butchercraft.init.Mod
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.menu.GrinderTeachMenu;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
-public class GrinderTeachScreen extends TeachCraftingRecipeScreen<GrinderTeachMenu, GrinderRecipe>
+public class GrinderTeachScreen extends TeachCraftingRecipeScreen<GrinderTeachMenu, RecipeHolder<GrinderRecipe>>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/butchercraft_grinder_teach.png");
 
@@ -45,16 +46,16 @@ public class GrinderTeachScreen extends TeachCraftingRecipeScreen<GrinderTeachMe
 	}
 
 	@Override
-	protected ICustomizedRecipeStorage createRecipeStorage(GrinderRecipe recipe, List<ItemStorage> input)
+	protected ICustomizedRecipeStorage createRecipeStorage(RecipeHolder<GrinderRecipe> recipe, List<ItemStorage> input)
 	{
 		var ingredient = input.get(0);
-		ingredient.setAmount(recipe.count);
+		ingredient.setAmount(recipe.value().count());
 		var attachment = input.get(1);
 		var casing = input.get(2);
 
 		var resultContainer = this.menu.getResultContainer();
 		var output = resultContainer.getItem(0);
-		return new GrinderRecipeStorage(recipe.getId(), ItemStorageHelper.filterNotEmpty(Arrays.asList(ingredient, casing)), attachment, output);
+		return new GrinderRecipeStorage(recipe.id(), ItemStorageHelper.filterNotEmpty(Arrays.asList(ingredient, casing)), attachment, output);
 	}
 
 	@Override

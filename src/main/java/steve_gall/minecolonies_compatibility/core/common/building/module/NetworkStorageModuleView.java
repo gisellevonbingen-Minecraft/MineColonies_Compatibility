@@ -13,7 +13,7 @@ import com.minecolonies.api.util.Tuple;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import steve_gall.minecolonies_compatibility.core.client.gui.NetworkStorageModuleWindow;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
@@ -31,10 +31,10 @@ public class NetworkStorageModuleView extends AbstractBuildingModuleView
 	}
 
 	@Override
-	public void deserialize(@NotNull FriendlyByteBuf buf)
+	public void deserialize(@NotNull RegistryFriendlyByteBuf buf)
 	{
 		this.blocks.clear();
-		this.blocks.addAll(buf.readList(FriendlyByteBuf::readBlockPos));
+		this.blocks.addAll(buf.readList(RegistryFriendlyByteBuf::readBlockPos));
 		this.directions.clear();
 		buf.readList(buf2 ->
 		{

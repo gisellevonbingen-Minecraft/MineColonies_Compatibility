@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkHooks;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.IAccessDirectionHolder;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
@@ -30,7 +29,7 @@ public class AccessDirectionHolderMenu<BLOCK_ENTITY extends BlockEntity & INetwo
 
 		if (player instanceof ServerPlayer serverPlayer)
 		{
-			NetworkHooks.openScreen(serverPlayer, new MenuProvider()
+			serverPlayer.openMenu(new MenuProvider()
 			{
 				@Override
 				public AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player)

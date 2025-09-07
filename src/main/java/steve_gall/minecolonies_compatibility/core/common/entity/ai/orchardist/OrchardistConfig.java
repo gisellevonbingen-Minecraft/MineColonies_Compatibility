@@ -1,8 +1,8 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public class OrchardistConfig
 {
@@ -16,7 +16,7 @@ public class OrchardistConfig
 
 	public final IntValue actionsDoneUntilDumping;
 
-	public OrchardistConfig(ForgeConfigSpec.Builder builder)
+	public OrchardistConfig(ModConfigSpec.Builder builder)
 	{
 		this.searchRange = builder.defineInRange("searchRange", 120, 0, 240);
 		this.searchVerticalRange = builder.defineInRange("searchVerticalRange", 10, 0, 20);

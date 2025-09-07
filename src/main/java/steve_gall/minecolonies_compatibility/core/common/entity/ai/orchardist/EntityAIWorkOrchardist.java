@@ -23,7 +23,6 @@ import com.minecolonies.api.util.constant.CitizenConstants;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.StatisticsConstants;
 import com.minecolonies.api.util.constant.translation.RequestSystemTranslationConstants;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 import com.minecolonies.core.colony.buildings.modules.settings.BoolSetting;
 import com.minecolonies.core.colony.buildings.modules.settings.SettingKey;
@@ -44,7 +43,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
@@ -56,7 +54,7 @@ import steve_gall.minecolonies_compatibility.core.common.job.JobOrchardist;
 
 public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardist, BuildingLumberjack>
 {
-	public static final VisibleCitizenStatus SEARCH = new VisibleCitizenStatus(new ResourceLocation(Constants.MOD_ID, "textures/icons/work/lumberjack_search.png"), "com.minecolonies.gui.visiblestatus.lumberjack_search");
+	public static final VisibleCitizenStatus SEARCH = new VisibleCitizenStatus(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/icons/work/lumberjack_search.png"), "com.minecolonies.gui.visiblestatus.lumberjack_search");
 
 	public static final double XP_PER_HARVEST = 0.5D;
 	public static final ISettingKey<BoolSetting> FERTILIZE = BuildingFarmer.FERTILIZE;
@@ -279,7 +277,7 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 		if (!fruit.canHarvest(building.getSetting(NEED_MAX_HARVEST).getValue().booleanValue()))
 		{
-			if (state.getBlock() instanceof BonemealableBlock block && block.isValidBonemealTarget(level, position, state, level.isClientSide))
+			if (state.getBlock() instanceof BonemealableBlock block && block.isValidBonemealTarget(level, position, state))
 			{
 				if (!InventoryUtils.shrinkItemCountInItemHandler(inventory, EntityAIWorkOrchardist::isCompost))
 				{
@@ -290,10 +288,9 @@ public class EntityAIWorkOrchardist extends AbstractEntityAIInteract<JobOrchardi
 
 				if (block.isBonemealSuccess(level, level.random, position, state))
 				{
-					Network.getNetwork().sendToPosition(new CompostParticleMessage(position), new PacketDistributor.TargetPoint(position.getX(), position.getY(), position.getZ(), CitizenConstants.BLOCK_BREAK_SOUND_RANGE, level.dimension()));
-
 					if (level instanceof ServerLevel serverLevel)
 					{
+						new CompostParticleMessage(position.above()).sendToTargetPoint(serverLevel, null, position.getX(), position.getY(), position.getZ(), CitizenConstants.BLOCK_BREAK_SOUND_RANGE);
 						block.performBonemeal(serverLevel, serverLevel.random, position, state);
 					}
 

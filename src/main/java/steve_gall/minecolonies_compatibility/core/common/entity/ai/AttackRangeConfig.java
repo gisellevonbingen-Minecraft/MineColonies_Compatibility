@@ -4,9 +4,9 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.core.colony.buildings.modules.settings.GuardTaskSetting;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import steve_gall.minecolonies_compatibility.core.common.building.BuildingHelper;
 
 public class AttackRangeConfig
@@ -19,7 +19,7 @@ public class AttackRangeConfig
 	public final DoubleValue bonusOnGuard;
 	public final BooleanValue yDifferenceCorrection;
 
-	public AttackRangeConfig(ForgeConfigSpec.Builder builder, DefaultValues defaultValues)
+	public AttackRangeConfig(ModConfigSpec.Builder builder, DefaultValues defaultValues)
 	{
 		this.base = builder.defineInRange("base", defaultValues.base(), 2.0D, 24.0D);
 		this.increasePerSkillLevel = builder.defineInRange("increasePerSkillLevel", defaultValues.increasePerSkillLevel(), 0, 24.0D);

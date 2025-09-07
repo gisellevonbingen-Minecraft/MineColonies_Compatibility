@@ -2,7 +2,7 @@ package steve_gall.minecolonies_compatibility.core.common.building.module;
 
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.core.common.network.message.StonecutterOpenTeachMessage;
 
 public class StonecutterCraftingModuleView extends CraftingModuleView
@@ -15,7 +15,7 @@ public class StonecutterCraftingModuleView extends CraftingModuleView
 	@Override
 	public void openCraftingGUI()
 	{
-		MineColoniesCompatibility.network().sendToServer(new StonecutterOpenTeachMessage(this));
+		PacketDistributor.sendToServer(new StonecutterOpenTeachMessage(this));
 	}
 
 }

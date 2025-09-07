@@ -7,23 +7,26 @@ import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.api.util.constant.TranslationConstants;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingCraftingType;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingRecipeAccessor;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
-public class SmithingTeachMenu extends TeachRecipeMenu<SmithingRecipe>
+public class SmithingTeachMenu extends TeachRecipeMenu<RecipeHolder<SmithingRecipe>, SmithingRecipeInput>
 {
 	public static final int INVENTORY_X = 8;
 	public static final int INVENTORY_Y = 84;
@@ -70,7 +73,7 @@ public class SmithingTeachMenu extends TeachRecipeMenu<SmithingRecipe>
 	}
 
 	@Override
-	protected IMenuRecipeValidator<SmithingRecipe> createRecipeValidator()
+	protected IMenuRecipeValidator<RecipeHolder<SmithingRecipe>, SmithingRecipeInput> createRecipeValidator()
 	{
 		return new MenuRecipeValidatorRecipe<>(this.inventory.player.level())
 		{
@@ -81,9 +84,9 @@ public class SmithingTeachMenu extends TeachRecipeMenu<SmithingRecipe>
 			}
 
 			@Override
-			protected boolean test(SmithingRecipe recipe, Container container, ServerPlayer player)
+			public @NotNull SmithingRecipeInput getInput(Container container, RecipeHolder<SmithingRecipe> recipe)
 			{
-				return recipe.matches(container, this.level);
+				return new SmithingRecipeInput(container.getItem(0), container.getItem(1), container.getItem(2));
 			}
 
 		};
@@ -92,10 +95,7 @@ public class SmithingTeachMenu extends TeachRecipeMenu<SmithingRecipe>
 	@Override
 	public @Nullable Component getCurrentError()
 	{
-		var template = this.inputContainer.getItem(0);
-		var base = this.inputContainer.getItem(1);
-		var addition = this.inputContainer.getItem(2);
-		var error = this.getRecipeError(template, base, addition);
+		var error = this.getRecipeError(this.getRecipeInput(this.recipe));
 
 		if (error != null)
 		{
@@ -105,15 +105,15 @@ public class SmithingTeachMenu extends TeachRecipeMenu<SmithingRecipe>
 		return super.getCurrentError();
 	}
 
-	public @Nullable Component getRecipeError(ItemStack template, ItemStack base, ItemStack addition)
+	public @Nullable Component getRecipeError(SmithingRecipeInput input)
 	{
-		return this.testRequiredLevel(SmithingCraftingType.getRequiredLevel(addition));
+		return this.testRequiredLevel(SmithingCraftingType.getRequiredLevel(input.addition()));
 	}
 
 	@Override
-	public Component getRecipeError(SmithingRecipe recipe)
+	public Component getRecipeError(RecipeHolder<SmithingRecipe> recipe)
 	{
-		if (recipe instanceof SmithingRecipeAccessor accessor)
+		if (recipe.value() instanceof SmithingRecipeAccessor accessor)
 		{
 			var addition = accessor.getAddition();
 			var error = this.testRequiredLevel(SmithingCraftingType.getRequiredMinLevel(addition));
@@ -153,22 +153,22 @@ public class SmithingTeachMenu extends TeachRecipeMenu<SmithingRecipe>
 	}
 
 	@Override
-	protected void setContainerByTransfer(@NotNull SmithingRecipe recipe, @NotNull CompoundTag payload)
+	protected void setContainerByTransfer(@NotNull HolderLookup.Provider provider, @NotNull RecipeHolder<SmithingRecipe> recipe, @NotNull CompoundTag payload)
 	{
-		super.setContainerByTransfer(recipe, payload);
+		super.setContainerByTransfer(provider, recipe, payload);
 
 		var input = payload.getList("input", Tag.TAG_COMPOUND);
-		this.inputContainer.setItem(0, ItemStack.of(input.getCompound(0)));
-		this.inputContainer.setItem(1, ItemStack.of(input.getCompound(1)));
-		this.inputContainer.setItem(2, ItemStack.of(input.getCompound(2)));
+		this.inputContainer.setItem(0, ItemSerializationHelper.deserializeTag(provider, input.getCompound(0)));
+		this.inputContainer.setItem(1, ItemSerializationHelper.deserializeTag(provider, input.getCompound(1)));
+		this.inputContainer.setItem(2, ItemSerializationHelper.deserializeTag(provider, input.getCompound(2)));
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(HolderLookup.Provider provider, SmithingRecipeInput input)
 	{
 		if (this.recipe != null)
 		{
-			this.resultContainer.setItem(0, this.recipe.assemble(this.inputContainer, this.inventory.player.level().registryAccess()));
+			this.resultContainer.setItem(0, this.recipe.value().assemble(input, provider));
 		}
 		else
 		{

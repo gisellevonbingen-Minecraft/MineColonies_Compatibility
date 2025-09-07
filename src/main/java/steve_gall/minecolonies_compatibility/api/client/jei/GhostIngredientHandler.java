@@ -8,7 +8,7 @@ import mezz.jei.api.ingredients.ITypedIngredient;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 import steve_gall.minecolonies_compatibility.api.client.IFluidGhostScreen;
 import steve_gall.minecolonies_compatibility.api.client.IItemGhostScreen;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostSlot;

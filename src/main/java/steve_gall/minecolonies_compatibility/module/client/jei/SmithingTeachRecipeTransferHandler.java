@@ -11,12 +11,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import steve_gall.minecolonies_compatibility.core.common.inventory.SmithingTeachMenu;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
-public class SmithingTeachRecipeTransferHandler extends TeachRecipeTransferHandler<SmithingTeachMenu, SmithingRecipe, SmithingRecipe>
+public class SmithingTeachRecipeTransferHandler extends TeachRecipeTransferHandler<SmithingTeachMenu, RecipeHolder<SmithingRecipe>, SmithingRecipeInput, RecipeHolder<SmithingRecipe>>
 {
 	public SmithingTeachRecipeTransferHandler(IRecipeTransferHandlerHelper recipeTransferHandlerHelper)
 	{
@@ -36,25 +38,25 @@ public class SmithingTeachRecipeTransferHandler extends TeachRecipeTransferHandl
 	}
 
 	@Override
-	public RecipeType<SmithingRecipe> getRecipeType()
+	public RecipeType<RecipeHolder<SmithingRecipe>> getRecipeType()
 	{
 		return RecipeTypes.SMITHING;
 	}
 
 	@Override
-	protected SmithingRecipe getRecipe(SmithingTeachMenu menu, SmithingRecipe categoryRecipe, IRecipeSlotsView recipeSlots, Player player)
+	protected RecipeHolder<SmithingRecipe> getRecipe(SmithingTeachMenu menu, RecipeHolder<SmithingRecipe> categoryRecipe, IRecipeSlotsView recipeSlots, Player player)
 	{
 		return categoryRecipe;
 	}
 
 	@Override
-	protected Component getError(SmithingTeachMenu menu, SmithingRecipe recipe, IRecipeSlotsView recipeSlots, Player player)
+	protected Component getError(SmithingTeachMenu menu, RecipeHolder<SmithingRecipe> recipe, IRecipeSlotsView recipeSlots, Player player)
 	{
 		var input = this.getDisplayedItemStacks(recipeSlots, RecipeIngredientRole.INPUT);
 		var template = input.get(0);
 		var base = input.get(1);
 		var addition = input.get(2);
-		var error = menu.getRecipeError(template, base, addition);
+		var error = menu.getRecipeError(new SmithingRecipeInput(template, base, addition));
 
 		if (error != null)
 		{
@@ -65,10 +67,10 @@ public class SmithingTeachRecipeTransferHandler extends TeachRecipeTransferHandl
 	}
 
 	@Override
-	protected void serializePayload(SmithingTeachMenu menu, SmithingRecipe recipe, IRecipeSlotsView recipeSlots, Player player, CompoundTag tag)
+	protected void serializePayload(SmithingTeachMenu menu, RecipeHolder<SmithingRecipe> recipe, IRecipeSlotsView recipeSlots, Player player, CompoundTag tag)
 	{
 		var input = this.getDisplayedItemStacks(recipeSlots, RecipeIngredientRole.INPUT);
-		NBTUtils2.serializeCollection(tag, "input", input, ItemStack::serializeNBT);
+		NBTUtils2.serializeCollection(tag, "input", input, ItemSerializationHelper.serializerTag(player.registryAccess()));
 	}
 
 }

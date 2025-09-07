@@ -1,7 +1,7 @@
 package steve_gall.minecolonies_compatibility.api.client.jei;
 
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptItemMessage;
 
 public abstract class ItemGhostTarget extends GhostTarget<ItemStack>
@@ -16,7 +16,7 @@ public abstract class ItemGhostTarget extends GhostTarget<ItemStack>
 	@Override
 	public void accept(ItemStack ingredient)
 	{
-		MineColoniesCompatibility.network().sendToServer(new JEIGhostAcceptItemMessage(this.getSlotNumber(), ingredient, this.isVirtual()));
+		PacketDistributor.sendToServer(new JEIGhostAcceptItemMessage(this.getSlotNumber(), ingredient, this.isVirtual()));
 	}
 
 }

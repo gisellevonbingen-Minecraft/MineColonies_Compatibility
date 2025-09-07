@@ -20,20 +20,20 @@ import com.minecolonies.core.entity.ai.workers.production.agriculture.EntityAIWo
 import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StemBlock;
-import net.minecraft.world.level.block.StemGrownBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantSeedContext;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.block.BlockUtils;
 
 @Mixin(value = EntityAIWorkFarmer.class, remap = false)
@@ -102,7 +102,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 				return;
 			}
 
-			plantState = block.getPlant(level, plantPosition);
+			plantState = block.defaultBlockState();
 		}
 
 		if (plantState != null)
@@ -149,7 +149,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 			}
 
 		}
-		else if (state.getBlock() instanceof StemGrownBlock)
+		else if (MineColoniesCompatibility.COMPAT.getStem(state.getBlock()) != null)
 		{
 			cir.setReturnValue(position);
 		}
@@ -207,8 +207,8 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 		return operation.call(self, position);
 	}
 
-	@WrapOperation(method = "createCorrectFarmlandForSeed", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z", remap = true))
-	private boolean createCorrectFarmlandForSeed_setBlockAndUpdate(Level level, BlockPos pos, BlockState next, Operation<Boolean> operation)
+	@WrapOperation(method = "createCorrectFarmlandForSeed", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z", remap = true))
+	private boolean createCorrectFarmlandForSeed_setBlockAndUpdate(ServerLevel level, BlockPos pos, BlockState next, Operation<Boolean> operation)
 	{
 		if (next.getBlock() == Blocks.FARMLAND)
 		{
@@ -252,7 +252,7 @@ public abstract class EntityAIWorkFarmerMixin extends AbstractEntityAICrafting<J
 	@ModifyVariable(method = "getSurfacePos(Lnet/minecraft/core/BlockPos;Ljava/lang/Integer;)Lnet/minecraft/core/BlockPos;", remap = false, at = @At("STORE"), ordinal = 0)
 	private Block getSurfacePos(Block curBlock)
 	{
-		if (curBlock instanceof StemGrownBlock)
+		if (MineColoniesCompatibility.COMPAT.getStem(curBlock) != null)
 		{
 			return Blocks.PUMPKIN;
 		}

@@ -1,14 +1,12 @@
 package steve_gall.minecolonies_compatibility.core.common.building.module;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.ldtteam.blockui.views.BOWindow;
 import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import steve_gall.minecolonies_compatibility.core.client.gui.WindowListSmithingTemplateRecipes;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackCounter;
 
@@ -22,7 +20,7 @@ public class SmithingTemplateCraftingModuleView extends CraftingModuleView
 	}
 
 	@Override
-	public void deserialize(@NotNull FriendlyByteBuf buf)
+	public void deserialize(RegistryFriendlyByteBuf buf)
 	{
 		super.deserialize(buf);
 

@@ -1,7 +1,8 @@
 package steve_gall.minecolonies_compatibility.module.common.ie;
 
 import blusunrize.immersiveengineering.api.tool.BulletHandler;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
@@ -13,6 +14,9 @@ public class IEModule extends AbstractModule
 	protected void onLoad()
 	{
 		super.onLoad();
+
+		var fml_bus = ModLoadingContext.get().getActiveContainer().getEventBus();
+		ModuleItems.REGISTER.register(fml_bus);
 
 		DeliverableObjectRegistry.INSTANCE.register(Bullet.ID, Bullet::serialize, Bullet::deserialize);
 		BulletHandler.registerBullet(DefaultBullet.ID, DefaultBullet.INSTANCE);

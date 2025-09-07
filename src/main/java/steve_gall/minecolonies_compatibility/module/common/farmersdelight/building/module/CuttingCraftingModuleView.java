@@ -1,14 +1,12 @@
 package steve_gall.minecolonies_compatibility.module.common.farmersdelight.building.module;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
-import net.minecraft.network.FriendlyByteBuf;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.network.CuttingOpenTeachMessage;
 
 public class CuttingCraftingModuleView extends CraftingModuleView
@@ -21,17 +19,17 @@ public class CuttingCraftingModuleView extends CraftingModuleView
 	}
 
 	@Override
-	public void deserialize(@NotNull FriendlyByteBuf buf)
+	public void deserialize(RegistryFriendlyByteBuf buf)
 	{
 		super.deserialize(buf);
 
-		this.toolType = buf.readRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry());
+		this.toolType = IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().get(buf.readResourceLocation());
 	}
 
 	@Override
 	public void openCraftingGUI()
 	{
-		MineColoniesCompatibility.network().sendToServer(new CuttingOpenTeachMessage(this, this.getToolType()));
+		PacketDistributor.sendToServer(new CuttingOpenTeachMessage(this, this.getToolType()));
 	}
 
 	public EquipmentTypeEntry getToolType()

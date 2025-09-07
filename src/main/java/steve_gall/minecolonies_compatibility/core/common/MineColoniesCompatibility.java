@@ -8,31 +8,24 @@ import com.minecolonies.api.creativetab.ModCreativeTabs;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RecipesUpdatedEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.OnDatapackSyncEvent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.javafmlmod.FMLModContainer;
+import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
 import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 import steve_gall.minecolonies_compatibility.core.client.MineColoniesCompatibilityClient;
-import steve_gall.minecolonies_compatibility.core.client.gui.AccessDirectionHolderScreen;
-import steve_gall.minecolonies_compatibility.core.client.gui.BucketFillingTeachScreen;
-import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTeachScreen;
-import steve_gall.minecolonies_compatibility.core.client.gui.SmithingTemplateInventoryScreen;
-import steve_gall.minecolonies_compatibility.core.client.gui.StonecutterTeachScreen;
 import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.InjectBuildingSettingsModuleEvent;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
@@ -46,15 +39,17 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModBlockEntities;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBlocks;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
+import steve_gall.minecolonies_compatibility.core.common.init.ModDataComponents;
 import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModInteractions;
 import steve_gall.minecolonies_compatibility.core.common.init.ModItems;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
-import steve_gall.minecolonies_compatibility.core.common.network.NetworkChannel;
+import steve_gall.minecolonies_compatibility.core.common.network.ModMessagesRegistrar;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizedRecipeStorageRegistry;
+import steve_gall.minecolonies_tweaks.api.common.network.MessageRegistrar;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.DeliverableObjectRegistry;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeRegisterEvent;
 
@@ -63,15 +58,15 @@ public class MineColoniesCompatibility
 {
 	public static final String MOD_ID = "minecolonies_compatibility";
 	public static final Logger LOGGER = LogManager.getLogger();
+	public static final CompatibilityManager COMPAT = new CompatibilityManager();
 
-	private static NetworkChannel NETWORK;
-
-	public MineColoniesCompatibility()
+	public MineColoniesCompatibility(FMLModContainer modContainer, Dist dist)
 	{
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MineColoniesCompatibilityConfigCommon.SPEC);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, MineColoniesCompatibilityConfigServer.SPEC);
+		modContainer.registerConfig(ModConfig.Type.COMMON, MineColoniesCompatibilityConfigCommon.SPEC);
+		modContainer.registerConfig(ModConfig.Type.SERVER, MineColoniesCompatibilityConfigServer.SPEC);
 
-		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+		var fml_bus = modContainer.getEventBus();
+		ModDataComponents.REGISTER.register(fml_bus);
 		ModBlocks.REGISTER.register(fml_bus);
 		ModItems.REGISTER.register(fml_bus);
 		ModBlockEntities.REGISTER.register(fml_bus);
@@ -81,16 +76,15 @@ public class MineColoniesCompatibility
 		ModMenuTypes.REGISTER.register(fml_bus);
 		ModInteractions.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
-		fml_bus.addListener(this::onFMLClientSetup);
 		fml_bus.addListener(this::onCustomToolTypeRegister);
 		fml_bus.addListener(this::onBuildCreativeModeTabContents);
+		fml_bus.addListener(this::onRegisterPayloadHandlers);
 
-		var forge_bus = MinecraftForge.EVENT_BUS;
+		var forge_bus = NeoForge.EVENT_BUS;
 		forge_bus.addListener(this::onInjectBuildingSettingsModule);
 		forge_bus.addListener(this::onRecipesUpdated);
 		forge_bus.addListener(this::onOnDatapackSync);
 
-		NETWORK = new NetworkChannel("main");
 		ModuleManager.initialize();
 
 		CustomizedRecipeStorageRegistry.INSTANCE.register(BucketFillingRecipeStorage.ID, BucketFillingRecipeStorage::serialize, BucketFillingRecipeStorage::deserialize);
@@ -101,13 +95,19 @@ public class MineColoniesCompatibility
 		DeliverableObjectRegistry.INSTANCE.register(IngredientDeliverable.ID, IngredientDeliverable::serialize, IngredientDeliverable::deserialize);
 		DeliverableObjectRegistry.INSTANCE.register(Butcherable.ID, Butcherable::serialize, Butcherable::deserialize);
 
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesCompatibilityClient::new);
+		if (dist.isClient())
+		{
+			new MineColoniesCompatibilityClient(modContainer);
+		}
+
 	}
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
 		e.enqueueWork(() ->
 		{
+			COMPAT.initialize();
+
 			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.bow.get());
 			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.fishing_rod.get());
 			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.shears.get());
@@ -148,15 +148,6 @@ public class MineColoniesCompatibility
 		});
 	}
 
-	private void onFMLClientSetup(FMLClientSetupEvent e)
-	{
-		MenuScreens.register(ModMenuTypes.BUCKET_FILLING_TEACH.get(), BucketFillingTeachScreen::new);
-		MenuScreens.register(ModMenuTypes.SMITHING_TEACH.get(), SmithingTeachScreen::new);
-		MenuScreens.register(ModMenuTypes.SMITHING_TEMPLATE_INVENTORY.get(), SmithingTemplateInventoryScreen::new);
-		MenuScreens.register(ModMenuTypes.ACCESS_DIRECTION_HOLDER.get(), AccessDirectionHolderScreen::new);
-		MenuScreens.register(ModMenuTypes.STONECUTTING_TEACH.get(), StonecutterTeachScreen::new);
-	}
-
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)
 	{
 		e.register(ModToolTypes.CROSSBOW);
@@ -172,7 +163,7 @@ public class MineColoniesCompatibility
 	{
 		if (e.getTab() == ModCreativeTabs.GENERAL.get())
 		{
-			e.accept(ModItems.COMMON_NETWORK_STORAGE);
+			e.accept(ModItems.COMMON_NETWORK_STORAGE.get());
 		}
 
 	}
@@ -220,14 +211,16 @@ public class MineColoniesCompatibility
 		Butcherable.reload();
 	}
 
-	public static NetworkChannel network()
+	private void onRegisterPayloadHandlers(RegisterPayloadHandlersEvent event)
 	{
-		return NETWORK;
+		var modVersion = ModList.get().getModContainerById(MOD_ID).get().getModInfo().getVersion().toString();
+		var registry = new MessageRegistrar(event.registrar(MOD_ID).versioned(modVersion));
+		ModMessagesRegistrar.register(registry);
 	}
 
 	public static ResourceLocation rl(String path)
 	{
-		return new ResourceLocation(MOD_ID, path);
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
 	}
 
 	public static String tl(String path)

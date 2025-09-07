@@ -5,8 +5,10 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.MinecoloniesAPIProxy;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
 import ewewukek.musketmod.Items;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,13 +38,13 @@ public class Cartridge implements IDeliverableObject
 		return ID;
 	}
 
-	public static Cartridge deserialize(@NotNull CompoundTag tag)
+	public static Cartridge deserialize(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag)
 	{
 		var minCount = tag.getInt("minCount");
 		return new Cartridge(minCount);
 	}
 
-	public static void serialize(Cartridge request, @NotNull CompoundTag tag)
+	public static void serialize(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag, Cartridge request)
 	{
 		tag.putInt("minCount", request.minCount);
 	}

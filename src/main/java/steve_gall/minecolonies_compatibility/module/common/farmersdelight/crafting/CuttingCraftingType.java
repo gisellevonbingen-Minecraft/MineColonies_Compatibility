@@ -12,12 +12,12 @@ import com.minecolonies.api.crafting.RecipeCraftingType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 import steve_gall.minecolonies_compatibility.core.common.crafting.IngredientHelper;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
+import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipeInput;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
-public class CuttingCraftingType extends RecipeCraftingType<RecipeWrapper, CuttingBoardRecipe>
+public class CuttingCraftingType extends RecipeCraftingType<CuttingBoardRecipeInput, CuttingBoardRecipe>
 {
 	public CuttingCraftingType(@NotNull ResourceLocation id)
 	{
@@ -31,7 +31,7 @@ public class CuttingCraftingType extends RecipeCraftingType<RecipeWrapper, Cutti
 
 		for (var recipe : recipeManager.getAllRecipesFor(ModRecipeTypes.CUTTING.get()))
 		{
-			var toolType = IngredientHelper.findFirstToolType(recipe.getTool());
+			var toolType = IngredientHelper.findFirstToolType(recipe.value().getTool());
 			recipes.add(new CuttingGenericRecipe(recipe, toolType));
 		}
 

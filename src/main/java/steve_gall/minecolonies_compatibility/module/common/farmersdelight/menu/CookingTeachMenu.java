@@ -4,15 +4,16 @@ import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachContainer;
@@ -21,10 +22,11 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMe
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 import vectorwing.farmersdelight.common.crafting.CookingPotRecipe;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
-public class CookingTeachMenu extends TeachRecipeMenu<CookingPotRecipe>
+public class CookingTeachMenu extends TeachRecipeMenu<RecipeHolder<CookingPotRecipe>, RecipeWrapper>
 {
 	public static final int INVENTORY_X = 8;
 	public static final int INVENTORY_Y = 84;
@@ -70,7 +72,7 @@ public class CookingTeachMenu extends TeachRecipeMenu<CookingPotRecipe>
 	}
 
 	@Override
-	protected IMenuRecipeValidator<CookingPotRecipe> createRecipeValidator()
+	protected IMenuRecipeValidator<RecipeHolder<CookingPotRecipe>, RecipeWrapper> createRecipeValidator()
 	{
 		return new MenuRecipeValidatorRecipe<>(this.inventory.player.level())
 		{
@@ -81,20 +83,20 @@ public class CookingTeachMenu extends TeachRecipeMenu<CookingPotRecipe>
 			}
 
 			@Override
-			protected boolean test(CookingPotRecipe recipe, Container container, ServerPlayer player)
+			public @NotNull RecipeWrapper getInput(@NotNull Container container, @NotNull RecipeHolder<CookingPotRecipe> recipe)
 			{
-				return recipe.matches(new RecipeWrapper(new InvWrapper(container)), this.level);
+				return new RecipeWrapper(new InvWrapper(container));
 			}
 
 		};
 	}
 
 	@Override
-	protected void setContainerByTransfer(@NotNull CookingPotRecipe recipe, @NotNull CompoundTag payload)
+	protected void setContainerByTransfer(@NotNull HolderLookup.Provider provider, @NotNull RecipeHolder<CookingPotRecipe> recipe, @NotNull CompoundTag payload)
 	{
-		super.setContainerByTransfer(recipe, payload);
+		super.setContainerByTransfer(provider, recipe, payload);
 
-		var input = NBTUtils2.deserializeList(payload, "input", ItemStack::of);
+		var input = NBTUtils2.deserializeList(payload, "input", ItemSerializationHelper.deserializerTag(provider));
 
 		for (var i = 0; i < CRAFTING_SLOTS; i++)
 		{
@@ -104,10 +106,10 @@ public class CookingTeachMenu extends TeachRecipeMenu<CookingPotRecipe>
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(HolderLookup.Provider provider, RecipeWrapper input)
 	{
-		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.getResultItem(this.inventory.player.level().registryAccess()) : ItemStack.EMPTY);
-		this.resultContainer.setItem(1, this.recipe != null ? this.recipe.getOutputContainer() : ItemStack.EMPTY);
+		this.resultContainer.setItem(0, this.recipe != null ? this.recipe.value().getResultItem(provider) : ItemStack.EMPTY);
+		this.resultContainer.setItem(1, this.recipe != null ? this.recipe.value().getOutputContainer() : ItemStack.EMPTY);
 	}
 
 }

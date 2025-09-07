@@ -1,7 +1,7 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.guard;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDamageConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDelayConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackRangeConfig;
@@ -16,7 +16,7 @@ public class GunnerConfig
 	public final AttackRangeConfig attackRange;
 	public final MoveSpeedConfig combatMoveSpeed;
 
-	public GunnerConfig(ForgeConfigSpec.Builder builder)
+	public GunnerConfig(ModConfigSpec.Builder builder)
 	{
 		builder.comment(BulletMode.DONT_USE.name() + ": don't use bullet, only shot default bullet", //
 				BulletMode.CAN_USE.name() + ": use bullet if citizen have bullet, else shot default bullet", //

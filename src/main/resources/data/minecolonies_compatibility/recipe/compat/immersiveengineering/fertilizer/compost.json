@@ -1,0 +1,13 @@
+{
+	"type": "immersiveengineering:fertilizer",
+	"neoforge:conditions": [
+		{
+			"type": "neoforge:mod_loaded",
+			"modid": "immersiveengineering"
+		}
+	],
+	"growthModifier": 1.3,
+	"input": {
+		"item": "minecolonies:compost"
+	}
+}

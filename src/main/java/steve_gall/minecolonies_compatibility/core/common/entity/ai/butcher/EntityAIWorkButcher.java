@@ -1,6 +1,5 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher;
 
-import static com.minecolonies.api.util.constant.CitizenConstants.BLOCK_BREAK_PARTICLE_RANGE;
 import static com.minecolonies.api.util.constant.CitizenConstants.FACING_DELTA_YAW;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +16,8 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.BlockPosUtil;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.api.util.Tuple;
+import com.minecolonies.api.util.constant.CitizenConstants;
 import com.minecolonies.api.util.constant.TypeConstants;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
 import com.minecolonies.core.colony.interactionhandling.StandardInteraction;
 import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
@@ -30,11 +29,11 @@ import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraftforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherBlockContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherCitizenContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
@@ -537,7 +536,11 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 		var vector = pos.subtract(worker.blockPosition());
 		var facing = BlockPosUtil.directionFromDelta(vector.getX(), vector.getY(), vector.getZ()).getOpposite();
 
-		Network.getNetwork().sendToPosition(new BlockParticleEffectMessage(pos, blockState, facing.ordinal()), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), BLOCK_BREAK_PARTICLE_RANGE, worker.level().dimension()));
+		if (worker.level() instanceof ServerLevel serverLevel)
+		{
+			new BlockParticleEffectMessage(pos, blockState, facing.ordinal()).sendToTargetPoint(serverLevel, null, pos.getX(), pos.getY(), pos.getZ(), CitizenConstants.BLOCK_BREAK_PARTICLE_RANGE);
+		}
+
 	}
 
 }

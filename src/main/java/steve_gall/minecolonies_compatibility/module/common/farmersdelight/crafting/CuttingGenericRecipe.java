@@ -12,12 +12,16 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.api.util.OptionalPredicate;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootTable;
 import steve_gall.minecolonies_compatibility.api.common.crafting.IRecipeSlotModifiableGenericRecipe;
 import steve_gall.minecolonies_compatibility.api.common.crafting.RecipeSlotRole;
 import steve_gall.minecolonies_compatibility.core.common.crafting.IngredientHelper;
@@ -35,9 +39,9 @@ public class CuttingGenericRecipe implements IRecipeSlotModifiableGenericRecipe
 	private final List<ItemStack> additionalOutputs;
 	private final EquipmentTypeEntry toolType;
 
-	public CuttingGenericRecipe(CuttingBoardRecipe recipe, EquipmentTypeEntry toolType)
+	public CuttingGenericRecipe(RecipeHolder<CuttingBoardRecipe> holder, EquipmentTypeEntry toolType)
 	{
-		this(recipe.getId(), IngredientHelper.getStacksList(recipe.getIngredients()), recipe.getRollableResults().stream().map(CuttingChanceResult::new).toList(), toolType);
+		this(holder.id(), IngredientHelper.getStacksList(holder.value().getIngredients()), holder.value().getRollableResults().stream().map(CuttingChanceResult::new).toList(), toolType);
 	}
 
 	public CuttingGenericRecipe(ResourceLocation recipeId, List<List<ItemStack>> ingredients, List<CuttingChanceResult> results, EquipmentTypeEntry toolType)
@@ -67,7 +71,7 @@ public class CuttingGenericRecipe implements IRecipeSlotModifiableGenericRecipe
 		if (this.primaryOutputs.size() == 0)
 		{
 			var empty = new ItemStack(Items.BARRIER);
-			empty.setHoverName(Component.translatable("minecolonies_compatibility.text.no_primary_result_item"));
+			empty.set(DataComponents.CUSTOM_NAME, Component.translatable("minecolonies_compatibility.text.no_primary_result_item"));
 			allResults.add(0, new CuttingChanceResult(empty, 0.0F));
 			this.primaryOutputs.add(empty);
 		}
@@ -166,7 +170,7 @@ public class CuttingGenericRecipe implements IRecipeSlotModifiableGenericRecipe
 	}
 
 	@Override
-	public @Nullable ResourceLocation getLootTable()
+	public @Nullable ResourceKey<LootTable> getLootTable()
 	{
 		return null;
 	}

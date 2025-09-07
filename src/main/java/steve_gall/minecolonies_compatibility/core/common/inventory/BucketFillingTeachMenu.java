@@ -3,22 +3,22 @@ package steve_gall.minecolonies_compatibility.core.common.inventory;
 import java.util.Collections;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingCraftingType;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
 
-public class BucketFillingTeachMenu extends TeachRecipeMenu<BucketFillingRecipeStorage>
+public class BucketFillingTeachMenu extends TeachRecipeMenu<BucketFillingRecipeStorage, SingleRecipeInput>
 {
 	public static final int INVENTORY_X = 8;
 	public static final int INVENTORY_Y = 84;
@@ -49,42 +49,48 @@ public class BucketFillingTeachMenu extends TeachRecipeMenu<BucketFillingRecipeS
 	}
 
 	@Override
-	protected IMenuRecipeValidator<BucketFillingRecipeStorage> createRecipeValidator()
+	protected IMenuRecipeValidator<BucketFillingRecipeStorage, SingleRecipeInput> createRecipeValidator()
 	{
 		return new IMenuRecipeValidator<>()
 		{
 			@Override
-			public @Nullable List<BucketFillingRecipeStorage> findAll(Container container, ServerPlayer player)
+			public SingleRecipeInput getInput(Container container, BucketFillingRecipeStorage recipe)
+			{
+				return new SingleRecipeInput(container.getItem(0));
+			}
+
+			@Override
+			public List<BucketFillingRecipeStorage> findAll(Container container, ServerPlayer player)
 			{
 				var recipe = BucketFillingCraftingType.parse(container.getItem(0));
 				return recipe != null ? Collections.singletonList(recipe) : Collections.emptyList();
 			}
 
 			@Override
-			public @NotNull BucketFillingRecipeStorage deserialize(@NotNull CompoundTag tag)
+			public BucketFillingRecipeStorage deserialize(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag)
 			{
-				return BucketFillingRecipeStorage.deserialize(tag);
+				return BucketFillingRecipeStorage.deserialize(provider, controller, tag);
 			}
 
-			public @NotNull CompoundTag serialize(@NotNull BucketFillingRecipeStorage recipe)
+			public CompoundTag serialize(HolderLookup.Provider provider, IFactoryController controller, BucketFillingRecipeStorage recipe)
 			{
 				var tag = new CompoundTag();
-				BucketFillingRecipeStorage.serialize(recipe, tag);
+				BucketFillingRecipeStorage.serialize(provider, controller, tag, recipe);
 				return tag;
 			}
 		};
 	}
 
 	@Override
-	protected void setContainerByTransfer(@NotNull BucketFillingRecipeStorage recipe, @NotNull CompoundTag payload)
+	protected void setContainerByTransfer(HolderLookup.Provider provider, BucketFillingRecipeStorage recipe, CompoundTag payload)
 	{
-		super.setContainerByTransfer(recipe, payload);
+		super.setContainerByTransfer(provider, recipe, payload);
 
 		this.inputContainer.setItem(0, recipe.getFilledBucket());
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(HolderLookup.Provider provider, SingleRecipeInput input)
 	{
 
 	}

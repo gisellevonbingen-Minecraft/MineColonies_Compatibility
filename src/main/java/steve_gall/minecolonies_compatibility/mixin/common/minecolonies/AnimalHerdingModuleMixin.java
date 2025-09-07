@@ -19,7 +19,7 @@ import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 import com.minecolonies.core.colony.buildings.modules.AnimalHerdingModule;
 
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 import steve_gall.minecolonies_compatibility.api.common.event.AnimalHerdingToolEvent;
 import steve_gall.minecolonies_compatibility.core.common.crafting.AnimalHerdingLootGenericRecipe;
 
@@ -34,7 +34,7 @@ public abstract class AnimalHerdingModuleMixin extends AbstractBuildingModule
 	{
 		var toolTypes = new HashSet<EquipmentTypeEntry>();
 		var event = new AnimalHerdingToolEvent(animal, toolTypes::add);
-		MinecraftForge.EVENT_BUS.post(event);
+		NeoForge.EVENT_BUS.post(event);
 
 		if (toolTypes.size() > 0)
 		{

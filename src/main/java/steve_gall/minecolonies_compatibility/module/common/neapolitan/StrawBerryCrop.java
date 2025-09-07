@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.teamabnormals.neapolitan.common.block.StrawberryBushBlock;
-import com.teamabnormals.neapolitan.common.block.StrawberryBushBlock.StrawberryType;
 import com.teamabnormals.neapolitan.core.registry.NeapolitanBlocks;
 import com.teamabnormals.neapolitan.core.registry.NeapolitanItems;
 
@@ -69,9 +68,9 @@ public class StrawBerryCrop extends CustomizedCrop
 		{
 			var state = context.getState();
 			var count = 1 + level.random.nextInt(2);
-			var item = state.getValue(StrawberryBushBlock.TYPE) == StrawberryType.WHITE ? NeapolitanItems.WHITE_STRAWBERRIES.get() : NeapolitanItems.STRAWBERRIES.get();
+			var item = state.getValue(StrawberryBushBlock.WHITE) ? NeapolitanItems.WHITE_STRAWBERRIES.get() : NeapolitanItems.STRAWBERRIES.get();
 
-			level.setBlock(context.getPosition(), state.setValue(StrawberryBushBlock.AGE, 1).setValue(StrawberryBushBlock.TYPE, StrawberryType.NONE), Block.UPDATE_CLIENTS);
+			level.setBlock(context.getPosition(), state.setValue(StrawberryBushBlock.AGE, 1).setValue(StrawberryBushBlock.WHITE, false), Block.UPDATE_CLIENTS);
 			return Collections.singletonList(new ItemStack(item, count));
 		}
 		else

@@ -1,0 +1,29 @@
+{
+	"type": "botanypots:crop",
+	"neoforge:conditions": [
+		{
+			"type": "neoforge:mod_loaded",
+			"modid": "botanypots"
+		}
+	],
+	"seed": {
+		"item": "minecolonies:eggplant"
+	},
+	"categories": [
+		"dirt"
+	],
+	"growthTicks": 1200,
+	"display": {
+		"block": "minecolonies:eggplant"
+	},
+	"drops": [
+		{
+			"chance": 1.00,
+			"output": {
+				"item": "minecolonies:eggplant"
+			},
+			"minRolls": 1,
+			"maxRolls": 2
+		}
+	]
+}

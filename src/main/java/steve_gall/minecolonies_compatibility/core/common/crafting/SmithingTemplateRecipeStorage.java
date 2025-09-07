@@ -5,21 +5,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.LootTable;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
+import steve_gall.minecolonies_tweaks.core.common.util.SerializationHelper;
 
 public class SmithingTemplateRecipeStorage implements ICustomizedRecipeStorage
 {
@@ -30,22 +35,22 @@ public class SmithingTemplateRecipeStorage implements ICustomizedRecipeStorage
 	public static final String TAG_PRIMARY_OUTPUT = "primaryOutput";
 	public static final String TAG_SECONDARY_OUTPUTS = "secondaryOutputs";
 
-	public static void serialize(SmithingTemplateRecipeStorage recipe, CompoundTag tag)
+	public static void serialize(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag, SmithingTemplateRecipeStorage recipe)
 	{
 		tag.putInt(TAG_GRID_SIZE, recipe.gridSize);
-		NBTUtils2.serializeCollection(tag, TAG_INPUT, recipe.input, StandardFactoryController.getInstance()::serialize);
+		NBTUtils2.serializeCollection(tag, TAG_INPUT, recipe.input, SerializationHelper.serializerTag(provider));
 		tag.putInt(TAG_INPUT_TEMPLATE_COUNT, recipe.inputTemplateCount);
-		tag.put(TAG_PRIMARY_OUTPUT, recipe.primaryOutput.serializeNBT());
-		NBTUtils2.serializeCollection(tag, TAG_SECONDARY_OUTPUTS, recipe.secondaryOutputs, ItemStack::serializeNBT);
+		tag.put(TAG_PRIMARY_OUTPUT, ItemSerializationHelper.serializeTag(provider, recipe.primaryOutput));
+		NBTUtils2.serializeCollection(tag, TAG_SECONDARY_OUTPUTS, recipe.secondaryOutputs, ItemSerializationHelper.serializerTag(provider));
 	}
 
-	public static SmithingTemplateRecipeStorage deserialize(CompoundTag tag)
+	public static SmithingTemplateRecipeStorage deserialize(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag)
 	{
 		var gridSize = tag.getInt(TAG_GRID_SIZE);
-		List<ItemStorage> input = NBTUtils2.deserializeList(tag, TAG_INPUT, StandardFactoryController.getInstance()::deserialize);
+		List<ItemStorage> input = NBTUtils2.deserializeList(tag, TAG_INPUT, SerializationHelper.deserializerTag(provider));
 		var inputTemplateCount = tag.getInt(TAG_INPUT_TEMPLATE_COUNT);
-		var primaryOutput = ItemStack.of(tag.getCompound(TAG_PRIMARY_OUTPUT));
-		var secondaryOutputs = NBTUtils2.deserializeList(tag, TAG_SECONDARY_OUTPUTS, ItemStack::of);
+		var primaryOutput = ItemSerializationHelper.deserializeTag(provider, tag.getCompound(TAG_PRIMARY_OUTPUT));
+		var secondaryOutputs = NBTUtils2.deserializeList(tag, TAG_SECONDARY_OUTPUTS, ItemSerializationHelper.deserializerTag(provider));
 		return new SmithingTemplateRecipeStorage(gridSize, input, inputTemplateCount, primaryOutput, secondaryOutputs);
 	}
 
@@ -179,7 +184,7 @@ public class SmithingTemplateRecipeStorage implements ICustomizedRecipeStorage
 	}
 
 	@Override
-	public ResourceLocation getLootTable()
+	public ResourceKey<LootTable> getLootTable()
 	{
 		return null;
 	}

@@ -5,11 +5,11 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.neoforge.common.NeoForge;
 
 /**
- * {@link MinecraftForge#EVENT_BUS}
+ * {@link NeoForge#EVENT_BUS}
  */
 public class CustomizedBucherableRegisterEvent extends Event
 {

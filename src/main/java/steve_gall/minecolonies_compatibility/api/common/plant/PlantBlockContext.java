@@ -13,6 +13,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
@@ -52,11 +53,15 @@ public class PlantBlockContext extends PlantPositonContext
 		{
 			var state = this.getState();
 			var position = this.getPosition();
+			var silkTouch = level.registryAccess().holder(Enchantments.SILK_TOUCH);
 
-			tool = tool.copy();
-			var map = EnchantmentHelper.getEnchantments(tool);
-			map.remove(Enchantments.SILK_TOUCH);
-			EnchantmentHelper.setEnchantments(map, tool);
+			if (silkTouch.isPresent())
+			{
+				tool = tool.copy();
+				var map = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(tool));
+				map.set(silkTouch.get(), 0);
+				EnchantmentHelper.setEnchantments(tool, map.toImmutable());
+			}
 
 			return Block.getDrops(state, level, position, null, entity, tool);
 		}

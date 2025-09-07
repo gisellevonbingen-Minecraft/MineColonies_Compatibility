@@ -6,10 +6,14 @@ import org.jetbrains.annotations.Nullable;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
 import blusunrize.immersiveengineering.api.tool.BulletHandler.IBullet;
+import blusunrize.immersiveengineering.api.tool.upgrade.UpgradeEffect;
 import blusunrize.immersiveengineering.common.items.BulletItem;
 import blusunrize.immersiveengineering.common.items.RevolverItem;
+import blusunrize.immersiveengineering.common.items.UpgradeableToolItem;
+import blusunrize.immersiveengineering.common.register.IEDataComponents;
 import blusunrize.immersiveengineering.common.util.IESounds;
 import blusunrize.immersiveengineering.common.util.Utils;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -79,7 +83,7 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	{
 		super.onReloadTimerStarted(user);
 
-		user.playSound(IESounds.revolverReload.get(), 1.0F, 1.0F);
+		user.playSound(IESounds.revolverReload.value(), 1.0F, 1.0F);
 	}
 
 	@Override
@@ -98,12 +102,13 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	public float getMeleeAttackDamage(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
 		var weapon = this.getMainHandItem(user);
-		var melee = RevolverItem.getUpgradeValue_d(weapon, "melee");
+		var upgrades = UpgradeableToolItem.getUpgradesStatic(weapon);
+		var melee = upgrades.get(UpgradeEffect.MELEE);
 		var damage = super.getMeleeAttackDamage(user, target);
 
 		if (melee != 0.0D)
 		{
-			damage += (float) melee;
+			damage += melee;
 		}
 
 		return damage;
@@ -121,18 +126,18 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 		var level = user.level();
 
 		ItemStack bullet = null;
-		IBullet bulletType = null;
+		IBullet<?> bulletType = null;
 
 		if (bulletMode.canUse() && bulletSlot > -1)
 		{
 			bullet = inventory.extractItem(bulletSlot, 1, false);
-			bulletType = ((BulletItem) bullet.getItem()).getType();
+			bulletType = ((BulletItem<?>) bullet.getItem()).getType();
 		}
 		else if (bulletMode.canDefault())
 		{
-			bullet = ItemStack.EMPTY.copy();
+			bullet = new ItemStack(ModuleItems.DEFAULT_BULLET);
+			bullet.set(IEDataComponents.getBulletData(DefaultBullet.INSTANCE), new DefaultBullet.Data(config.defaultBulletDamage.apply(user, this.getPrimarySkillLevel(user))));
 			bulletType = DefaultBullet.INSTANCE;
-			DefaultBullet.putDamage(bullet, config.defaultBulletDamage.apply(user, this.getPrimarySkillLevel(user)));
 		}
 
 		if (bulletType != null && bullet != null)
@@ -146,7 +151,7 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 
 				if (noise > 0.2F)
 				{
-					GameEvent eventTriggered = noise > 0.5F ? GameEvent.EXPLODE : GameEvent.PROJECTILE_SHOOT;
+					Holder.Reference<GameEvent> eventTriggered = noise > 0.5F ? GameEvent.EXPLODE : GameEvent.PROJECTILE_SHOOT;
 					level.gameEvent(eventTriggered, user.position(), GameEvent.Context.of(user));
 				}
 
@@ -155,7 +160,7 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 		}
 		else
 		{
-			user.playSound(SoundEvents.NOTE_BLOCK_HAT.get(), 1.0F, 1.0F);
+			user.playSound(SoundEvents.NOTE_BLOCK_HAT.value(), 1.0F, 1.0F);
 		}
 
 		if (config.needReload.get().booleanValue())

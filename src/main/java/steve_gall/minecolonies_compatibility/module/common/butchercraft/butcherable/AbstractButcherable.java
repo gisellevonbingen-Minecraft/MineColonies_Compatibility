@@ -39,7 +39,7 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 
 		for (var itemUse : itemUses)
 		{
-			if (stackingIdsSet.add(itemUse.tool.getStackingIds()))
+			if (stackingIdsSet.add(itemUse.tool().getStackingIds()))
 			{
 				toolIcons.add(this.getTool(itemUse));
 			}
@@ -50,8 +50,8 @@ public abstract class AbstractButcherable extends CustomizedButcherable
 
 	protected @NotNull ToolOrIngredientStack getTool(@NotNull AnimatedRecipeItemUse itemUse)
 	{
-		var tool = itemUse.tool;
-		var count = IngredientHelper.isDamageable(tool) ? itemUse.count : itemUse.count * itemUse.uses;
+		var tool = itemUse.tool();
+		var count = IngredientHelper.isDamageable(tool) ? itemUse.count() : itemUse.count() * itemUse.uses();
 
 		if (FIXEDS == null)
 		{

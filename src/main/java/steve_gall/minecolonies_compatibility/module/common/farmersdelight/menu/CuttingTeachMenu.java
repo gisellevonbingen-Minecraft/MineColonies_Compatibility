@@ -11,16 +11,15 @@ import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.crafting.IngredientHelper;
@@ -30,11 +29,13 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachInputSlo
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
+import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipeInput;
 import vectorwing.farmersdelight.common.crafting.ingredient.ChanceResult;
 import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
-public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
+public class CuttingTeachMenu extends TeachRecipeMenu<RecipeHolder<CuttingBoardRecipe>, CuttingBoardRecipeInput>
 {
 	public static final int INVENTORY_X = 8;
 	public static final int INVENTORY_Y = 84;
@@ -59,10 +60,10 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 		this.setup();
 	}
 
-	public CuttingTeachMenu(int windowId, Inventory inventory, FriendlyByteBuf buffer)
+	public CuttingTeachMenu(int windowId, Inventory inventory, RegistryFriendlyByteBuf buffer)
 	{
 		super(ModuleMenuTypes.CUTTING_TEACH.get(), windowId, inventory, buffer);
-		this.toolType = buffer.readRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry());
+		this.toolType = IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().get(buffer.readResourceLocation());
 		this.setup();
 	}
 
@@ -80,11 +81,11 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 		}
 
 		this.results = new ArrayList<>();
-		this.resultContainer = new ReadOnlySlotsContainer(this.results::size, i -> this.results.get(i).getStack());
+		this.resultContainer = new ReadOnlySlotsContainer(this.results::size, i -> this.results.get(i).stack());
 	}
 
 	@Override
-	protected IMenuRecipeValidator<CuttingBoardRecipe> createRecipeValidator()
+	protected IMenuRecipeValidator<RecipeHolder<CuttingBoardRecipe>, CuttingBoardRecipeInput> createRecipeValidator()
 	{
 		return new MenuRecipeValidatorRecipe<>(this.inventory.player.level())
 		{
@@ -95,31 +96,42 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 			}
 
 			@Override
-			protected boolean test(CuttingBoardRecipe recipe, Container container, ServerPlayer player)
+			public @NotNull CuttingBoardRecipeInput getInput(Container container, RecipeHolder<CuttingBoardRecipe> recipe)
 			{
-				return recipe.matches(new RecipeWrapper(new InvWrapper(container)), this.level);
+				return new CuttingBoardRecipeInput(container.getItem(0), this.findTool(recipe));
+			}
+
+			private ItemStack findTool(RecipeHolder<CuttingBoardRecipe> recipe)
+			{
+				if (recipe == null)
+				{
+					return ItemStack.EMPTY;
+				}
+
+				var tools = recipe.value().getTool().getItems();
+				return tools.length == 0 ? ItemStack.EMPTY : tools[0];
 			}
 
 		};
 	}
 
 	@Override
-	protected void setContainerByTransfer(@NotNull CuttingBoardRecipe recipe, @NotNull CompoundTag payload)
+	protected void setContainerByTransfer(@NotNull HolderLookup.Provider provider, @NotNull RecipeHolder<CuttingBoardRecipe> recipe, @NotNull CompoundTag payload)
 	{
-		super.setContainerByTransfer(recipe, payload);
+		super.setContainerByTransfer(provider, recipe, payload);
 
-		this.inputContainer.setItem(0, ItemStack.of(payload.getCompound("input")));
+		this.inputContainer.setItem(0, ItemSerializationHelper.deserializeTag(provider, payload.getCompound("input")));
 	}
 
 	@Override
-	protected void onRecipeChanged()
+	protected void onRecipeChanged(HolderLookup.Provider provider, CuttingBoardRecipeInput input)
 	{
 		var prevSlots = this.resultSlots.size();
 		this.results.clear();
 
 		if (this.recipe != null)
 		{
-			this.results.addAll(this.recipe.getRollableResults());
+			this.results.addAll(this.recipe.value().getRollableResults());
 		}
 
 		var addingSlots = this.results.size() - prevSlots;
@@ -144,14 +156,14 @@ public class CuttingTeachMenu extends TeachRecipeMenu<CuttingBoardRecipe>
 	}
 
 	@Override
-	public @Nullable Component getRecipeError(@NotNull CuttingBoardRecipe recipe)
+	public @Nullable Component getRecipeError(@NotNull RecipeHolder<CuttingBoardRecipe> recipe)
 	{
-		if (!IngredientHelper.isTool(recipe.getTool(), this.getToolType()))
+		if (!IngredientHelper.isTool(recipe.value().getTool(), this.getToolType()))
 		{
 			return Component.translatable("minecolonies_compatibility.text.unsupported_tool");
 		}
 
-		var anyPrimary = recipe.getRollableResults().stream().anyMatch(r -> r.getChance() >= 1.0D);
+		var anyPrimary = recipe.value().getRollableResults().stream().anyMatch(r -> r.chance() >= 1.0D);
 
 		if (!anyPrimary)
 		{

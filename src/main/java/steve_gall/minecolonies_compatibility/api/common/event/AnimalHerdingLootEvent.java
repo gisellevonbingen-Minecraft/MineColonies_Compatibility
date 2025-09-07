@@ -4,9 +4,13 @@ import java.util.function.Consumer;
 
 import com.minecolonies.core.colony.crafting.LootTableAnalyzer;
 
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.neoforge.common.NeoForge;
 import steve_gall.minecolonies_compatibility.core.common.crafting.AnimalHerdingLootGenericRecipe;
 
+/**
+ * {@link NeoForge#EVENT_BUS}
+ */
 public class AnimalHerdingLootEvent extends Event
 {
 	private final AnimalHerdingLootGenericRecipe recipe;

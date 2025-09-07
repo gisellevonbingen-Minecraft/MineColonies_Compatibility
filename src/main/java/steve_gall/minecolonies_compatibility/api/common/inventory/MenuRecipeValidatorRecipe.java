@@ -4,18 +4,22 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
+
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import steve_gall.minecolonies_compatibility.core.common.inventory.ContainerHelper;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 
-public abstract class MenuRecipeValidatorRecipe<RECIPE extends Recipe<CONTAINER>, CONTAINER extends Container> implements IMenuRecipeValidator<RECIPE>
+public abstract class MenuRecipeValidatorRecipe<RECIPE extends Recipe<RECIPE_INPUT>, RECIPE_INPUT extends RecipeInput> implements IMenuRecipeValidator<RecipeHolder<RECIPE>, RECIPE_INPUT>
 {
 	public static final String TAG_ID = "id";
 
@@ -28,47 +32,53 @@ public abstract class MenuRecipeValidatorRecipe<RECIPE extends Recipe<CONTAINER>
 	}
 
 	@Override
-	public List<RECIPE> findAll(Container container, ServerPlayer player)
+	public List<RecipeHolder<RECIPE>> findAll(Container container, ServerPlayer player)
 	{
-		return this.level.getRecipeManager().getAllRecipesFor(this.getRecipeType()).stream().filter(recipe ->
+		return this.level.getRecipeManager().getAllRecipesFor(this.getRecipeType()).stream().filter(recipeHolder ->
 		{
-			if (this.test(recipe, container, player))
+			var recipe = recipeHolder.value();
+
+			if (this.test(recipeHolder, container, player))
 			{
-				return recipe.isSpecial() || !this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || player.getRecipeBook().contains(recipe) || player.isCreative();
+				return recipe.isSpecial() || !this.level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING) || player.getRecipeBook().contains(recipeHolder) || player.isCreative();
 			}
 
 			return false;
 		}).toList();
 	}
 
-	protected abstract boolean test(RECIPE recipe, Container container, ServerPlayer player);
-
-	protected boolean matchesWithIngredientsCount(RECIPE recipe, CONTAINER container)
+	protected boolean test(RecipeHolder<RECIPE> recipeHolder, Container container, ServerPlayer player)
 	{
-		if (!recipe.matches(container, this.level))
+		var input = this.getInput(container, recipeHolder);
+		return recipeHolder.value().matches(input, player.level());
+	}
+
+	protected boolean matchesWithIngredientsCount(RECIPE recipe, RECIPE_INPUT input)
+	{
+		if (!recipe.matches(input, this.level))
 		{
 			return false;
 		}
 
 		var ingredientsSize = recipe.getIngredients().size();
-		var inputsSize = ItemStackHelper.filterNotEmpty(ContainerHelper.getItemStacks(container)).size();
+		var inputsSize = ItemStackHelper.filterNotEmpty(RecipeInputHelper.getItemStacks(input)).size();
 		return ingredientsSize == inputsSize;
 	}
 
 	@Override
-	public CompoundTag serialize(RECIPE recipe)
+	public CompoundTag serialize(HolderLookup.Provider provider, IFactoryController controller, RecipeHolder<RECIPE> recipeHolder)
 	{
 		var tag = new CompoundTag();
-		tag.putString(TAG_ID, recipe.getId().toString());
+		tag.putString(TAG_ID, recipeHolder.id().toString());
 		return tag;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public RECIPE deserialize(CompoundTag tag)
+	public RecipeHolder<RECIPE> deserialize(HolderLookup.Provider provider, IFactoryController controller, CompoundTag tag)
 	{
-		var recipeId = new ResourceLocation(tag.getString(TAG_ID));
-		return (RECIPE) this.level.getRecipeManager().byKey(recipeId).orElse(null);
+		var recipeId = ResourceLocation.parse(tag.getString(TAG_ID));
+		return (RecipeHolder<RECIPE>) this.level.getRecipeManager().byKey(recipeId).orElse(null);
 	}
 
 	public abstract RecipeType<RECIPE> getRecipeType();

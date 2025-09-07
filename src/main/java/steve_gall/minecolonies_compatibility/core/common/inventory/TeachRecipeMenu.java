@@ -8,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -20,17 +22,17 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostMenu;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuNewRecipesMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuNewResultMessage;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphModule;
 
-public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IItemGhostMenu, IRecipeTransferableMenu<RECIPE>
+public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu implements IItemGhostMenu, IRecipeTransferableMenu<RECIPE, RECIPE_INPUT>
 {
 	public static final Component TEXT_RECIPE_NOT_FOUND = Component.translatable("minecolonies_compatibility.text.recipe_not_found");
 	public static final Component TEXT_RECIPE_NOT_SUPPORTED = Component.translatable("minecolonies_compatibility.text.recipe_not_supported");
@@ -41,7 +43,7 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	protected Container resultContainer;
 	protected List<Slot> resultSlots;
 
-	private IMenuRecipeValidator<RECIPE> recipeValidator;
+	private IMenuRecipeValidator<RECIPE, RECIPE_INPUT> recipeValidator;
 	private List<RECIPE> recipes;
 	private int recipeIndex = -1;
 	protected RECIPE recipe;
@@ -72,12 +74,12 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 		this.recipe = null;
 	}
 
-	protected abstract IMenuRecipeValidator<RECIPE> createRecipeValidator();
+	protected abstract IMenuRecipeValidator<RECIPE, RECIPE_INPUT> createRecipeValidator();
 
-	protected abstract void onRecipeChanged();
+	protected abstract void onRecipeChanged(@NotNull HolderLookup.Provider provider, @Nullable RECIPE_INPUT input);
 
 	@Override
-	public IMenuRecipeValidator<RECIPE> getRecipeValidator()
+	public IMenuRecipeValidator<RECIPE, RECIPE_INPUT> getRecipeValidator()
 	{
 		if (this.recipeValidator == null)
 		{
@@ -90,11 +92,12 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	@Override
 	public final void onRecipeTransfer(@NotNull RECIPE recipe, @NotNull CompoundTag payload)
 	{
-		this.setContainerByTransfer(recipe, payload);
+		var registryAccess = this.inventory.player.registryAccess();
+		this.setContainerByTransfer(registryAccess, recipe, payload);
 		this.refreshRecipes(recipe);
 	}
 
-	protected void setContainerByTransfer(@NotNull RECIPE recipe, @NotNull CompoundTag payload)
+	protected void setContainerByTransfer(@NotNull HolderLookup.Provider provider, @NotNull RECIPE recipe, @NotNull CompoundTag payload)
 	{
 		this.inputContainer.clearContent();
 	}
@@ -131,9 +134,10 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	{
 		if (this.inventory.player instanceof ServerPlayer player)
 		{
-			this.recipes = new ArrayList<>(this.getRecipeValidator().findAll(this.inputContainer, player));
-			var tags = this.recipes.stream().map(this.recipeValidator::serialize).toList();
-			MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewRecipesMessage(tags), player);
+			var recipeValidator = this.getRecipeValidator();
+			this.recipes = new ArrayList<>(recipeValidator.findAll(this.inputContainer, player));
+			var tags = this.recipes.stream().map(r -> recipeValidator.serialize(player.registryAccess(), StandardFactoryController.getInstance(), r)).toList();
+			PacketDistributor.sendToPlayer(player, new TeachRecipeMenuNewRecipesMessage(tags));
 
 			if (ModuleManager.POLYMORPH.isLoaded())
 			{
@@ -154,16 +158,16 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	protected void setRecipe(RECIPE recipe)
 	{
 		this.recipe = recipe;
-		this.onRecipeChanged();
+		this.onRecipeChanged(this.inventory.player.registryAccess(), this.getRecipeInput(recipe));
 
 		if (this.inventory.player instanceof ServerPlayer player)
 		{
-			var tag = recipe != null ? this.getRecipeValidator().serialize(recipe) : null;
-			MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewResultMessage(tag), player);
+			var tag = recipe != null ? this.getRecipeValidator().serialize(player.registryAccess(), StandardFactoryController.getInstance(), recipe) : null;
+			PacketDistributor.sendToPlayer(player, new TeachRecipeMenuNewResultMessage(tag));
 
-			if (ModuleManager.POLYMORPH.isLoaded() && recipe instanceof Recipe<?>)
+			if (ModuleManager.POLYMORPH.isLoaded() && recipe instanceof RecipeHolder<?>)
 			{
-				PolymorphModule.sendHighlightRecipe(player, ((Recipe<?>) recipe).getId());
+				PolymorphModule.sendRecipesList(player, this);
 			}
 
 		}
@@ -174,7 +178,7 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	{
 		if (tag != null)
 		{
-			var recipe = this.getRecipeValidator().deserialize(tag);
+			var recipe = this.getRecipeValidator().deserialize(this.inventory.player.registryAccess(), StandardFactoryController.getInstance(), tag);
 			this.setRecipe(recipe);
 		}
 		else
@@ -263,6 +267,11 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	public boolean stillValid(Player player)
 	{
 		return true;
+	}
+
+	public RECIPE_INPUT getRecipeInput(RECIPE recipe)
+	{
+		return this.getRecipeValidator().getInput(this.inputContainer, recipe);
 	}
 
 	public TeachContainer getInputContainer()

@@ -10,12 +10,14 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
 import steve_gall.minecolonies_compatibility.core.common.inventory.StonecutterTeachMenu;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
+import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
-public class StonecutterTeachRecipeTransferHandler extends TeachRecipeTransferHandler<StonecutterTeachMenu, StonecutterRecipe, StonecutterRecipe>
+public class StonecutterTeachRecipeTransferHandler extends TeachRecipeTransferHandler<StonecutterTeachMenu, RecipeHolder<StonecutterRecipe>, SingleRecipeInput, RecipeHolder<StonecutterRecipe>>
 {
 	public StonecutterTeachRecipeTransferHandler(IRecipeTransferHandlerHelper recipeTransferHandlerHelper)
 	{
@@ -35,22 +37,22 @@ public class StonecutterTeachRecipeTransferHandler extends TeachRecipeTransferHa
 	}
 
 	@Override
-	public RecipeType<StonecutterRecipe> getRecipeType()
+	public RecipeType<RecipeHolder<StonecutterRecipe>> getRecipeType()
 	{
 		return RecipeTypes.STONECUTTING;
 	}
 
 	@Override
-	protected StonecutterRecipe getRecipe(StonecutterTeachMenu menu, StonecutterRecipe categoryRecipe, IRecipeSlotsView recipeSlots, Player player)
+	protected RecipeHolder<StonecutterRecipe> getRecipe(StonecutterTeachMenu menu, RecipeHolder<StonecutterRecipe> categoryRecipe, IRecipeSlotsView recipeSlots, Player player)
 	{
 		return categoryRecipe;
 	}
 
 	@Override
-	protected void serializePayload(StonecutterTeachMenu menu, StonecutterRecipe recipe, IRecipeSlotsView recipeSlots, Player player, CompoundTag tag)
+	protected void serializePayload(StonecutterTeachMenu menu, RecipeHolder<StonecutterRecipe> recipe, IRecipeSlotsView recipeSlots, Player player, CompoundTag tag)
 	{
 		var input = this.getDisplayedItemStacks(recipeSlots, RecipeIngredientRole.INPUT);
-		NBTUtils2.serializeCollection(tag, "input", input, ItemStack::serializeNBT);
+		NBTUtils2.serializeCollection(tag, "input", input, ItemSerializationHelper.serializerTag(player.registryAccess()));
 	}
 
 }

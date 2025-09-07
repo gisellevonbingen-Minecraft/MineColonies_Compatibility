@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.inventory.container.ContainerCrafting;
 import com.minecolonies.api.util.ItemStackUtils;
-import com.minecolonies.core.Network;
 import com.minecolonies.core.client.gui.containers.WindowCrafting;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 import com.minecolonies.core.colony.buildings.views.AbstractBuildingView;
@@ -87,7 +86,7 @@ public abstract class WindowCraftingMixin extends AbstractContainerScreen<Contai
 			if (!ItemStackUtils.isEmpty(primaryOutput))
 			{
 				var storage = new SmithingTemplateRecipeStorage(this.completeCrafting ? 3 : 2, input, inputCount, primaryOutput, secondaryOutputs);
-				Network.getNetwork().sendToServer(new AddRemoveRecipeMessage(this.building, false, storage.wrap(), this.module.getProducer().getRuntimeID()));
+				new AddRemoveRecipeMessage(this.building, false, storage.wrap(), this.module.getProducer().getRuntimeID()).sendToServer();
 			}
 
 		}

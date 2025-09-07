@@ -1,13 +1,17 @@
 package steve_gall.minecolonies_compatibility.core.common.network.message;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModule;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModuleView;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
 public class RestrictSetAreaMessage extends BuildingModuleMessage
 {
+	public static final CustomPacketPayload.Type<RestrictSetAreaMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesCompatibility.rl("restrict_set_area"));
+
 	private final BlockPos pos1;
 	private final BlockPos pos2;
 
@@ -19,7 +23,7 @@ public class RestrictSetAreaMessage extends BuildingModuleMessage
 		this.pos2 = pos2;
 	}
 
-	public RestrictSetAreaMessage(FriendlyByteBuf buffer)
+	public RestrictSetAreaMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
@@ -28,7 +32,7 @@ public class RestrictSetAreaMessage extends BuildingModuleMessage
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
@@ -37,7 +41,7 @@ public class RestrictSetAreaMessage extends BuildingModuleMessage
 	}
 
 	@Override
-	public void handle(NetworkEvent.Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
@@ -47,6 +51,12 @@ public class RestrictSetAreaMessage extends BuildingModuleMessage
 			module.markDirty();
 		}
 
+	}
+
+	@Override
+	public CustomPacketPayload.Type<RestrictSetAreaMessage> type()
+	{
+		return TYPE;
 	}
 
 	public BlockPos getRestrictAreaPos1()

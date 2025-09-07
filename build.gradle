@@ -1,79 +1,17 @@
-buildscript {
-    repositories {
-        maven { url = "https://maven.minecraftforge.net" }
-        maven { url = "https://repo.spongepowered.org/maven" }
-    }
-    dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
-        classpath "org.spongepowered:mixingradle:0.7.+"
-    }
-}
-
 plugins {
-    id "net.minecraftforge.gradle" version "5.1.+"
+    id "net.neoforged.gradle.userdev" version "7.0.183"
 }
 
-apply plugin: "java"
+apply plugin: "java-library"
 apply plugin: "maven-publish"
-apply plugin: "org.spongepowered.mixin"
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21
 
 archivesBaseName = rootProject.archives_base_name
-version = "${rootProject.mc_version}-" + (project.hasProperty("buildWithSource") ? "libs" : "${rootProject.mod_version}")
+version = "${rootProject.mc_version}-${rootProject.mod_version}"
 group = rootProject.maven_group
-
-sourceSets.main.resources { srcDir "src/generated/resources" }
-
-minecraft {
-    mappings channel: "official", version: "${mc_version}"
-
-    runs {
-        configureEach {
-            workingDirectory project.file("run")
-
-            property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "debug"
-            arg "-mixin.config=test.mixin.json"
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
-            mods {
-                "testmod" {
-                    source sourceSets.test
-                }
-            }
-        }
-
-        client {
-            taskName "forge_client"
-
-            property "forge.enabledGameTestNamespaces", "${mod_id}, testmod"
-        }
-
-        server {
-            taskName "forge_server"
-
-            property "forge.enabledGameTestNamespaces", "${mod_id}, testmod"
-        }
-
-        gameTestServer {
-            taskName "forge_game_test_server"
-
-            property "forge.enabledGameTestNamespaces", "${mod_id}, testmod"
-        }
-
-        data {
-            taskName "forge_data"
-
-            args "--mod", "${mod_id}, testmod", "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/")
-        }
-    }
-}
 
 repositories {
     maven {
@@ -106,115 +44,93 @@ repositories {
     }
 }
 
-dependencies {
-    // Mod
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_api_version}"
-    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")) {
-        jarJar.ranged(it, "[${mixin_extras_version},)")
+runs {
+    configureEach {
+        systemProperty "forge.logging.markers", "REGISTRIES"
+        systemProperty "forge.logging.console.level", "debug"
+
+        modSource project.sourceSets.main
     }
 
+    client {
+        systemProperty "forge.enabledGameTestNamespaces", project.mod_id
+    }
+
+    server {
+        systemProperty "forge.enabledGameTestNamespaces", project.mod_id
+        programArgument '--nogui'
+    }
+
+    gameTestServer {
+        systemProperty "forge.enabledGameTestNamespaces", project.mod_id
+    }
+
+    data {
+        programArguments.addAll "--mod", project.mod_id, "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources/").getAbsolutePath()
+    }
+}
+
+sourceSets.main.resources { srcDir "src/generated/resources" }
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neoforge_api_version}"
+
     // Required
-    implementation fg.deobf("com.ldtteam:minecolonies:${minecolonies_version}")
-    implementation fg.deobf("com.ldtteam:structurize:${structurize_version}")
-    implementation fg.deobf("com.ldtteam:multipiston:${multipiston_version}")
-    implementation fg.deobf("com.ldtteam:domum_ornamentum:${domumornamentum_version}:universal")
-    implementation fg.deobf("com.ldtteam:blockui:${blockui_version}")
-    implementation fg.deobf("blank:MineColonies_Tweaks-${mc_version}:libs")
+    implementation "com.ldtteam:minecolonies:${minecolonies_version}"
+    implementation "com.ldtteam:structurize:${structurize_version}"
+    implementation "com.ldtteam:multipiston:${multipiston_version}"
+    implementation "com.ldtteam:blockui:${blockui_version}"
+    //implementation "com.ldtteam:domum_ornamentum:${domumornamentum_version}"
+    implementation "curse.maven:domum-ornamentum-527361:6688449"
+    implementation "blank:MineColonies_Tweaks-${mc_version}:libs"
 
     // Optional
-    implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
-    implementation fg.deobf("curse.maven:architectury-api-419699:${architectury_api_file}")
-    implementation "thedarkcolour:kotlinforforge:${kotlin_for_forge_version}"
-    implementation fg.deobf("curse.maven:curios-309927:${curios_file}")
-    implementation fg.deobf("curse.maven:patchouli-306770:${patchouli_file}")
-    implementation fg.deobf("curse.maven:polymorph-388800:${polymorph_file}")
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:${mc_version}-${immersive_engineering_version}")
-    implementation fg.deobf("curse.maven:croptopia-415438:${croptopia_file}")
-    implementation fg.deobf("curse.maven:epherolib-885449:${epherolib_file}")
-    implementation fg.deobf("curse.maven:pams-harvestcraft-2-trees-365460:${pamhc2trees_file}")
-    implementation fg.deobf("curse.maven:farmers-delight-398521:${farmers_delight_file}")
-    implementation fg.deobf("curse.maven:nethers-delight-496394:${nethers_delight_file}")
-    implementation fg.deobf("curse.maven:delightful-637529:${delightful_file}")
-    implementation fg.deobf("curse.maven:cofh-core-69162:${thermal_core_file}")
-    implementation fg.deobf("curse.maven:thermal-foundation-222880:${thermal_foundation_file}")
-    implementation fg.deobf("curse.maven:thermal-cultivation-271835:${thermal_cultivation_file}")
-    implementation fg.deobf("curse.maven:ars-nouveau-401955:${ars_nouveau_file}")
-    implementation fg.deobf("curse.maven:blue-skies-312918:${blue_skies_file}")
-    implementation fg.deobf("curse.maven:structure-gel-api-378802:${structure_gel_api_file}")
-    implementation fg.deobf("curse.maven:regions-unexplored-659110:${regions_unexplored_file}")
-    implementation fg.deobf("curse.maven:terrablender-563928:${terrablender_file}")
-    implementation fg.deobf("curse.maven:cobblemon-687131:${cobblemon_file}")
-    implementation fg.deobf("curse.maven:aether-255308:${aether_file}")
-    implementation fg.deobf("curse.maven:cyclic-239286:${cyclic_file}")
-    implementation fg.deobf("curse.maven:flib-661261:${flib_file}")
-    implementation fg.deobf("curse.maven:lets-do-vinery-704465:${lets_do_vinery_file}")
-    implementation fg.deobf("curse.maven:lets-do-bakery-886559:${lets_do_bakery_file}")
-    implementation fg.deobf("curse.maven:lets-do-brewery-971636:${lets_do_brewery_file}")
-    implementation fg.deobf("curse.maven:lets-do-candlelight-846962:${lets_do_candlelight_file}")
-    implementation fg.deobf("curse.maven:lets-do-meadow-821483:${lets_do_meadow_file}")
-    implementation fg.deobf("curse.maven:do-api-864599:${lets_do_api_file}")
-    implementation fg.deobf("curse.maven:the-undergarden-379849:${the_undergarden_file}")
-    implementation fg.deobf("curse.maven:oreberries-replanted-454062:${oreberries_file}")
-    implementation fg.deobf("curse.maven:reliquary-reincarnations-241319:${reliquary_file}")
-    implementation fg.deobf("curse.maven:refined-storage-243076:${refined_storage_file}")
-    implementation fg.deobf("appeng:appliedenergistics2-forge:${appliedenergistics2_version}")
-    implementation fg.deobf("curse.maven:simple-storage-network-268495:${simple_storage_network_file}")
-    implementation fg.deobf("curse.maven:ewewukeks-musket-mod-354562:${ewewukeks_musket_file}")
-    implementation fg.deobf("blank:butchersdelight:${butchersdelight_version}")
-    implementation fg.deobf("blank:butchersdelight_foods:${butchersdelight_foods_version}")
-    implementation fg.deobf("curse.maven:butchercraft-265715:${butchercraft_file}")
-    implementation fg.deobf("curse.maven:blueprint-382216:${blueprint_file}")
-    implementation fg.deobf("curse.maven:atmospheric-362393:${atmospheric_file}")
-    implementation fg.deobf("curse.maven:neapolitan-382016:${neapolitan_file}")
-    implementation fg.deobf("curse.maven:tinkers-construct-74072:${tinkersconstruct_file}")
-    implementation fg.deobf("curse.maven:mantle-74924:${mantle_file}")
-    implementation fg.deobf("curse.maven:kiwi-303657:${kiwi_file}")
-    implementation fg.deobf("curse.maven:lychee-567403:${lychee_file}")
-    implementation fg.deobf("curse.maven:fruit-trees-355467:${fruit_trees_file}")
-    implementation fg.deobf("curse.maven:storage-drawers-223852:${storagedrawers_file}")
-    implementation fg.deobf("curse.maven:titanium-287342:${titanium_file}")
-    implementation fg.deobf("curse.maven:functional-storage-556861:${functionalstorage_file}")
-    implementation fg.deobf("curse.maven:tinkers-levelling-addon-709416:${tinkerslevelingaddon_file}")
-    implementation fg.deobf("curse.maven:collectors-reap-807101:${collectorsreap_file}")
-    implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:${tacz_file}-sources-${tacz_source_file}")
-    implementation fg.deobf("curse.maven:jade-324717:${jade_file}")
+    implementation "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    implementation "thedarkcolour:kotlinforforge-neoforge:${kotlin_for_forge_version}"
+    implementation "curse.maven:geckolib-388172:${geckolib_file}"
+    implementation "curse.maven:curios-309927:${curios_file}"
+    implementation "curse.maven:polymorph-388800:${polymorph_file}"
+    implementation "blusunrize.immersiveengineering:ImmersiveEngineering:${mc_version}-${immersive_engineering_version}"
+    implementation "malte0811:DualCodecs:${dualcodecs_version}";
+    implementation "curse.maven:croptopia-415438:${croptopia_file}"
+    implementation "curse.maven:epherolib-885449:${epherolib_file}"
+    implementation "curse.maven:pams-harvestcraft-2-trees-365460:${pamhc2trees_file}"
+    implementation "curse.maven:farmers-delight-398521:${farmers_delight_file})"
+    implementation "curse.maven:ars-nouveau-401955:${ars_nouveau_file}"
+    implementation "curse.maven:regions-unexplored-659110:${regions_unexplored_file}"
+    implementation "curse.maven:terrablender-940057:${terrablender_file}"
+    implementation "curse.maven:cobblemon-687131:${cobblemon_file}"
+    implementation "curse.maven:aether-255308:${aether_file}"
+    implementation "curse.maven:accessories-938917:${accessories_file}"
+    implementation "curse.maven:owo-lib-532610:${owolib_file}"
+    implementation "curse.maven:the-undergarden-379849:${the_undergarden_file}"
+    implementation "curse.maven:oreberries-replanted-454062:${oreberries_file}"
+    implementation "curse.maven:reliquary-reincarnations-241319:${reliquary_file}"
+    implementation "curse.maven:ewewukeks-musket-mod-354562:${ewewukeks_musket_file}"
+    implementation "curse.maven:cloth-config-348521:${cloth_config_file}"
+    implementation "curse.maven:butchercraft-265715:${butchercraft_file}"
+    implementation "curse.maven:blueprint-382216:${blueprint_file}"
+    implementation "curse.maven:atmospheric-362393:${atmospheric_file}"
+    implementation "curse.maven:neapolitan-382016:${neapolitan_file}"
+    implementation "curse.maven:jade-324717:${jade_file}"
 
-    // Runtime Only
-    runtimeOnly fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")
-    runtimeOnly fg.deobf("curse.maven:configured-457570:${configured_file}")
+    // Runtiem Only
+    runtimeOnly "mekanism:Mekanism:${mc_version}-${mekanism_version}"
+    runtimeOnly "curse.maven:configured-457570:${configured_file}"
 }
 
-mixin {
-    add sourceSets.main, "${mod_id}.mixin.refmap.json"
-    config "${mod_id}.mixin.common.json"
-    config "${mod_id}.mixin.client.json"
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-    options.release = 17
-}
-
-java {
-    withSourcesJar()
-}
-
-def resourceTargets = ["META-INF/mods.toml", "*.json"]
-def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
-def replaceProperties = [mc_version: mc_version,
-    mod_id: mod_id, mod_version: mod_version, mod_name: mod_name, mod_description: mod_description, mod_license: mod_license, mod_homepage: mod_homepage, mod_source: mod_source, mod_issues: mod_issues,
-    forge_api_version: forge_api_version, forge_loader_version: forge_loader_version, forge_api_version_range: forge_api_version_range,
-    minecolonies_version: minecolonies_version, minecolonies_tweaks_version: minecolonies_tweaks_version
-]
-
-processResources {
+tasks.withType(ProcessResources).configureEach {
+    var resourceTargets = ["META-INF/neoforge.mods.toml", "*.json"]
+    var intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]
+    var replaceProperties = [mc_version: mc_version,
+        mod_id: mod_id, mod_version: mod_version, mod_name: mod_name, mod_description: mod_description, mod_license: mod_license, mod_homepage: mod_homepage, mod_source: mod_source, mod_issues: mod_issues,
+        neoforge_api_version: neoforge_api_version, neoforge_api_version_range: neoforge_api_version_range, neoforge_loader_version: neoforge_loader_version,
+        minecolonies_version: minecolonies_version
+    ]
     inputs.properties replaceProperties
-    replaceProperties.put "project", project
 
     filesMatching(resourceTargets) {
-        expand replaceProperties
+        expand replaceProperties + [project: project]
     }
 
     intoTargets.each { target ->
@@ -230,21 +146,6 @@ processResources {
     }
 }
 
-jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "${mod_id}",
-                "Specification-Vendor"    : "gisellevonbingen",
-                "Specification-Version"   : "1",
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "gisellevonbingen",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
-    if (project.hasProperty("buildWithSource")) {
-        from sourceSets.main.java
-    }
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
 }
-
-jar.finalizedBy("reobfJar")

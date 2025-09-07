@@ -2,7 +2,7 @@ package steve_gall.minecolonies_compatibility.module.common.butchercraft.buildin
 
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.network.GrinderOpenTeachMessage;
 
 public class GrinderCraftingModuleView extends CraftingModuleView
@@ -15,7 +15,7 @@ public class GrinderCraftingModuleView extends CraftingModuleView
 	@Override
 	public void openCraftingGUI()
 	{
-		MineColoniesCompatibility.network().sendToServer(new GrinderOpenTeachMessage(this));
+		PacketDistributor.sendToServer(new GrinderOpenTeachMessage(this));
 	}
 
 }

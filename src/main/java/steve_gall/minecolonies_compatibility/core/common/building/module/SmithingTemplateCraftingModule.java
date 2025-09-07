@@ -13,11 +13,12 @@ import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.util.InventoryUtils;
 import com.minecolonies.core.colony.buildings.modules.AbstractCraftingBuildingModule;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingTemplateRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackCounter;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
@@ -95,24 +96,24 @@ public class SmithingTemplateCraftingModule extends AbstractCraftingBuildingModu
 	}
 
 	@Override
-	public void deserializeNBT(CompoundTag compound)
+	public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
-		super.deserializeNBT(compound);
+		super.deserializeNBT(provider, compound);
 
-		this.inventory.deserializeNBT(compound.getCompound(TAG_INVENTORY));
+		this.inventory.deserializeNBT(provider, compound.getCompound(TAG_INVENTORY));
 		this.refreshCounter();
 	}
 
 	@Override
-	public void serializeNBT(@NotNull CompoundTag compound)
+	public void serializeNBT(HolderLookup.Provider provider, CompoundTag compound)
 	{
-		super.serializeNBT(compound);
+		super.serializeNBT(provider, compound);
 
-		compound.put(TAG_INVENTORY, this.inventory.serializeNBT());
+		compound.put(TAG_INVENTORY, this.inventory.serializeNBT(provider));
 	}
 
 	@Override
-	public void serializeToView(@NotNull FriendlyByteBuf buf, boolean fullSync)
+	public void serializeToView(RegistryFriendlyByteBuf buf, boolean fullSync)
 	{
 		super.serializeToView(buf, fullSync);
 

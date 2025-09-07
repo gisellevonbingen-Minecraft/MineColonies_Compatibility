@@ -7,7 +7,7 @@ import com.minecolonies.api.util.BlockPosUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 
@@ -77,20 +77,20 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		return tag;
 	}
 
-	public boolean read(FriendlyByteBuf buffer)
+	public boolean read(RegistryFriendlyByteBuf buffer)
 	{
 		var colonyId = this.colonyId;
 		var warehousePos = this.warehousePos;
 		this.colonyId = buffer.readInt();
-		this.warehousePos = buffer.readOptional(FriendlyByteBuf::readBlockPos);
+		this.warehousePos = buffer.readOptional(RegistryFriendlyByteBuf::readBlockPos);
 
 		return this.colonyId != colonyId || !this.warehousePos.equals(warehousePos);
 	}
 
-	public void write(FriendlyByteBuf buffer)
+	public void write(RegistryFriendlyByteBuf buffer)
 	{
 		buffer.writeInt(this.colonyId);
-		buffer.writeOptional(this.warehousePos, FriendlyByteBuf::writeBlockPos);
+		buffer.writeOptional(this.warehousePos, RegistryFriendlyByteBuf::writeBlockPos);
 	}
 
 	@Override

@@ -8,9 +8,11 @@ import org.jetbrains.annotations.NotNull;
 import com.minecolonies.api.crafting.IGenericRecipe;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootTable;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
 public abstract class GenericedRecipeStorage<GENERIC extends IGenericRecipe> implements ICustomizedRecipeStorage
@@ -61,7 +63,7 @@ public abstract class GenericedRecipeStorage<GENERIC extends IGenericRecipe> imp
 	}
 
 	@Override
-	public ResourceLocation getLootTable()
+	public ResourceKey<LootTable> getLootTable()
 	{
 		return this.getGenericRecipe().getLootTable();
 	}

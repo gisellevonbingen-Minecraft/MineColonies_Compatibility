@@ -2,7 +2,7 @@ package steve_gall.minecolonies_compatibility.module.common;
 
 import java.util.function.Supplier;
 
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
 public class LetsDoLegacyModule<MODULE extends AbstractModule> extends OptionalModule<MODULE>
 {

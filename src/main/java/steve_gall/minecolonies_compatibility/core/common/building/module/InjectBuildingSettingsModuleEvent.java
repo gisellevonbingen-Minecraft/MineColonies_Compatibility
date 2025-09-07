@@ -10,7 +10,7 @@ import com.minecolonies.api.colony.buildings.modules.settings.ISettingsModuleVie
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry.ModuleProducer;
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
 public class InjectBuildingSettingsModuleEvent extends Event
 {

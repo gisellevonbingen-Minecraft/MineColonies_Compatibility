@@ -1,13 +1,13 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.guard;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 
 public class RangerConfig
 {
 	public final BooleanValue canShootFireworkRocket;
 
-	public RangerConfig(ForgeConfigSpec.Builder builder)
+	public RangerConfig(ModConfigSpec.Builder builder)
 	{
 		this.canShootFireworkRocket = builder.define("canShootFireworkRocket", true);
 	}

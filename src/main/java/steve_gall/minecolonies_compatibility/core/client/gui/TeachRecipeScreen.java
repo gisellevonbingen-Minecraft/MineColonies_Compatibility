@@ -3,7 +3,7 @@ package steve_gall.minecolonies_compatibility.core.client.gui;
 import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
-import com.minecolonies.api.util.constant.Constants;
+import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.api.util.constant.translation.BaseGameTranslationConstants;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,20 +13,19 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemHandlerHelper2;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuSwitchingMessage;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 
-public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RECIPE> extends AbstractContainerScreen<MENU>
+public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE, ?>, RECIPE> extends AbstractContainerScreen<MENU>
 {
 	public static final Component TEXT_DONE = Component.translatable(BaseGameTranslationConstants.BASE_GUI_DONE);
 
-	public static final ResourceLocation SWITCH_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/craftingswitch.png");
-	public static final int SWITCH_WIDTH = 20;
-	public static final int SWITCH_HEIGHT = 18;
+	public static final int SWITCH_WIDTH = WindowConstants.CRAFTING_SWITCH_SIZE.width;
+	public static final int SWITCH_HEIGHT = WindowConstants.CRAFTING_SWITCH_SIZE.height;
 	public static final int SWITCH_X_OFFSET = 148;
 	public static final int SWITCH_Y_OFFSET = 43 - (SWITCH_HEIGHT / 2);
 
@@ -49,9 +48,9 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 		this.doneButton.active = false;
 		this.addRenderableWidget(this.doneButton);
 
-		this.switchButton = new ImageButton(this.leftPos + this.getSwitchButtonX(), this.topPos + this.getSwitchButtonY(), SWITCH_WIDTH, SWITCH_HEIGHT, 0, 0, SWITCH_HEIGHT + 1, SWITCH_TEXTURE, btn ->
+		this.switchButton = new ImageButton(this.leftPos + this.getSwitchButtonX(), this.topPos + this.getSwitchButtonY(), SWITCH_WIDTH, SWITCH_HEIGHT, WindowConstants.CRAFTING_SWITCH, btn ->
 		{
-			MineColoniesCompatibility.network().sendToServer(new TeachRecipeMenuSwitchingMessage());
+			PacketDistributor.sendToServer(new TeachRecipeMenuSwitchingMessage());
 		});
 		this.switchButton.visible = false;
 		this.addRenderableWidget(this.switchButton);
@@ -70,8 +69,6 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks)
 	{
-		this.renderBackground(graphics);
-
 		super.render(graphics, mouseX, mouseY, partialTicks);
 
 		if (this.lastError != null)

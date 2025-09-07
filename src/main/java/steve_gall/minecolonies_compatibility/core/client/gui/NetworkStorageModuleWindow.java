@@ -19,9 +19,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
 import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModuleView;
 import steve_gall.minecolonies_compatibility.core.common.network.message.NetworkStorageRefreshMessage;
 
@@ -68,7 +68,7 @@ public class NetworkStorageModuleWindow extends AbstractModuleWindow
 
 			if (this.refreshTicks % 20 == 0)
 			{
-				MineColoniesCompatibility.network().sendToServer(new NetworkStorageRefreshMessage(this.module));
+				PacketDistributor.sendToServer(new NetworkStorageRefreshMessage(this.module));
 			}
 
 			if (this.refreshTicks == 0)
@@ -94,7 +94,7 @@ public class NetworkStorageModuleWindow extends AbstractModuleWindow
 
 		if (button.getID().equals(BUTTON_REFRESH))
 		{
-			MineColoniesCompatibility.network().sendToServer(new NetworkStorageRefreshMessage(this.module));
+			PacketDistributor.sendToServer(new NetworkStorageRefreshMessage(this.module));
 
 			button.setEnabled(false);
 			button.setText(TEXT_REFRESHING);

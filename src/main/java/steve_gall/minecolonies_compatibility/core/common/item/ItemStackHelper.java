@@ -52,7 +52,7 @@ public class ItemStackHelper
 
 	public static @NotNull EquipmentTypeEntry getFirstToolType(@NotNull ItemStack stack)
 	{
-		for (var toolType : IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getValues())
+		for (var toolType : IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry())
 		{
 			if (toolType == ModEquipmentTypes.none.get())
 			{

@@ -1,8 +1,8 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public class ButcherConfig
 {
@@ -11,7 +11,7 @@ public class ButcherConfig
 	public final IntValue workDelay;
 	public final DoubleValue workDelayReducePerSkillLevel;
 
-	public ButcherConfig(ForgeConfigSpec.Builder builder)
+	public ButcherConfig(ModConfigSpec.Builder builder)
 	{
 		this.searchDelayAfterNotFound = builder.defineInRange("searchDelayAfterNotFound", 400, 0, Integer.MAX_VALUE);
 

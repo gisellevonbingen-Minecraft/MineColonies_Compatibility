@@ -4,8 +4,8 @@ import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.core.entity.pathfinding.navigation.MinecoloniesAdvancedPathNavigate;
 
 import net.minecraft.util.Mth;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 
 public class MoveSpeedConfig
 {
@@ -13,7 +13,7 @@ public class MoveSpeedConfig
 	public final DoubleValue increasePerSkillLevel;
 	public final DoubleValue increasePerBuildingLevel;
 
-	public MoveSpeedConfig(ForgeConfigSpec.Builder builder, DefaultValues defaultValues)
+	public MoveSpeedConfig(ModConfigSpec.Builder builder, DefaultValues defaultValues)
 	{
 		this.base = builder.defineInRange("base", defaultValues.base(), MinecoloniesAdvancedPathNavigate.MIN_SPEED_ALLOWED, MinecoloniesAdvancedPathNavigate.MAX_SPEED_ALLOWED);
 		this.increasePerSkillLevel = builder.defineInRange("increasePerSkillLevel", defaultValues.increasePerSkillLevel(), 0, 24.0D);

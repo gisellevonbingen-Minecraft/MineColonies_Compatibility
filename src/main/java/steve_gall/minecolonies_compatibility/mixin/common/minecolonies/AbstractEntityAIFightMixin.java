@@ -18,7 +18,6 @@ import com.minecolonies.core.entity.ai.workers.AbstractEntityAIInteract;
 import com.minecolonies.core.entity.ai.workers.guard.AbstractEntityAIFight;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 
 @Mixin(value = AbstractEntityAIFight.class, remap = false)
@@ -55,7 +54,7 @@ public abstract class AbstractEntityAIFightMixin<J extends AbstractJobGuard<J>, 
 
 			if (system != null && system.isBroken(armor))
 			{
-				if (InventoryUtils.transferItemStackIntoNextBestSlotInItemHandler(armor, this.getBuildingToDump().getCapability(ForgeCapabilities.ITEM_HANDLER, null).orElseGet(null)))
+				if (InventoryUtils.transferItemStackIntoNextBestSlotInItemHandler(armor, this.getBuildingToDump().getItemHandlerCap()))
 				{
 					inventory.forceClearArmorInSlot(slot, armor);
 				}

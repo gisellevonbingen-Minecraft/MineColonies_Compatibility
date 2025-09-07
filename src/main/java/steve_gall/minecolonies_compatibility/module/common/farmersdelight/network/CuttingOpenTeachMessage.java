@@ -5,15 +5,19 @@ import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
 import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.network.message.ModuleMenuOpenMessage;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.menu.CuttingTeachMenu;
 
 public class CuttingOpenTeachMessage extends ModuleMenuOpenMessage
 {
+	public static final CustomPacketPayload.Type<CuttingOpenTeachMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesCompatibility.rl("farmerdelight_cutting_open_teach"));
+
 	private final EquipmentTypeEntry toolType;
 
 	public CuttingOpenTeachMessage(IBuildingModuleView module, EquipmentTypeEntry toolType)
@@ -23,19 +27,19 @@ public class CuttingOpenTeachMessage extends ModuleMenuOpenMessage
 		this.toolType = toolType;
 	}
 
-	public CuttingOpenTeachMessage(FriendlyByteBuf buffer)
+	public CuttingOpenTeachMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
-		this.toolType = buffer.readRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry());
+		this.toolType = IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().get(buffer.readResourceLocation());
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
-		buffer.writeRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry(), this.toolType);
+		buffer.writeResourceLocation(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getKey(this.toolType));
 	}
 
 	@Override
@@ -45,11 +49,17 @@ public class CuttingOpenTeachMessage extends ModuleMenuOpenMessage
 	}
 
 	@Override
-	protected void toBuffer(FriendlyByteBuf buffer, IBuildingModule module)
+	protected void toBuffer(RegistryFriendlyByteBuf buffer, IBuildingModule module)
 	{
 		super.toBuffer(buffer, module);
 
-		buffer.writeRegistryIdUnsafe(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry(), this.getToolType());
+		buffer.writeResourceLocation(IMinecoloniesAPI.getInstance().getEquipmentTypeRegistry().getKey(this.getToolType()));
+	}
+
+	@Override
+	public CustomPacketPayload.Type<CuttingOpenTeachMessage> type()
+	{
+		return TYPE;
 	}
 
 	public EquipmentTypeEntry getToolType()

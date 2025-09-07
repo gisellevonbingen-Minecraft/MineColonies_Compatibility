@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
+
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +20,7 @@ public class IngredientDeliverable implements IDeliverableObject
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("ingredient");
 
-	public static IngredientDeliverable deserialize(@NotNull CompoundTag tag)
+	public static IngredientDeliverable deserialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag)
 	{
 		var ingredient = IngredientHelper.fromJson(tag.getString("ingredient"));
 		var description = tag.getString("description");
@@ -26,7 +29,7 @@ public class IngredientDeliverable implements IDeliverableObject
 		return new IngredientDeliverable(ingredient, description, count, minCount);
 	}
 
-	public static void serialize(@NotNull IngredientDeliverable request, @NotNull CompoundTag tag)
+	public static void serialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag, @NotNull IngredientDeliverable request)
 	{
 		tag.putString("ingredient", IngredientHelper.toJson(request.ingredient));
 		tag.putString("description", request.description);

@@ -1,12 +1,16 @@
 package steve_gall.minecolonies_compatibility.core.common.network.message;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModule;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModuleView;
+import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
 public class RestrictSetEnabledMessage extends BuildingModuleMessage
 {
+	public static final CustomPacketPayload.Type<RestrictSetEnabledMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesCompatibility.rl("restrict_set_enabled"));
+
 	private final boolean enabled;
 
 	public RestrictSetEnabledMessage(IRestrictableModuleView module, boolean enabled)
@@ -16,7 +20,7 @@ public class RestrictSetEnabledMessage extends BuildingModuleMessage
 		this.enabled = enabled;
 	}
 
-	public RestrictSetEnabledMessage(FriendlyByteBuf buffer)
+	public RestrictSetEnabledMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
@@ -24,7 +28,7 @@ public class RestrictSetEnabledMessage extends BuildingModuleMessage
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buffer)
+	public void encode(RegistryFriendlyByteBuf buffer)
 	{
 		super.encode(buffer);
 
@@ -32,7 +36,7 @@ public class RestrictSetEnabledMessage extends BuildingModuleMessage
 	}
 
 	@Override
-	public void handle(NetworkEvent.Context context)
+	public void handle(IPayloadContext context)
 	{
 		super.handle(context);
 
@@ -41,6 +45,12 @@ public class RestrictSetEnabledMessage extends BuildingModuleMessage
 			module.setRestrictEnabled(this.enabled);
 		}
 
+	}
+
+	@Override
+	public CustomPacketPayload.Type<RestrictSetEnabledMessage> type()
+	{
+		return TYPE;
 	}
 
 	public boolean isRestrictEnabled()

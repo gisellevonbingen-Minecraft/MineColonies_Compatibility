@@ -15,15 +15,14 @@ function generate(foods) {
 		}
 	}
 	for (let tier in files) {
-		fs.writeFile(`output/${tier}.json`, JSON.stringify(files[tier], null, 4).replaceAll("    ", "\t"), "utf8", () => { });
+		let fileName = tier == "excluded" ? "excluded_food" : tier;
+		fs.writeFile(`output/${fileName}.json`, JSON.stringify(files[tier], null, 4).replaceAll("    ", "\t"), "utf8", () => { });
 	}
 }
 
 let foods = {
 	"corn_delight": {
 		"excluded": [
-			"nachos",
-			"nachos_block"
 		],
 		"fine_food": [
 			"boiled_corn",
@@ -40,7 +39,9 @@ let foods = {
 			"creamy_corn_drink",
 			"taco"
 		],
-		"great_food": []
+		"great_food": [
+			"nachos",
+			"nachos_block"]
 	},
 	"create": {
 		"excluded": [],
@@ -93,8 +94,6 @@ let foods = {
 	},
 	"delightful": {
 		"excluded": [
-			"stuffed_cantaloupe",
-			"stuffed_cantaloupe_block"
 		],
 		"fine_food": [
 			"cactus_steak",
@@ -132,19 +131,14 @@ let foods = {
 			"salmonberry_ice_cream",
 			"salmonberry_milkshake",
 			"sinigang",
-			"smore"
+			"smore",
+			"stuffed_cantaloupe",
+			"stuffed_cantaloupe_block"
 		]
 	},
 	"farmersdelight": {
 		"excluded": [
-			"honey_glazed_ham",
-			"honey_glazed_ham_block",
-			"roast_chicken",
-			"roast_chicken_block",
-			"shepherds_pie",
-			"shepherds_pie_block",
-			"stuffed_pumpkin",
-			"stuffed_pumpkin_block"
+			"dog_food"
 		],
 		"fine_food": [
 			"bacon_sandwich",
@@ -192,13 +186,21 @@ let foods = {
 			"baked_cod_stew",
 			"chicken_soup",
 			"fried_rice",
+			"honey_glazed_ham",
+			"honey_glazed_ham_block",
 			"noodle_soup",
 			"pasta_with_meatballs",
 			"pasta_with_mutton_chop",
 			"pumpkin_soup",
+			"roast_chicken",
+			"roast_chicken_block",
 			"roasted_mutton_chops",
+			"shepherds_pie",
+			"shepherds_pie_block",
 			"squid_ink_pasta",
 			"steak_and_potatoes",
+			"stuffed_pumpkin",
+			"stuffed_pumpkin_block",
 			"vegetable_noodles"
 		]
 	},
@@ -248,12 +250,6 @@ let foods = {
 	},
 	"largemeals": {
 		"excluded": [
-			"mushroom_pot_pie",
-			"mushroom_pot_pie_block",
-			"omurice",
-			"omurice_block",
-			"roasted_mutton_rack",
-			"roasted_mutton_rack_block"
 		],
 		"fine_food": [
 			"cooked_mutton_rack"
@@ -269,8 +265,14 @@ let foods = {
 		"great_food": [
 			"chicken_curry",
 			"hearty_lunch",
+			"mushroom_pot_pie",
+			"mushroom_pot_pie_block",
+			"omurice",
+			"omurice_block",
 			"pasta_with_mushroom_sauce",
-			"pufferfish_broth"
+			"pufferfish_broth",
+			"roasted_mutton_rack",
+			"roasted_mutton_rack_block"
 		]
 	},
 	"moredelight": {

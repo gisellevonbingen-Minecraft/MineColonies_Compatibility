@@ -25,9 +25,9 @@ public abstract class CustomizableEntityAIGuard<J extends AbstractJobGuard<J>, B
 		{
 			guard.tick(this.worker);
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void atBuildingActions()
 	{

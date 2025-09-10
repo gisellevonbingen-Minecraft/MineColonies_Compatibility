@@ -3,6 +3,9 @@ package steve_gall.minecolonies_compatibility.api.common.crafting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
@@ -42,7 +45,26 @@ public abstract class SimpleContainerRecipeStorage<GENERIC_RECIPE extends Simple
 		return input;
 	}
 
+	public int hashCode()
+	{
+		return Objects.hash(super.hashCode(), this.container);
+	}
+
 	@Override
+	public boolean equals(@NotNull Object o)
+	{
+		if (this == o)
+		{
+			return true;
+		}
+		else if (o instanceof SimpleContainerRecipeStorage other)
+		{
+			return super.equals(other) && this.container.equals(other.container);
+		}
+
+		return false;
+	}
+
 	public void serialize(CompoundTag tag)
 	{
 		super.serialize(tag);

@@ -46,7 +46,12 @@ public class SimpleGenericRecipe implements IGenericRecipe
 		this.recipeId = recipeId;
 		this.input = new ArrayList<>(ingredients);
 		this.output = output;
-		this.additionalOutputs = GenericRecipeHelper.getAdditionalOutputs(ingredients);
+		this.additionalOutputs = GenericRecipeHelper.getAdditionalOutputs(ingredients, this::getCraftingRemainingItem);
+	}
+
+	public ItemStack getCraftingRemainingItem(ItemStack stack)
+	{
+		return stack.getCraftingRemainingItem();
 	}
 
 	@Override

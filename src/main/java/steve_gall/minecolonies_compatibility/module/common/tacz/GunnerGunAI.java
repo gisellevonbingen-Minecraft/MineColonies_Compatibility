@@ -142,7 +142,7 @@ public class GunnerGunAI extends CustomizedAIGunner
 			var operator = IGunOperator.fromLivingEntity(user);
 			operator.reload();
 		}
-		
+
 		return true;
 	}
 

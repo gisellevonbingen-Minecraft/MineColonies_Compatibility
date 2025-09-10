@@ -47,6 +47,7 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModBlocks;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModCraftingTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
+import steve_gall.minecolonies_compatibility.core.common.init.ModInteractions;
 import steve_gall.minecolonies_compatibility.core.common.init.ModItems;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
@@ -78,6 +79,7 @@ public class MineColoniesCompatibility
 		ModJobs.REGISTER.register(fml_bus);
 		ModCraftingTypes.REGISTER.register(fml_bus);
 		ModMenuTypes.REGISTER.register(fml_bus);
+		ModInteractions.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
 		fml_bus.addListener(this::onFMLClientSetup);
 		fml_bus.addListener(this::onCustomToolTypeRegister);

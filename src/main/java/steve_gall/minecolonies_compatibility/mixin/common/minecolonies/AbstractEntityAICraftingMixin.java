@@ -11,10 +11,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.minecolonies.api.colony.interactionhandling.ChatPriority;
+import com.minecolonies.api.colony.requestsystem.request.IRequest;
+import com.minecolonies.api.colony.requestsystem.requestable.crafting.PublicCrafting;
 import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.entity.ai.statemachine.states.IAIState;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
-import com.minecolonies.core.colony.interactionhandling.StandardInteraction;
 import com.minecolonies.core.colony.jobs.AbstractJobCrafter;
 import com.minecolonies.core.entity.ai.basic.AbstractEntityAICrafting;
 import com.minecolonies.core.entity.ai.basic.AbstractEntityAIInteract;
@@ -22,10 +23,13 @@ import com.minecolonies.core.entity.ai.basic.AbstractEntityAIInteract;
 import net.minecraft.core.BlockPos;
 import steve_gall.minecolonies_compatibility.api.common.building.module.ICraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.api.common.building.module.ICraftingResultListenerModule;
+import steve_gall.minecolonies_compatibility.core.common.colony.WorkingBlockInteraction;
 
 @Mixin(value = AbstractEntityAICrafting.class, remap = false)
 public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter<?, J>, B extends AbstractBuilding> extends AbstractEntityAIInteract<J, B>
 {
+	@Shadow(remap = false)
+	private IRequest<? extends PublicCrafting> currentRequest;
 	@Shadow(remap = false)
 	private IRecipeStorage currentRecipeStorage;
 
@@ -44,6 +48,7 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 	@WrapOperation(method = "craft", remap = false, at = @At(value = "INVOKE", target = "walkToBuilding"))
 	protected boolean craft_walkToBuilding(AbstractEntityAICrafting<J, B> self, Operation<Boolean> operation)
 	{
+		var request = this.currentRequest;
 		var recipeStorage = this.currentRecipeStorage;
 
 		if (this.building.getCraftingModuleForRecipe(recipeStorage.getToken()) instanceof ICraftingModuleWithExternalWorkingBlocks module && module.needWorkingBlock(recipeStorage))
@@ -60,7 +65,7 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 			}
 			else
 			{
-				this.worker.getCitizenData().triggerInteraction(new StandardInteraction(module.getWorkingBlockNotFoundMessage(recipeStorage), ChatPriority.BLOCKING));
+				this.worker.getCitizenData().triggerInteraction(new WorkingBlockInteraction(ChatPriority.BLOCKING, module, recipeStorage, request));
 				this.walkToBuilding();
 				return true;
 			}

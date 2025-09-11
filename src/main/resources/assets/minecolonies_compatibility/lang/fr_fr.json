@@ -131,7 +131,7 @@
 	"minecolonies_compatibility.interaction.no_fluid_source": "Ma cabane de travail n'a pas de Réservoir de Liquide avec %1$s ou de liquide %1$s ! Merci d'en placer un pour que je puisse l'utiliser !",
 	"minecolonies_compatibility.interaction.no_lets_do_bakery_stove": "Ma cabane de travail n'a pas de Cuisinière ou de Four de [Let's Do] Boulangerie ! Merci d'en placer un pour que je puisse l'utiliser !",
 	"minecolonies_compatibility.interaction.no_lets_do_brewery_silo": "Ma cabane de travail n'a pas de Silo de [Let's Do] Brasserie ! Merci d'en placer un pour que je puisse l'utiliser !",
-	"minecolonies_compatibility.interaction.no_butchercraft_grinder_with_attachment": "Ma cabane de travail n'a pas de %1$s %2$s avec %3$s attaché ! Merci d'en placer un pour que je puisse l'utiliser !"
+	"minecolonies_compatibility.interaction.no_butchercraft_grinder_with_attachment": "Ma cabane de travail n'a pas de %1$s %2$s avec %3$s attaché ! Merci d'en placer un pour que je puisse l'utiliser !",
 	
 	"_eof": "EOF"
 }

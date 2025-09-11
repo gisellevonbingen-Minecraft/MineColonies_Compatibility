@@ -30,7 +30,6 @@
 		"minecolonies.EntityAIWorkFarmerMixin",
 		"minecolonies.GenericRecipeCategoryMixin",
 		"minecolonies.ItemStackUtilsMixin",
-		"minecolonies.JobEntryMixin",
 		"minecolonies.KnightCombatAIMixin",
 		"minecolonies.PrivateCraftingTeachingTransferHandlerMixin",
 		"minecolonies.PrivateWorkerCraftingRequestResolverMixin",

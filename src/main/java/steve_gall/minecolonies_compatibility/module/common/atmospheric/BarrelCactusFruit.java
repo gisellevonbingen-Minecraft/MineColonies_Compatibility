@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -77,7 +78,7 @@ public class BarrelCactusFruit extends CustomizedFruit
 	@Override
 	public @NotNull SoundEvent getHarvestSound(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getSoundType().getBreakSound();
+		return SoundType.WOOL.getBreakSound();
 	}
 
 }

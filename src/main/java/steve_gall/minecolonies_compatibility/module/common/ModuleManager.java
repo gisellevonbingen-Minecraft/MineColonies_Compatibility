@@ -72,6 +72,7 @@ public class ModuleManager
 	public static final OptionalModule<ButchercraftModule> BUTCHERCRAFT = register("butchercraft", () -> ButchercraftModule::new);
 	public static final OptionalModule<ButchersDelightModule> BUTCHERSDELIGHT = register("butchersdelight", () -> ButchersDelightModule::new);
 	public static final OptionalModule<AbstractModule> BUTCHERSDELIGHTFOODS = register("butchersdelightfoods", () -> AbstractModule::new);
+	public static final OptionalModule<CobblemonModule> COBBLEMON = register("cobblemon", () -> CobblemonModule::new);
 	public static final OptionalModule<CollectorsReapModule> COLLECTORSREAP = register("collectorsreap", () -> CollectorsReapModule::new);
 	public static final OptionalModule<CroptopiaModule> CROPTOPIA = register("croptopia", () -> CroptopiaModule::new);
 	public static final OptionalModule<CyclicModule> CYCLIC = register("cyclic", () -> CyclicModule::new);
@@ -102,8 +103,6 @@ public class ModuleManager
 	public static final OptionalModule<ThermalModule> THERMAL = register("thermal", () -> ThermalModule::new);
 	public static final OptionalModule<TinkersLevellingAddonModule> TINKERSLEVELLINGADDON = register("tinkerslevellingaddon", () -> TinkersLevellingAddonModule::new);
 	public static final OptionalModule<UndergardenModule> UNDERGARDEN = register("undergarden", () -> UndergardenModule::new);
-
-	public static final OptionalModule<CobblemonModule> COBBLEMON = register("cobblemon", () -> CobblemonModule::new);
 
 	private static <MODULE extends AbstractModule> OptionalModule<MODULE> register(String modid, Supplier<Supplier<MODULE>> initializer)
 	{

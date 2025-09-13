@@ -1,0 +1,40 @@
+{
+	"values": [
+		{
+			"required": false,
+			"id": "reliquary:bullets/neutral_bullet"
+		},
+		{
+			"required": false,
+			"id": "reliquary:bullets/exorcism_bullet"
+		},
+		{
+			"required": false,
+			"id": "reliquary:bullets/blaze_bullet"
+		},
+		{
+			"required": false,
+			"id": "reliquary:bullets/ender_bullet"
+		},
+		{
+			"required": false,
+			"id": "reliquary:bullets/concussive_bullet"
+		},
+		{
+			"required": false,
+			"id": "reliquary:bullets/buster_bullet"
+		},
+		{
+			"required": false,
+			"id": "reliquary:bullets/seeker_bullet"
+		},
+		{
+			"required": false,
+			"id": "reliquary:bullets/sand_bullet"
+		},
+		{
+			"required": false,
+			"id": "reliquary:bullets/storm_bullet"
+		}
+	]
+}

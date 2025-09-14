@@ -10,7 +10,7 @@ sourceCompatibility = JavaVersion.VERSION_21
 targetCompatibility = JavaVersion.VERSION_21
 
 archivesBaseName = rootProject.archives_base_name
-version = "${rootProject.mc_version}-${rootProject.mod_version}"
+version = "${rootProject.mc_version}-" + (project.hasProperty("buildWithSource") ? "libs" : "${rootProject.mod_version}")
 group = rootProject.maven_group
 
 repositories {
@@ -148,4 +148,10 @@ tasks.withType(ProcessResources).configureEach {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
+}
+
+jar {
+    if (project.hasProperty("buildWithSource")) {
+        from sourceSets.main.java
+    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.MinecoloniesAPIProxy;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.core.entity.ai.citizen.blacksmith.EntityAIWorkBlacksmith;
 
 import net.minecraft.nbt.CompoundTag;
@@ -43,12 +44,12 @@ public class BrokenItem extends ToolSystemBrokenItem
 		return TConstructToolSystem.INSTANCE;
 	}
 
-	public static BrokenItem deserialize(@NotNull CompoundTag tag)
+	public static BrokenItem deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		return new BrokenItem(null);
 	}
 
-	public static void serialize(BrokenItem request, @NotNull CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, BrokenItem request)
 	{
 
 	}

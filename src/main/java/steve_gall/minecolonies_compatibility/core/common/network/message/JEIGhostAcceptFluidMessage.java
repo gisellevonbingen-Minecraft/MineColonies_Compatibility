@@ -4,7 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.NetworkEvent.Context;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IFluidGhostMenu;
-import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 
 public class JEIGhostAcceptFluidMessage extends AbstractMessage
 {
@@ -46,9 +46,7 @@ public class JEIGhostAcceptFluidMessage extends AbstractMessage
 			return;
 		}
 
-		var menu = player.containerMenu;
-
-		if (menu instanceof IFluidGhostMenu ghostMenu)
+		if (player.containerMenu instanceof IFluidGhostMenu ghostMenu)
 		{
 			ghostMenu.onGhostAcceptFluid(this.slotNumber, this.stack);
 		}

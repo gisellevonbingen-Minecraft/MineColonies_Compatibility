@@ -53,7 +53,7 @@ public class RestrictableModuleWindow extends AbstractModuleWindow
 		}
 		else if (button.getID().equals("giveTool"))
 		{
-			MineColoniesCompatibility.network().sendToServer(new RestrictGiveToolMessage(this.module, Component.translatable(this.module.getDesc())));
+			MineColoniesCompatibility.network().sendToServer(new RestrictGiveToolMessage(this.module, this.module.getDesc()));
 		}
 
 	}

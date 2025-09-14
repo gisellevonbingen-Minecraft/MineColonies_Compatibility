@@ -1,10 +1,12 @@
 package steve_gall.minecolonies_compatibility.core.common.network.message;
 
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
-import steve_gall.minecolonies_compatibility.core.common.network.AbstractMessage;
+import steve_gall.minecolonies_tweaks.api.common.network.AbstractMessage;
 
 public class JEIRecipeTransferMessage<RECIPE> extends AbstractMessage
 {
@@ -21,7 +23,7 @@ public class JEIRecipeTransferMessage<RECIPE> extends AbstractMessage
 	public JEIRecipeTransferMessage(IRecipeTransferableMenu<RECIPE> menu, RECIPE recipe, CompoundTag payload)
 	{
 		this.tag = new CompoundTag();
-		this.tag.put(RECIPE_TRANSFER_TAG_RECIPE, menu.getRecipeValidator().serialize(recipe));
+		this.tag.put(RECIPE_TRANSFER_TAG_RECIPE, menu.getRecipeValidator().serialize(StandardFactoryController.getInstance(), recipe));
 		this.tag.put(RECIPE_TRANSFER_TAG_PAYLOAD, payload);
 	}
 
@@ -50,7 +52,7 @@ public class JEIRecipeTransferMessage<RECIPE> extends AbstractMessage
 
 		if (player != null && player.containerMenu instanceof IRecipeTransferableMenu menu)
 		{
-			var recipe = menu.getRecipeValidator().deserialize(this.tag.getCompound(RECIPE_TRANSFER_TAG_RECIPE));
+			var recipe = menu.getRecipeValidator().deserialize(StandardFactoryController.getInstance(), this.tag.getCompound(RECIPE_TRANSFER_TAG_RECIPE));
 			var payload = this.tag.getCompound(RECIPE_TRANSFER_TAG_PAYLOAD);
 			menu.onRecipeTransfer(recipe, payload);
 		}

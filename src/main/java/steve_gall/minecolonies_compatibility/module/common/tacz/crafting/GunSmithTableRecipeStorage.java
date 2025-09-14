@@ -2,6 +2,7 @@ package steve_gall.minecolonies_compatibility.module.common.tacz.crafting;
 
 import java.util.List;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 
 import net.minecraft.nbt.CompoundTag;
@@ -14,9 +15,9 @@ public class GunSmithTableRecipeStorage extends SimpleRecipeStorage<GunSmithTabl
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("tacz_gun_smith_table");
 
-	public GunSmithTableRecipeStorage(CompoundTag tag)
+	public GunSmithTableRecipeStorage(IFactoryController controller, CompoundTag tag)
 	{
-		super(tag);
+		super(controller, tag);
 	}
 
 	public GunSmithTableRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingredients, ItemStack output)

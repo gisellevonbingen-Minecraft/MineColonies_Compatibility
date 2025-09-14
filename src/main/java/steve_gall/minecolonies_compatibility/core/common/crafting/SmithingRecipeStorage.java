@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
@@ -27,19 +27,19 @@ public class SmithingRecipeStorage implements ICustomizedRecipeStorage
 	public static final String TAG_ADDITION = "addition";
 	public static final String TAG_RESULT = "result";
 
-	public static void serialize(SmithingRecipeStorage recipe, CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, SmithingRecipeStorage recipe)
 	{
 		tag.putString(TAG_RECIPE_ID, recipe.recipeId.toString());
-		tag.put(TAG_BASE, StandardFactoryController.getInstance().serialize(recipe.base));
-		tag.put(TAG_ADDITION, StandardFactoryController.getInstance().serialize(recipe.addition));
+		tag.put(TAG_BASE, controller.serialize(recipe.base));
+		tag.put(TAG_ADDITION, controller.serialize(recipe.addition));
 		tag.put(TAG_RESULT, recipe.result.serializeNBT());
 	}
 
-	public static SmithingRecipeStorage deserialize(CompoundTag tag)
+	public static SmithingRecipeStorage deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var recipeId = new ResourceLocation(tag.getString(TAG_RECIPE_ID));
-		ItemStorage base = StandardFactoryController.getInstance().deserialize(tag.getCompound(TAG_BASE));
-		ItemStorage addition = StandardFactoryController.getInstance().deserialize(tag.getCompound(TAG_ADDITION));
+		ItemStorage base = controller.deserialize(tag.getCompound(TAG_BASE));
+		ItemStorage addition = controller.deserialize(tag.getCompound(TAG_ADDITION));
 		var result = ItemStack.of(tag.getCompound(TAG_RESULT));
 		return new SmithingRecipeStorage(recipeId, base, addition, result);
 	}

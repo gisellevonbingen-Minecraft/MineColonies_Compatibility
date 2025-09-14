@@ -2,6 +2,7 @@ package steve_gall.minecolonies_compatibility.module.common.lets_do_candlelight.
 
 import java.util.List;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 
 import net.minecraft.nbt.CompoundTag;
@@ -14,9 +15,9 @@ public class PanRecipeStorage extends SimpleContainerRecipeStorage<PanGenericRec
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("lets_do_candlelight_pan");
 
-	public PanRecipeStorage(CompoundTag tag)
+	public PanRecipeStorage(IFactoryController controller, CompoundTag tag)
 	{
-		super(tag);
+		super(controller, tag);
 	}
 
 	public PanRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingredients, ItemStorage container, ItemStack output)

@@ -5,8 +5,12 @@ import java.util.function.Consumer;
 import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
 
+/**
+ * {@link MinecraftForge#EVENT_BUS}
+ */
 public class AnimalHerdingToolEvent extends Event
 {
 	private final Animal animal;

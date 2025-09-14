@@ -14,6 +14,7 @@ import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 import com.tacz.guns.block.AbstractGunSmithTableBlock;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
@@ -41,7 +42,7 @@ public class GunSmithTableCraftingModule extends AbstractCraftingModuleWithExter
 	}
 
 	@Override
-	public boolean canBlockRecipeWorking(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
+	public boolean canBlockRecipeWorking(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
 	{
 		return super.canBlockRecipeWorking(level, pos, state, recipeStorage);
 	}

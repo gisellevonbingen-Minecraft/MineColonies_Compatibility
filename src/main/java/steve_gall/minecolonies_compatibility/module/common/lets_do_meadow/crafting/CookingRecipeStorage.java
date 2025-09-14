@@ -2,6 +2,7 @@ package steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.craft
 
 import java.util.List;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 
 import net.minecraft.nbt.CompoundTag;
@@ -14,9 +15,9 @@ public class CookingRecipeStorage extends SimpleRecipeStorage<CookingGenericReci
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("lets_do_meadow_cooking");
 
-	public CookingRecipeStorage(CompoundTag tag)
+	public CookingRecipeStorage(IFactoryController controller, CompoundTag tag)
 	{
-		super(tag);
+		super(controller, tag);
 	}
 
 	public CookingRecipeStorage(ResourceLocation recipeId, List<ItemStorage> ingredients, ItemStack output)

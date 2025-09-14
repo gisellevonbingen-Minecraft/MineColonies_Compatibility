@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -56,7 +58,7 @@ public abstract class MenuRecipeValidatorRecipe<RECIPE extends Recipe<CONTAINER>
 	}
 
 	@Override
-	public CompoundTag serialize(RECIPE recipe)
+	public CompoundTag serialize(IFactoryController controller, RECIPE recipe)
 	{
 		var tag = new CompoundTag();
 		tag.putString(TAG_ID, recipe.getId().toString());
@@ -65,7 +67,7 @@ public abstract class MenuRecipeValidatorRecipe<RECIPE extends Recipe<CONTAINER>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public RECIPE deserialize(CompoundTag tag)
+	public RECIPE deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var recipeId = new ResourceLocation(tag.getString(TAG_ID));
 		return (RECIPE) this.level.getRecipeManager().byKey(recipeId).orElse(null);

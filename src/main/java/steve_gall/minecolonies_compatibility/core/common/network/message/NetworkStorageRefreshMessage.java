@@ -28,13 +28,6 @@ public class NetworkStorageRefreshMessage extends BuildingModuleMessage
 	{
 		super.handle(context);
 
-		var player = context.getSender();
-
-		if (player == null)
-		{
-			return;
-		}
-
 		if (this.getModule() instanceof NetworkStorageModule module)
 		{
 			module.requestFindWorkingBlocks();

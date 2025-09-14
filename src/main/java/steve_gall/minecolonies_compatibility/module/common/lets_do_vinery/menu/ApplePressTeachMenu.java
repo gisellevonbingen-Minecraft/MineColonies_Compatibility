@@ -6,6 +6,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -62,13 +63,13 @@ public class ApplePressTeachMenu extends TeachRecipeMenu<ApplePressDummyRecipe>
 		return new IMenuRecipeValidator<>()
 		{
 			@Override
-			public @NotNull CompoundTag serialize(@NotNull ApplePressDummyRecipe recipe)
+			public CompoundTag serialize(IFactoryController controller, ApplePressDummyRecipe recipe)
 			{
 				return recipe.serializeNBT();
 			}
 
 			@Override
-			public @NotNull List<ApplePressDummyRecipe> findAll(@NotNull Container container, @NotNull ServerPlayer player)
+			public List<ApplePressDummyRecipe> findAll(Container container, ServerPlayer player)
 			{
 				var map = ApplePressCraftingType.getRecipes();
 				var ingredient = container.getItem(0).getItem();
@@ -86,7 +87,7 @@ public class ApplePressTeachMenu extends TeachRecipeMenu<ApplePressDummyRecipe>
 			}
 
 			@Override
-			public @NotNull ApplePressDummyRecipe deserialize(@NotNull CompoundTag tag)
+			public ApplePressDummyRecipe deserialize(IFactoryController controller, CompoundTag tag)
 			{
 				return new ApplePressDummyRecipe(tag);
 			}

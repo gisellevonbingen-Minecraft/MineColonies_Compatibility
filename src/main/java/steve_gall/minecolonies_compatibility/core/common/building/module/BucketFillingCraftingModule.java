@@ -19,8 +19,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -116,7 +116,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 	}
 
 	@Override
-	public boolean canBlockRecipeWorking(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
+	public boolean canBlockRecipeWorking(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
 	{
 		var recipe = toRecipe(recipeStorage);
 
@@ -141,7 +141,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 	}
 
-	public boolean drain(LevelReader level, BlockPos pos, BlockState state, BucketFillingRecipeStorage recipe, boolean simulate)
+	public boolean drain(Level level, BlockPos pos, BlockState state, BucketFillingRecipeStorage recipe, boolean simulate)
 	{
 		var blockEntity = level.getBlockEntity(pos);
 
@@ -169,7 +169,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 			{
 				if (!simulate)
 				{
-					((LevelWriter) level).setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+					level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
 				}
 
 				return true;

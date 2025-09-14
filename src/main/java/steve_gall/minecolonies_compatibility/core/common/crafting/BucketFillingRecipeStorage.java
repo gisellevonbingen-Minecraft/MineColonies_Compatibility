@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +26,7 @@ public class BucketFillingRecipeStorage extends GenericedRecipeStorage<BucketFil
 	public static String TAG_FLUID_TAG = "fluidTag";
 	public static String TAG_FILLED_BUCKET = "filledBucket";
 
-	public static void serialize(BucketFillingRecipeStorage recipe, CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, BucketFillingRecipeStorage recipe)
 	{
 		tag.put(TAG_EMPTY_BUCKET, recipe.emptyBucket.serializeNBT());
 		tag.putString(TAG_FLUID, ForgeRegistries.FLUIDS.getKey(recipe.fluid).toString());
@@ -38,7 +39,7 @@ public class BucketFillingRecipeStorage extends GenericedRecipeStorage<BucketFil
 		tag.put(TAG_FILLED_BUCKET, recipe.filledBucket.serializeNBT());
 	}
 
-	public static BucketFillingRecipeStorage deserialize(CompoundTag tag)
+	public static BucketFillingRecipeStorage deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var emptyBucket = ItemStack.of(tag.getCompound(TAG_EMPTY_BUCKET));
 		var fluidId = new ResourceLocation(tag.getString(TAG_FLUID));

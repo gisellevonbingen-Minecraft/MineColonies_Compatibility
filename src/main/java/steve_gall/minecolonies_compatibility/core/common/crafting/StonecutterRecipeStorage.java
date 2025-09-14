@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.util.constant.IToolType;
 import com.minecolonies.api.util.constant.ToolType;
@@ -25,17 +25,17 @@ public class StonecutterRecipeStorage implements ICustomizedRecipeStorage
 	public static final String TAG_INGREDIENT = "ingredient";
 	public static final String TAG_RESULT = "result";
 
-	public static void serialize(StonecutterRecipeStorage recipe, CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, StonecutterRecipeStorage recipe)
 	{
 		tag.putString(TAG_RECIPE_ID, recipe.recipeId.toString());
-		tag.put(TAG_INGREDIENT, StandardFactoryController.getInstance().serialize(recipe.ingredient));
+		tag.put(TAG_INGREDIENT, controller.serialize(recipe.ingredient));
 		tag.put(TAG_RESULT, recipe.result.serializeNBT());
 	}
 
-	public static StonecutterRecipeStorage deserialize(CompoundTag tag)
+	public static StonecutterRecipeStorage deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var recipeId = new ResourceLocation(tag.getString(TAG_RECIPE_ID));
-		ItemStorage ingredient = StandardFactoryController.getInstance().deserialize(tag.getCompound(TAG_INGREDIENT));
+		ItemStorage ingredient = controller.deserialize(tag.getCompound(TAG_INGREDIENT));
 		var result = ItemStack.of(tag.getCompound(TAG_RESULT));
 		return new StonecutterRecipeStorage(recipeId, ingredient, result);
 	}

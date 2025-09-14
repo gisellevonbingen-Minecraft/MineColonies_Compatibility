@@ -9,7 +9,7 @@ import com.minecolonies.api.crafting.IRecipeStorage;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
@@ -56,7 +56,7 @@ public interface ICraftingModuleWithExternalWorkingBlocks extends ICraftingBuild
 		});
 	}
 
-	default boolean canBlockRecipeWorking(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
+	default boolean canBlockRecipeWorking(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull IRecipeStorage recipeStorage)
 	{
 		return true;
 	}

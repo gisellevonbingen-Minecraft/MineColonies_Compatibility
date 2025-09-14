@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.MinecoloniesAPIProxy;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
 import blusunrize.immersiveengineering.common.items.BulletItem;
 import net.minecraft.nbt.CompoundTag;
@@ -36,13 +37,13 @@ public class Bullet implements IDeliverableObject
 		return ID;
 	}
 
-	public static Bullet deserialize(@NotNull CompoundTag tag)
+	public static Bullet deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var minCount = tag.getInt("minCount");
 		return new Bullet(minCount);
 	}
 
-	public static void serialize(Bullet request, @NotNull CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, Bullet request)
 	{
 		tag.putInt("minCount", request.minCount);
 	}

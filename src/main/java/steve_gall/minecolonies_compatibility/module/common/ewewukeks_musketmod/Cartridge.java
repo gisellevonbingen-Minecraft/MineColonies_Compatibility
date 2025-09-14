@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.MinecoloniesAPIProxy;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
 import ewewukek.musketmod.Items;
 import net.minecraft.nbt.CompoundTag;
@@ -36,13 +37,13 @@ public class Cartridge implements IDeliverableObject
 		return ID;
 	}
 
-	public static Cartridge deserialize(@NotNull CompoundTag tag)
+	public static Cartridge deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var minCount = tag.getInt("minCount");
 		return new Cartridge(minCount);
 	}
 
-	public static void serialize(Cartridge request, @NotNull CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, Cartridge request)
 	{
 		tag.putInt("minCount", request.minCount);
 	}

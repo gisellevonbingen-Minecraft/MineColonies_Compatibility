@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -38,14 +40,14 @@ public class RepairKit implements IDeliverableObject
 		return ID;
 	}
 
-	public static RepairKit deserialize(@NotNull CompoundTag tag)
+	public static RepairKit deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var variantId = MaterialVariantId.tryParse(tag.getString("variantId"));
 		var count = tag.getInt("count");
 		return new RepairKit(variantId, count);
 	}
 
-	public static void serialize(RepairKit request, @NotNull CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, RepairKit request)
 	{
 		tag.putString("variantId", request.variantId.toString());
 		tag.putInt("count", request.count);

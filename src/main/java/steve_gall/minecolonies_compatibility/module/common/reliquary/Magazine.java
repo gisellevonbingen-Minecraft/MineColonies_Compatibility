@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.MinecoloniesAPIProxy;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -37,13 +38,13 @@ public class Magazine implements IDeliverableObject
 		return ID;
 	}
 
-	public static Magazine deserialize(@NotNull CompoundTag tag)
+	public static Magazine deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var minCount = tag.getInt("minCount");
 		return new Magazine(minCount);
 	}
 
-	public static void serialize(Magazine request, @NotNull CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, Magazine request)
 	{
 		tag.putInt("minCount", request.minCount);
 	}

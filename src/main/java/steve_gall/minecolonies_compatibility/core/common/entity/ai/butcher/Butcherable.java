@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.MinecoloniesAPIProxy;
+import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -39,13 +40,13 @@ public class Butcherable implements IDeliverableObject
 		return ID;
 	}
 
-	public static @NotNull Butcherable deserialize(@NotNull CompoundTag tag)
+	public static Butcherable deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var minCount = tag.getInt("minCount");
 		return new Butcherable(minCount, null);
 	}
 
-	public static void serialize(@NotNull Butcherable request, @NotNull CompoundTag tag)
+	public static void serialize(IFactoryController controller, CompoundTag tag, Butcherable request)
 	{
 		tag.putInt("minCount", request.minCount);
 	}

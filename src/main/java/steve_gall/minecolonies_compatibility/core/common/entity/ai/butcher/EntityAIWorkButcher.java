@@ -1,8 +1,5 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher;
 
-import static com.minecolonies.api.util.constant.CitizenConstants.BLOCK_BREAK_PARTICLE_RANGE;
-import static com.minecolonies.api.util.constant.CitizenConstants.FACING_DELTA_YAW;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -528,14 +525,14 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 	private void hitBlockWithToolInHand(BlockPos pos)
 	{
 		var worker = this.worker;
-		worker.getLookControl().setLookAt(pos.getX(), pos.getY(), pos.getZ(), FACING_DELTA_YAW, worker.getMaxHeadXRot());
+		worker.getLookControl().setLookAt(pos.getX(), pos.getY(), pos.getZ(), CitizenConstants.FACING_DELTA_YAW, worker.getMaxHeadXRot());
 		worker.swing(InteractionHand.MAIN_HAND);
 
 		var blockState = worker.getLevel().getBlockState(pos);
 		var vector = pos.subtract(worker.blockPosition());
 		var facing = BlockPosUtil.directionFromDelta(vector.getX(), vector.getY(), vector.getZ()).getOpposite();
 
-		Network.getNetwork().sendToPosition(new BlockParticleEffectMessage(pos, blockState, facing.ordinal()), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), BLOCK_BREAK_PARTICLE_RANGE, worker.getLevel().dimension()));
+		Network.getNetwork().sendToPosition(new BlockParticleEffectMessage(pos, blockState, facing.ordinal()), new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), CitizenConstants.BLOCK_BREAK_PARTICLE_RANGE, worker.getLevel().dimension()));
 	}
 
 }

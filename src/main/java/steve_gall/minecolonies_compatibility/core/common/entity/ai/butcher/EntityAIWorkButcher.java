@@ -1,7 +1,5 @@
 package steve_gall.minecolonies_compatibility.core.common.entity.ai.butcher;
 
-import static com.minecolonies.api.util.constant.CitizenConstants.FACING_DELTA_YAW;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -529,7 +527,7 @@ public class EntityAIWorkButcher extends AbstractEntityAIInteract<JobButcher, Ab
 	private void hitBlockWithToolInHand(BlockPos pos)
 	{
 		var worker = this.worker;
-		worker.getLookControl().setLookAt(pos.getX(), pos.getY(), pos.getZ(), FACING_DELTA_YAW, worker.getMaxHeadXRot());
+		worker.getLookControl().setLookAt(pos.getX(), pos.getY(), pos.getZ(), CitizenConstants.FACING_DELTA_YAW, worker.getMaxHeadXRot());
 		worker.swing(InteractionHand.MAIN_HAND);
 
 		var blockState = worker.level().getBlockState(pos);

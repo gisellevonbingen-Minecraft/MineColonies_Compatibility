@@ -31,6 +31,7 @@ public class WindowListSmithingTemplateRecipes extends WindowListRecipes
 		button.setImage(ResourceLocation.parse("minecolonies:textures/gui/builderhut/builder_button_medium_large.png"));
 		button.setText(Component.translatable("minecolonies_compatibility.text.smithing_template_inventory"));
 		button.setSize(129, 17);
+		button.setTextSize(129, 17);
 		button.setPosition(30, 217);
 		this.addChild(button);
 	}

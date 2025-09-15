@@ -108,6 +108,12 @@ public class PolymorphModule extends AbstractModule
 		{
 			var id = tuple.getA().getId();
 			var stack = tuple.getB();
+
+			if (stack.isEmpty())
+			{
+				continue;
+			}
+
 			pairs.add(new RecipePair(id, stack));
 
 			if (ItemStackHelper.equals(current, stack))
@@ -134,7 +140,14 @@ public class PolymorphModule extends AbstractModule
 			for (var i = 0; i < recipes.size(); i++)
 			{
 				var recipe = (Recipe<?>) recipes.get(i);
-				pairs.add(new RecipePair(recipe.getId(), recipe.getResultItem(registryAccess)));
+				var result = recipe.getResultItem(registryAccess);
+
+				if (result.isEmpty())
+				{
+					continue;
+				}
+
+				pairs.add(new RecipePair(recipe.getId(), result));
 
 				if (menu.getRecipeIndex() == i)
 				{

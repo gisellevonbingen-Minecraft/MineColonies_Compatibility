@@ -1,29 +1,10 @@
 {
-	"type": "botanypots:crop",
+	"type": "botanypots:block_derived_crop",
 	"neoforge:conditions": [
 		{
 			"type": "neoforge:mod_loaded",
 			"modid": "botanypots"
 		}
 	],
-	"seed": {
-		"item": "minecolonies:rice"
-	},
-	"categories": [
-		"water"
-	],
-	"growthTicks": 1200,
-	"display": {
-		"block": "minecolonies:rice"
-	},
-	"drops": [
-		{
-			"chance": 1.00,
-			"output": {
-				"item": "minecolonies:rice"
-			},
-			"minRolls": 1,
-			"maxRolls": 2
-		}
-	]
+	"block": "minecolonies:rice"
 }

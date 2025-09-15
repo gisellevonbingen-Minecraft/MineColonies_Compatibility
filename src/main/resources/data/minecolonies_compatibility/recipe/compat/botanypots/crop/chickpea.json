@@ -1,29 +1,10 @@
 {
-	"type": "botanypots:crop",
+	"type": "botanypots:block_derived_crop",
 	"neoforge:conditions": [
 		{
 			"type": "neoforge:mod_loaded",
 			"modid": "botanypots"
 		}
 	],
-	"seed": {
-		"item": "minecolonies:chickpea"
-	},
-	"categories": [
-		"dirt"
-	],
-	"growthTicks": 1200,
-	"display": {
-		"block": "minecolonies:chickpea"
-	},
-	"drops": [
-		{
-			"chance": 1.00,
-			"output": {
-				"item": "minecolonies:chickpea"
-			},
-			"minRolls": 1,
-			"maxRolls": 2
-		}
-	]
+	"block": "minecolonies:chickpea"
 }

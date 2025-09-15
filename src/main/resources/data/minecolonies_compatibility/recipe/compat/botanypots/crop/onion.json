@@ -1,29 +1,10 @@
 {
-	"type": "botanypots:crop",
+	"type": "botanypots:block_derived_crop",
 	"neoforge:conditions": [
 		{
 			"type": "neoforge:mod_loaded",
 			"modid": "botanypots"
 		}
 	],
-	"seed": {
-		"item": "minecolonies:onion"
-	},
-	"categories": [
-		"dirt"
-	],
-	"growthTicks": 1200,
-	"display": {
-		"block": "minecolonies:onion"
-	},
-	"drops": [
-		{
-			"chance": 1.00,
-			"output": {
-				"item": "minecolonies:onion"
-			},
-			"minRolls": 1,
-			"maxRolls": 2
-		}
-	]
+	"block": "minecolonies:onion"
 }

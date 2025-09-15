@@ -1,29 +1,10 @@
 {
-	"type": "botanypots:crop",
+	"type": "botanypots:block_derived_crop",
 	"neoforge:conditions": [
 		{
 			"type": "neoforge:mod_loaded",
 			"modid": "botanypots"
 		}
 	],
-	"seed": {
-		"item": "minecolonies:butternut_squash"
-	},
-	"categories": [
-		"dirt"
-	],
-	"growthTicks": 1200,
-	"display": {
-		"block": "minecolonies:butternut_squash"
-	},
-	"drops": [
-		{
-			"chance": 1.00,
-			"output": {
-				"item": "minecolonies:butternut_squash"
-			},
-			"minRolls": 1,
-			"maxRolls": 2
-		}
-	]
+	"block": "minecolonies:butternut_squash"
 }

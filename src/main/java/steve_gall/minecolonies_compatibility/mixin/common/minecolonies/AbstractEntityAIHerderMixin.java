@@ -84,8 +84,8 @@ public abstract class AbstractEntityAIHerderMixin<J extends AbstractJob<?, J>, B
 		return player;
 	}
 
-	@WrapOperation(method = "butcherAnimal", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", remap = true))
-	private boolean butcherAnimal_hurt(Animal animal, DamageSource source, float damage, Operation<Boolean> operation)
+	@WrapOperation(method = "butcherSwing", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Animal;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", remap = true))
+	private boolean butcherSwing_hurt(Animal animal, DamageSource source, float damage, Operation<Boolean> operation)
 	{
 		var damageType = this.worker.level().registryAccess().registry(Registries.DAMAGE_TYPE).get().get(DamageTypes.PLAYER_ATTACK);
 

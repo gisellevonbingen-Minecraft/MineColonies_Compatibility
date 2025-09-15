@@ -8,7 +8,7 @@
 	],
 	"results": [
 		{
-			"item": "minecolonies:rice",
+			"id": "minecolonies:rice",
 			"count": 2
 		}
 	],
@@ -20,7 +20,7 @@
 	},
 	"time": 800,
 	"render": {
-		"type": "crop",
+		"type": "immersiveengineering:crop",
 		"block": "minecolonies:rice"
 	}
 }

@@ -8,7 +8,7 @@
 	],
 	"results": [
 		{
-			"item": "minecolonies:butternut_squash",
+			"id": "minecolonies:butternut_squash",
 			"count": 2
 		}
 	],
@@ -20,7 +20,7 @@
 	},
 	"time": 800,
 	"render": {
-		"type": "crop",
+		"type": "immersiveengineering:crop",
 		"block": "minecolonies:butternut_squash"
 	}
 }

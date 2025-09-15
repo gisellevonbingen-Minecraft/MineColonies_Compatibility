@@ -8,7 +8,7 @@
 	],
 	"results": [
 		{
-			"item": "minecolonies:chickpea",
+			"id": "minecolonies:chickpea",
 			"count": 2
 		}
 	],
@@ -20,7 +20,7 @@
 	},
 	"time": 800,
 	"render": {
-		"type": "crop",
+		"type": "immersiveengineering:crop",
 		"block": "minecolonies:chickpea"
 	}
 }

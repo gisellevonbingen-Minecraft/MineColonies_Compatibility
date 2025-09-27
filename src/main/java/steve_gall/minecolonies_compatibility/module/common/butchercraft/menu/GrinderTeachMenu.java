@@ -3,9 +3,7 @@ package steve_gall.minecolonies_compatibility.module.common.butchercraft.menu;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.lance5057.butchercraft.ButchercraftItems;
 import com.lance5057.butchercraft.ButchercraftRecipes;
-import com.lance5057.butchercraft.tags.ButchercraftItemTags;
 import com.lance5057.butchercraft.workstations.grinder.GrinderContainer;
 import com.lance5057.butchercraft.workstations.grinder.GrinderRecipe;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
@@ -26,6 +24,7 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachInputSlo
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
+import steve_gall.minecolonies_compatibility.module.common.butchercraft.crafting.GrinderGenericRecipe;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.init.ModuleMenuTypes;
 import steve_gall.minecolonies_tweaks.core.common.item.ItemSerializationHelper;
 
@@ -95,15 +94,7 @@ public class GrinderTeachMenu extends TeachRecipeMenu<RecipeHolder<GrinderRecipe
 
 				var attachment = container.getItem(1);
 				var casing = container.getItem(2);
-
-				if (attachment.is(ButchercraftItems.EXTRUDER_TIP.get()))
-				{
-					return casing.is(ButchercraftItemTags.SAUSAGE_CASING);
-				}
-				else
-				{
-					return casing.isEmpty();
-				}
+				return GrinderGenericRecipe.casing(attachment).test(casing);
 			}
 
 		};

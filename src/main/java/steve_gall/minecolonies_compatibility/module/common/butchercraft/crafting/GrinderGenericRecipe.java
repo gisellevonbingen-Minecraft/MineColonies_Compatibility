@@ -2,12 +2,13 @@ package steve_gall.minecolonies_compatibility.module.common.butchercraft.craftin
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.lance5057.butchercraft.ButchercraftBlocks;
+import com.lance5057.butchercraft.ButchercraftItems;
+import com.lance5057.butchercraft.tags.ButchercraftItemTags;
 import com.lance5057.butchercraft.workstations.grinder.GrinderRecipe;
 
 import net.minecraft.core.RegistryAccess;
@@ -23,7 +24,7 @@ public class GrinderGenericRecipe extends SimpleGenericRecipe
 
 	public GrinderGenericRecipe(GrinderRecipe recipe, RegistryAccess registryAccess)
 	{
-		this(recipe.getId(), Collections.singletonList(ingredients(recipe.ingredient, recipe.count)), recipe.getResultItem(registryAccess), recipe.attachment);
+		this(recipe.getId(), ingredientsWithCasing(recipe), recipe.getResultItem(registryAccess), recipe.attachment);
 	}
 
 	public GrinderGenericRecipe(ResourceLocation recipeId, List<List<ItemStack>> ingredients, ItemStack output, Ingredient attachment)
@@ -31,6 +32,21 @@ public class GrinderGenericRecipe extends SimpleGenericRecipe
 		super(recipeId, ingredients, output);
 
 		this.attachment = Arrays.asList(attachment.getItems());
+	}
+
+	public static List<List<ItemStack>> ingredientsWithCasing(GrinderRecipe recipe)
+	{
+		var list = new ArrayList<List<ItemStack>>();
+		list.add(ingredients(recipe.ingredient, recipe.count));
+
+		var casing = casing(recipe.attachment);
+
+		if (casing.size() > 0)
+		{
+			list.add(casing);
+		}
+
+		return list;
 	}
 
 	public static List<ItemStack> ingredients(Ingredient ingredient, int count)
@@ -41,6 +57,24 @@ public class GrinderGenericRecipe extends SimpleGenericRecipe
 			copy.setCount(count);
 			return copy;
 		}).toList();
+	}
+
+	public static List<ItemStack> casing(Ingredient attachment)
+	{
+		return Arrays.stream(attachment.getItems()).map(GrinderGenericRecipe::casing).flatMap(i -> Arrays.stream(i.getItems())).toList();
+	}
+
+	public static Ingredient casing(ItemStack attachment)
+	{
+		if (attachment.is(ButchercraftItems.EXTRUDER_TIP.get()))
+		{
+			return Ingredient.of(ButchercraftItemTags.SAUSAGE_CASING);
+		}
+		else
+		{
+			return Ingredient.EMPTY;
+		}
+
 	}
 
 	@Override

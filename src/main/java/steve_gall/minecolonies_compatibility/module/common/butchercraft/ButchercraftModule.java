@@ -93,7 +93,7 @@ public class ButchercraftModule extends AbstractModule
 		{
 			var ingredient = ingredientFunc.apply(recipeHolder.value());
 
-			if (Arrays.stream(ingredient.getItems()).allMatch(this::testItem))
+			if (Arrays.stream(ingredient.getItems()).allMatch(ButchercraftModule::isButcherable))
 			{
 				var butcherable = butcherableFactory.apply(recipeHolder);
 				e.register(butcherable);
@@ -103,9 +103,10 @@ public class ButchercraftModule extends AbstractModule
 
 	}
 
-	private boolean testItem(ItemStack stack)
+	public static boolean isButcherable(ItemStack stack)
 	{
 		var item = stack.getItem();
+
 		if (item instanceof CarcassItem)
 		{
 			return true;

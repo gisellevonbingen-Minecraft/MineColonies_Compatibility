@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"neoforge:conditions": [
+		{
+			"type": "neoforge:item_exists",
+			"item": "minecolonies_compatibility:citizen_terminal"
+		}
+	],
+	"result": {
+		"id": "minecolonies_compatibility:citizen_terminal"
+	},
+	"ingredients": [
+		{
+			"item": "ae2:terminal"
+		},
+		{
+			"item": "minecolonies:blockhutwarehouse"
+		},
+		{
+			"item": "ae2:engineering_processor"
+		}
+	]
+}

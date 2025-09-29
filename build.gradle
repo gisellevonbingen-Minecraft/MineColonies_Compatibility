@@ -106,6 +106,7 @@ dependencies {
     implementation "curse.maven:the-undergarden-379849:${the_undergarden_file}"
     implementation "curse.maven:oreberries-replanted-454062:${oreberries_file}"
     implementation "curse.maven:reliquary-reincarnations-241319:${reliquary_file}"
+    implementation "org.appliedenergistics:appliedenergistics2:${appliedenergistics2_version}"
     implementation "curse.maven:ewewukeks-musket-mod-354562:${ewewukeks_musket_file}"
     implementation "curse.maven:cloth-config-348521:${cloth_config_file}"
     implementation "curse.maven:butchercraft-265715:${butchercraft_file}"

@@ -1,0 +1,33 @@
+{
+	"$schema": "schema.json",
+	"includes": [
+		"../common/common.json",
+		"../common/player_inventory.json"
+	],
+	"background": {
+		"texture": "minecolonies_compatibility/citizen_terminal.png",
+		"srcRect": [
+			0,
+			0,
+			176,
+			137
+		]
+	},
+	"text": {
+		"dialog_title": {
+			"text": {
+				"translate": ""
+			},
+			"position": {
+				"left": 7,
+				"top": 7
+			}
+		},
+		"link": {
+			"position": {
+				"left": 7,
+				"top": 21
+			}
+		}
+	}
+}

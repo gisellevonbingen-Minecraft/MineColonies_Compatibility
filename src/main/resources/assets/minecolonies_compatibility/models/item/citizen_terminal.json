@@ -1,0 +1,9 @@
+{
+	"parent": "ae2:item/display_base",
+	"textures": {
+		"front": "minecolonies_compatibility:part/citizen_terminal_bright_color",
+		"front_bright": "minecolonies_compatibility:part/citizen_terminal_bright_color",
+		"front_medium": "minecolonies_compatibility:part/citizen_terminal_bright_color",
+		"front_dark": "minecolonies_compatibility:part/citizen_terminal_bright_color"
+	}
+}

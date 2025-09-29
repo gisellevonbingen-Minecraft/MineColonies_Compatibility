@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+import steve_gall.minecolonies_compatibility.module.common.ae2.AppliedEnergistics2Module;
 import steve_gall.minecolonies_compatibility.module.common.aether.AetherModule;
 import steve_gall.minecolonies_compatibility.module.common.ars_nouveau.ArsNouveauModule;
 import steve_gall.minecolonies_compatibility.module.common.atmospheric.AtmosphericModule;
@@ -43,6 +44,7 @@ public class ModuleManager
 	}
 
 	public static final OptionalModule<MinecraftModule> MINECRAFT = register("minecraft", () -> MinecraftModule::new);
+	public static final OptionalModule<AppliedEnergistics2Module> AE2 = register("ae2", () -> AppliedEnergistics2Module::new);
 	public static final OptionalModule<AetherModule> AETHER = register("aether", () -> AetherModule::new);
 	public static final OptionalModule<ArsNouveauModule> ARS_NOUVEAU = register("ars_nouveau", () -> ArsNouveauModule::new);
 	public static final OptionalModule<AtmosphericModule> ATMOSPHERIC = register("atmospheric", () -> AtmosphericModule::new);

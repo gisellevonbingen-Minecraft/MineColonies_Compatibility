@@ -38,3 +38,10 @@ config="${mod_id}.mixin.common.json"
     versionRange="[${minecolonies_version},)"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecolonies_tweaks"
+    type="required"
+    versionRange="[${minecolonies_tweaks_version},)"
+    ordering="AFTER"
+    side="BOTH"

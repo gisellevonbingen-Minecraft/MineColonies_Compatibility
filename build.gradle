@@ -126,7 +126,7 @@ tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [mc_version: mc_version,
         mod_id: mod_id, mod_version: mod_version, mod_name: mod_name, mod_description: mod_description, mod_license: mod_license, mod_homepage: mod_homepage, mod_source: mod_source, mod_issues: mod_issues,
         neoforge_api_version: neoforge_api_version, neoforge_api_version_range: neoforge_api_version_range, neoforge_loader_version: neoforge_loader_version,
-        minecolonies_version: minecolonies_version
+        minecolonies_version: minecolonies_version, minecolonies_tweaks_version: minecolonies_tweaks_version
     ]
     inputs.properties replaceProperties
 

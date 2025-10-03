@@ -86,6 +86,7 @@ dependencies {
 
     // Optional
     implementation "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    implementation "curse.maven:architectury-api-419699:${architectury_api_file}"
     implementation "thedarkcolour:kotlinforforge-neoforge:${kotlin_for_forge_version}"
     implementation "curse.maven:geckolib-388172:${geckolib_file}"
     implementation "curse.maven:curios-309927:${curios_file}"
@@ -103,6 +104,7 @@ dependencies {
     implementation "curse.maven:aether-255308:${aether_file}"
     implementation "curse.maven:accessories-938917:${accessories_file}"
     implementation "curse.maven:owo-lib-532610:${owolib_file}"
+    implementation "curse.maven:lets-do-meadow-821483:${lets_do_meadow_file}"
     implementation "curse.maven:the-undergarden-379849:${the_undergarden_file}"
     implementation "curse.maven:oreberries-replanted-454062:${oreberries_file}"
     implementation "curse.maven:reliquary-reincarnations-241319:${reliquary_file}"

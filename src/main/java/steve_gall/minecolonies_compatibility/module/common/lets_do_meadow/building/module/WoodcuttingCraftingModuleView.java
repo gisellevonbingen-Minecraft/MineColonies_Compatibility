@@ -1,0 +1,21 @@
+package steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.building.module;
+
+import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
+
+import net.neoforged.neoforge.network.PacketDistributor;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.network.WoodcuttingOpenTeachMessage;
+
+public class WoodcuttingCraftingModuleView extends CraftingModuleView
+{
+	public WoodcuttingCraftingModuleView()
+	{
+
+	}
+
+	@Override
+	public void openCraftingGUI()
+	{
+		PacketDistributor.sendToServer(new WoodcuttingOpenTeachMessage(this));
+	}
+
+}

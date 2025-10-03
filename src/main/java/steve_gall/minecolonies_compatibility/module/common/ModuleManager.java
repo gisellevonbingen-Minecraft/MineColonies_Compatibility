@@ -17,6 +17,7 @@ import steve_gall.minecolonies_compatibility.module.common.ewewukeks_musketmod.e
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.ie.IEModule;
 import steve_gall.minecolonies_compatibility.module.common.jade.JadeModule;
+import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.LetsDoMeadowModule;
 import steve_gall.minecolonies_compatibility.module.common.minecraft.MinecraftModule;
 import steve_gall.minecolonies_compatibility.module.common.neapolitan.NeapolitanModule;
 import steve_gall.minecolonies_compatibility.module.common.oreberries.OreberriesModule;
@@ -55,6 +56,7 @@ public class ModuleManager
 	public static final OptionalModule<ButchercraftModule> BUTCHERCRAFT = register("butchercraft", () -> ButchercraftModule::new);
 	public static final OptionalModule<IEModule> IE = register("immersiveengineering", () -> IEModule::new);
 	public static final OptionalModule<JadeModule> JADE = register("jade", () -> JadeModule::new);
+	public static final OptionalModule<LetsDoMeadowModule> LETS_DO_MEADOW = register("meadow", () -> LetsDoMeadowModule::new);
 	public static final OptionalModule<NeapolitanModule> NEAPOLITAN = register("neapolitan", () -> NeapolitanModule::new);
 	public static final OptionalModule<OreberriesModule> OREBERRIES = register("oreberriesreplanted", () -> OreberriesModule::new);
 	public static final OptionalModule<PamsHarvestCraft2TreesModule> PHC2TREES = register("pamhc2trees", () -> PamsHarvestCraft2TreesModule::new);

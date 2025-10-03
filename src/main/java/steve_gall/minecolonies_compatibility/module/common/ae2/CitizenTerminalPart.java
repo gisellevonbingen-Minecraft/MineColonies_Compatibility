@@ -203,7 +203,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		}
 
 	}
-	
+
 	@Override
 	public void readFromNBT(CompoundTag data, HolderLookup.Provider registries)
 	{

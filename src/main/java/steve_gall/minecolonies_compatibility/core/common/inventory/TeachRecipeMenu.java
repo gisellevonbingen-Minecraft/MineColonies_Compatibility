@@ -301,13 +301,13 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	{
 		if (0 <= index && index < this.getRecipes().size())
 		{
-			this.setRecipe(this.recipes.get(index));
 			this.recipeIndex = index;
+			this.setRecipe(this.recipes.get(index));
 		}
 		else
 		{
-			this.setRecipe(null);
 			this.recipeIndex = -1;
+			this.setRecipe(null);
 		}
 
 	}

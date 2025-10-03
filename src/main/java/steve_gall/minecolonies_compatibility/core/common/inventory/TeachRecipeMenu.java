@@ -308,13 +308,13 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 	{
 		if (0 <= index && index < this.getRecipes().size())
 		{
-			this.setRecipe(this.recipes.get(index));
 			this.recipeIndex = index;
+			this.setRecipe(this.recipes.get(index));
 		}
 		else
 		{
-			this.setRecipe(null);
 			this.recipeIndex = -1;
+			this.setRecipe(null);
 		}
 
 	}

@@ -41,7 +41,7 @@ config="${mod_id}.mixin.common.json"
 
 [[dependencies.${mod_id}]]
     modId="immersiveengineering"
-    type="required"
+    type="optional"
     versionRange="[0,)"
     ordering="BEFORE"
     side="BOTH"

@@ -164,7 +164,7 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 		for (var i = 0; i < directionsTag.size(); i++)
 		{
 			var entryTag = directionsTag.getCompound(i);
-			var pos = NBTUtils.readBlockPos(entryTag.getCompound("pos"));
+			var pos = NBTUtils.readBlockPos(entryTag, "pos");
 			var direction = entryTag.getString("direction");
 			this.directions.put(pos, Direction.byName(direction));
 		}

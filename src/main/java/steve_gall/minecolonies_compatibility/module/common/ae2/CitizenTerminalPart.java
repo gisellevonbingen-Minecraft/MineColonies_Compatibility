@@ -44,7 +44,6 @@ import steve_gall.minecolonies_compatibility.api.common.building.module.INetwork
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
-import steve_gall.minecolonies_compatibility.core.common.world.LevelChunkExtension;
 import steve_gall.minecolonies_compatibility.module.common.ae2.init.ModuleMenuTypes;
 
 public class CitizenTerminalPart extends AbstractDisplayPart implements IStorageWatcherNode, IGridTickable, IConfigurableObject
@@ -106,9 +105,9 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	{
 		super.removeFromWorld();
 
-		if (this.getLevel().getChunk(this.getBlockEntity().getBlockPos()) instanceof LevelChunkExtension levelChunk)
+		if (this.getBlockEntity() instanceof CableBusBlockEntityExtension cableBus)
 		{
-			if (!levelChunk.minecolonies_compatibility$isUnloaded())
+			if (!cableBus.minecolonies_compatibility$isChunkUnloaded())
 			{
 				this.view.unlink();
 			}

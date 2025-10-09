@@ -8,7 +8,6 @@
 		"minecraft.BlockBehaviourMixin",
 		"minecraft.CropBlockAccessor",
 		"minecraft.ItemStackMixin",
-		"minecraft.LevelChunkMixin",
 		"minecraft.SmithingTransformRecipeAccessor",
 		"minecraft.SmithingTrimRecipeAccessor",
 		"minecraft.StemBlockAccessor",
@@ -43,6 +42,7 @@
 		"minecolonies.TileEntityWareHouseMixin",
 		"minecolonies.TinkersToolHelperMixin",
 		
+		"ae.CableBusBlockEntityMixin",
 		"butchercraft.ButcherBlockBlockEntityAccessor",
 		"butchercraft.MeatHookBlockEntityAccessor",
 		"cobblemon.BerryBlockAccessor",

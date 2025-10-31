@@ -177,7 +177,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 
 			for (var cost : research.getCostList())
 			{
-				this.tooltip.add(Component.literal(" - ").append(Component.translatable("com.minecolonies.coremod.research.limit.cost", cost.count(), ItemStackUtils.getTranslatedName(cost))).withStyle(style));
+				this.tooltip.add(Component.literal(" - ").append(Component.translatable("com.minecolonies.coremod.research.limit.cost", ItemStackUtils.getTranslatedName(cost))).withStyle(style));
 			}
 
 		}

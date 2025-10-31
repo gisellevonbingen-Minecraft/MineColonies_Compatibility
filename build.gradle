@@ -179,6 +179,8 @@ dependencies {
     implementation fg.deobf("curse.maven:collectors-reap-807101:${collectorsreap_file}")
     implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:${tacz_file}-sources-${tacz_source_file}")
     implementation fg.deobf("curse.maven:jade-324717:${jade_file}")
+    implementation fg.deobf("curse.maven:fruits-delight-943774:${fruitsdelgiht_file}")
+    implementation fg.deobf("blank:l2harvester:0.1.2")
 
     // Runtime Only
     runtimeOnly fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")

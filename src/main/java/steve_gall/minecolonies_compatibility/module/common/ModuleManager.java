@@ -21,6 +21,7 @@ import steve_gall.minecolonies_compatibility.module.common.delightful.Delightful
 import steve_gall.minecolonies_compatibility.module.common.ewewukeks_musketmod.ewewukekMusketModule;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.fruitfulfun.FruitfulFunModule;
+import steve_gall.minecolonies_compatibility.module.common.fruitsdelight.FruitsDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.functionalstorage.FunctionalStorageModule;
 import steve_gall.minecolonies_compatibility.module.common.ie.IEModule;
 import steve_gall.minecolonies_compatibility.module.common.jade.JadeModule;
@@ -80,6 +81,7 @@ public class ModuleManager
 	public static final OptionalModule<ewewukekMusketModule> EWEWUKEK_MUSKET = register("musketmod", () -> ewewukekMusketModule::new);
 	public static final OptionalModule<FarmersDelightModule> FARMERSDELIGHT = register("farmersdelight", () -> FarmersDelightModule::new);
 	public static final OptionalModule<FruitfulFunModule> FRUITFULFUN = register("fruitfulfun", () -> FruitfulFunModule::new);
+	public static final OptionalModule<FruitsDelightModule> FRUITSDELIGHT = register("fruitsdelight", () -> FruitsDelightModule::new);
 	public static final OptionalModule<FunctionalStorageModule> FUNCTIONALSTORAGE = register("functionalstorage", () -> FunctionalStorageModule::new);
 	public static final OptionalModule<IEModule> IE = register("immersiveengineering", () -> IEModule::new);
 	public static final OptionalModule<JadeModule> JADE = register("jade", () -> JadeModule::new);

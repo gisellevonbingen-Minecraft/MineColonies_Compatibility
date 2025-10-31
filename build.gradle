@@ -4,13 +4,12 @@ buildscript {
         maven { url = "https://repo.spongepowered.org/maven" }
     }
     dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
         classpath "org.spongepowered:mixingradle:0.7.+"
     }
 }
 
 plugins {
-    id "net.minecraftforge.gradle" version "5.1.+"
+    id "net.minecraftforge.gradle" version "[6.0,6.2)"
 }
 
 apply plugin: "java"
@@ -170,6 +169,7 @@ dependencies {
     implementation fg.deobf("curse.maven:collectors-reap-807101:${collectorsreap_file}")
     implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:${tacz_file}-sources-${tacz_source_file}")
     implementation fg.deobf("curse.maven:jade-324717:${jade_file}")
+    implementation fg.deobf("curse.maven:fruits-delight-943774:${fruitsdelgiht_file}")
 
     // Runtime Only
     runtimeOnly fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")

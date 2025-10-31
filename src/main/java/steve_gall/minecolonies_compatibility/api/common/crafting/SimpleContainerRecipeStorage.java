@@ -45,6 +45,7 @@ public abstract class SimpleContainerRecipeStorage<GENERIC_RECIPE extends Simple
 		return input;
 	}
 
+	@Override
 	public int hashCode()
 	{
 		return Objects.hash(super.hashCode(), this.container);

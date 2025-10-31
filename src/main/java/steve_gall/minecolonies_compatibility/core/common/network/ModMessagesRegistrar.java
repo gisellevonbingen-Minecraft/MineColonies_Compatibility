@@ -37,7 +37,8 @@ public class ModMessagesRegistrar
 		channel.registerMessage(SmithingOpenTeachMessage.class, SmithingOpenTeachMessage::new);
 		channel.registerMessage(SmithingTemplateOpenInventoryMessage.class, SmithingTemplateOpenInventoryMessage::new);
 		channel.registerMessage(AccessDirectionMessage.class, AccessDirectionMessage::new);
-		channel.registerMessage(StonecutterOpenTeachMessage.class, StonecutterOpenTeachMessage::new);}
+		channel.registerMessage(StonecutterOpenTeachMessage.class, StonecutterOpenTeachMessage::new);
+	}
 
 	private ModMessagesRegistrar()
 	{

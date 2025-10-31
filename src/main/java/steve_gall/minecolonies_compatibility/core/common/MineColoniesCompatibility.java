@@ -128,7 +128,6 @@ public class MineColoniesCompatibility
 		});
 	}
 
-
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)
 	{
 		e.register(ModToolTypes.CROSSBOW);

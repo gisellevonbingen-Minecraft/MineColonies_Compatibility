@@ -35,7 +35,8 @@ public class ModMessagesRegistrar
 		channel.registerMessage(BucketFillingOpenTeachMessage.class, BucketFillingOpenTeachMessage::new);
 		channel.registerMessage(SmithingOpenTeachMessage.class, SmithingOpenTeachMessage::new);
 		channel.registerMessage(AccessDirectionMessage.class, AccessDirectionMessage::new);
-		channel.registerMessage(StonecutterOpenTeachMessage.class, StonecutterOpenTeachMessage::new);}
+		channel.registerMessage(StonecutterOpenTeachMessage.class, StonecutterOpenTeachMessage::new);
+	}
 
 	private ModMessagesRegistrar()
 	{

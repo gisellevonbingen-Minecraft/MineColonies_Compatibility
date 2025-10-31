@@ -116,6 +116,8 @@ dependencies {
     implementation "curse.maven:atmospheric-362393:${atmospheric_file}"
     implementation "curse.maven:neapolitan-382016:${neapolitan_file}"
     implementation "curse.maven:jade-324717:${jade_file}"
+    implementation "curse.maven:fruits-delight-943774:${fruitsdelgiht_file}"
+    implementation "blank:l2harvester:3.0.0"
 
     // Runtiem Only
     runtimeOnly "mekanism:Mekanism:${mc_version}-${mekanism_version}"

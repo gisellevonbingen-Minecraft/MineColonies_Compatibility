@@ -15,6 +15,7 @@ import steve_gall.minecolonies_compatibility.module.common.cobblemon.CobblemonMo
 import steve_gall.minecolonies_compatibility.module.common.croptopia.CroptopiaModule;
 import steve_gall.minecolonies_compatibility.module.common.ewewukeks_musketmod.ewewukekMusketModule;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.FarmersDelightModule;
+import steve_gall.minecolonies_compatibility.module.common.fruitsdelight.FruitsDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.ie.IEModule;
 import steve_gall.minecolonies_compatibility.module.common.jade.JadeModule;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_meadow.LetsDoMeadowModule;
@@ -54,6 +55,7 @@ public class ModuleManager
 	public static final OptionalModule<ewewukekMusketModule> EWEWUKEK_MUSKET = register("musketmod", () -> ewewukekMusketModule::new);
 	public static final OptionalModule<FarmersDelightModule> FARMERSDELIGHT = register("farmersdelight", () -> FarmersDelightModule::new);
 	public static final OptionalModule<ButchercraftModule> BUTCHERCRAFT = register("butchercraft", () -> ButchercraftModule::new);
+	public static final OptionalModule<FruitsDelightModule> FRUITSDELIGHT = register("fruitsdelight", () -> FruitsDelightModule::new);
 	public static final OptionalModule<IEModule> IE = register("immersiveengineering", () -> IEModule::new);
 	public static final OptionalModule<JadeModule> JADE = register("jade", () -> JadeModule::new);
 	public static final OptionalModule<LetsDoMeadowModule> LETS_DO_MEADOW = register("meadow", () -> LetsDoMeadowModule::new);

@@ -40,6 +40,13 @@ config="${mod_id}.mixin.common.json"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
+    modId="minecolonies_tweaks"
+    type="required"
+    versionRange="[${minecolonies_tweaks_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
     modId="immersiveengineering"
     type="optional"
     versionRange="[0,)"

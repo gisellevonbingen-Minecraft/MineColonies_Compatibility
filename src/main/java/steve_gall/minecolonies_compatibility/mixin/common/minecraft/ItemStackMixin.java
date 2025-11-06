@@ -22,7 +22,7 @@ public abstract class ItemStackMixin
 	{
 		if (ModuleManager.TINKERSLEVELLINGADDON.isLoaded() && entity instanceof EntityCitizen citizen)
 		{
-			TinkersLevellingAddonModule.onHurtAndBreak((ItemStack) (Object) this, damage, citizen, consumer);
+			TinkersLevellingAddonModule.onHurtAndBreak((ItemStack) (Object) this, 1, citizen, consumer);
 		}
 
 	}

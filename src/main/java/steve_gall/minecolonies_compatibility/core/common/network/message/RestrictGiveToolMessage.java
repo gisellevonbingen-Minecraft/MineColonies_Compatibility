@@ -11,19 +11,19 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModItems;
 
 public class RestrictGiveToolMessage extends BuildingModuleMessage
 {
-	private final String moduleName;
+	private final Component moduleDesc;
 
-	public RestrictGiveToolMessage(IRestrictableModuleView module, String moduleName)
+	public RestrictGiveToolMessage(IRestrictableModuleView module, Component moduleDesc)
 	{
 		super(module);
-		this.moduleName = moduleName;
+		this.moduleDesc = moduleDesc;
 	}
 
 	public RestrictGiveToolMessage(FriendlyByteBuf buffer)
 	{
 		super(buffer);
 
-		this.moduleName = buffer.readUtf();
+		this.moduleDesc = buffer.readComponent();
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class RestrictGiveToolMessage extends BuildingModuleMessage
 	{
 		super.encode(buffer);
 
-		buffer.writeUtf(this.moduleName);
+		buffer.writeComponent(this.moduleDesc);
 	}
 
 	@Override
@@ -44,16 +44,16 @@ public class RestrictGiveToolMessage extends BuildingModuleMessage
 			var item = ModItems.RESTRICT_TOOL.get();
 			var player = context.getSender();
 			var tool = InventoryUtils.getOrCreateItemAndPutToHotbarAndSelectOrDrop(item, player, item::getDefaultInstance, true);
-			item.setModule(tool, module, Component.literal(this.moduleName));
+			item.setModule(tool, module, this.moduleDesc);
 
 			player.getInventory().setChanged();
 		}
 
 	}
 
-	public String getModuleName()
+	public Component getModuleDesc()
 	{
-		return this.moduleName;
+		return this.moduleDesc;
 	}
 
 }

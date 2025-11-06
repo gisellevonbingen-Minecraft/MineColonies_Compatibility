@@ -19,6 +19,8 @@ import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibili
 
 public class NetworkStorageModuleView extends AbstractBuildingModuleView
 {
+	public static final String DESC = "com.minecolonies.coremod.gui.workerhuts.network_storage";
+
 	private final List<BlockPos> blocks;
 	private final Map<BlockPos, Direction> directions;
 	private int revision;
@@ -75,7 +77,7 @@ public class NetworkStorageModuleView extends AbstractBuildingModuleView
 	@Override
 	public String getDesc()
 	{
-		return "com.minecolonies.coremod.gui.workerhuts." + this.getIcon();
+		return DESC;
 	}
 
 }

@@ -18,6 +18,8 @@ import steve_gall.minecolonies_compatibility.core.common.network.message.Restric
 
 public class RestrictableModuleView extends AbstractBuildingModuleView implements IRestrictableModuleView
 {
+	public static final String DESC = "com.minecolonies.coremod.gui.workerhuts.restrict";
+
 	private boolean restrictEnabled = false;
 
 	@Nullable
@@ -49,7 +51,7 @@ public class RestrictableModuleView extends AbstractBuildingModuleView implement
 	@Override
 	public String getDesc()
 	{
-		return "com.minecolonies.coremod.gui.workerhuts." + this.getIcon();
+		return DESC;
 	}
 
 	@Override

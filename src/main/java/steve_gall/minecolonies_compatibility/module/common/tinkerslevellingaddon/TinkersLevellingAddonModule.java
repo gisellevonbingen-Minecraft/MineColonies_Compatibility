@@ -22,7 +22,7 @@ public class TinkersLevellingAddonModule extends AbstractModule
 
 			if (tool.getModifier(Registration.IMPROVABLE.get()) != null)
 			{
-				ToolLevellingUtil.addExperience(tool, damage, null);
+				ToolLevellingUtil.addExperience(tool, 1, null);
 			}
 
 		}

@@ -1,8 +1,12 @@
 package steve_gall.minecolonies_compatibility.module.common.collectorsreap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+
 import net.brdle.collectorsreap.common.block.FruitBushBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +20,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
-import org.jetbrains.annotations.NotNull;
 
 public class FruitBushFruit extends CustomizedFruit
 {
@@ -27,13 +30,14 @@ public class FruitBushFruit extends CustomizedFruit
 	public FruitBushFruit(FruitBushBlock block)
 	{
 		this.block = block;
-		this.blockIcons = List.of(new ItemStack(block.getSeeds()));
+		this.blockIcons = Arrays.asList(new ItemStack(block.getSeeds()));
 
 		var itemIcons = new ArrayList<ItemStack>();
 		itemIcons.add(new ItemStack(block.getFruit()));
 
-		if (block.hasSpecialFruit()) {
-			block.getSpecialFruit().ifPresent(special -> itemIcons.add(new ItemStack(special)));
+		if (block.hasSpecialFruit())
+		{
+			itemIcons.add(new ItemStack(block.getSpecialFruit().get()));
 		}
 
 		this.itemIcons = itemIcons;
@@ -116,15 +120,14 @@ public class FruitBushFruit extends CustomizedFruit
 
 		if (this.block.isSpecial(level, pos))
 		{
-			stack = new ItemStack(block.getSpecialFruit().get());
+			stack = new ItemStack(this.block.getSpecialFruit().get());
 		}
 		else
 		{
-			final int count = level.getRandom().nextIntBetweenInclusive(1, 1 + this.block.getMaxBonus());
-			stack = new ItemStack(this.block.getFruit(), count);
+			stack = new ItemStack(this.block.getFruit(), 1 + level.getRandom().nextInt(this.block.getMaxBonus()));
 		}
 
-		return List.of(stack);
+		return Arrays.asList(stack);
 	}
 
 }

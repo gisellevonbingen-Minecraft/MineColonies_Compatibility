@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.ldtteam.blockui.views.BOWindow;
 
+import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.core.client.gui.FruitListModuleWindow;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
@@ -14,11 +15,11 @@ import steve_gall.minecolonies_tweaks.api.common.building.module.AbstractIdListM
 public class FruitListModuleView extends AbstractIdListModuleView
 {
 	private final String icon;
-	private final String desc;
+	private final Component desc;
 	private final boolean inverted;
 	private final Predicate<CustomizedFruit> displayPredicate;
 
-	public FruitListModuleView(String icon, String desc, boolean inverted, Predicate<CustomizedFruit> displayPredicate)
+	public FruitListModuleView(String icon, Component desc, boolean inverted, Predicate<CustomizedFruit> displayPredicate)
 	{
 		this.icon = icon;
 		this.desc = desc;
@@ -29,7 +30,7 @@ public class FruitListModuleView extends AbstractIdListModuleView
 	@Override
 	public BOWindow getWindow()
 	{
-		return new FruitListModuleWindow(MineColoniesCompatibility.rl("gui/layouthuts/layoutfilterablefruitlist.xml").toString(), this);
+		return new FruitListModuleWindow(this, MineColoniesCompatibility.rl("gui/layouthuts/layoutfilterablefruitlist.xml"));
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class FruitListModuleView extends AbstractIdListModuleView
 	}
 
 	@Override
-	public String getDesc()
+	public Component getDesc()
 	{
 		return this.desc;
 	}

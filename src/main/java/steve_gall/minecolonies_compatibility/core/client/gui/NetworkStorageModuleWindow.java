@@ -2,7 +2,6 @@ package steve_gall.minecolonies_compatibility.core.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +16,7 @@ import com.minecolonies.core.client.gui.AbstractModuleWindow;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
@@ -25,7 +25,7 @@ import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibili
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModuleView;
 import steve_gall.minecolonies_compatibility.core.common.network.message.NetworkStorageRefreshMessage;
 
-public class NetworkStorageModuleWindow extends AbstractModuleWindow
+public class NetworkStorageModuleWindow extends AbstractModuleWindow<NetworkStorageModuleView>
 {
 	public static final Component TEXT_REFRESH = Component.translatable("minecolonies_compatibility.text.refresh");
 	public static final Component TEXT_REFRESHING = Component.translatable("minecolonies_compatibility.text.refreshing");
@@ -39,14 +39,12 @@ public class NetworkStorageModuleWindow extends AbstractModuleWindow
 	private int revision;
 	private List<ViewCache> currentDisplayedList;
 
-	public NetworkStorageModuleWindow(String res, NetworkStorageModuleView module)
+	public NetworkStorageModuleWindow(NetworkStorageModuleView module, ResourceLocation res)
 	{
-		super(module.getBuildingView(), res);
+		super(module, res);
 
 		this.module = module;
 		this.resourceList = this.window.findPaneOfTypeByID(WindowConstants.LIST_RESOURCES, ScrollingList.class);
-
-		this.window.findPaneOfTypeByID(WindowConstants.DESC_LABEL, Text.class).setText(Component.translatable(module.getDesc().toLowerCase(Locale.US)));
 	}
 
 	@Override

@@ -6,6 +6,7 @@
 	"client": [
 		"TeachRecipeScreenMixin",
 	
+		"minecolonies.AbstractModuleWindowAccessor",
 		"minecolonies.SettingsModuleViewMixin",
 		"minecolonies.SettingsModuleWindow1Mixin",
 		"minecolonies.WindowCraftingMixin",

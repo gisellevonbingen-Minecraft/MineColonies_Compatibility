@@ -41,7 +41,7 @@ public abstract class WindowListRecipes1Mixin
 	private void updateElement(int index, Pane rowPane, CallbackInfo ci) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
 	{
 		var accessor = (WindowListRecipesAcccessor) this.minecolonies_compatibility$this$0;
-		var module = accessor.getModule();
+		var module = accessor.getModuleView();
 
 		if (module.getRecipes().get(index) instanceof ICustomizableRecipeStorage recipe)
 		{

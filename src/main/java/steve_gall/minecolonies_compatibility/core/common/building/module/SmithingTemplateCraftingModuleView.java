@@ -3,7 +3,6 @@ package steve_gall.minecolonies_compatibility.core.common.building.module;
 import org.jetbrains.annotations.NotNull;
 
 import com.ldtteam.blockui.views.BOWindow;
-import com.minecolonies.api.util.constant.Constants;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,7 +32,7 @@ public class SmithingTemplateCraftingModuleView extends CraftingModuleView
 	@OnlyIn(Dist.CLIENT)
 	public BOWindow getWindow()
 	{
-		return new WindowListSmithingTemplateRecipes(this.buildingView, Constants.MOD_ID + ":gui/layouthuts/layoutlistrecipes.xml", this);
+		return new WindowListSmithingTemplateRecipes(this);
 	}
 
 	public ItemStackCounter getCounter()

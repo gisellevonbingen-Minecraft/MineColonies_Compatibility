@@ -14,11 +14,14 @@ import com.minecolonies.api.util.Tuple;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_compatibility.core.client.gui.NetworkStorageModuleWindow;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
 public class NetworkStorageModuleView extends AbstractBuildingModuleView
 {
+	public static final Component DESC = Component.translatable("com.minecolonies.coremod.gui.workerhuts.network_storage");
+
 	private final List<BlockPos> blocks;
 	private final Map<BlockPos, Direction> directions;
 	private int revision;
@@ -63,7 +66,7 @@ public class NetworkStorageModuleView extends AbstractBuildingModuleView
 	@Override
 	public BOWindow getWindow()
 	{
-		return new NetworkStorageModuleWindow(MineColoniesCompatibility.rl("gui/layouthuts/layoutnetworkstorage.xml").toString(), this);
+		return new NetworkStorageModuleWindow(this, MineColoniesCompatibility.rl("gui/layouthuts/layoutnetworkstorage.xml"));
 	}
 
 	@Override
@@ -73,9 +76,9 @@ public class NetworkStorageModuleView extends AbstractBuildingModuleView
 	}
 
 	@Override
-	public String getDesc()
+	public Component getDesc()
 	{
-		return "com.minecolonies.coremod.gui.workerhuts." + this.getIcon();
+		return DESC;
 	}
 
 }

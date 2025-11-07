@@ -2,6 +2,7 @@ package steve_gall.minecolonies_compatibility.core.common.network.message;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.buildings.modules.IBuildingModuleView;
+import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -11,23 +12,38 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.NetworkHooks;
+import steve_gall.minecolonies_compatibility.api.common.building.module.IMenuBuildingModuleView;
 
 public abstract class ModuleMenuOpenMessage extends BuildingModuleMessage
 {
-	protected final String desc;
+	protected final Component desc;
 
 	public ModuleMenuOpenMessage(IBuildingModuleView module)
 	{
 		super(module);
 
-		this.desc = module.getDesc();
+		if (module instanceof IMenuBuildingModuleView menuBuilding)
+		{
+			this.desc = menuBuilding.getMenuDesc();
+		}
+		else if (module instanceof CraftingModuleView craftingModule)
+		{
+			@SuppressWarnings("deprecation")
+			var id = craftingModule.getId();
+			this.desc = Component.translatable("com.minecolonies.coremod.gui.workerhuts.recipe." + id + ".menu");
+		}
+		else
+		{
+			this.desc = module.getDesc();
+		}
+
 	}
 
 	public ModuleMenuOpenMessage(FriendlyByteBuf buffer)
 	{
 		super(buffer);
 
-		this.desc = buffer.readUtf();
+		this.desc = buffer.readComponent();
 	}
 
 	@Override
@@ -35,7 +51,7 @@ public abstract class ModuleMenuOpenMessage extends BuildingModuleMessage
 	{
 		super.encode(buffer);
 
-		buffer.writeUtf(this.desc);
+		buffer.writeComponent(this.desc);
 	}
 
 	@Override
@@ -76,7 +92,7 @@ public abstract class ModuleMenuOpenMessage extends BuildingModuleMessage
 
 	protected Component getDisplayName()
 	{
-		return Component.translatable(this.desc + ".menu");
+		return this.desc;
 	}
 
 	protected abstract AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player, IBuildingModule module);

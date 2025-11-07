@@ -8,6 +8,7 @@ import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModuleView;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -19,6 +20,8 @@ import steve_gall.minecolonies_compatibility.core.common.network.message.Restric
 
 public class RestrictableModuleView extends AbstractBuildingModuleView implements IRestrictableModuleView
 {
+	public static final Component DESC = Component.translatable("com.minecolonies.coremod.gui.workerhuts.restrict");
+
 	private boolean restrictEnabled = false;
 
 	@Nullable
@@ -38,7 +41,7 @@ public class RestrictableModuleView extends AbstractBuildingModuleView implement
 	@OnlyIn(Dist.CLIENT)
 	public BOWindow getWindow()
 	{
-		return new RestrictableModuleWindow(MineColoniesCompatibility.rl("gui/layouthuts/layoutrestrictable.xml").toString(), this);
+		return new RestrictableModuleWindow(this, MineColoniesCompatibility.rl("gui/layouthuts/layoutrestrictable.xml"));
 	}
 
 	@Override
@@ -48,9 +51,9 @@ public class RestrictableModuleView extends AbstractBuildingModuleView implement
 	}
 
 	@Override
-	public String getDesc()
+	public Component getDesc()
 	{
-		return "com.minecolonies.coremod.gui.workerhuts." + this.getIcon();
+		return DESC;
 	}
 
 	@Override

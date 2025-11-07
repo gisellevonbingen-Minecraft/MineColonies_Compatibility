@@ -1,30 +1,26 @@
 package steve_gall.minecolonies_compatibility.core.client.gui;
 
-import java.util.Locale;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.ldtteam.blockui.controls.Button;
-import com.ldtteam.blockui.controls.Text;
 import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.AbstractModuleWindow;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModuleView;
 import steve_gall.minecolonies_compatibility.core.common.network.message.RestrictGiveToolMessage;
 
-public class RestrictableModuleWindow extends AbstractModuleWindow
+public class RestrictableModuleWindow extends AbstractModuleWindow<IRestrictableModuleView>
 {
 	private final IRestrictableModuleView module;
 
-	public RestrictableModuleWindow(String res, IRestrictableModuleView module)
+	public RestrictableModuleWindow(IRestrictableModuleView module, ResourceLocation res)
 	{
-		super(module.getBuildingView(), res);
+		super(module, res);
 
 		this.module = module;
-
-		this.window.findPaneOfTypeByID(WindowConstants.DESC_LABEL, Text.class).setText(Component.translatable(module.getDesc().toLowerCase(Locale.US)));
 	}
 
 	@Override

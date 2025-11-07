@@ -1,9 +1,11 @@
 package steve_gall.minecolonies_compatibility.core.common.network.message;
 
 import com.minecolonies.api.util.InventoryUtils;
+import com.minecolonies.api.util.Utils;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import steve_gall.minecolonies_compatibility.api.common.building.module.IRestrictableModule;
@@ -15,19 +17,19 @@ public class RestrictGiveToolMessage extends BuildingModuleMessage
 {
 	public static final CustomPacketPayload.Type<RestrictGiveToolMessage> TYPE = new CustomPacketPayload.Type<>(MineColoniesCompatibility.rl("restrict_give_tool"));
 
-	private final String moduleName;
+	private final Component moduleDesc;
 
-	public RestrictGiveToolMessage(IRestrictableModuleView module, String moduleName)
+	public RestrictGiveToolMessage(IRestrictableModuleView module, Component moduleDesc)
 	{
 		super(module);
-		this.moduleName = moduleName;
+		this.moduleDesc = moduleDesc;
 	}
 
 	public RestrictGiveToolMessage(RegistryFriendlyByteBuf buffer)
 	{
 		super(buffer);
 
-		this.moduleName = buffer.readUtf();
+		this.moduleDesc = Utils.deserializeCodecMess(ComponentSerialization.STREAM_CODEC, buffer);
 	}
 
 	@Override
@@ -35,7 +37,7 @@ public class RestrictGiveToolMessage extends BuildingModuleMessage
 	{
 		super.encode(buffer);
 
-		buffer.writeUtf(this.moduleName);
+		Utils.serializeCodecMess(ComponentSerialization.STREAM_CODEC, buffer, this.moduleDesc);
 	}
 
 	@Override
@@ -48,7 +50,7 @@ public class RestrictGiveToolMessage extends BuildingModuleMessage
 			var item = ModItems.RESTRICT_TOOL.get();
 			var player = context.player();
 			var tool = InventoryUtils.getOrCreateItemAndPutToHotbarAndSelectOrDrop(item, player, item::getDefaultInstance, true);
-			item.setModule(tool, module, Component.translatable(this.moduleName));
+			item.setModule(tool, module, this.moduleDesc);
 
 			player.getInventory().setChanged();
 		}
@@ -61,9 +63,9 @@ public class RestrictGiveToolMessage extends BuildingModuleMessage
 		return TYPE;
 	}
 
-	public String getModuleName()
+	public Component getModuleDesc()
 	{
-		return this.moduleName;
+		return this.moduleDesc;
 	}
 
 }

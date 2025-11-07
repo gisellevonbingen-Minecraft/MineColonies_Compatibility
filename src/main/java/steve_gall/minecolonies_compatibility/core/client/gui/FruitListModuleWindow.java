@@ -23,12 +23,13 @@ import com.minecolonies.core.client.gui.AbstractModuleWindow;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.FruitIconCache;
 import steve_gall.minecolonies_compatibility.core.common.building.module.FruitListModuleView;
 
-public class FruitListModuleWindow extends AbstractModuleWindow
+public class FruitListModuleWindow extends AbstractModuleWindow<FruitListModuleView>
 {
 	public static final String INPUT_ICON = "inputIcon";
 	public static final String OUTPUT_ICON = "outputIcon";
@@ -48,9 +49,9 @@ public class FruitListModuleWindow extends AbstractModuleWindow
 	private int tickCounter = 0;
 	private List<FruitIconCache> currentDisplayedList;
 
-	public FruitListModuleWindow(String res, FruitListModuleView module)
+	public FruitListModuleWindow(FruitListModuleView module, ResourceLocation res)
 	{
-		super(module.getBuildingView(), res);
+		super(module, res);
 
 		this.module = module;
 		this.resourceList = this.window.findPaneOfTypeByID(WindowConstants.LIST_RESOURCES, ScrollingList.class);
@@ -59,7 +60,6 @@ public class FruitListModuleWindow extends AbstractModuleWindow
 		this.descriptionCache = new HashMap<>();
 		this.hoverNameCache = new HashMap<>();
 
-		this.window.findPaneOfTypeByID(WindowConstants.DESC_LABEL, Text.class).setText(Component.translatable(module.getDesc().toLowerCase(Locale.US)));
 		this.window.findPaneOfTypeByID(WindowConstants.INPUT_FILTER, TextField.class).setHandler(input ->
 		{
 			this.setFilter(input.getText());

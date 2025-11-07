@@ -23,12 +23,13 @@ import com.minecolonies.core.client.gui.AbstractModuleWindow;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherableIconCache;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.core.common.building.module.ButcherableListModuleView;
 
-public class ButcherableListModuleWindow extends AbstractModuleWindow
+public class ButcherableListModuleWindow extends AbstractModuleWindow<ButcherableListModuleView>
 {
 	public static final String OUTPUT_ICON = "outputIcon";
 	public static final String OUTPUT_NAME = "outputName";
@@ -47,9 +48,9 @@ public class ButcherableListModuleWindow extends AbstractModuleWindow
 	private int tickCounter = 0;
 	private List<ButcherableIconCache> currentDisplayedList;
 
-	public ButcherableListModuleWindow(String res, ButcherableListModuleView module)
+	public ButcherableListModuleWindow(ButcherableListModuleView module, ResourceLocation res)
 	{
-		super(module.getBuildingView(), res);
+		super(module, res);
 
 		this.module = module;
 		this.resourceList = this.window.findPaneOfTypeByID(WindowConstants.LIST_RESOURCES, ScrollingList.class);
@@ -58,7 +59,6 @@ public class ButcherableListModuleWindow extends AbstractModuleWindow
 		this.descriptionCache = new HashMap<>();
 		this.hoverNameCache = new HashMap<>();
 
-		this.window.findPaneOfTypeByID(WindowConstants.DESC_LABEL, Text.class).setText(Component.translatable(module.getDesc().toLowerCase(Locale.US)));
 		this.window.findPaneOfTypeByID(WindowConstants.INPUT_FILTER, TextField.class).setHandler(input ->
 		{
 			this.setFilter(input.getText());

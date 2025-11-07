@@ -7,16 +7,13 @@ import com.minecolonies.core.client.gui.modules.WindowListRecipes;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
 
 @Mixin(value = WindowListRecipes.class, remap = false)
-public interface WindowListRecipesAcccessor
+public interface WindowListRecipesAcccessor extends AbstractModuleWindowAccessor<CraftingModuleView>
 {
 	@Accessor(value = "OUTPUT_ICON", remap = false)
 	static String getOutputIcon()
 	{
 		throw new AssertionError();
 	}
-
-	@Accessor(value = "module", remap = false)
-	CraftingModuleView getModule();
 
 	@Accessor(value = "lifeCount", remap = false)
 	int getLifeCount();

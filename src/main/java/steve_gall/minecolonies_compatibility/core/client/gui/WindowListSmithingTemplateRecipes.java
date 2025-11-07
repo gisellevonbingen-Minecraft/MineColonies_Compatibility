@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.controls.ButtonImage;
-import com.minecolonies.api.colony.buildings.views.IBuildingView;
 import com.minecolonies.core.client.gui.modules.WindowListRecipes;
 
 import net.minecraft.network.chat.Component;
@@ -20,9 +19,9 @@ public class WindowListSmithingTemplateRecipes extends WindowListRecipes
 	private final SmithingTemplateCraftingModuleView module;
 	private final ButtonImage inventoryButton;
 
-	public WindowListSmithingTemplateRecipes(IBuildingView view, String name, SmithingTemplateCraftingModuleView module)
+	public WindowListSmithingTemplateRecipes(SmithingTemplateCraftingModuleView module)
 	{
-		super(view, name, module);
+		super(module);
 		this.module = module;
 
 		var button = this.inventoryButton = new ButtonImage();

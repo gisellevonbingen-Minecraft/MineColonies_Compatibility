@@ -17,6 +17,7 @@ import com.minecolonies.core.colony.buildings.moduleviews.CombinedHiringLimitMod
 import com.minecolonies.core.colony.buildings.moduleviews.WorkerBuildingModuleView;
 import com.mojang.datafixers.util.Pair;
 
+import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
@@ -79,7 +80,7 @@ public class ModBuildingModules
 
 	public static final BuildingEntry.ModuleProducer<FruitListModule, FruitListModuleView> FRUITLIST_BLACKLIST = new BuildingEntry.ModuleProducer<>("fruitlist_blacklist", //
 			() -> new FruitListModule(ModBuildingModules.FRUITLIST_BLACKLIST.key), //
-			() -> () -> new FruitListModuleView("fruitlist_blacklist", "com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist", true, fruit -> true));
+			() -> () -> new FruitListModuleView("fruitlist_blacklist", Component.translatable("com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist"), true, fruit -> true));
 
 	public static final BuildingEntry.ModuleProducer<NetworkStorageModule, NetworkStorageModuleView> NETWORK_STORAGE = new BuildingEntry.ModuleProducer<>("warehouse_refinfedstoprage_grid", //
 			() -> new NetworkStorageModule(), //
@@ -109,11 +110,20 @@ public class ModBuildingModules
 			}, //
 			() -> () -> new RestrictableModuleView()
 			{
+				public static final Component DESC = Component.translatable("com.minecolonies.coremod.gui.workerhuts.fluid_manager_lava_cauldron");
+
 				@Override
 				public String getIcon()
 				{
 					return "fluid_manager_lava_cauldron";
 				};
+
+				@Override
+				public Component getDesc()
+				{
+					return DESC;
+				}
+
 			});
 
 	public static final BuildingEntry.ModuleProducer<SmithingCraftingModule, SmithingCraftingModuleView> BLACKSMITH_SMITHING = new BuildingEntry.ModuleProducer<>("blacksmith_smithing", //
@@ -134,7 +144,7 @@ public class ModBuildingModules
 
 	public static final BuildingEntry.ModuleProducer<ButcherableListModule, ButcherableListModuleView> BUTCHERABLELIST_BLACKLIST = new BuildingEntry.ModuleProducer<>("butcherablelist_blacklist", //
 			() -> new ButcherableListModule(ModBuildingModules.BUTCHERABLELIST_BLACKLIST.key), //
-			() -> () -> new ButcherableListModuleView("butcherablelist_blacklist", "com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist", true, item -> true));
+			() -> () -> new ButcherableListModuleView("butcherablelist_blacklist", Component.translatable("com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist"), true, item -> true));
 
 	public static final BuildingEntry.ModuleProducer<StonecutterCraftingModule, StonecutterCraftingModuleView> STONEMASON_STONECUTTING = new BuildingEntry.ModuleProducer<>("stonemason_stonecutting", //
 			() -> new StonecutterCraftingModule(com.minecolonies.api.colony.jobs.ModJobs.stoneMason.get()), //

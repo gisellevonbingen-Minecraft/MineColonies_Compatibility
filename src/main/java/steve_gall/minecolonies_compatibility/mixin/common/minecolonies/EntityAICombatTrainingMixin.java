@@ -14,7 +14,7 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 @Mixin(value = EntityAICombatTraining.class, remap = false)
 public abstract class EntityAICombatTrainingMixin
 {
-	@WrapOperation(method = "isSetup", remap = false, at = @At(value = "INVOKE", target = "net/minecraftforge/registries/RegistryObject.get"))
+	@WrapOperation(method = "isSetup", remap = false, at = @At(value = "INVOKE", target = "net/neoforged/neoforge/registries/DeferredHolder.get"))
 	private Object isSetup_ToolType(DeferredHolder<?, ?> self, Operation<Object> operation)
 	{
 		if (self == ModEquipmentTypes.sword)

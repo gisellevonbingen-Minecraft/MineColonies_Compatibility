@@ -104,8 +104,8 @@ public abstract class AbstractEntityAICraftingMixin<J extends AbstractJobCrafter
 
 	}
 
-	@Inject(method = "craft", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/colony/requestsystem/request/IRequest;addDelivery(Lnet/minecraft/world/item/ItemStack;)V"), cancellable = false)
-	private void craft_addDelivery(CallbackInfoReturnable<IAIState> cir)
+	@Inject(method = "executeCraftingAction", remap = false, at = @At(value = "INVOKE", target = "Lcom/minecolonies/api/colony/requestsystem/request/IRequest;addDelivery(Lnet/minecraft/world/item/ItemStack;)V"), cancellable = false)
+	private void executeCraftingAction_addDelivery(CallbackInfoReturnable<IAIState> cir)
 	{
 		var recipeStorage = this.currentRecipeStorage;
 

@@ -37,7 +37,8 @@ public class GunnerCombatAI<T extends AbstractEntityAIGuard<J, B> & ICustomizabl
 
 	private final PathingOptions combatPathingOptions;
 
-	public GunnerCombatAI(EntityCitizen owner, ITickRateStateMachine<?> stateMachine, T parentAI)
+	@SuppressWarnings("rawtypes")
+	public GunnerCombatAI(EntityCitizen owner, ITickRateStateMachine stateMachine, T parentAI)
 	{
 		super(owner, stateMachine, parentAI);
 

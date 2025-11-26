@@ -70,7 +70,6 @@ public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<
 			user.getNavigation().stop();
 
 			CitizenItemUtils.damageItemInHand(user, InteractionHand.MAIN_HAND, 1);
-			user.decreaseSaturationForContinuousAction();
 		}
 
 	}
@@ -129,7 +128,7 @@ public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<
 		var parentAI = this.getParentAI();
 		var user = this.user;
 
-		parentAI.incrementActionsDoneAndDecSaturation();
+		parentAI.incrementActionsDone();
 		user.getCitizenExperienceHandler().addExperience(GuardConstants.EXP_PER_MOB_DEATH);
 		user.getCitizenColonyHandler().getColony().getStatisticsManager().increment(StatisticsConstants.MOBS_KILLED, user.getCitizenColonyHandler().getColony().getDay());
 
@@ -137,6 +136,8 @@ public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<
 		{
 			parentAI.building.getModule(BuildingModules.STATS_MODULE).increment(StatisticsConstants.MOB_KILLED + ";" + translatableContents.getKey());
 		}
+
+		user.decreaseSaturationForContinuousAction();
 
 		if (parentAI.getSelectedAI() instanceof CustomizedAIGuard guard)
 		{

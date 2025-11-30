@@ -90,7 +90,15 @@ public class GunnerGunAI extends CustomizedAIGunner
 			if (gunIndex != null)
 			{
 				var gunData = gunIndex.getGunData();
-				return new Ammo(gunData.getAmmoId(), minCount);
+				var ammoIndex = TimelessAPI.getCommonAmmoIndex(gunData.getAmmoId()).orElse(null);
+				var count = minCount;
+
+				if (ammoIndex != null)
+				{
+					count = Math.max(count, ammoIndex.getStackSize() * 2);
+				}
+
+				return new Ammo(gunData.getAmmoId(), count, minCount);
 			}
 
 		}

@@ -74,7 +74,7 @@ public class GunnerGunAI extends CustomizedAIGunner
 
 		}
 
-		return 0;
+		return super.getAmmoMinRequestCount(user);
 	}
 
 	@Override
@@ -90,7 +90,15 @@ public class GunnerGunAI extends CustomizedAIGunner
 			if (gunIndex != null)
 			{
 				var gunData = gunIndex.getGunData();
-				return new Ammo(gunData.getAmmoId(), minCount);
+				var ammoIndex = TimelessAPI.getCommonAmmoIndex(gunData.getAmmoId()).orElse(null);
+				var count = minCount;
+
+				if (ammoIndex != null)
+				{
+					count = Math.max(count, ammoIndex.getStackSize() * 2);
+				}
+
+				return new Ammo(gunData.getAmmoId(), count, minCount);
 			}
 
 		}
@@ -132,6 +140,17 @@ public class GunnerGunAI extends CustomizedAIGunner
 		}
 
 		return super.isNeedRequestAmmo(user);
+	}
+
+	@Override
+	public boolean canRangedAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
+	{
+		if (!super.canRangedAttack(user, target))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override

@@ -23,13 +23,15 @@ public class Ammo implements IDeliverableObject
 	public static final Component LONG_DISPLAY_STRING = Component.translatable(MineColoniesCompatibility.tl("tacz_ammo.desc"));
 
 	private ResourceLocation ammoId;
+	private final int count;
 	private final int minCount;
 
 	private List<ItemStack> example;
 
-	public Ammo(ResourceLocation ammoId, int minCount)
+	public Ammo(ResourceLocation ammoId, int count, int minCount)
 	{
 		this.ammoId = ammoId;
+		this.count = Math.max(count, minCount);
 		this.minCount = minCount;
 	}
 
@@ -43,13 +45,15 @@ public class Ammo implements IDeliverableObject
 	public static Ammo deserialize(IFactoryController controller, CompoundTag tag)
 	{
 		var ammoId = new ResourceLocation(tag.getString("ammoId"));
+		var count = tag.getInt("count");
 		var minCount = tag.getInt("minCount");
-		return new Ammo(ammoId, minCount);
+		return new Ammo(ammoId, count, minCount);
 	}
 
 	public static void serialize(IFactoryController controller, CompoundTag tag, Ammo request)
 	{
 		tag.putString("ammoId", request.ammoId.toString());
+		tag.putInt("count", request.count);
 		tag.putInt("minCount", request.minCount);
 	}
 
@@ -82,13 +86,13 @@ public class Ammo implements IDeliverableObject
 	@Override
 	public Ammo copyWithCount(int newCount)
 	{
-		return new Ammo(this.ammoId, this.minCount);
+		return new Ammo(this.ammoId, newCount, this.minCount);
 	}
 
 	@Override
 	public int getCount()
 	{
-		return this.minCount;
+		return this.count;
 	}
 
 	public ResourceLocation getAmmoId()

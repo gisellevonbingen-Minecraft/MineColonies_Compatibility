@@ -128,29 +128,8 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 	{
 		return this.getExtractableBlocks().flatMap(view ->
 		{
-			return view.getAllStacks().filter(predicate).flatMap(this::split).map(stack -> new Tuple<>(stack, view.getPos()));
+			return view.getAllStacks().filter(predicate).map(stack -> new Tuple<>(stack, view.getPos()));
 		});
-	}
-
-	private Stream<ItemStack> split(ItemStack stack)
-	{
-		var builder = Stream.<ItemStack> builder();
-		var count = stack.getCount();
-		var maxStackSize = stack.getMaxStackSize();
-
-		while (true)
-		{
-			if (count <= maxStackSize)
-			{
-				break;
-			}
-
-			builder.accept(stack.copyWithCount(maxStackSize));
-			count -= maxStackSize;
-		}
-
-		builder.accept(stack.copyWithCount(count));
-		return builder.build();
 	}
 
 	public void dump(IItemHandlerModifiable itemHandler)

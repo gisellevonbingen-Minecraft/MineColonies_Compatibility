@@ -123,12 +123,52 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 		return this.getMatchingItemStackCount(itemStack, count, ignoreNBT, ignoreDamage, leftOver) >= count;
 	}
 
-	public Stream<Tuple<ItemStack, BlockPos>> getMatchingItemStacks(Predicate<ItemStack> predicate)
+	public List<Tuple<ItemStack, BlockPos>> getMatchingItemStacks(Predicate<ItemStack> predicate, int limit)
 	{
-		return this.getExtractableBlocks().flatMap(view ->
+		var list = new ArrayList<Tuple<ItemStack, BlockPos>>();
+		var remained = limit;
+
+		for (var view : StreamUtils.toIterable(this.getExtractableBlocks()))
 		{
-			return view.getAllStacks().filter(predicate).map(stack -> new Tuple<>(stack, view.getPos()));
-		});
+			for (var stack : StreamUtils.toIterable(view.getAllStacks().filter(predicate)))
+			{
+				if (remained <= 0)
+				{
+					break;
+				}
+
+				for (var splited : this.split(stack, remained))
+				{
+					list.add(new Tuple<>(splited, view.getPos()));
+					remained -= splited.getCount();
+				}
+
+			}
+
+		}
+
+		return list;
+	}
+
+	private List<ItemStack> split(ItemStack stack, int limit)
+	{
+		var list = new ArrayList<ItemStack>();
+		var count = Math.min(stack.getCount(), limit);
+		var maxStackSize = stack.getMaxStackSize();
+
+		while (true)
+		{
+			if (count <= maxStackSize)
+			{
+				break;
+			}
+
+			list.add(stack.copyWithCount(maxStackSize));
+			count -= maxStackSize;
+		}
+
+		list.add(stack.copyWithCount(count));
+		return list;
 	}
 
 	public void dump(IItemHandlerModifiable itemHandler)

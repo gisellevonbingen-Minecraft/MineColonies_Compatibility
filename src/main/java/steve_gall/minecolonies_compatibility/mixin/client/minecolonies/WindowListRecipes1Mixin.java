@@ -12,7 +12,7 @@ import com.ldtteam.blockui.Pane;
 import com.ldtteam.blockui.controls.ItemIcon;
 import com.ldtteam.blockui.views.View;
 import com.minecolonies.api.util.constant.WindowConstants;
-import com.minecolonies.core.client.gui.modules.WindowListRecipes;
+import com.minecolonies.core.client.gui.modules.building.WindowListRecipes;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

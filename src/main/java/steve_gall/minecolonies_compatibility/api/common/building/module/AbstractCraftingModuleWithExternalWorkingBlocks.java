@@ -100,7 +100,7 @@ public abstract class AbstractCraftingModuleWithExternalWorkingBlocks extends Ab
 	@Nullable
 	protected AbstractEntityCitizen getPathFindingCitizen()
 	{
-		var data = this.building.getModuleMatching(WorkerBuildingModule.class, m -> m.getJobEntry() == this.jobEntry).getFirstCitizen();
+		var data = this.building.getModule(WorkerBuildingModule.class, m -> m.getJobEntry() == this.jobEntry).getFirstCitizen();
 		return data != null ? data.getEntity().orElse(null) : null;
 	}
 

@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.ldtteam.blockui.controls.Button;
 import com.ldtteam.blockui.controls.ButtonImage;
-import com.minecolonies.core.client.gui.modules.WindowListRecipes;
+import com.minecolonies.core.client.gui.modules.building.WindowListRecipes;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

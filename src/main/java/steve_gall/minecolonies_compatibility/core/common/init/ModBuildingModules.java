@@ -112,6 +112,13 @@ public class ModBuildingModules
 				{
 					return "fluid_manager_lava_cauldron";
 				};
+
+				@Override
+				public String getDesc()
+				{
+					return "com.minecolonies.coremod.gui.workerhuts.fluid_manager_lava_cauldron";
+				}
+
 			});
 
 	public static final BuildingEntry.ModuleProducer<SmithingCraftingModule, SmithingCraftingModuleView> BLACKSMITH_SMITHING = new BuildingEntry.ModuleProducer<>("blacksmith_smithing", //

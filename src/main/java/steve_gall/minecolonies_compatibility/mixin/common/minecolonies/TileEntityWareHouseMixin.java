@@ -10,6 +10,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.minecolonies.api.inventory.InventoryCitizen;
 import com.minecolonies.api.tileentities.AbstractTileEntityWareHouse;
 import com.minecolonies.api.util.Tuple;
@@ -41,24 +44,18 @@ public abstract class TileEntityWareHouseMixin extends AbstractTileEntityWareHou
 
 	}
 
-	@Inject(method = "getMatchingItemStacksInWarehouse", remap = false, at = @At("TAIL"), cancellable = true)
-	private void getMatchingItemStacksInWarehouse(Predicate<ItemStack> itemStackSelectionPredicate, CallbackInfoReturnable<List<Tuple<ItemStack, BlockPos>>> cir)
+	@WrapOperation(method = "hasMatchingItemStackInWarehouse(Ljava/util/function/Predicate;I)Z", remap = false, at = @At(value = "INVOKE", target = "getMatchingItemStacksInWarehouse", remap = false))
+	private List<Tuple<ItemStack, BlockPos>> hasMatchingItemStackInWarehouse_getMatchingItemStacksInWarehouse(TileEntityWareHouse self, Predicate<ItemStack> itemStackSelectionPredicate, Operation<List<Tuple<ItemStack, BlockPos>>> operation, @Local int count)
 	{
+		var list = new ArrayList<>(operation.call(self, itemStackSelectionPredicate));
 		var module = this.getBuilding().getModule(ModBuildingModules.NETWORK_STORAGE);
 
 		if (module != null)
 		{
-			var list = module.getMatchingItemStacks(itemStackSelectionPredicate).toList();
-
-			if (list.size() > 0)
-			{
-				var ret = new ArrayList<>(cir.getReturnValue());
-				ret.addAll(list);
-				cir.setReturnValue(ret);
-			}
-
+			list.addAll(module.getMatchingItemStacks(itemStackSelectionPredicate, count));
 		}
 
+		return list;
 	}
 
 	@Inject(method = "dumpInventoryIntoWareHouse", remap = false, at = @At("HEAD"), cancellable = true)

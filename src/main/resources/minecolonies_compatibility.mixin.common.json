@@ -17,6 +17,7 @@
 		"minecolonies.AbstractEntityAIFightMixin",
 		"minecolonies.AbstractEntityAIHerderMixin",
 		"minecolonies.AbstractEntityAIRequestSmelterMixin",
+		"minecolonies.AbstractWarehouseRequestResolverMixin",
 		"minecolonies.AnimalHerdingModuleMixin",
 		"minecolonies.AttackMoveAIMixin",
 		"minecolonies.BuildingEntryMixin",

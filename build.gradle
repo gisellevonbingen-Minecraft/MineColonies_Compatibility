@@ -96,6 +96,14 @@ repositories {
         url "https://thedarkcolour.github.io/KotlinForForge"
     }
     maven {
+        name "Create"
+        url "https://maven.createmod.net"
+    }
+    maven {
+        name "tterrag maven"
+        url "https://maven.tterrag.com"
+    }
+    maven {
         name "LocalMaven"
         url uri("${projectDir}/libs")
     }
@@ -180,6 +188,10 @@ dependencies {
     implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:${tacz_file}-sources-${tacz_source_file}")
     implementation fg.deobf("curse.maven:jade-324717:${jade_file}")
     implementation fg.deobf("curse.maven:fruits-delight-943774:${fruitsdelgiht_file}")
+    implementation fg.deobf("com.simibubi.create:create-${mc_version}:${create_version}:slim") { transitive = false }
+    implementation fg.deobf("dev.engine-room.flywheel:flywheel-forge-${mc_version}:${flywheel_version}")
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    implementation fg.deobf("net.createmod.ponder:Ponder-Forge-${mc_version}:${ponder_version}")
     implementation fg.deobf("blank:l2harvester:0.1.2")
 
     // Runtime Only

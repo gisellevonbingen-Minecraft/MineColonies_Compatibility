@@ -204,7 +204,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	{
 		super.readFromNBT(data);
 
-		this.view.read(data.getCompound(TAG_LINK));
+		this.view.readLink(data.getCompound(TAG_LINK));
 		this.config.readFromNBT(data.getCompound("config"));
 	}
 
@@ -213,7 +213,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	{
 		super.writeToNBT(data);
 
-		data.put(TAG_LINK, this.view.write());
+		data.put(TAG_LINK, this.view.writeLink());
 
 		var configTag = new CompoundTag();
 		this.config.writeToNBT(configTag);
@@ -225,7 +225,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	{
 		var needRedraw = super.readFromStream(data);
 
-		var changed = this.view.read(data);
+		var changed = this.view.readLink(data);
 		return needRedraw || changed;
 	}
 
@@ -234,7 +234,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	{
 		super.writeToStream(data);
 
-		this.view.write(data);
+		this.view.writeLink(data);
 	}
 
 	public @NotNull INetworkStorageView getView()

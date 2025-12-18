@@ -65,7 +65,7 @@ public class CitizenInventoryBlockEntity extends TileConnectable implements INet
 	{
 		super.load(compound);
 
-		this.view.read(compound.getCompound(TAG_LINK));
+		this.view.readLink(compound.getCompound(TAG_LINK));
 		this.accessDirection = AccessDirection.deserialize(compound.get(TAG_WAY));
 	}
 
@@ -74,7 +74,7 @@ public class CitizenInventoryBlockEntity extends TileConnectable implements INet
 	{
 		super.saveAdditional(compound);
 
-		compound.put(TAG_LINK, this.view.write());
+		compound.put(TAG_LINK, this.view.writeLink());
 		compound.put(TAG_WAY, this.accessDirection.serialize());
 	}
 

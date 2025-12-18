@@ -49,7 +49,7 @@ public class CitizenSlaveTile extends BlockEntitySlave implements INetworkStorag
 	{
 		super.readPortable(compound);
 
-		this.view.read(compound.getCompound("view"));
+		this.view.readLink(compound.getCompound("view"));
 		this.accessDirection = AccessDirection.deserialize(compound.get("accessDirection"));
 	}
 
@@ -58,7 +58,7 @@ public class CitizenSlaveTile extends BlockEntitySlave implements INetworkStorag
 	{
 		compound = super.writePortable(compound);
 
-		compound.put("view", this.view.write());
+		compound.put("view", this.view.writeLink());
 		compound.put("accessDirection", this.accessDirection.serialize());
 
 		return compound;

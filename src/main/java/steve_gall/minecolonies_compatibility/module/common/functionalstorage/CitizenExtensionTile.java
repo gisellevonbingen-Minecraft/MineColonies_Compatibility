@@ -92,7 +92,7 @@ public class CitizenExtensionTile extends ControllableDrawerTile<CitizenExtensio
 	{
 		super.load(compound);
 
-		this.view.read(compound.getCompound("view"));
+		this.view.readLink(compound.getCompound("view"));
 		this.accessDirection = AccessDirection.deserialize(compound.get("accessDirection"));
 	}
 
@@ -101,7 +101,7 @@ public class CitizenExtensionTile extends ControllableDrawerTile<CitizenExtensio
 	{
 		super.saveAdditional(compound);
 
-		compound.put("view", this.view.write());
+		compound.put("view", this.view.writeLink());
 		compound.put("accessDirection", this.accessDirection.serialize());
 	}
 

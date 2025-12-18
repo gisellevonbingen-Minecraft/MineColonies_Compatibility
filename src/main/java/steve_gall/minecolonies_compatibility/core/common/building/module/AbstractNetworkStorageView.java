@@ -58,7 +58,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 
 	}
 
-	public boolean read(CompoundTag tag)
+	public boolean readLink(CompoundTag tag)
 	{
 		var colonyId = this.colonyId;
 		var warehousePos = this.warehousePos;
@@ -69,7 +69,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		return this.colonyId != colonyId || !this.warehousePos.equals(warehousePos);
 	}
 
-	public CompoundTag write()
+	public CompoundTag writeLink()
 	{
 		var tag = new CompoundTag();
 		tag.putInt(TAG_COLONY_ID, this.colonyId);
@@ -77,7 +77,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		return tag;
 	}
 
-	public boolean read(FriendlyByteBuf buffer)
+	public boolean readLink(FriendlyByteBuf buffer)
 	{
 		var colonyId = this.colonyId;
 		var warehousePos = this.warehousePos;
@@ -87,10 +87,27 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		return this.colonyId != colonyId || !this.warehousePos.equals(warehousePos);
 	}
 
-	public void write(FriendlyByteBuf buffer)
+	public void writeLink(FriendlyByteBuf buffer)
 	{
 		buffer.writeInt(this.colonyId);
 		buffer.writeOptional(this.warehousePos, FriendlyByteBuf::writeBlockPos);
+	}
+
+	public void readData(CompoundTag tag)
+	{
+
+	}
+
+	public CompoundTag writeData()
+	{
+		var tag = new CompoundTag();
+		this.writeData(tag);
+		return tag;
+	}
+
+	public void writeData(CompoundTag tag)
+	{
+
 	}
 
 	@Override

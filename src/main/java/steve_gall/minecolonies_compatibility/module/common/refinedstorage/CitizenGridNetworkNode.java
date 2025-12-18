@@ -118,7 +118,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 	{
 		super.write(tag);
 
-		tag.put(TAG_LINK, this.view.write());
+		tag.put(TAG_LINK, this.view.writeLink());
 
 		return tag;
 	}
@@ -138,7 +138,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 	{
 		super.read(tag);
 
-		this.view.read(tag.getCompound(TAG_LINK));
+		this.view.readLink(tag.getCompound(TAG_LINK));
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import com.ldtteam.blockui.PaneBuilders;
 import com.ldtteam.blockui.controls.Text;
 import com.minecolonies.api.colony.buildings.modules.settings.ISetting;
 import com.minecolonies.api.colony.buildings.modules.settings.ISettingKey;
-import com.minecolonies.core.client.gui.modules.SettingsModuleWindow;
+import com.minecolonies.core.client.gui.modules.building.SettingsModuleWindow;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
@@ -21,7 +21,7 @@ import net.neoforged.fml.ModList;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.util.ReflectionUtils;
 
-@Mixin(targets = "com.minecolonies.core.client.gui.modules.SettingsModuleWindow$1", remap = false)
+@Mixin(targets = "com.minecolonies.core.client.gui.modules.building.SettingsModuleWindow$1", remap = false)
 public class SettingsModuleWindow1Mixin
 {
 	@Unique

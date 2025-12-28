@@ -12,7 +12,7 @@ import com.ldtteam.blockui.Pane;
 import com.ldtteam.blockui.controls.ItemIcon;
 import com.ldtteam.blockui.views.View;
 import com.minecolonies.api.util.constant.WindowConstants;
-import com.minecolonies.core.client.gui.modules.WindowListRecipes;
+import com.minecolonies.core.client.gui.modules.building.WindowListRecipes;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -31,7 +31,7 @@ import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafti
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizableRecipeStorage;
 import steve_gall.minecolonies_tweaks.core.client.view.FluidIcon;
 
-@Mixin(targets = "com.minecolonies.core.client.gui.modules.WindowListRecipes$1", remap = false)
+@Mixin(targets = "com.minecolonies.core.client.gui.modules.building.WindowListRecipes$1", remap = false)
 public abstract class WindowListRecipes1Mixin
 {
 	@Unique

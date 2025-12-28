@@ -21,7 +21,7 @@ import net.minecraftforge.fml.ModList;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.util.ReflectionUtils;
 
-@Mixin(targets = "com.minecolonies.core.client.gui.modules.SettingsModuleWindow$1", remap = false)
+@Mixin(targets = "com.minecolonies.core.client.gui.modules.building.SettingsModuleWindow$1", remap = false)
 public class SettingsModuleWindow1Mixin
 {
 	@Unique

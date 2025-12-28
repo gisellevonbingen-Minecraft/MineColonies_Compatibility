@@ -31,7 +31,7 @@ import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafti
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizableRecipeStorage;
 import steve_gall.minecolonies_tweaks.core.client.view.FluidIcon;
 
-@Mixin(targets = "com.minecolonies.core.client.gui.modules.WindowListRecipes$1", remap = false)
+@Mixin(targets = "com.minecolonies.core.client.gui.modules.building.WindowListRecipes$1", remap = false)
 public abstract class WindowListRecipes1Mixin
 {
 	@Unique

@@ -23,13 +23,13 @@ public class AppleLeavesFruit extends CustomizedFruit
 	@Override
 	public @NotNull ResourceLocation getId()
 	{
-		return BuiltInRegistries.BLOCK.getKey(RuBlocks.APPLE_OAK_LEAVES.get());
+		return BuiltInRegistries.BLOCK.getKey(RuBlocks.APPLE_OAK_NATURAL_SET.getLeaves());
 	}
 
 	@Override
 	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(new ItemStack(RuBlocks.APPLE_OAK_SAPLING.get()), new ItemStack(RuBlocks.APPLE_OAK_LEAVES.get()));
+		return Arrays.asList(new ItemStack(RuBlocks.APPLE_OAK_NATURAL_SET.getSapling()), new ItemStack(RuBlocks.APPLE_OAK_NATURAL_SET.getLeaves()));
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class AppleLeavesFruit extends CustomizedFruit
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getBlock() == RuBlocks.APPLE_OAK_LEAVES.get();
+		return context.getState().getBlock() == RuBlocks.APPLE_OAK_NATURAL_SET.getLeaves();
 	}
 
 	@Override

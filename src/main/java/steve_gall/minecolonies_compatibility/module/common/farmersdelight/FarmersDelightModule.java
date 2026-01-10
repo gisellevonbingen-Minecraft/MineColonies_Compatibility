@@ -22,14 +22,17 @@ import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.module.client.farmersdelight.CookingTeachScreen;
 import steve_gall.minecolonies_compatibility.module.client.farmersdelight.CuttingTeachScreen;
+import steve_gall.minecolonies_compatibility.module.client.farmersdelight.PlatingTeachScreen;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting.CookingRecipeStorage;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting.CuttingRecipeStorage;
+import steve_gall.minecolonies_compatibility.module.common.farmersdelight.crafting.PlatingRecipeStorage;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleBuildingModules;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleCraftingTypes;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.init.ModuleMenuTypes;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.network.CookingOpenTeachMessage;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.network.CuttingOpenTeachMessage;
+import steve_gall.minecolonies_compatibility.module.common.farmersdelight.network.PlatingOpenTeachMessage;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizedRecipeStorageRegistry;
 import steve_gall.minecolonies_tweaks.api.common.network.MessageRegistrar;
 import vectorwing.farmersdelight.common.block.MushroomColonyBlock;
@@ -52,6 +55,7 @@ public class FarmersDelightModule extends AbstractModule
 
 		CustomizedRecipeStorageRegistry.INSTANCE.register(CuttingRecipeStorage.ID, CuttingRecipeStorage::serialize, CuttingRecipeStorage::deserialize);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(CookingRecipeStorage.ID, CookingRecipeStorage::serialize, CookingRecipeStorage::new);
+		CustomizedRecipeStorageRegistry.INSTANCE.register(PlatingRecipeStorage.ID, PlatingRecipeStorage::serialize, PlatingRecipeStorage::deserialize);
 	}
 
 	@Override
@@ -75,6 +79,7 @@ public class FarmersDelightModule extends AbstractModule
 
 			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_CUTTING);
 			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_COOKING);
+			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_PLATING);
 			ModBuildings.lumberjack.get().getModuleProducers().add(ModuleBuildingModules.LUMBERJACK_CUTTING);
 			ModBuildings.stoneMason.get().getModuleProducers().add(ModuleBuildingModules.STONEMASON_CUTTING);
 		});
@@ -87,6 +92,7 @@ public class FarmersDelightModule extends AbstractModule
 
 		e.register(ModuleMenuTypes.CUTTING_TEACH.get(), CuttingTeachScreen::new);
 		e.register(ModuleMenuTypes.COOKING_TEACH.get(), CookingTeachScreen::new);
+		e.register(ModuleMenuTypes.PLATING_TEACH.get(), PlatingTeachScreen::new);
 	}
 
 	@Override
@@ -96,6 +102,7 @@ public class FarmersDelightModule extends AbstractModule
 
 		channel.playToServer(CuttingOpenTeachMessage.TYPE, CuttingOpenTeachMessage::new);
 		channel.playToServer(CookingOpenTeachMessage.TYPE, CookingOpenTeachMessage::new);
+		channel.playToServer(PlatingOpenTeachMessage.TYPE, PlatingOpenTeachMessage::new);
 	}
 
 	private void onAnimalHerdingTool(AnimalHerdingToolEvent e)

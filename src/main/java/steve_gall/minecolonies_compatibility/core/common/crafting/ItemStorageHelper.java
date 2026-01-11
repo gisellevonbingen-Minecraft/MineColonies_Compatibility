@@ -8,6 +8,7 @@ import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.util.ItemStackUtils;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.ItemHandlerHelper;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 
 public class ItemStorageHelper
@@ -34,7 +35,7 @@ public class ItemStorageHelper
 
 	public static List<ItemStack> getStacks(ItemStorage storage)
 	{
-		return Collections.singletonList(storage.getItemStack());
+		return Collections.singletonList(ItemHandlerHelper.copyStackWithSize(storage.getItemStack(), storage.getAmount()));
 	}
 
 	public static boolean matches(ItemStorage storage, ItemStack stack, boolean min)

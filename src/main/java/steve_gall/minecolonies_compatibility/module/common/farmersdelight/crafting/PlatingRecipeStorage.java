@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import steve_gall.minecolonies_compatibility.api.common.crafting.GenericedRecipeStorage;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ISecondaryRollableRecipeStorage;
@@ -105,7 +106,7 @@ public class PlatingRecipeStorage extends GenericedRecipeStorage<PlatingGenericR
 
 		if (!container.isEmpty())
 		{
-			ingredients.add(new ItemStorage(container));
+			ingredients.add(new ItemStorage(ItemHandlerHelper.copyStackWithSize(container, 1), container.getCount(), false));
 		}
 
 		this.ingredients = ingredients;

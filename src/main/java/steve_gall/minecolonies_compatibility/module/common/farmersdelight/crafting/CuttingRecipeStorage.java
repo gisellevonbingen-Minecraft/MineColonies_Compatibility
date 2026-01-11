@@ -59,7 +59,7 @@ public class CuttingRecipeStorage extends GenericedRecipeStorage<CuttingGenericR
 		this.ingredients = ItemStorageHelper.filterNotEmpty(ingredients);
 		this.results = ImmutableList.copyOf(results);
 		this.toolType = toolType;
-		this.genericRecipe = new CuttingGenericRecipe(recipeId, ItemStorageHelper.getStacksLists(ingredients), results, toolType);
+		this.genericRecipe = new CuttingGenericRecipe(recipeId, ItemStorageHelper.getAmountedStacksLists(ingredients), results, toolType);
 	}
 
 	@Override

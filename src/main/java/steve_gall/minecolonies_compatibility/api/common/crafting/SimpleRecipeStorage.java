@@ -103,7 +103,7 @@ public abstract class SimpleRecipeStorage<GENERIC_RECIPE extends SimpleGenericRe
 	{
 		if (this.genericRecipe == null)
 		{
-			this.genericRecipe = this.getGenericRecipeFactory().create(this.recipeId, ItemStorageHelper.getStacksLists(this.ingredients), this.output);
+			this.genericRecipe = this.getGenericRecipeFactory().create(this.recipeId, ItemStorageHelper.getAmountedStacksLists(this.ingredients), this.output);
 		}
 
 		return this.genericRecipe;

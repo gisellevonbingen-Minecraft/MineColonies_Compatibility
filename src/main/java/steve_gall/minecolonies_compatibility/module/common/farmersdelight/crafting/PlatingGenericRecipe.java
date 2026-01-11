@@ -10,7 +10,7 @@ public class PlatingGenericRecipe extends SimpleGenericRecipe
 
 	public PlatingGenericRecipe(PlatingRecipeStorage recipe)
 	{
-		super(BuiltInRegistries.BLOCK.getKey(recipe.getBlock()), ItemStorageHelper.getStacksLists(recipe.getInput()), recipe.getPrimaryOutput());
+		super(BuiltInRegistries.BLOCK.getKey(recipe.getBlock()), ItemStorageHelper.getAmountedStacksLists(recipe.getInput()), recipe.getPrimaryOutput());
 		this.recipe = recipe;
 	}
 

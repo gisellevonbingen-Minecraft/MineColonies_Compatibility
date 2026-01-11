@@ -17,7 +17,6 @@ import com.minecolonies.core.client.gui.modules.building.WindowListRecipes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraftforge.fluids.FluidType;
 import steve_gall.minecolonies_compatibility.core.client.gui.ItemIconExtension;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.SmithingTemplateCraftingModuleView;
@@ -69,7 +68,7 @@ public abstract class WindowListRecipes1Mixin
 						view.addChild(fluidIcon);
 					}
 
-					fluidIcon.setFluid(bucketFilling.getFluidStack(FluidType.BUCKET_VOLUME));
+					fluidIcon.setFluid(bucketFilling.getFluidStack());
 				}
 
 			}

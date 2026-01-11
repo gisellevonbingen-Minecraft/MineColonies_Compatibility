@@ -30,16 +30,18 @@ public class BucketFillingGenericRecipe implements IGenericRecipe
 {
 	private final ItemStack emptyBucket;
 	private final Fluid fluid;
+	private final int fluidAmount;
 	private final DataComponentPatch dataComponentPatch;
 	private final ItemStack filledBucket;
 
 	private final List<ItemStack> allMultiOutputs;
 	private final List<List<ItemStack>> inputs;
 
-	public BucketFillingGenericRecipe(ItemStack emptyBucket, Fluid fluid, DataComponentPatch dataComponentPatch, ItemStack filledBucket)
+	public BucketFillingGenericRecipe(ItemStack emptyBucket, Fluid fluid, int fluidAmount, DataComponentPatch dataComponentPatch, ItemStack filledBucket)
 	{
 		this.emptyBucket = emptyBucket;
 		this.fluid = fluid;
+		this.fluidAmount = fluidAmount;
 		this.dataComponentPatch = dataComponentPatch;
 		this.filledBucket = filledBucket;
 
@@ -65,6 +67,11 @@ public class BucketFillingGenericRecipe implements IGenericRecipe
 	public Fluid getFluid()
 	{
 		return this.fluid;
+	}
+
+	public int getFluidAmount()
+	{
+		return this.fluidAmount;
 	}
 
 	public DataComponentPatch getDataComponentPatch()

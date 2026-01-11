@@ -14,6 +14,7 @@ import com.minecolonies.api.crafting.IGenericRecipe;
 import com.minecolonies.api.crafting.IRecipeStorage;
 import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
+import com.minecolonies.api.items.ModItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -108,7 +109,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 		if (recipe != null)
 		{
-			return Component.translatable("minecolonies_compatibility.interaction.no_fluid_source", recipe.getFluidStack(FluidType.BUCKET_VOLUME).getHoverName());
+			return Component.translatable("minecolonies_compatibility.interaction.no_fluid_source", recipe.getFluidStack().getHoverName());
 		}
 
 		return super.getWorkingBlockNotFoundMessage(recipeStorage);
@@ -152,7 +153,7 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 				if (fluidHandler != null)
 				{
-					var stack = recipe.getFluidStack(FluidType.BUCKET_VOLUME);
+					var stack = recipe.getFluidStack();
 					var drained = fluidHandler.drain(stack, simulate ? FluidAction.SIMULATE : FluidAction.EXECUTE);
 					return drained.getAmount() >= stack.getAmount();
 				}
@@ -161,9 +162,9 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 
 		}
 
-		if (recipe.getDataComponentPatch().isEmpty() && state.getBlock() instanceof LiquidBlock liquid)
+		if (recipe.getDataComponentPatch().isEmpty() && recipe.getFluidAmount() == FluidType.BUCKET_VOLUME)
 		{
-			if (state.getFluidState().isSource() && liquid.fluid == recipe.getFluid())
+			if (state.getBlock() instanceof LiquidBlock liquid && state.getFluidState().isSource() && liquid.fluid == recipe.getFluid())
 			{
 				if (!simulate)
 				{
@@ -182,6 +183,8 @@ public class BucketFillingCraftingModule extends AbstractCraftingModuleWithExter
 	public @NotNull List<IGenericRecipe> getAdditionalRecipesForDisplayPurposesOnly(Level level)
 	{
 		var recipes = new ArrayList<IGenericRecipe>();
+		recipes.add(BucketFillingCraftingType.parse(ModItems.large_water_bottle.getDefaultInstance()).getGenericRecipe());
+		recipes.add(BucketFillingCraftingType.parse(ModItems.large_milk_bottle.getDefaultInstance()).getGenericRecipe());
 
 		for (var fluid : BuiltInRegistries.FLUID)
 		{

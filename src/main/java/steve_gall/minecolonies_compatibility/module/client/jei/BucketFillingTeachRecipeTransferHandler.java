@@ -48,7 +48,7 @@ public class BucketFillingTeachRecipeTransferHandler extends TeachRecipeTransfer
 	{
 		if (categoryRecipe instanceof BucketFillingGenericRecipe fillingRecipe)
 		{
-			return new BucketFillingRecipeStorage(fillingRecipe.getEmptyBucket(), fillingRecipe.getFluid(), fillingRecipe.getDataComponentPatch(), fillingRecipe.getFilledBucket());
+			return new BucketFillingRecipeStorage(fillingRecipe.getEmptyBucket(), fillingRecipe.getFluid(), fillingRecipe.getFluidAmount(), fillingRecipe.getDataComponentPatch(), fillingRecipe.getFilledBucket());
 		}
 		else
 		{

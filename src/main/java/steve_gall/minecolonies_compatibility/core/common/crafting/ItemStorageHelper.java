@@ -34,7 +34,7 @@ public class ItemStorageHelper
 
 	public static List<ItemStack> getStacks(ItemStorage storage)
 	{
-		return Collections.singletonList(storage.getItemStack());
+		return Collections.singletonList(storage.getItemStack().copyWithCount(storage.getAmount()));
 	}
 
 	public static boolean matches(ItemStorage storage, ItemStack stack, boolean min)

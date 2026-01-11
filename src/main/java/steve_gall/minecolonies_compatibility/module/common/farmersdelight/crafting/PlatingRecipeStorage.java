@@ -106,7 +106,7 @@ public class PlatingRecipeStorage extends GenericedRecipeStorage<PlatingGenericR
 
 		if (!container.isEmpty())
 		{
-			ingredients.add(new ItemStorage(container));
+			ingredients.add(new ItemStorage(container.copyWithCount(1), container.getCount()));
 		}
 
 		this.ingredients = ingredients;

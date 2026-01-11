@@ -188,6 +188,7 @@ dependencies {
     implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:${tacz_file}-sources-${tacz_source_file}")
     implementation fg.deobf("curse.maven:jade-324717:${jade_file}")
     implementation fg.deobf("curse.maven:fruits-delight-943774:${fruitsdelgiht_file}")
+    implementation fg.deobf("curse.maven:cultural-delights-574622:${culturaldelights_file}")
     implementation fg.deobf("com.simibubi.create:create-${mc_version}:${create_version}:slim") { transitive = false }
     implementation fg.deobf("dev.engine-room.flywheel:flywheel-forge-${mc_version}:${flywheel_version}")
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")

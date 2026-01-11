@@ -41,7 +41,8 @@ let foods = {
 		],
 		"great_food": [
 			"nachos",
-			"nachos_block"]
+			"nachos_block"
+		]
 	},
 	"create": {
 		"excluded": [],

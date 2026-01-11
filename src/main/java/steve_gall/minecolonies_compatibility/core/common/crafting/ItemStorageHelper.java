@@ -28,12 +28,12 @@ public class ItemStorageHelper
 		return inputs.stream().filter(storage -> !storage.isEmpty()).toList();
 	}
 
-	public static List<List<ItemStack>> getStacksLists(List<ItemStorage> list)
+	public static List<List<ItemStack>> getAmountedStacksLists(List<ItemStorage> list)
 	{
-		return list.stream().map(ItemStorageHelper::getStacks).toList();
+		return list.stream().map(ItemStorageHelper::getAmountedStacks).toList();
 	}
 
-	public static List<ItemStack> getStacks(ItemStorage storage)
+	public static List<ItemStack> getAmountedStacks(ItemStorage storage)
 	{
 		return Collections.singletonList(ItemHandlerHelper.copyStackWithSize(storage.getItemStack(), storage.getAmount()));
 	}

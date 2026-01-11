@@ -14,12 +14,12 @@ public class ItemStorageHelper
 {
 	public static List<ItemStack> getCraftingRemainings(List<ItemStorage> list)
 	{
-		return ItemStackHelper.getCraftingRemainings(list.stream().map(ItemStorage::getItemStack).toList());
+		return ItemStackHelper.getCraftingRemainings(list.stream().map(ItemStorageHelper::getAmountedStack).toList());
 	}
 
 	public static List<ItemStack> mapAndFilterNotEmpty(List<ItemStorage> list, Function<ItemStack, ItemStack> func)
 	{
-		return ItemStackHelper.mapAndFilterNotEmpty(list.stream().map(ItemStorage::getItemStack).toList(), func);
+		return ItemStackHelper.mapAndFilterNotEmpty(list.stream().map(ItemStorageHelper::getAmountedStack).toList(), func);
 	}
 
 	public static List<ItemStorage> filterNotEmpty(List<ItemStorage> inputs)
@@ -34,7 +34,12 @@ public class ItemStorageHelper
 
 	public static List<ItemStack> getAmountedStacks(ItemStorage storage)
 	{
-		return Collections.singletonList(storage.getItemStack().copyWithCount(storage.getAmount()));
+		return Collections.singletonList(getAmountedStack(storage));
+	}
+
+	public static ItemStack getAmountedStack(ItemStorage storage)
+	{
+		return storage.getItemStack().copyWithCount(storage.getAmount());
 	}
 
 	public static boolean matches(ItemStorage storage, ItemStack stack, boolean min)

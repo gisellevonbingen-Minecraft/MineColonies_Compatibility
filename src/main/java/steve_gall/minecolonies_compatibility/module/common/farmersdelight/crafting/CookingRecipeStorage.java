@@ -55,7 +55,7 @@ public class CookingRecipeStorage extends GenericedRecipeStorage<CookingGenericR
 		this.output = output;
 		this.secondaryOutputs = ItemStorageHelper.mapAndFilterNotEmpty(ingreidnts, CookingGenericRecipe::getCraftingRemainingStack);
 
-		this.genericRecipe = new CookingGenericRecipe(recipeId, ItemStorageHelper.getStacksLists(ingreidnts), ItemStorageHelper.getStacks(container), output);
+		this.genericRecipe = new CookingGenericRecipe(recipeId, ItemStorageHelper.getAmountedStacksLists(ingreidnts), ItemStorageHelper.getAmountedStacks(container), output);
 	}
 
 	@Override

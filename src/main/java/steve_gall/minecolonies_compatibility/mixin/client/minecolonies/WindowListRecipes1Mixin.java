@@ -12,7 +12,6 @@ import com.ldtteam.blockui.views.View;
 import com.minecolonies.api.util.constant.WindowConstants;
 import com.minecolonies.core.client.gui.modules.WindowListRecipes;
 
-import net.minecraftforge.fluids.FluidType;
 import steve_gall.minecolonies_compatibility.core.client.gui.ItemIconExtension;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingRecipeStorage;
@@ -61,7 +60,7 @@ public abstract class WindowListRecipes1Mixin
 						view.addChild(fluidIcon);
 					}
 
-					fluidIcon.setFluid(bucketFilling.getFluidStack(FluidType.BUCKET_VOLUME));
+					fluidIcon.setFluid(bucketFilling.getFluidStack());
 				}
 
 			}

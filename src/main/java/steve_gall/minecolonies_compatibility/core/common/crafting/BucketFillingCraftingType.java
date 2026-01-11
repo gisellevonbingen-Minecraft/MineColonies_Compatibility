@@ -49,7 +49,7 @@ public class BucketFillingCraftingType extends CraftingType
 
 				if (fillResult.isSuccess() && ItemStack.matches(fillResult.getResult(), filledBucket))
 				{
-					return new BucketFillingRecipeStorage(emptyBucket, fluid, fluidStack.getTag(), filledBucket);
+					return new BucketFillingRecipeStorage(emptyBucket, fluid, tank.getCapacity(), fluidStack.getTag(), filledBucket);
 				}
 
 			}

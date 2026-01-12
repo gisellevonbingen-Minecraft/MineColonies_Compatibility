@@ -95,7 +95,7 @@ public class MineColoniesCompatibility
 		DeliverableObjectRegistry.INSTANCE.register(IngredientDeliverable.ID, IngredientDeliverable::serialize, IngredientDeliverable::deserialize);
 		DeliverableObjectRegistry.INSTANCE.register(Butcherable.ID, Butcherable::serialize, Butcherable::deserialize);
 
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> MineColoniesCompatibilityClient::new);
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> MineColoniesCompatibilityClient::new);
 	}
 
 	private void onFMLCommonSetup(FMLCommonSetupEvent e)

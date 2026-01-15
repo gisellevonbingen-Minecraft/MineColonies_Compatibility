@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.core.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.creativetab.ModCreativeTabs;
 import com.minecolonies.api.equipment.ModEquipmentTypes;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.RegisterEvent;
 import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
@@ -75,6 +77,7 @@ public class MineColoniesCompatibility
 		ModMenuTypes.REGISTER.register(fml_bus);
 		ModInteractions.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
+		fml_bus.addListener(this::onRegister);
 		fml_bus.addListener(this::onCustomToolTypeRegister);
 		fml_bus.addListener(this::onBuildCreativeModeTabContents);
 
@@ -140,6 +143,15 @@ public class MineColoniesCompatibility
 
 			NetworkStorageViewRegistry.register((be, direction) -> be instanceof INetworkStorageViewHolder blockEntity ? blockEntity.getNetworkStorageView() : null);
 		});
+	}
+
+	private void onRegister(RegisterEvent e)
+	{
+		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().getRegistryKey())
+		{
+			ModBuildingModules.init();
+		}
+
 	}
 
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)

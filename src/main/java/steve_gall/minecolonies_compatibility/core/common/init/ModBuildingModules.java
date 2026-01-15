@@ -141,4 +141,9 @@ public class ModBuildingModules
 			() -> new StonecutterCraftingModule(com.minecolonies.api.colony.jobs.ModJobs.stoneMason.get()), //
 			() -> StonecutterCraftingModuleView::new);
 
+	public static void init()
+	{
+
+	}
+
 }

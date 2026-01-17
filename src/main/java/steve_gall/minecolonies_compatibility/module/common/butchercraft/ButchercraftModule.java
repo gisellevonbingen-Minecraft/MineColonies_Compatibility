@@ -24,7 +24,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayer;
@@ -62,13 +61,10 @@ public class ButchercraftModule extends AbstractModule
 	}
 
 	@Override
-	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
+	protected void onInitBuildingModule()
 	{
-		super.onFMLCommonSetup(e);
-		e.enqueueWork(() ->
-		{
-			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_GRINDER);
-		});
+		super.onInitBuildingModule();
+		ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_GRINDER);
 	}
 
 	@Override

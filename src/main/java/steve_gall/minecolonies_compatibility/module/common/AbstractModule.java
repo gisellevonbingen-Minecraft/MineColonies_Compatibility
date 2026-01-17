@@ -12,6 +12,11 @@ public class AbstractModule
 
 	}
 
+	protected void onInitBuildingModule()
+	{
+
+	}
+
 	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
 

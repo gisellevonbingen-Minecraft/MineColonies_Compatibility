@@ -2,8 +2,11 @@ package steve_gall.minecolonies_compatibility.module.common;
 
 import java.util.function.Supplier;
 
+import com.minecolonies.api.IMinecoloniesAPI;
+
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.network.MessageRegistrar;
 
 public class OptionalModule<MODULE extends AbstractModule>
@@ -45,9 +48,19 @@ public class OptionalModule<MODULE extends AbstractModule>
 			this.module.onLoad();
 
 			var fml_bus = ModLoadingContext.get().getActiveContainer().getEventBus();
+			fml_bus.addListener(this::onRegister);
 			fml_bus.addListener(this.module::onFMLCommonSetup);
 			fml_bus.addListener(this.module::onFMLClientSetup);
 			fml_bus.addListener(this.module::onRegisterMenuScreens);
+		}
+
+	}
+
+	private void onRegister(RegisterEvent e)
+	{
+		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().key())
+		{
+			this.module.onInitBuildingModule();
 		}
 
 	}

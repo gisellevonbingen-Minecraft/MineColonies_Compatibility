@@ -3,7 +3,6 @@ package steve_gall.minecolonies_compatibility.module.common.lets_do_meadow;
 import com.minecolonies.api.colony.buildings.ModBuildings;
 
 import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import steve_gall.minecolonies_compatibility.module.client.lets_do_meadow.CheeseTeachScreen;
 import steve_gall.minecolonies_compatibility.module.client.lets_do_meadow.CookingTeachScreen;
@@ -38,15 +37,12 @@ public class LetsDoMeadowModule extends AbstractModule
 	}
 
 	@Override
-	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
+	protected void onInitBuildingModule()
 	{
-		super.onFMLCommonSetup(e);
-		e.enqueueWork(() ->
-		{
-			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_CHEESE);
-			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_COOKING);
-			ModBuildings.sawmill.get().getModuleProducers().add(ModuleBuildingModules.SAWMILL_WOODCUTTING);
-		});
+		super.onInitBuildingModule();
+		ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_CHEESE);
+		ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_COOKING);
+		ModBuildings.sawmill.get().getModuleProducers().add(ModuleBuildingModules.SAWMILL_WOODCUTTING);
 	}
 
 	@Override

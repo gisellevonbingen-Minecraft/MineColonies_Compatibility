@@ -59,6 +59,17 @@ public class FarmersDelightModule extends AbstractModule
 	}
 
 	@Override
+	protected void onInitBuildingModule()
+	{
+		super.onInitBuildingModule();
+		ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_CUTTING);
+		ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_COOKING);
+		ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_PLATING);
+		ModBuildings.lumberjack.get().getModuleProducers().add(ModuleBuildingModules.LUMBERJACK_CUTTING);
+		ModBuildings.stoneMason.get().getModuleProducers().add(ModuleBuildingModules.STONEMASON_CUTTING);
+	}
+
+	@Override
 	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
 		super.onFMLCommonSetup(e);
@@ -76,12 +87,6 @@ public class FarmersDelightModule extends AbstractModule
 			}
 
 			CustomizedFruit.register(new RiceFruit());
-
-			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_CUTTING);
-			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_COOKING);
-			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_PLATING);
-			ModBuildings.lumberjack.get().getModuleProducers().add(ModuleBuildingModules.LUMBERJACK_CUTTING);
-			ModBuildings.stoneMason.get().getModuleProducers().add(ModuleBuildingModules.STONEMASON_CUTTING);
 		});
 	}
 

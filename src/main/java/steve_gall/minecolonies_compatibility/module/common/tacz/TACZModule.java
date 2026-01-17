@@ -40,14 +40,19 @@ public class TACZModule extends AbstractModule
 	}
 
 	@Override
+	protected void onInitBuildingModule()
+	{
+		super.onInitBuildingModule();
+		ModBuildings.blacksmith.get().getModuleProducers().add(ModuleBuildingModules.BLACKSMITH_GUN_SMITH_TABLE);
+	}
+
+	@Override
 	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
 		super.onFMLCommonSetup(e);
 
 		e.enqueueWork(() ->
 		{
-			ModBuildings.blacksmith.get().getModuleProducers().add(ModuleBuildingModules.BLACKSMITH_GUN_SMITH_TABLE);
-
 			CustomizedAI.register(new GunnerGunAI());
 		});
 

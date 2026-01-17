@@ -26,7 +26,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedBucherableRegisterEvent;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
@@ -65,13 +64,10 @@ public class ButchercraftModule extends AbstractModule
 	}
 
 	@Override
-	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
+	protected void onInitBuildingModule()
 	{
-		super.onFMLCommonSetup(e);
-		e.enqueueWork(() ->
-		{
-			ModBuildings.cook.get().getModuleProducers().add(ModuleBuildingModules.COOKASSISTANT_GRINDER);
-		});
+		super.onInitBuildingModule();
+		ModBuildings.cook.get().getModuleProducers().add(ModuleBuildingModules.COOKASSISTANT_GRINDER);
 	}
 
 	@Override

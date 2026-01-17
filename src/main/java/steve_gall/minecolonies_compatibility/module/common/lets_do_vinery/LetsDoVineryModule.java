@@ -37,6 +37,13 @@ public class LetsDoVineryModule extends AbstractModule
 	}
 
 	@Override
+	protected void onInitBuildingModule()
+	{
+		super.onInitBuildingModule();
+		ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_APPLE_PRESS);
+	}
+
+	@Override
 	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
 	{
 		super.onFMLCommonSetup(e);
@@ -53,8 +60,6 @@ public class LetsDoVineryModule extends AbstractModule
 				}
 
 			}
-
-			ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_APPLE_PRESS);
 		});
 	}
 

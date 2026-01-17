@@ -140,10 +140,4 @@ public class ModBuildingModules
 	public static final BuildingEntry.ModuleProducer<StonecutterCraftingModule, StonecutterCraftingModuleView> STONEMASON_STONECUTTING = new BuildingEntry.ModuleProducer<>("stonemason_stonecutting", //
 			() -> new StonecutterCraftingModule(com.minecolonies.api.colony.jobs.ModJobs.stoneMason.get()), //
 			() -> StonecutterCraftingModuleView::new);
-
-	public static void init()
-	{
-
-	}
-
 }

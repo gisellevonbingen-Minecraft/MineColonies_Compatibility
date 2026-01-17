@@ -4,7 +4,6 @@ import com.minecolonies.api.colony.buildings.ModBuildings;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.client.lets_do_bakery.BakingTeachScreen;
@@ -49,16 +48,13 @@ public class LetsDoBakeryModule extends AbstractModule
 	}
 
 	@Override
-	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
+	protected void onInitBuildingModule()
 	{
-		super.onFMLCommonSetup(e);
-		e.enqueueWork(() ->
-		{
-			ModBuildings.bakery.get().getModuleProducers().add(ModuleBuildingModules.BAKER_STOVE);
-			ModBuildings.bakery.get().getModuleProducers().add(ModuleBuildingModules.BAKER_BOWL);
-			ModBuildings.bakery.get().getModuleProducers().add(ModuleBuildingModules.BAKER_BAKING);
-			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_COOKING);
-		});
+		super.onInitBuildingModule();
+		ModBuildings.bakery.get().getModuleProducers().add(ModuleBuildingModules.BAKER_STOVE);
+		ModBuildings.bakery.get().getModuleProducers().add(ModuleBuildingModules.BAKER_BOWL);
+		ModBuildings.bakery.get().getModuleProducers().add(ModuleBuildingModules.BAKER_BAKING);
+		ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_COOKING);
 	}
 
 	@Override

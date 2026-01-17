@@ -33,6 +33,13 @@ public class LetsDoBreweryModule extends AbstractModule
 
 		CustomizedRecipeStorageRegistry.INSTANCE.register(SiloRecipeStorage.ID, SiloRecipeStorage::serialize, SiloRecipeStorage::new);
 	}
+	
+	@Override
+	protected void onInitBuildingModule()
+	{
+		super.onInitBuildingModule();
+		ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_SILO);
+	}
 
 	@Override
 	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
@@ -41,8 +48,6 @@ public class LetsDoBreweryModule extends AbstractModule
 		e.enqueueWork(() ->
 		{
 			CustomizedCrop.register(new HopsCrop());
-
-			ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_SILO);
 		});
 	}
 

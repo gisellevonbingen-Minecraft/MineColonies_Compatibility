@@ -40,6 +40,14 @@ public class LetsDoVineryModule extends AbstractModule
 		CustomizedRecipeStorageRegistry.INSTANCE.register(ApplePressMashingRecipeStorage.ID, ApplePressMashingRecipeStorage::serialize, ApplePressMashingRecipeStorage::new);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(ApplePressFermentingRecipeStorage.ID, ApplePressFermentingRecipeStorage::serialize, ApplePressFermentingRecipeStorage::new);
 	}
+	
+	@Override
+	protected void onInitBuildingModule()
+	{
+		super.onInitBuildingModule();
+		ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_APPLE_PRESS_MASHING);
+		ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_APPLE_PRESS_FERMENTING);
+	}
 
 	@Override
 	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
@@ -58,9 +66,6 @@ public class LetsDoVineryModule extends AbstractModule
 				}
 
 			}
-
-			ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_APPLE_PRESS_MASHING);
-			ModBuildings.farmer.get().getModuleProducers().add(ModuleBuildingModules.FARMER_APPLE_PRESS_FERMENTING);
 		});
 	}
 

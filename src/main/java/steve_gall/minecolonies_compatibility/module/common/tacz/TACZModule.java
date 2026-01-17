@@ -36,6 +36,13 @@ public class TACZModule extends AbstractModule
 
 		DeliverableObjectRegistry.INSTANCE.register(Ammo.ID, Ammo::serialize, Ammo::deserialize);
 	}
+	
+	@Override
+	protected void onInitBuildingModule()
+	{
+		super.onInitBuildingModule();
+		ModBuildings.blacksmith.get().getModuleProducers().add(ModuleBuildingModules.BLACKSMITH_GUN_SMITH_TABLE);
+	}
 
 	@Override
 	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
@@ -44,8 +51,6 @@ public class TACZModule extends AbstractModule
 
 		e.enqueueWork(() ->
 		{
-			ModBuildings.blacksmith.get().getModuleProducers().add(ModuleBuildingModules.BLACKSMITH_GUN_SMITH_TABLE);
-
 			CustomizedAI.register(new GunnerGunAI());
 		});
 

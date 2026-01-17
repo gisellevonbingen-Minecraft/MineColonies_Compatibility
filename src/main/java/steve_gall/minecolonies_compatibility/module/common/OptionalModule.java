@@ -2,8 +2,11 @@ package steve_gall.minecolonies_compatibility.module.common;
 
 import java.util.function.Supplier;
 
+import com.minecolonies.api.IMinecoloniesAPI;
+
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.RegisterEvent;
 
 public class OptionalModule<MODULE extends AbstractModule>
 {
@@ -44,8 +47,18 @@ public class OptionalModule<MODULE extends AbstractModule>
 			this.module.onLoad();
 
 			var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
+			fml_bus.addListener(this::onRegister);
 			fml_bus.addListener(this.module::onFMLCommonSetup);
 			fml_bus.addListener(this.module::onFMLClientSetup);
+		}
+
+	}
+
+	private void onRegister(RegisterEvent e)
+	{
+		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().getRegistryKey())
+		{
+			this.module.onInitBuildingModule();
 		}
 
 	}

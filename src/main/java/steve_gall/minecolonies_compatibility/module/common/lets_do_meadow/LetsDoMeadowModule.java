@@ -4,7 +4,6 @@ import com.minecolonies.api.colony.buildings.ModBuildings;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.client.lets_do_meadow.CheeseTeachScreen;
@@ -44,15 +43,12 @@ public class LetsDoMeadowModule extends AbstractModule
 	}
 
 	@Override
-	protected void onFMLCommonSetup(FMLCommonSetupEvent e)
+	protected void onInitBuildingModule()
 	{
-		super.onFMLCommonSetup(e);
-		e.enqueueWork(() ->
-		{
-			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_CHEESE);
-			ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_COOKING);
-			ModBuildings.sawmill.get().getModuleProducers().add(ModuleBuildingModules.SAWMILL_WOODCUTTING);
-		});
+		super.onInitBuildingModule();
+		ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_CHEESE);
+		ModBuildings.kitchen.get().getModuleProducers().add(ModuleBuildingModules.CHEF_COOKING);
+		ModBuildings.sawmill.get().getModuleProducers().add(ModuleBuildingModules.SAWMILL_WOODCUTTING);
 	}
 
 	@Override

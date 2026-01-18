@@ -111,6 +111,12 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 	}
 
 	@Override
+	public Optional<BlockPos> getLinkedPos()
+	{
+		return this.warehousePos;
+	}
+
+	@Override
 	public NetworkStorageModule getLinkedModule()
 	{
 		var module = this.getLinkedModule0();

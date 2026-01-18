@@ -35,7 +35,7 @@ public class CitizenTerminalScreen extends AEBaseScreen<CitizenTerminalMenu>
 		super.updateBeforeRender();
 
 		var part = (CitizenTerminalPart) this.getMenu().getTarget();
-		this.setTextContent(TEXT_ID_LINK, NetworkStorageViewScreenUtils.getModuleText(part.getView()));
+		this.setTextContent(TEXT_ID_LINK, NetworkStorageViewScreenUtils.getModuleText(part.getView().getLinkedPos()));
 
 		this.accessButton.set(this.getMenu().getConfigManager().getSetting(Settings.ACCESS));
 	}

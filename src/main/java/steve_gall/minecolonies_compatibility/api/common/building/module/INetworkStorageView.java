@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.api.common.building.module;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,9 @@ public interface INetworkStorageView
 	void link(@NotNull NetworkStorageModule module);
 
 	void unlink();
+
+	@NotNull
+	Optional<BlockPos> getLinkedPos();
 
 	@Nullable
 	NetworkStorageModule getLinkedModule();

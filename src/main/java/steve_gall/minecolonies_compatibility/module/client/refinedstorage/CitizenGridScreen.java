@@ -44,7 +44,7 @@ public class CitizenGridScreen extends BaseScreen<CitizenGridContainerMenu>
 		this.renderString(graphics, 7, 43, TEXT_INVENTORY.getString());
 
 		var view = ((CitizenGridBlockEntity) this.getMenu().getBlockEntity()).getNode().getView();
-		this.renderString(graphics, 14, 21, NetworkStorageViewScreenUtils.getModuleText(view).getString());
+		this.renderString(graphics, 14, 21, NetworkStorageViewScreenUtils.getModuleText(view.getLinkedPos()).getString());
 	}
 
 	@Override

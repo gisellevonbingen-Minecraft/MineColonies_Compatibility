@@ -54,7 +54,7 @@ public class AccessDirectionHolderScreen extends AbstractContainerScreen<AccessD
 		super.render(poseStack, mouseX, mouseY, partialTicks);
 
 		var blockEntity = this.getMenu().getBlockEntity();
-		this.font.draw(poseStack, NetworkStorageViewScreenUtils.getModuleText(blockEntity.getNetworkStorageView()), this.leftPos + 14, this.topPos + 21, 0xFF404040);
+		this.font.draw(poseStack, NetworkStorageViewScreenUtils.getModuleText(blockEntity.getNetworkStorageView().getLinkedPos()), this.leftPos + 14, this.topPos + 21, 0xFF404040);
 
 		if (this.accessDirectionButton != null)
 		{

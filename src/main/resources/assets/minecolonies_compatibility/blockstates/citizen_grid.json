@@ -1,0 +1,110 @@
+{
+  "variants": {
+    "active=false,direction=down_east": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "x": 90,
+      "y": -90
+    },
+    "active=false,direction=down_north": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "x": 90
+    },
+    "active=false,direction=down_south": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "x": 90,
+      "y": 180
+    },
+    "active=false,direction=down_west": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "x": 90,
+      "y": 90
+    },
+    "active=false,direction=east": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "y": 90
+    },
+    "active=false,direction=north": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive"
+    },
+    "active=false,direction=south": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "y": 180
+    },
+    "active=false,direction=up_east": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "x": -90,
+      "y": -90
+    },
+    "active=false,direction=up_north": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "x": -90,
+      "y": 180
+    },
+    "active=false,direction=up_south": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "x": -90
+    },
+    "active=false,direction=up_west": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "x": -90,
+      "y": 90
+    },
+    "active=false,direction=west": {
+      "model": "minecolonies_compatibility:block/citizen_grid_inactive",
+      "y": 270
+    },
+    "active=true,direction=down_east": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "x": 90,
+      "y": -90
+    },
+    "active=true,direction=down_north": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "x": 90
+    },
+    "active=true,direction=down_south": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "x": 90,
+      "y": 180
+    },
+    "active=true,direction=down_west": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "x": 90,
+      "y": 90
+    },
+    "active=true,direction=east": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "y": 90
+    },
+    "active=true,direction=north": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active"
+    },
+    "active=true,direction=south": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "y": 180
+    },
+    "active=true,direction=up_east": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "x": -90,
+      "y": -90
+    },
+    "active=true,direction=up_north": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "x": -90,
+      "y": 180
+    },
+    "active=true,direction=up_south": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "x": -90
+    },
+    "active=true,direction=up_west": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "x": -90,
+      "y": 90
+    },
+    "active=true,direction=west": {
+      "model": "minecolonies_compatibility:block/citizen_grid_active",
+      "y": 270
+    }
+  }
+}

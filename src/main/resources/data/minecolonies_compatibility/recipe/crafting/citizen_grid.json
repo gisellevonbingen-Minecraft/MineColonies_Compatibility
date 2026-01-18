@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"neoforge:conditions": [
+		{
+			"type": "neoforge:item_exists",
+			"item": "minecolonies_compatibility:citizen_grid"
+		}
+	],
+	"result": {
+		"id": "minecolonies_compatibility:citizen_grid"
+	},
+	"ingredients": [
+		{
+			"tag": "refinedstorage:grids"
+		},
+		{
+			"item": "refinedstorage:advanced_processor"
+		},
+		{
+			"item": "minecolonies:blockhutwarehouse"
+		}
+	]
+}

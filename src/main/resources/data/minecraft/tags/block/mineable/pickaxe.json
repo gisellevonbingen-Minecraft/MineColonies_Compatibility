@@ -6,7 +6,7 @@
 		},
 		{
 			"required": false,
-			"id": "minecolonies_compatibility:citizen_extension"
+			"id": "minecolonies_compatibility:citizen_grid"
 		}
 	]
 }

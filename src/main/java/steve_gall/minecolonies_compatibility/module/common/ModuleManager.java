@@ -25,6 +25,7 @@ import steve_gall.minecolonies_compatibility.module.common.neapolitan.Neapolitan
 import steve_gall.minecolonies_compatibility.module.common.oreberries.OreberriesModule;
 import steve_gall.minecolonies_compatibility.module.common.pamhc2trees.PamsHarvestCraft2TreesModule;
 import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphModule;
+import steve_gall.minecolonies_compatibility.module.common.refinedstorage.RefinedStorageModule;
 import steve_gall.minecolonies_compatibility.module.common.regions_unexplored.RegionsUnexploredModule;
 import steve_gall.minecolonies_compatibility.module.common.reliquary.ReliquaryModule;
 import steve_gall.minecolonies_compatibility.module.common.undergarden.UndergardenModule;
@@ -65,6 +66,7 @@ public class ModuleManager
 	public static final OptionalModule<OreberriesModule> OREBERRIES = register("oreberriesreplanted", () -> OreberriesModule::new);
 	public static final OptionalModule<PamsHarvestCraft2TreesModule> PHC2TREES = register("pamhc2trees", () -> PamsHarvestCraft2TreesModule::new);
 	public static final OptionalModule<PolymorphModule> POLYMORPH = register("polymorph", () -> PolymorphModule::new);
+	public static final OptionalModule<RefinedStorageModule> REFINEDSTORAGE = register("refinedstorage", () -> RefinedStorageModule::new);
 	public static final OptionalModule<RegionsUnexploredModule> REGIONS_UNEXPLORED = register("regions_unexplored", () -> RegionsUnexploredModule::new);
 	public static final OptionalModule<ReliquaryModule> RELIQUARY = register("reliquary", () -> ReliquaryModule::new);
 	public static final OptionalModule<UndergardenModule> UNDERGARDEN = register("undergarden", () -> UndergardenModule::new);

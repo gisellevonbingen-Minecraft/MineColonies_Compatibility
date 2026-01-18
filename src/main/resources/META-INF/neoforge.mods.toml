@@ -36,14 +36,14 @@ config="${mod_id}.mixin.common.json"
     modId="minecolonies"
     type="required"
     versionRange="[${minecolonies_version},)"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
     modId="minecolonies_tweaks"
     type="required"
     versionRange="[${minecolonies_tweaks_version},)"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
 [[dependencies.${mod_id}]]

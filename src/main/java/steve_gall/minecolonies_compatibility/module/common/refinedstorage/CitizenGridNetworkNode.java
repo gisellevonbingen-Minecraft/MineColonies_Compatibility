@@ -99,7 +99,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 	{
 		super.update();
 
-		this.view.onTick();
+		this.view.tick();
 	}
 
 	public StorageView getView()

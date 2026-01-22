@@ -161,7 +161,7 @@ public class CitizenSlaveTile extends BlockEntitySlave implements INetworkStorag
 			this.update();
 		}
 
-		this.view.onTick();
+		this.view.tick();
 	}
 
 	public class StorageView extends QueueNetworkStorageView

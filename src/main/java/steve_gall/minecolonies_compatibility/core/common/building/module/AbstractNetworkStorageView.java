@@ -20,8 +20,31 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 	private Optional<BlockPos> warehousePos = Optional.empty();
 
 	private NetworkStorageModule module = null;
+	private boolean wasActive = false;
 
 	public AbstractNetworkStorageView()
+	{
+
+	}
+
+	public void tick()
+	{
+		this.updateActive();
+	}
+
+	private void updateActive()
+	{
+		var isActive = this.isActive() && this.getLinkedModule() != null;
+
+		if (this.wasActive != isActive)
+		{
+			this.onActiveChanged(isActive);
+		}
+
+		this.wasActive = isActive;
+	}
+
+	protected void onActiveChanged(boolean isActive)
 	{
 
 	}
@@ -186,6 +209,11 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		}
 
 		return this.module;
+	}
+
+	public boolean wasActive()
+	{
+		return this.wasActive;
 	}
 
 }

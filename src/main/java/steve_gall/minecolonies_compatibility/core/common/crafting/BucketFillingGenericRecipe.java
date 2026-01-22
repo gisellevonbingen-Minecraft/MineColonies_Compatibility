@@ -65,7 +65,7 @@ public class BucketFillingGenericRecipe implements IGenericRecipe
 	{
 		return this.fluid;
 	}
-	
+
 	public int getFluidAmount()
 	{
 		return this.fluidAmount;

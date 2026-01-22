@@ -138,7 +138,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	@Override
 	public TickRateModulation tickingRequest(IGridNode node, int ticksSinceLastCall)
 	{
-		this.view.onTick();
+		this.view.tick();
 		return TickRateModulation.SAME;
 	}
 

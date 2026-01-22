@@ -207,7 +207,7 @@ public class CitizenExtensionTile extends ControllableDrawerTile<CitizenExtensio
 			this.update();
 		}
 
-		this.view.onTick();
+		this.view.tick();
 	}
 
 	public class StorageView extends QueueNetworkStorageView

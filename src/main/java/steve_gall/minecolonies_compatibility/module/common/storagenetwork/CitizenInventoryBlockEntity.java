@@ -105,7 +105,7 @@ public class CitizenInventoryBlockEntity extends TileConnectable implements INet
 			this.update();
 		}
 
-		this.view.onTick();
+		this.view.tick();
 	}
 
 	public void update()

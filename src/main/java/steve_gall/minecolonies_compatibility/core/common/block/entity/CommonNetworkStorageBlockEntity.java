@@ -190,7 +190,7 @@ public class CommonNetworkStorageBlockEntity extends BlockEntity implements INet
 				self.update();
 			}
 
-			self.view.onTick();
+			self.view.tick();
 		}
 
 	}

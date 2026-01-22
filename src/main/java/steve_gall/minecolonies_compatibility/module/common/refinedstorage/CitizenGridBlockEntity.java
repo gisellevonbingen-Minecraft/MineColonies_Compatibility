@@ -84,7 +84,7 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 	{
 		super.doWork();
 
-		this.view.onTick();
+		this.view.tick();
 	}
 
 	@Override

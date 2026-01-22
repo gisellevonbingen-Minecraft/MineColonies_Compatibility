@@ -12,13 +12,13 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 
 	private final Queue<ItemStack> queue = new ArrayDeque<>();
 	private boolean allRequested = false;
-	private boolean wasActive = false;
 
-	public void onTick()
+	@Override
+	public void tick()
 	{
-		this.updateActive();
+		super.tick();
 
-		if (this.wasActive)
+		if (this.wasActive())
 		{
 			this.onActiveTick();
 		}
@@ -54,20 +54,11 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 
 	}
 
-	private void updateActive()
-	{
-		var isActive = this.isActive() && this.getLinkedModule() != null;
-
-		if (this.wasActive != isActive)
-		{
-			this.onActiveChanged(isActive);
-		}
-
-		this.wasActive = isActive;
-	}
-
+	@Override
 	protected void onActiveChanged(boolean isActive)
 	{
+		super.onActiveChanged(isActive);
+
 		if (isActive)
 		{
 			this.requestAll();
@@ -92,7 +83,7 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 
 	public boolean canEnqueue()
 	{
-		return !this.allRequested && this.wasActive;
+		return !this.allRequested && this.wasActive();
 	}
 
 	public void enqueue(ItemStack stack)

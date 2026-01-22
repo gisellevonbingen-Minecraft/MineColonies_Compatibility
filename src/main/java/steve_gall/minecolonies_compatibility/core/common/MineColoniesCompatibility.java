@@ -111,7 +111,6 @@ public class MineColoniesCompatibility
 			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.shield.get());
 			CustomizedToolSystem.registerDurabilityBasedLevel(ModEquipmentTypes.flint_and_steel.get());
 
-
 			NetworkStorageViewRegistry.register((be, direction) -> be instanceof INetworkStorageViewHolder blockEntity ? blockEntity.getNetworkStorageView() : null);
 		});
 	}
@@ -122,32 +121,32 @@ public class MineColoniesCompatibility
 		{
 			ModBuildings.guardTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_TOWER_WORK);
 			ModBuildings.barracksTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_BARRACKS_WORK);
-			
+
 			ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.ORCHARDIST_WORK);
 			ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.FRUITLIST_BLACKLIST);
 			ModBuildings.wareHouse.get().getModuleProducers().add(ModBuildingModules.NETWORK_STORAGE);
 			ModBuildings.blacksmith.get().getModuleProducers().add(ModBuildingModules.BLACKSMITH_SMITHING);
 			ModBuildings.blacksmith.get().getModuleProducers().add(ModBuildingModules.BLACKSMITH_SMITHING_TEMPLATE_CRAFTING);
-			
+
 			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_WORK);
 			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_BUCKET_FILLING);
 			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_LAVA_CAULDRON);
-			
+
 			ModBuildings.swineHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
 			ModBuildings.swineHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
-			
+
 			ModBuildings.chickenHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
 			ModBuildings.chickenHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
-			
+
 			ModBuildings.cowboy.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
 			ModBuildings.cowboy.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
-			
+
 			ModBuildings.rabbitHutch.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
 			ModBuildings.rabbitHutch.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
-			
+
 			ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
 			ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
-			
+
 			ModBuildings.stoneMason.get().getModuleProducers().add(ModBuildingModules.STONEMASON_STONECUTTING);
 		}
 

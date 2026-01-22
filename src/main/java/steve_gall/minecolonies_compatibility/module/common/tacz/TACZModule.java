@@ -36,7 +36,7 @@ public class TACZModule extends AbstractModule
 
 		DeliverableObjectRegistry.INSTANCE.register(Ammo.ID, Ammo::serialize, Ammo::deserialize);
 	}
-	
+
 	@Override
 	protected void onInitBuildingModule()
 	{

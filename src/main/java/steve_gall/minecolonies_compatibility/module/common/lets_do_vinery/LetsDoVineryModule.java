@@ -40,7 +40,7 @@ public class LetsDoVineryModule extends AbstractModule
 		CustomizedRecipeStorageRegistry.INSTANCE.register(ApplePressMashingRecipeStorage.ID, ApplePressMashingRecipeStorage::serialize, ApplePressMashingRecipeStorage::new);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(ApplePressFermentingRecipeStorage.ID, ApplePressFermentingRecipeStorage::serialize, ApplePressFermentingRecipeStorage::new);
 	}
-	
+
 	@Override
 	protected void onInitBuildingModule()
 	{

@@ -65,7 +65,7 @@ public class FarmersDelightModule extends AbstractModule
 		CustomizedRecipeStorageRegistry.INSTANCE.register(CookingRecipeStorage.ID, CookingRecipeStorage::serialize, CookingRecipeStorage::deserialize);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(PlatingRecipeStorage.ID, PlatingRecipeStorage::serialize, PlatingRecipeStorage::deserialize);
 	}
-	
+
 	@Override
 	protected void onInitBuildingModule()
 	{

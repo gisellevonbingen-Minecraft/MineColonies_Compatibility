@@ -33,7 +33,7 @@ public class LetsDoBreweryModule extends AbstractModule
 
 		CustomizedRecipeStorageRegistry.INSTANCE.register(SiloRecipeStorage.ID, SiloRecipeStorage::serialize, SiloRecipeStorage::new);
 	}
-	
+
 	@Override
 	protected void onInitBuildingModule()
 	{

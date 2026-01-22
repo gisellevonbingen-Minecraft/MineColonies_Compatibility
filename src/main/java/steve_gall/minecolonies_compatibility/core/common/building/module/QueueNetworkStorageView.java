@@ -13,6 +13,7 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 	private final Queue<ItemStack> queue = new ArrayDeque<>();
 	private boolean allRequested = false;
 
+	@Override
 	public void tick()
 	{
 		super.tick();

@@ -46,7 +46,7 @@ public class CitizenGridScreen extends AbstractBaseScreen<CitizenGridContainerMe
 	{
 		super.render(graphics, mouseX, mouseY, delta);
 
-		graphics.drawString(this.font, NetworkStorageViewScreenUtils.getModuleText(this.menu.getLinkedPos()).getString(), this.leftPos + 14, this.topPos+ 21, 0xFF404040, false);
+		graphics.drawString(this.font, NetworkStorageViewScreenUtils.getModuleText(this.menu.getLinkedPos()).getString(), this.leftPos + 14, this.topPos + 21, 0xFF404040, false);
 	}
 
 }

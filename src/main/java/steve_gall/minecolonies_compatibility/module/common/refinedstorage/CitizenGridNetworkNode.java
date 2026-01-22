@@ -21,7 +21,7 @@ public class CitizenGridNetworkNode extends AbstractNetworkNode
 
 	public CitizenGridNetworkNode()
 	{
-		this.listeners = new ArrayList<Consumer<ItemStack>>();
+		this.listeners = new ArrayList<>();
 		this.listener = new StorageListener();
 	}
 

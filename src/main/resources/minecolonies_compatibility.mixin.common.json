@@ -44,6 +44,7 @@
 		"butchercraft.MeatHookBlockEntityAccessor",
 		"cyclic.AppleCropBlockAccessor",
 		"oreberries.OreBerryBushBlockAccessor",
+		"refinedstorage.CraftingManagerMixin",
 		"reliquary.HandgunItemAccessor",
 		"reliquary.NeutralShotEntityMixin",
 		"storagenetwork.NetworkModuleAccessor",

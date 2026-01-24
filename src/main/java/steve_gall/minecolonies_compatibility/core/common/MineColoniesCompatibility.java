@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.buildings.ModBuildings;
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 
 import net.minecraft.resources.ResourceLocation;
@@ -43,10 +44,14 @@ import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 import steve_gall.minecolonies_compatibility.core.common.init.ModMenuTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.core.common.network.ModMessagesRegistrar;
+import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCrafting;
+import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCraftingProductionResolverFactory;
+import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCraftingRequestResolverFactory;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizedRecipeStorageRegistry;
 import steve_gall.minecolonies_tweaks.api.common.network.NetworkChannel;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.DeliverableObjectRegistry;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.RequestableObjectRegistry;
 import steve_gall.minecolonies_tweaks.api.common.tool.CustomToolTypeRegisterEvent;
 
 @Mod(MineColoniesCompatibility.MOD_ID)
@@ -87,6 +92,10 @@ public class MineColoniesCompatibility
 		CustomizedRecipeStorageRegistry.INSTANCE.register(BucketFillingRecipeStorage.ID, BucketFillingRecipeStorage::serialize, BucketFillingRecipeStorage::deserialize);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(SmithingRecipeStorage.ID, SmithingRecipeStorage::serialize, SmithingRecipeStorage::deserialize);
 		CustomizedRecipeStorageRegistry.INSTANCE.register(StonecutterRecipeStorage.ID, StonecutterRecipeStorage::serialize, StonecutterRecipeStorage::deserialize);
+
+		StandardFactoryController.getInstance().registerNewFactory(new NetworkCraftingRequestResolverFactory());
+		StandardFactoryController.getInstance().registerNewFactory(new NetworkCraftingProductionResolverFactory());
+		RequestableObjectRegistry.INSTANCE.register(NetworkCrafting.ID, NetworkCrafting::serialize, NetworkCrafting::deserialize);
 
 		DeliverableObjectRegistry.INSTANCE.register(IngredientDeliverable.ID, IngredientDeliverable::serialize, IngredientDeliverable::deserialize);
 		DeliverableObjectRegistry.INSTANCE.register(Butcherable.ID, Butcherable::serialize, Butcherable::deserialize);

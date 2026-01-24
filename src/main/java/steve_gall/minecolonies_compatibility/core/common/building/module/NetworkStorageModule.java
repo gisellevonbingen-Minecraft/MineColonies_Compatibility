@@ -13,11 +13,14 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.ICitizenData;
 import com.minecolonies.api.colony.buildings.modules.IBuildingEventsModule;
+import com.minecolonies.api.colony.buildings.modules.ICreatesResolversModule;
 import com.minecolonies.api.colony.requestsystem.request.IRequest;
 import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
+import com.minecolonies.api.colony.requestsystem.resolver.IRequestResolver;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.api.util.Tuple;
+import com.minecolonies.api.util.constant.TypeConstants;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,9 +37,11 @@ import steve_gall.minecolonies_compatibility.api.common.building.module.Abstract
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
 import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCraftingProductionResolver;
+import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCraftingRequestResolver;
 import steve_gall.minecolonies_compatibility.core.common.util.StreamUtils;
 
-public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlocks implements IBuildingEventsModule
+public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlocks implements IBuildingEventsModule, ICreatesResolversModule
 {
 	public static final String TAG_POSTION_DIRECTIONS = MineColoniesCompatibility.rl("position_directions").toString();
 
@@ -50,6 +55,17 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 
 	private boolean isDestroyed = false;
 	private final Map<BlockPos, Direction> directions = new HashMap<>();
+
+	@Override
+	public List<IRequestResolver<?>> createResolvers()
+	{
+		var location = this.getBuilding().getLocation();
+		var factoryController = this.getBuilding().getColony().getRequestManager().getFactoryController();
+		return Arrays.asList(//
+				new NetworkCraftingRequestResolver(location, factoryController.getNewInstance(TypeConstants.ITOKEN)), //
+				new NetworkCraftingProductionResolver(location, factoryController.getNewInstance(TypeConstants.ITOKEN))//
+		);
+	}
 
 	public void onItemIncremented(ItemStack stack)
 	{

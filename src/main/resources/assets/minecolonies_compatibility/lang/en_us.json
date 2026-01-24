@@ -62,6 +62,9 @@
 	"item.minecolonies_compatibility.tacz_dummy_gun": "TaCZ Dummy Gun",
 	"item.minecolonies_compatibility.tacz_dummy_gun.tooltip": "All TaCZ guns can be placed in here",
 	
+	"_comment_request": "Requests",
+	"minecolonies_compatibility.request.network_crafting": "Network Crafting",
+	
 	"_comment_texts": "Texts",
 	"minecolonies_compatibility.text.refresh": "Refresh",
 	"minecolonies_compatibility.text.refreshing": "Refreshing",

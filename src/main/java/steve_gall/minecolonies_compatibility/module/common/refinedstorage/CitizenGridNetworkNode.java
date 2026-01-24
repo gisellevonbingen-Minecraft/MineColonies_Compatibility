@@ -3,11 +3,9 @@ package steve_gall.minecolonies_compatibility.module.common.refinedstorage;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -21,7 +19,6 @@ import com.minecolonies.api.colony.requestsystem.token.IToken;
 import com.minecolonies.api.util.NBTUtils;
 import com.refinedmods.refinedstorage.api.autocrafting.ICraftingPattern;
 import com.refinedmods.refinedstorage.api.autocrafting.task.CalculationResultType;
-import com.refinedmods.refinedstorage.api.autocrafting.task.ICalculationResult;
 import com.refinedmods.refinedstorage.api.network.INetwork;
 import com.refinedmods.refinedstorage.api.network.security.Permission;
 import com.refinedmods.refinedstorage.api.storage.AccessType;
@@ -60,7 +57,6 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 
 	private final StorageView view;
 	private final StorageListener listener;
-	private final InvalidateListener invalidateListener;
 
 	private AccessType accessType = AccessType.INSERT_EXTRACT;
 
@@ -70,7 +66,6 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 
 		this.view = new StorageView();
 		this.listener = new StorageListener();
-		this.invalidateListener = new InvalidateListener();
 	}
 
 	public CitizenGridNetworkNode(CompoundTag tag, Level level, BlockPos pos)
@@ -92,7 +87,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 		super.onConnected(network);
 
 		network.getItemStorageCache().addListener(this.listener);
-		((ICraftingManagerExtension) network.getCraftingManager()).minecolonies_compatibility$addInvalidateListener(this.invalidateListener);
+		((ICraftingManagerExtension) network.getCraftingManager()).minecolonies_compatibility$addInvalidateListener(this.listener::onCraftingManagerInvaliated);
 	}
 
 	@Override
@@ -101,7 +96,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 		super.onDisconnected(network);
 
 		network.getItemStorageCache().removeListener(this.listener);
-		((ICraftingManagerExtension) network.getCraftingManager()).minecolonies_compatibility$removeInvalidateListener(this.invalidateListener);
+		((ICraftingManagerExtension) network.getCraftingManager()).minecolonies_compatibility$removeInvalidateListener(this.listener::onCraftingManagerInvaliated);
 	}
 
 	public boolean hasPermission(Permission permission)
@@ -236,6 +231,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 	public class StorageView extends QueueNetworkStorageView
 	{
 		private Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
+		private Queue<ICraftingPattern> patternQueue = new ArrayDeque<>();
 
 		public INetwork getNetwork()
 		{
@@ -275,11 +271,10 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 		@Override
 		public @NotNull ItemStack calculateAutocrafting(@NotNull IDeliverable deliverable)
 		{
-			var tuple = this.getCraftingCalculatedTuple(deliverable);
-			return tuple != null ? tuple.stack() : ItemStack.EMPTY;
+			return this.findMatchedOutput(deliverable);
 		}
 
-		public ItemStack findMatchedOutput(ICraftingPattern pattern, IDeliverable deliverable)
+		private ItemStack findMatchedOutput(ICraftingPattern pattern, IDeliverable deliverable)
 		{
 			if (pattern.isValid())
 			{
@@ -297,27 +292,29 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 			return ItemStack.EMPTY;
 		}
 
-		public CalculationResultTuple getCraftingCalculatedTuple(IDeliverable deliverable)
+		private ItemStack findMatchedOutput(IDeliverable deliverable)
 		{
 			var network = getNetwork();
 
 			if (network == null)
 			{
-				return null;
+				return ItemStack.EMPTY;
 			}
 
-			for (var pattern : network.getCraftingManager().getPatterns())
+			var craftingManager = network.getCraftingManager();
+
+			for (var pattern : craftingManager.getPatterns())
 			{
 				var output = this.findMatchedOutput(pattern, deliverable);
 
 				if (!output.isEmpty())
 				{
-					return new CalculationResultTuple(network.getCraftingManager().create(output, deliverable.getCount()), output);
+					return output;
 				}
 
 			}
 
-			return null;
+			return ItemStack.EMPTY;
 		}
 
 		@Override
@@ -330,11 +327,25 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 			if (taskHolder != null)
 			{
 				markDirty();
-				this.getNetwork().getCraftingManager().cancel(taskHolder.getTaskId());
+
+				var network = getNetwork();
+
+				if (network != null)
+				{
+					var taskId = taskHolder.getTaskId();
+
+					if (taskId != null)
+					{
+						network.getCraftingManager().cancel(taskId);
+					}
+
+				}
+
 			}
 
 		}
 
+		@Override
 		public void createAutocrafting(@NotNull IToken<?> requestId)
 		{
 			super.createAutocrafting(requestId);
@@ -393,12 +404,6 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 		}
 
 		@Override
-		protected void onActiveTick()
-		{
-			super.onActiveTick();
-		}
-
-		@Override
 		public void updateAutocraftings()
 		{
 			super.updateAutocraftings();
@@ -438,9 +443,17 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 
 				if (taskId == null)
 				{
-					var tuple = this.getCraftingCalculatedTuple(deliverable);
-					var extracting = network.extractItem(tuple.stack(), deliverable.getCount(), Action.SIMULATE);
-					var calculationResult = craftingManager.create(tuple.stack(), deliverable.getCount() - extracting.getCount());
+					var output = this.findMatchedOutput(deliverable);
+					var extracting = network.extractItem(output, deliverable.getCount(), Action.SIMULATE);
+					var craftingCount = deliverable.getCount() - extracting.getCount();
+
+					if (craftingCount <= 0)
+					{
+						toRemove.add(requestId);
+						continue;
+					}
+
+					var calculationResult = craftingManager.create(output, craftingCount);
 
 					if (calculationResult.getType() == CalculationResultType.OK)
 					{
@@ -455,13 +468,23 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 					}
 					else
 					{
-						networkCrafting.setText(Component.literal("READY: " + calculationResult.getType()));
+						networkCrafting.setText(Component.literal("ERROR: " + calculationResult.getType()));
 					}
 
 				}
-				else if (craftingManager.getTask(taskId) == null)
+				else
 				{
-					toRemove.add(requestId);
+					var task = craftingManager.getTask(taskId);
+
+					if (task == null)
+					{
+						toRemove.add(requestId);
+					}
+					else
+					{
+						networkCrafting.setText(Component.literal("CRAFTING: " + task.getCompletionPercentage() + "%"));
+					}
+
 				}
 
 			}
@@ -481,38 +504,62 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 				requestManager.markDirty();
 			}
 
-			this.checkPatterns();
 		}
 
-		private Queue<ICraftingPattern> patternQueue = new ArrayDeque<>();
-		private Set<HashWithPattern> patternHashSet = new HashSet<>();
-		private Set<HashWithPattern> patternNewSet = new HashSet<>();
-
-		private record HashWithPattern(int hash, ICraftingPattern pattern)
+		@Override
+		protected void onActiveChanged(boolean isActive)
 		{
-			HashWithPattern(ICraftingPattern pattern)
-			{
-				this(pattern.hashCode(), pattern);
-			}
+			super.onActiveChanged(isActive);
 
-			@Override
-			public int hashCode()
+			if (isActive)
 			{
-				return this.hash;
-			}
-
-			@Override
-			public boolean equals(Object obj)
-			{
-				return obj instanceof HashWithPattern other && this.pattern.equals(other.pattern);
+				this.requestAllPattern();
 			}
 
 		}
 
-		private void enqueuePattenAll()
+		@Override
+		public void tick()
+		{
+			super.tick();
+
+			var module = this.getLinkedModule();
+
+			if (module != null)
+			{
+				var requestManager = module.getBuilding().getColony().getRequestManager();
+
+				for (var i = 0; i < DEQUEUE_COUNT; i++)
+				{
+					var pattern = this.patternQueue.poll();
+
+					if (pattern == null)
+					{
+						break;
+					}
+					else if (pattern.isValid())
+					{
+						requestManager.onColonyUpdate(request -> request.getRequest() instanceof IDeliverable deliverable && !this.findMatchedOutput(pattern, deliverable).isEmpty());
+					}
+
+				}
+
+			}
+			else
+			{
+				this.patternQueue.clear();
+			}
+
+		}
+
+		private void onCraftingManagerInvaliated()
+		{
+			this.requestAllPattern();
+		}
+
+		private void requestAllPattern()
 		{
 			this.patternQueue.clear();
-			this.patternNewSet.clear();
 
 			var network = getNetwork();
 
@@ -522,69 +569,6 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 			}
 
 			this.patternQueue.addAll(network.getCraftingManager().getPatterns());
-		}
-
-		private void onCraftingManagerInvaliated()
-		{
-			this.enqueuePattenAll();
-		}
-
-		private void checkPatterns()
-		{
-			var module = this.getLinkedModule();
-
-			if (module == null)
-			{
-				return;
-			}
-
-			var network = getNetwork();
-
-			if (network == null)
-			{
-				return;
-			}
-
-			if (this.patternQueue.size() == 0)
-			{
-				for (var pattern : new ArrayList<>(this.patternHashSet))
-				{
-					if (!this.patternNewSet.contains(pattern))
-					{
-						this.patternHashSet.remove(pattern);
-					}
-
-				}
-
-				var requestManager = module.getBuilding().getColony().getRequestManager();
-
-				for (var pattern : this.patternNewSet)
-				{
-					if (this.patternHashSet.add(pattern))
-					{
-						requestManager.onColonyUpdate(request -> request.getRequest() instanceof IDeliverable deliverable && !this.findMatchedOutput(pattern.pattern, deliverable).isEmpty());
-					}
-
-				}
-
-				this.patternNewSet.clear();
-			}
-			else
-			{
-				for (var i = 0; i < DEQUEUE_COUNT; i++)
-				{
-					var pattern = this.patternQueue.poll();
-
-					if (pattern == null)
-					{
-						break;
-					}
-
-					this.patternNewSet.add(new HashWithPattern(pattern));
-				}
-
-			}
-
 		}
 
 		@Override
@@ -730,20 +714,10 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 			getView().requestAll();
 		}
 
-	}
-
-	public class InvalidateListener implements Runnable
-	{
-		@Override
-		public void run()
+		public void onCraftingManagerInvaliated()
 		{
 			getView().onCraftingManagerInvaliated();
 		}
-
-	}
-
-	public record CalculationResultTuple(ICalculationResult result, ItemStack stack)
-	{
 
 	}
 

@@ -3,7 +3,10 @@ package steve_gall.minecolonies_compatibility.module.common.refinedstorage;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.refinedmods.refinedstorage.api.autocrafting.Pattern;
 import com.refinedmods.refinedstorage.api.network.Network;
+import com.refinedmods.refinedstorage.api.network.autocrafting.AutocraftingNetworkComponent;
+import com.refinedmods.refinedstorage.api.network.autocrafting.PatternListener;
 import com.refinedmods.refinedstorage.api.network.impl.node.AbstractNetworkNode;
 import com.refinedmods.refinedstorage.api.network.storage.StorageNetworkComponent;
 import com.refinedmods.refinedstorage.api.resource.list.MutableResourceList.OperationResult;
@@ -15,24 +18,23 @@ import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesComp
 
 public class CitizenGridNetworkNode extends AbstractNetworkNode
 {
-	private final List<StorageListener> storageListeners;
-	private final StorageChangedListener storageChangedListener;
+	private final InternalListener internalListener;
+	private final List<ExternalListener> externalListeners;
 
 	public CitizenGridNetworkNode()
 	{
-		this.storageListeners = new ArrayList<>();
-		this.storageChangedListener = new StorageChangedListener();
-		this.patternListeners = new ArrayList<>();
-		this.patternChangedListener = new PatternChangedListener();
+		this.internalListener = new InternalListener();
+		this.externalListeners = new ArrayList<>();
 	}
 
-	public boolean addStorageListener(StorageListener listener)
+	public boolean addExternalListener(ExternalListener listener)
 	{
-		return this.storageListeners.add(listener);
+		return this.externalListeners.add(listener);
 	}
 
-	public boolean removeStorageListener(StorageListener listener)
+	public boolean removeExternalListener(ExternalListener listener)
 	{
+		return this.externalListeners.remove(listener);
 	}
 
 	@Override
@@ -47,7 +49,10 @@ public class CitizenGridNetworkNode extends AbstractNetworkNode
 		if (this.network != null)
 		{
 			var storage = this.network.getComponent(StorageNetworkComponent.class);
-			storage.removeListener(this.storageChangedListener);
+			storage.removeListener(this.internalListener);
+
+			var autocrafting = this.network.getComponent(AutocraftingNetworkComponent.class);
+			autocrafting.removeListener(this.internalListener);
 		}
 
 		super.setNetwork(network);
@@ -55,25 +60,31 @@ public class CitizenGridNetworkNode extends AbstractNetworkNode
 		if (this.network != null)
 		{
 			var storage = this.network.getComponent(StorageNetworkComponent.class);
-			storage.addListener(this.storageChangedListener);
+			storage.addListener(this.internalListener);
+
+			var autocrafting = this.network.getComponent(AutocraftingNetworkComponent.class);
+			autocrafting.addListener(this.internalListener);
 		}
 
 	}
 
-	@FunctionalInterface
-	public interface StorageListener
+	public interface ExternalListener
 	{
 		void onChanged(ItemStack item);
+
+		public void onAdded(Pattern pattern);
+
+		void onRemoved(Pattern pattern);
 	}
 
-	public class StorageChangedListener implements RootStorageListener
+	public class InternalListener implements RootStorageListener, PatternListener
 	{
 		@Override
 		public void changed(OperationResult result)
 		{
 			if (result.resource() instanceof ItemResource resource)
 			{
-				for (var listener : storageListeners)
+				for (var listener : externalListeners)
 				{
 					if (result.change() > 0L)
 					{
@@ -84,6 +95,18 @@ public class CitizenGridNetworkNode extends AbstractNetworkNode
 
 			}
 
+		}
+
+		@Override
+		public void onAdded(Pattern pattern)
+		{
+			externalListeners.forEach(p -> p.onAdded(pattern));
+		}
+
+		@Override
+		public void onRemoved(Pattern pattern)
+		{
+			externalListeners.forEach(p -> p.onRemoved(pattern));
 		}
 
 	}

@@ -1,11 +1,23 @@
 package steve_gall.minecolonies_compatibility.module.common.refinedstorage;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.colony.requestsystem.request.RequestState;
+import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
+import com.minecolonies.api.colony.requestsystem.token.IToken;
+import com.refinedmods.refinedstorage.api.autocrafting.Pattern;
+import com.refinedmods.refinedstorage.api.autocrafting.calculation.CancellationToken;
+import com.refinedmods.refinedstorage.api.autocrafting.task.TaskId;
 import com.refinedmods.refinedstorage.api.core.Action;
+import com.refinedmods.refinedstorage.api.network.autocrafting.AutocraftingNetworkComponent;
 import com.refinedmods.refinedstorage.api.network.node.NetworkNodeActor;
 import com.refinedmods.refinedstorage.api.network.security.Permission;
 import com.refinedmods.refinedstorage.api.network.security.SecurityNetworkComponent;
@@ -34,8 +46,11 @@ import steve_gall.minecolonies_compatibility.api.common.building.module.INetwork
 import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
-import steve_gall.minecolonies_compatibility.module.common.refinedstorage.CitizenGridNetworkNode.StorageListener;
+import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCrafting;
+import steve_gall.minecolonies_compatibility.mixin.common.refinedstorage.AutocraftingNetworkComponentImplAccessor;
+import steve_gall.minecolonies_compatibility.module.common.refinedstorage.CitizenGridNetworkNode.ExternalListener;
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.init.ModuleBlockEntities;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
 
 public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBlockEntity<CitizenGridNetworkNode> implements NetworkNodeMenuProvider, INetworkStorageViewHolder
 {
@@ -53,18 +68,7 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 		this.view = new StorageView();
 		this.actor = new NetworkNodeActor(this.mainNetworkNode);
-		this.mainNetworkNode.addStorageListener(new StorageListener()
-		{
-			@Override
-			public void onChanged(ItemStack t)
-			{
-				if (view.canEnqueue())
-				{
-					view.enqueue(t);
-				}
-
-			}
-		});
+		this.mainNetworkNode.addExternalListener(this.view);
 	}
 
 	@Override
@@ -135,8 +139,53 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 		return this.view;
 	}
 
-	public class StorageView extends QueueNetworkStorageView
+	public class TaskHolder
 	{
+		private TaskId taskId;
+
+		public TaskHolder()
+		{
+			this.taskId = null;
+		}
+
+		public TaskHolder(CompoundTag tag)
+		{
+			if (tag.hasUUID("taskId"))
+			{
+				this.taskId = new TaskId(tag.getUUID("taskId"));
+			}
+
+		}
+
+		public CompoundTag write()
+		{
+			var tag = new CompoundTag();
+
+			if (this.taskId != null)
+			{
+				tag.putUUID("taskId", this.taskId.id());
+			}
+
+			return tag;
+		}
+
+		public TaskId getTaskId()
+		{
+			return taskId;
+		}
+
+		public void setTaskId(TaskId taskId)
+		{
+			this.taskId = taskId;
+		}
+
+	}
+
+	public class StorageView extends QueueNetworkStorageView implements ExternalListener
+	{
+		private Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
+		private Queue<Pattern> patternQueue = new ArrayDeque<>();
+
 		@Override
 		public Level getLevel()
 		{
@@ -250,6 +299,319 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 			var inserted = network.getComponent(StorageNetworkComponent.class).insert(ItemResource.ofItemStack(stack), stack.getCount(), simulate ? Action.SIMULATE : Action.EXECUTE, actor);
 			return stack.copyWithCount(stack.getCount() - (int) inserted);
+		}
+
+		@Override
+		public @NotNull ItemStack calculateAutocrafting(@NotNull IDeliverable deliverable)
+		{
+			return this.findMatchedOutput(deliverable);
+		}
+
+		private ItemStack findMatchedOutput(Pattern pattern, IDeliverable deliverable)
+		{
+			for (var output : pattern.layout().outputs())
+			{
+				if (output.resource() instanceof ItemResource itemOutput)
+				{
+					var stack = itemOutput.toItemStack();
+
+					if (deliverable.matches(stack))
+					{
+						return stack;
+					}
+
+				}
+
+			}
+
+			return ItemStack.EMPTY;
+		}
+
+		private ItemStack findMatchedOutput(IDeliverable deliverable)
+		{
+			var network = mainNetworkNode.getNetwork();
+
+			if (network == null)
+			{
+				return ItemStack.EMPTY;
+			}
+
+			var autocrafting = network.getComponent(AutocraftingNetworkComponent.class);
+
+			for (var pattern : autocrafting.getPatterns())
+			{
+				var output = this.findMatchedOutput(pattern, deliverable);
+
+				if (!output.isEmpty())
+				{
+					return output;
+				}
+
+			}
+
+			return ItemStack.EMPTY;
+		}
+
+		@Override
+		public void cancelAutocrafting(@NotNull IToken<?> requestId)
+		{
+			super.cancelAutocrafting(requestId);
+
+			var taskHolder = this.tasks.remove(requestId);
+
+			if (taskHolder != null)
+			{
+				setChanged();
+
+				var network = mainNetworkNode.getNetwork();
+
+				if (network != null)
+				{
+					var taskId = taskHolder.getTaskId();
+
+					if (taskId != null)
+					{
+						network.getComponent(AutocraftingNetworkComponent.class).cancel(taskId);
+					}
+
+				}
+
+			}
+
+		}
+
+		@Override
+		public void createAutocrafting(@NotNull IToken<?> requestId)
+		{
+			super.createAutocrafting(requestId);
+
+			this.tasks.put(requestId, new TaskHolder());
+			setChanged();
+		}
+
+		private NetworkCrafting getNetworkCrafting(NetworkStorageModule module, IToken<?> requestId)
+		{
+			var requestManager = module.getBuilding().getColony().getRequestManager();
+			var request = requestManager.getRequestForToken(requestId);
+
+			if (request == null)
+			{
+				return null;
+			}
+			else if (request.getRequest() instanceof CustomizableRequestable customizable && customizable.getObject() instanceof NetworkCrafting networkCrafting)
+			{
+				return networkCrafting;
+			}
+			else
+			{
+				return null;
+			}
+
+		}
+
+		private IDeliverable getDeliverable(NetworkStorageModule module, IToken<?> requestId)
+		{
+			var requestManager = module.getBuilding().getColony().getRequestManager();
+			var request = requestManager.getRequestForToken(requestId);
+
+			if (request != null)
+			{
+				var parentId = request.getParent();
+
+				if (parentId != null)
+				{
+					var parent = requestManager.getRequestForToken(parentId);
+
+					if (parent != null && parent.getRequest() instanceof IDeliverable deliverable)
+					{
+						return deliverable;
+					}
+
+				}
+				else if (request.getRequest() instanceof IDeliverable deliverable)
+				{
+					return deliverable;
+				}
+
+			}
+
+			return null;
+		}
+
+		@Override
+		public void updateAutocraftings()
+		{
+			super.updateAutocraftings();
+
+			var module = this.getLinkedModule();
+
+			if (module == null)
+			{
+				return;
+			}
+
+			var network = mainNetworkNode.getNetwork();
+
+			if (network == null)
+			{
+				return;
+			}
+
+			var requestManager = module.getBuilding().getColony().getRequestManager();
+			var autocrafting = network.getComponent(AutocraftingNetworkComponent.class);
+			var storage = network.getComponent(StorageNetworkComponent.class);
+			var toRemove = new ArrayList<IToken<?>>();
+
+			for (var entry : this.tasks.entrySet())
+			{
+				var requestId = entry.getKey();
+				var taskHolder = entry.getValue();
+				var networkCrafting = this.getNetworkCrafting(module, requestId);
+				var deliverable = this.getDeliverable(module, requestId);
+
+				if (networkCrafting == null || deliverable == null)
+				{
+					toRemove.add(requestId);
+					continue;
+				}
+
+				var taskId = taskHolder.getTaskId();
+
+				if (taskId == null)
+				{
+					var output = ItemResource.ofItemStack(this.findMatchedOutput(deliverable));
+					var extracting = storage.extract(output, deliverable.getCount(), Action.SIMULATE, actor);
+					var craftingCount = deliverable.getCount() - extracting;
+
+					if (craftingCount <= 0)
+					{
+						toRemove.add(requestId);
+						continue;
+					}
+
+					taskId = autocrafting.startTask(output, craftingCount, actor, false, CancellationToken.NONE).orElse(null);
+
+					if (taskId != null)
+					{
+						taskHolder.setTaskId(taskId);
+						setChanged();
+
+						requestManager.markDirty();
+						networkCrafting.setText(Component.literal("CRAFTING"));
+					}
+					else
+					{
+						networkCrafting.setText(Component.literal("RESOURCE MISSING"));
+					}
+
+				}
+				else
+				{
+					var provider = ((AutocraftingNetworkComponentImplAccessor) autocrafting).getProviderByTaskId().get(taskId);
+
+					if (provider == null)
+					{
+						toRemove.add(requestId);
+					}
+
+				}
+
+			}
+
+			for (var requestId : toRemove)
+			{
+				var request = requestManager.getRequestForToken(requestId);
+				this.tasks.remove(requestId);
+				setChanged();
+
+				if (request == null)
+				{
+					continue;
+				}
+
+				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
+				requestManager.markDirty();
+			}
+
+		}
+
+		@Override
+		protected void onActiveChanged(boolean isActive)
+		{
+			super.onActiveChanged(isActive);
+
+			if (isActive)
+			{
+				this.requestAllPattern();
+			}
+
+		}
+
+		@Override
+		public void tick()
+		{
+			super.tick();
+
+			var module = this.getLinkedModule();
+
+			if (module != null)
+			{
+				for (var i = 0; i < DEQUEUE_COUNT; i++)
+				{
+					var pattern = this.patternQueue.poll();
+
+					if (pattern == null)
+					{
+						break;
+					}
+
+					var requestManager = module.getBuilding().getColony().getRequestManager();
+					requestManager.onColonyUpdate(request -> request.getRequest() instanceof IDeliverable deliverable && !this.findMatchedOutput(pattern, deliverable).isEmpty());
+				}
+
+			}
+			else
+			{
+				this.patternQueue.clear();
+			}
+
+		}
+
+		private void requestAllPattern()
+		{
+			this.patternQueue.clear();
+
+			var network = mainNetworkNode.getNetwork();
+
+			if (network == null)
+			{
+				return;
+			}
+
+			var autocrafting = network.getComponent(AutocraftingNetworkComponent.class);
+			this.patternQueue.addAll(autocrafting.getPatterns());
+		}
+
+		@Override
+		public void onChanged(ItemStack item)
+		{
+			if (this.canEnqueue())
+			{
+				this.enqueue(item);
+			}
+
+		}
+
+		@Override
+		public void onAdded(Pattern pattern)
+		{
+			this.patternQueue.add(pattern);
+		}
+
+		@Override
+		public void onRemoved(Pattern pattern)
+		{
+
 		}
 
 	}

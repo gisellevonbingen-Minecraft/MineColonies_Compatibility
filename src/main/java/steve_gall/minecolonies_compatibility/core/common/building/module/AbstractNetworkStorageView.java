@@ -36,7 +36,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		{
 			if (--this.autocraftingTickCounter <= 0)
 			{
-				this.autocraftingTickCounter = 0;
+				this.autocraftingTickCounter = 5;
 				this.updateAutocraftings();
 			}
 

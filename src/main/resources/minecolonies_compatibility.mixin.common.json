@@ -46,6 +46,7 @@
 		"butchercraft.MeatHookBlockEntityAccessor",
 		"cobblemon.BerryBlockAccessor",
 		"oreberries.OreBerryBushBlockAccessor",
+		"refinedstorage.AutocraftingNetworkComponentImplAccessor",
 		"reliquary.HandgunItemAccessor",
 		"reliquary.NeutralShotMixin"
 	],

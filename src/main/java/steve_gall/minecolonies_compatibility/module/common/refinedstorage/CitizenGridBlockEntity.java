@@ -1,6 +1,5 @@
 package steve_gall.minecolonies_compatibility.module.common.refinedstorage;
 
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +34,7 @@ import steve_gall.minecolonies_compatibility.api.common.building.module.INetwork
 import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
+import steve_gall.minecolonies_compatibility.module.common.refinedstorage.CitizenGridNetworkNode.StorageListener;
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.init.ModuleBlockEntities;
 
 public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBlockEntity<CitizenGridNetworkNode> implements NetworkNodeMenuProvider, INetworkStorageViewHolder
@@ -53,10 +53,10 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 		this.view = new StorageView();
 		this.actor = new NetworkNodeActor(this.mainNetworkNode);
-		this.mainNetworkNode.addListener(new Consumer<ItemStack>()
+		this.mainNetworkNode.addStorageListener(new StorageListener()
 		{
 			@Override
-			public void accept(ItemStack t)
+			public void onChanged(ItemStack t)
 			{
 				if (view.canEnqueue())
 				{

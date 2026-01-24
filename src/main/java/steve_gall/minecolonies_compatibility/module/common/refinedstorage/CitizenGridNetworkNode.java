@@ -2,7 +2,6 @@ package steve_gall.minecolonies_compatibility.module.common.refinedstorage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import com.refinedmods.refinedstorage.api.network.Network;
 import com.refinedmods.refinedstorage.api.network.impl.node.AbstractNetworkNode;
@@ -16,23 +15,24 @@ import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesComp
 
 public class CitizenGridNetworkNode extends AbstractNetworkNode
 {
-	private final List<Consumer<ItemStack>> listeners;
-	private final StorageListener listener;
+	private final List<StorageListener> storageListeners;
+	private final StorageChangedListener storageChangedListener;
 
 	public CitizenGridNetworkNode()
 	{
-		this.listeners = new ArrayList<>();
-		this.listener = new StorageListener();
+		this.storageListeners = new ArrayList<>();
+		this.storageChangedListener = new StorageChangedListener();
+		this.patternListeners = new ArrayList<>();
+		this.patternChangedListener = new PatternChangedListener();
 	}
 
-	public boolean addListener(Consumer<ItemStack> listener)
+	public boolean addStorageListener(StorageListener listener)
 	{
-		return this.listeners.add(listener);
+		return this.storageListeners.add(listener);
 	}
 
-	public boolean removeListener(Consumer<ItemStack> listener)
+	public boolean removeStorageListener(StorageListener listener)
 	{
-		return this.listeners.remove(listener);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class CitizenGridNetworkNode extends AbstractNetworkNode
 		if (this.network != null)
 		{
 			var storage = this.network.getComponent(StorageNetworkComponent.class);
-			storage.removeListener(this.listener);
+			storage.removeListener(this.storageChangedListener);
 		}
 
 		super.setNetwork(network);
@@ -55,23 +55,29 @@ public class CitizenGridNetworkNode extends AbstractNetworkNode
 		if (this.network != null)
 		{
 			var storage = this.network.getComponent(StorageNetworkComponent.class);
-			storage.addListener(this.listener);
+			storage.addListener(this.storageChangedListener);
 		}
 
 	}
 
-	public class StorageListener implements RootStorageListener
+	@FunctionalInterface
+	public interface StorageListener
+	{
+		void onChanged(ItemStack item);
+	}
+
+	public class StorageChangedListener implements RootStorageListener
 	{
 		@Override
 		public void changed(OperationResult result)
 		{
 			if (result.resource() instanceof ItemResource resource)
 			{
-				for (var listener : listeners)
+				for (var listener : storageListeners)
 				{
 					if (result.change() > 0L)
 					{
-						listener.accept(resource.toItemStack());
+						listener.onChanged(resource.toItemStack());
 					}
 
 				}

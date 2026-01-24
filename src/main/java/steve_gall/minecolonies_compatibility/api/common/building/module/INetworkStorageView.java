@@ -6,6 +6,9 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
+import com.minecolonies.api.colony.requestsystem.token.IToken;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -66,4 +69,26 @@ public interface INetworkStorageView
 	 */
 	@NotNull
 	ItemStack insertItem(@NotNull ItemStack stack, boolean simulate);
+
+	@NotNull
+	public default ItemStack calculateAutocrafting(@NotNull IDeliverable deliverable)
+	{
+		return ItemStack.EMPTY;
+	}
+
+	public default void cancelAutocrafting(@NotNull IToken<?> requestId)
+	{
+
+	}
+
+	public default void createAutocrafting(@NotNull IToken<?> requestId)
+	{
+
+	}
+
+	public default void updateAutocraftings()
+	{
+
+	}
+
 }

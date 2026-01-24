@@ -21,6 +21,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 
 	private NetworkStorageModule module = null;
 	private boolean wasActive = false;
+	private int autocraftingTickCounter = 0;
 
 	public AbstractNetworkStorageView()
 	{
@@ -30,6 +31,17 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 	public void tick()
 	{
 		this.updateActive();
+
+		if (this.wasActive)
+		{
+			if (--this.autocraftingTickCounter <= 0)
+			{
+				this.autocraftingTickCounter = 0;
+				this.updateAutocraftings();
+			}
+
+		}
+
 	}
 
 	private void updateActive()

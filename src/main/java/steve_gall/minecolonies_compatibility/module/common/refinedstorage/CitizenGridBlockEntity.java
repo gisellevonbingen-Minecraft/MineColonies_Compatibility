@@ -230,6 +230,30 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 			super.unlink();
 
 			setChanged();
+			this.tasks.clear();
+		}
+
+		@Override
+		protected void onUnlink(NetworkStorageModule module)
+		{
+			super.onUnlink(module);
+
+			var requestManager = module.getBuilding().getColony().getRequestManager();
+
+			for (var requestId : new ArrayList<>(this.tasks.keySet()))
+			{
+				this.cancelAutocrafting(requestId);
+
+				var request = requestManager.getRequestForToken(requestId);
+
+				if (request == null)
+				{
+					continue;
+				}
+
+				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
+			}
+
 		}
 
 		public boolean hasPermission(Permission permission)
@@ -595,11 +619,7 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 		@Override
 		public void onChanged(ItemStack item)
 		{
-			if (this.canEnqueue())
-			{
-				this.enqueue(item);
-			}
-
+			this.enqueue(item);
 		}
 
 		@Override

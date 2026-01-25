@@ -91,9 +91,14 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 
 	}
 
+	public Stream<INetworkStorageView> getBlocks()
+	{
+		return this.getRegisteredBlocks().stream().flatMap(this::getOwnLinkedViews);
+	}
+
 	public Stream<INetworkStorageView> getExtractableBlocks()
 	{
-		return this.getRegisteredBlocks().stream().flatMap(this::getOwnLinkedViews).filter(m -> canExtract(m));
+		return this.getBlocks().filter(m -> canExtract(m));
 	}
 
 	public static boolean canExtract(@Nullable INetworkStorageView view)
@@ -103,7 +108,7 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 
 	public Stream<INetworkStorageView> getInsertableBlocks()
 	{
-		return this.getRegisteredBlocks().stream().flatMap(this::getOwnLinkedViews).filter(m -> canInsert(m));
+		return this.getBlocks().filter(m -> canInsert(m));
 	}
 
 	public static boolean canInsert(@Nullable INetworkStorageView view)

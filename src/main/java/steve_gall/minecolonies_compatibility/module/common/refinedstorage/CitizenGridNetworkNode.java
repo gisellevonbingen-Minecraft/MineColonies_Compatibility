@@ -587,6 +587,30 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 
 			markDirty();
 			LevelUtils.updateBlock(level, pos);
+			this.tasks.clear();
+		}
+
+		@Override
+		protected void onUnlink(NetworkStorageModule module)
+		{
+			super.onUnlink(module);
+
+			var requestManager = module.getBuilding().getColony().getRequestManager();
+
+			for (var requestId : new ArrayList<>(this.tasks.keySet()))
+			{
+				this.cancelAutocrafting(requestId);
+
+				var request = requestManager.getRequestForToken(requestId);
+
+				if (request == null)
+				{
+					continue;
+				}
+
+				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
+			}
+
 		}
 
 		@Override
@@ -689,9 +713,9 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 		{
 			var view = getView();
 
-			if (view.canEnqueue() && result.getChange() > 0)
+			if (result.getChange() > 0)
 			{
-				getView().enqueue(result.getStack());
+				view.enqueue(result.getStack());
 			}
 
 		}
@@ -700,12 +724,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 		public void onChangedBulk(List<StackListResult<ItemStack>> results)
 		{
 			var view = getView();
-
-			if (view.canEnqueue())
-			{
-				view.enqueue(results.stream().filter(result -> result.getChange() > 0).map(e -> e.getStack()).toList());
-			}
-
+			view.enqueue(results.stream().filter(result -> result.getChange() > 0).map(e -> e.getStack()).toList());
 		}
 
 		@Override

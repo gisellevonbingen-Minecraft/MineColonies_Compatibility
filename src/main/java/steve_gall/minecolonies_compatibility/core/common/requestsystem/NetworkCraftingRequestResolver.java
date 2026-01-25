@@ -153,7 +153,7 @@ public class NetworkCraftingRequestResolver extends AbstractBuildingDependentReq
 				return;
 			}
 
-			for (var view : module.getExtractableBlocks().toList())
+			for (var view : module.getBlocks().toList())
 			{
 				view.cancelAutocrafting(request.getId());
 			}

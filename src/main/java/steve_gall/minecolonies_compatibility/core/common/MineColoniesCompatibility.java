@@ -3,7 +3,6 @@ package steve_gall.minecolonies_compatibility.core.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.minecolonies.api.IMinecoloniesAPI;
 import com.minecolonies.api.colony.buildings.ModBuildings;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.creativetab.ModCreativeTabs;
@@ -23,7 +22,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.registries.RegisterEvent;
 import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
@@ -54,6 +52,7 @@ import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCr
 import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCraftingProductionResolverFactory;
 import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCraftingRequestResolverFactory;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
+import steve_gall.minecolonies_tweaks.api.common.building.module.ModuleRegisterEvent;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizedRecipeStorageRegistry;
 import steve_gall.minecolonies_tweaks.api.common.network.MessageRegistrar;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.DeliverableObjectRegistry;
@@ -83,7 +82,7 @@ public class MineColoniesCompatibility
 		ModMenuTypes.REGISTER.register(fml_bus);
 		ModInteractions.REGISTER.register(fml_bus);
 		fml_bus.addListener(this::onFMLCommonSetup);
-		fml_bus.addListener(this::onRegister);
+		fml_bus.addListener(this::onModuleRegister);
 		fml_bus.addListener(this::onCustomToolTypeRegister);
 		fml_bus.addListener(this::onBuildCreativeModeTabContents);
 		fml_bus.addListener(this::onRegisterPayloadHandlers);
@@ -130,41 +129,37 @@ public class MineColoniesCompatibility
 		});
 	}
 
-	private void onRegister(RegisterEvent e)
+	private void onModuleRegister(ModuleRegisterEvent e)
 	{
-		if (e.getRegistryKey() == IMinecoloniesAPI.getInstance().getBuildingRegistry().key())
-		{
-			ModBuildings.guardTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_TOWER_WORK);
-			ModBuildings.barracksTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_BARRACKS_WORK);
+		ModBuildings.guardTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_TOWER_WORK);
+		ModBuildings.barracksTower.get().getModuleProducers().add(ModBuildingModules.GUNNER_BARRACKS_WORK);
 
-			ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.ORCHARDIST_WORK);
-			ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.FRUITLIST_BLACKLIST);
-			ModBuildings.wareHouse.get().getModuleProducers().add(ModBuildingModules.NETWORK_STORAGE);
-			ModBuildings.blacksmith.get().getModuleProducers().add(ModBuildingModules.BLACKSMITH_SMITHING);
-			ModBuildings.blacksmith.get().getModuleProducers().add(ModBuildingModules.BLACKSMITH_SMITHING_TEMPLATE_CRAFTING);
+		ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.ORCHARDIST_WORK);
+		ModBuildings.lumberjack.get().getModuleProducers().add(ModBuildingModules.FRUITLIST_BLACKLIST);
+		ModBuildings.wareHouse.get().getModuleProducers().add(ModBuildingModules.NETWORK_STORAGE);
+		ModBuildings.blacksmith.get().getModuleProducers().add(ModBuildingModules.BLACKSMITH_SMITHING);
+		ModBuildings.blacksmith.get().getModuleProducers().add(ModBuildingModules.BLACKSMITH_SMITHING_TEMPLATE_CRAFTING);
 
-			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_WORK);
-			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_BUCKET_FILLING);
-			ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_LAVA_CAULDRON);
+		ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_WORK);
+		ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_BUCKET_FILLING);
+		ModBuildings.deliveryman.get().getModuleProducers().add(ModBuildingModules.FLUID_MANAGER_LAVA_CAULDRON);
 
-			ModBuildings.swineHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
-			ModBuildings.swineHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+		ModBuildings.swineHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+		ModBuildings.swineHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
 
-			ModBuildings.chickenHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
-			ModBuildings.chickenHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+		ModBuildings.chickenHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+		ModBuildings.chickenHerder.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
 
-			ModBuildings.cowboy.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
-			ModBuildings.cowboy.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+		ModBuildings.cowboy.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+		ModBuildings.cowboy.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
 
-			ModBuildings.rabbitHutch.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
-			ModBuildings.rabbitHutch.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+		ModBuildings.rabbitHutch.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+		ModBuildings.rabbitHutch.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
 
-			ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
-			ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
+		ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHER_WORK);
+		ModBuildings.shepherd.get().getModuleProducers().add(ModBuildingModules.BUTCHERABLELIST_BLACKLIST);
 
-			ModBuildings.stoneMason.get().getModuleProducers().add(ModBuildingModules.STONEMASON_STONECUTTING);
-		}
-
+		ModBuildings.stoneMason.get().getModuleProducers().add(ModBuildingModules.STONEMASON_STONECUTTING);
 	}
 
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)

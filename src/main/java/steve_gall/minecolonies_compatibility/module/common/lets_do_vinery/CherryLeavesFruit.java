@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.satisfy.vinery.core.block.CherryLeavesBlock;
 import net.satisfy.vinery.core.registry.ObjectRegistry;
@@ -33,7 +32,7 @@ public class CherryLeavesFruit extends CustomizedFruit
 	@Override
 	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(new ItemStack(ObjectRegistry.CHERRY.get()), new ItemStack(ObjectRegistry.ROTTEN_CHERRY.get()));
+		return Arrays.asList(new ItemStack(ObjectRegistry.CHERRY.get()));
 	}
 
 	@Override
@@ -61,9 +60,8 @@ public class CherryLeavesFruit extends CustomizedFruit
 		if (context.getLevel() instanceof ServerLevel level)
 		{
 			var random = level.getRandom();
-			var dropCount = random.nextBoolean() ? Mth.nextInt(random, 1, 3) : 1;
-			var rotten = random.nextInt(8) == 0;
-			var dropStack = new ItemStack(rotten ? ObjectRegistry.ROTTEN_CHERRY.get() : ObjectRegistry.CHERRY.get(), dropCount);
+			var dropCount = random.nextBoolean() ? random.nextInt(1, 4) : 1;
+			var dropStack = new ItemStack(ObjectRegistry.CHERRY.get(), dropCount);
 
 			var newState = context.getState().setValue(CherryLeavesBlock.HAS_CHERRIES, false);
 			level.setBlockAndUpdate(context.getPosition(), newState);

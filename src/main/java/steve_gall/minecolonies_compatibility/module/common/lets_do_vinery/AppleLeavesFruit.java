@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.satisfy.vinery.core.block.AppleLeavesBlock;
@@ -62,7 +61,7 @@ public class AppleLeavesFruit extends CustomizedFruit
 		if (context.getLevel() instanceof ServerLevel level)
 		{
 			var random = level.getRandom();
-			var dropCount = random.nextBoolean() ? Mth.nextInt(random, 1, 3) : 1;
+			var dropCount = random.nextBoolean() ? random.nextInt(1, 4) : 1;
 			var dropStack = new ItemStack(Items.APPLE, dropCount);
 
 			var newState = context.getState().setValue(AppleLeavesBlock.HAS_APPLES, false);

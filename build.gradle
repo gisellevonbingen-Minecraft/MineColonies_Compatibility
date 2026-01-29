@@ -104,6 +104,7 @@ dependencies {
     implementation "curse.maven:aether-255308:${aether_file}"
     implementation "curse.maven:accessories-938917:${accessories_file}"
     implementation "curse.maven:owo-lib-532610:${owolib_file}"
+    implementation "curse.maven:lets-do-vinery-704465:${lets_do_vinery_file}"
     implementation "curse.maven:lets-do-meadow-821483:${lets_do_meadow_file}"
     implementation "curse.maven:the-undergarden-379849:${the_undergarden_file}"
     implementation "curse.maven:oreberries-replanted-454062:${oreberries_file}"

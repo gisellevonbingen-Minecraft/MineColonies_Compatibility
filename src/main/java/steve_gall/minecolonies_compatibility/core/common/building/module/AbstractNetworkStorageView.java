@@ -190,7 +190,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 			return null;
 		}
 
-		var building = colony.getBuilding(this.warehousePos.get());
+		var building = colony.getClientBuildingManager().getBuilding(this.warehousePos.get());
 
 		if (building == null)
 		{
@@ -216,7 +216,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 				return null;
 			}
 
-			var building = colony.getBuildingManager().getBuilding(this.warehousePos.get());
+			var building = colony.getServerBuildingManager().getBuilding(this.warehousePos.get());
 
 			if (building == null)
 			{

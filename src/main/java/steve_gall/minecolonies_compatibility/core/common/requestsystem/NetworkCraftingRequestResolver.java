@@ -69,7 +69,7 @@ public class NetworkCraftingRequestResolver extends AbstractBuildingDependentReq
 			return false;
 		}
 
-		var building = manager.getColony().getBuildingManager().getBuilding(this.getLocation().getInDimensionLocation());
+		var building = manager.getColony().getServerBuildingManager().getBuilding(this.getLocation().getInDimensionLocation());
 
 		if (building == null)
 		{
@@ -139,7 +139,7 @@ public class NetworkCraftingRequestResolver extends AbstractBuildingDependentReq
 				return;
 			}
 
-			var building = manager.getColony().getBuildingManager().getBuilding(this.getLocation().getInDimensionLocation());
+			var building = manager.getColony().getServerBuildingManager().getBuilding(this.getLocation().getInDimensionLocation());
 
 			if (building == null)
 			{

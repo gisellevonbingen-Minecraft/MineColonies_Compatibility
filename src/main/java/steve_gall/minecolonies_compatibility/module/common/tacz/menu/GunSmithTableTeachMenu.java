@@ -48,13 +48,13 @@ public class GunSmithTableTeachMenu extends TeachRecipeMenu<GunSmithTableRecipe>
 
 	public GunSmithTableTeachMenu(int windowId, Inventory inventory, IBuildingModule module)
 	{
-		super(ModuleMenuTypes.TACZ_GUN_SMITH_TABLE_TEACH.get(), windowId, inventory, module);
+		super(ModuleMenuTypes.GUN_SMITH_TABLE_TEACH.get(), windowId, inventory, module);
 		this.setup();
 	}
 
 	public GunSmithTableTeachMenu(int windowId, Inventory inventory, FriendlyByteBuf buffer)
 	{
-		super(ModuleMenuTypes.TACZ_GUN_SMITH_TABLE_TEACH.get(), windowId, inventory, buffer);
+		super(ModuleMenuTypes.GUN_SMITH_TABLE_TEACH.get(), windowId, inventory, buffer);
 		this.setup();
 	}
 

@@ -11,7 +11,7 @@ import steve_gall.minecolonies_compatibility.module.common.tacz.menu.GunSmithTab
 public class ModuleMenuTypes
 {
 	public static final DeferredRegister<MenuType<?>> REGISTER = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MineColoniesCompatibility.MOD_ID);
-	public static final RegistryObject<MenuType<GunSmithTableTeachMenu>> TACZ_GUN_SMITH_TABLE_TEACH = REGISTER.register("tacz_gun_smith_table_teach", () -> IForgeMenuType.create(GunSmithTableTeachMenu::new));
+	public static final RegistryObject<MenuType<GunSmithTableTeachMenu>> GUN_SMITH_TABLE_TEACH = REGISTER.register("tacz_gun_smith_table_teach", () -> IForgeMenuType.create(GunSmithTableTeachMenu::new));
 
 	private ModuleMenuTypes()
 	{

@@ -63,7 +63,7 @@ public class TACZModule extends AbstractModule
 	{
 		super.onFMLClientSetup(e);
 
-		MenuScreens.register(ModuleMenuTypes.TACZ_GUN_SMITH_TABLE_TEACH.get(), GunSmithTableTeachScreen::new);
+		MenuScreens.register(ModuleMenuTypes.GUN_SMITH_TABLE_TEACH.get(), GunSmithTableTeachScreen::new);
 	}
 
 }

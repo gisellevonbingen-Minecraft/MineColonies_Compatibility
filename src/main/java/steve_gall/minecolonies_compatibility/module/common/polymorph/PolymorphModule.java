@@ -18,9 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
@@ -129,36 +127,38 @@ public class PolymorphModule extends AbstractModule
 	public static <RECIPE> void sendRecipesList(ServerPlayer player, TeachRecipeMenu<RECIPE> menu)
 	{
 		var recipeValidator = menu.getRecipeValidator();
+		var pairs = new TreeSet<IRecipePair>();
+		ResourceLocation selected = null;
+		var recipes = menu.getRecipes();
+		var registryAccess = menu.getInventory().player.level().registryAccess();
 
-		if (recipeValidator instanceof MenuRecipeValidatorRecipe)
+		for (var i = 0; i < recipes.size(); i++)
 		{
-			var pairs = new TreeSet<IRecipePair>();
-			ResourceLocation selected = null;
-			var recipes = menu.getRecipes();
-			var registryAccess = menu.getInventory().player.level().registryAccess();
+			var recipe = recipes.get(i);
+			var result = recipeValidator.getResultItem(recipe, registryAccess);
 
-			for (var i = 0; i < recipes.size(); i++)
+			if (result.isEmpty())
 			{
-				var recipe = (Recipe<?>) recipes.get(i);
-				var result = recipe.getResultItem(registryAccess);
-
-				if (result.isEmpty())
-				{
-					continue;
-				}
-
-				pairs.add(new RecipePair(recipe.getId(), result));
-
-				if (menu.getRecipeIndex() == i)
-				{
-					selected = recipe.getId();
-				}
-
+				continue;
 			}
 
-			PolymorphApi.common().getPacketDistributor().sendRecipesListS2C(player, pairs, selected);
+			var recipeId = recipeValidator.getRecipeId(recipe);
+
+			if (recipeId == null)
+			{
+				continue;
+			}
+
+			pairs.add(new RecipePair(recipeId, result));
+
+			if (menu.getRecipeIndex() == i)
+			{
+				selected = recipeId;
+			}
+
 		}
 
+		PolymorphApi.common().getPacketDistributor().sendRecipesListS2C(player, pairs, selected);
 	}
 
 	public static void sendHighlightRecipe(ServerPlayer player, ResourceLocation recipeId)

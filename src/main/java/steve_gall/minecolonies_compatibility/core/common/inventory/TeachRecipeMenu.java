@@ -14,6 +14,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,7 +23,6 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostMenu;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
@@ -143,7 +143,15 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 				PolymorphModule.sendRecipesList(player, this);
 			}
 
-			this.setRecipeIndex(show == null ? 0 : this.recipes.indexOf(show));
+			if (show == null)
+			{
+				this.setRecipeIndex(0);
+			}
+			else
+			{
+				this.setRecipeIndex(this.recipes.indexOf(show));
+			}
+
 		}
 
 	}
@@ -164,9 +172,15 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 			var tag = recipe != null ? this.getRecipeValidator().serialize(StandardFactoryController.getInstance(), recipe) : null;
 			MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewResultMessage(tag), player);
 
-			if (ModuleManager.POLYMORPH.isLoaded() && recipe instanceof Recipe<?>)
+			if (ModuleManager.POLYMORPH.isLoaded() && recipe != null)
 			{
-				PolymorphModule.sendHighlightRecipe(player, ((Recipe<?>) recipe).getId());
+				var recipeId = this.getRecipeValidator().getRecipeId(recipe);
+
+				if (recipeId != null)
+				{
+					PolymorphModule.sendHighlightRecipe(player, recipeId);
+				}
+
 			}
 
 		}
@@ -300,7 +314,7 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 
 	public void setRecipeIndex(int index)
 	{
-		if (0 <= index && index < this.getRecipes().size())
+		if (0 <= index && index < this.recipes.size())
 		{
 			this.recipeIndex = index;
 			this.setRecipe(this.recipes.get(index));
@@ -311,6 +325,26 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 			this.setRecipe(null);
 		}
 
+	}
+
+	public int findRecipeIndex(ResourceLocation recipeId)
+	{
+		if (recipeId != null)
+		{
+			var recipeValidator = this.getRecipeValidator();
+
+			for (var i = 0; i < this.recipes.size(); i++)
+			{
+				if (recipeId.equals(recipeValidator.getRecipeId(this.recipes.get(i))))
+				{
+					return i;
+				}
+
+			}
+
+		}
+
+		return -1;
 	}
 
 	public List<RECIPE> getRecipes()

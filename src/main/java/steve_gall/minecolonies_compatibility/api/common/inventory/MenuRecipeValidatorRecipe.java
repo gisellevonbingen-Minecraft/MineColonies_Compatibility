@@ -6,10 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameRules;
@@ -71,6 +73,18 @@ public abstract class MenuRecipeValidatorRecipe<RECIPE extends Recipe<CONTAINER>
 	{
 		var recipeId = new ResourceLocation(tag.getString(TAG_ID));
 		return (RECIPE) this.level.getRecipeManager().byKey(recipeId).orElse(null);
+	}
+
+	@Override
+	public ItemStack getResultItem(RECIPE recipe, RegistryAccess registryAccess)
+	{
+		return recipe.getResultItem(registryAccess);
+	}
+
+	@Override
+	public ResourceLocation getRecipeId(RECIPE recipe)
+	{
+		return recipe.getId();
 	}
 
 	public abstract RecipeType<RECIPE> getRecipeType();

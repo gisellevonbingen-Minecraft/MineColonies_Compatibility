@@ -7,16 +7,20 @@
 	],
 	"result": [
 		{
-			"item": "minecraft:iron_ingot",
-			"count": 3
+			"item": {
+				"id": "minecraft:iron_ingot",
+				"count": 3
+			}
 		},
 		{
-			"item": "minecraft:iron_nugget",
-			"count": 1,
+			"item": {
+				"id": "minecraft:iron_nugget",
+				"count": 1
+			},
 			"chance": 0.5
 		}
 	],
 	"tool": {
-		"tag": "forge:tools/knives"
+		"tag": "c:tools/knife"
 	}
 }

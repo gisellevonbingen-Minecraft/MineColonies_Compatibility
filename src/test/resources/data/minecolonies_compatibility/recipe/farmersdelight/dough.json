@@ -2,21 +2,25 @@
 	"type": "farmersdelight:cutting",
 	"ingredients": [
 		{
-			"tag": "forge:dough"
+			"tag": "c:foods/dough"
 		}
 	],
 	"result": [
 		{
-			"item": "minecraft:bread",
-			"count": 1
+			"item": {
+				"id": "minecraft:bread",
+				"count": 1
+			}
 		},
 		{
-			"item": "farmersdelight:straw",
-			"count": 1,
+			"item": {
+				"id": "farmersdelight:straw",
+				"count": 1
+			},
 			"chance": 0.5
 		}
 	],
 	"tool": {
-		"tag": "forge:tools/knives"
+		"tag": "c:tools/knife"
 	}
 }

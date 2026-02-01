@@ -7,12 +7,14 @@
 	],
 	"result": [
 		{
-			"item": "farmersdelight:straw",
-			"count": 1,
+			"item": {
+				"id": "farmersdelight:straw",
+				"count": 1
+			},
 			"chance": 0.5
 		}
 	],
 	"tool": {
-		"tag": "forge:tools/knives"
+		"tag": "c:tools/knife"
 	}
 }

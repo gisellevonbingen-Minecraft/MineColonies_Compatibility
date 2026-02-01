@@ -49,15 +49,16 @@ public class TeachRecipeMenuSelectMessage extends AbstractMessage
 
 		var player = context.player();
 		var registryAccess = player.level().registryAccess();
-		var holder = player.level().getRecipeManager().byKey(this.recipeId).orElse(null);
-
-		if (holder == null)
-		{
-			return;
-		}
 
 		if (player.containerMenu instanceof ContainerCrafting menu)
 		{
+			var holder = player.level().getRecipeManager().byKey(this.recipeId).orElse(null);
+
+			if (holder == null)
+			{
+				return;
+			}
+
 			var input = menu.craftMatrix.asCraftInput();
 			var output = ((CraftingRecipe) holder.value()).assemble(input, registryAccess);
 			menu.craftResult.setItem(0, output);
@@ -68,9 +69,9 @@ public class TeachRecipeMenuSelectMessage extends AbstractMessage
 			}
 
 		}
-		else if (player.containerMenu instanceof TeachRecipeMenu<?, ?> menu)
+		else if (player.containerMenu instanceof TeachRecipeMenu menu)
 		{
-			menu.setRecipeIndex(menu.getRecipes().indexOf(holder));
+			menu.setRecipeIndex(menu.findRecipeIndex(this.recipeId));
 		}
 
 	}

@@ -18,12 +18,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.network.PacketDistributor;
-import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
@@ -138,36 +136,38 @@ public class PolymorphModule extends AbstractModule
 	public static <RECIPE, RECIPE_INPUT> void sendRecipesList(ServerPlayer player, TeachRecipeMenu<RECIPE, RECIPE_INPUT> menu)
 	{
 		var recipeValidator = menu.getRecipeValidator();
+		var pairs = new TreeSet<IRecipePair>();
+		ResourceLocation selected = null;
+		var recipes = menu.getRecipes();
+		var registryAccess = menu.getInventory().player.level().registryAccess();
 
-		if (recipeValidator instanceof MenuRecipeValidatorRecipe)
+		for (var i = 0; i < recipes.size(); i++)
 		{
-			var pairs = new TreeSet<IRecipePair>();
-			ResourceLocation selected = null;
-			var recipes = menu.getRecipes();
-			var registryAccess = menu.getInventory().player.level().registryAccess();
+			var holder = recipes.get(i);
+			var result = recipeValidator.getResultItem(holder, registryAccess);
 
-			for (var i = 0; i < recipes.size(); i++)
+			if (result.isEmpty())
 			{
-				var holder = (RecipeHolder<?>) recipes.get(i);
-				var result = holder.value().getResultItem(registryAccess);
-
-				if (result.isEmpty())
-				{
-					continue;
-				}
-
-				pairs.add(new RecipePair(holder.id(), result));
-
-				if (menu.getRecipeIndex() == i)
-				{
-					selected = holder.id();
-				}
-
+				continue;
 			}
 
-			PolymorphApi.getInstance().getNetwork().sendRecipesListS2C(player, pairs, selected);
+			var recipeId = recipeValidator.getRecipeId(holder);
+
+			if (recipeId == null)
+			{
+				continue;
+			}
+
+			pairs.add(new RecipePair(recipeId, result));
+
+			if (menu.getRecipeIndex() == i)
+			{
+				selected = recipeId;
+			}
+
 		}
 
+		PolymorphApi.getInstance().getNetwork().sendRecipesListS2C(player, pairs, selected);
 	}
 
 }

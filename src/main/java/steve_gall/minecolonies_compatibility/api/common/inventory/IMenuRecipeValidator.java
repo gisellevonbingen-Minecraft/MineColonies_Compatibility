@@ -9,8 +9,10 @@ import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 
 public interface IMenuRecipeValidator<RECIPE, RECIPE_INPUT>
 {
@@ -25,4 +27,17 @@ public interface IMenuRecipeValidator<RECIPE, RECIPE_INPUT>
 
 	@NotNull
 	RECIPE deserialize(@NotNull HolderLookup.Provider provider, @NotNull IFactoryController controller, @NotNull CompoundTag tag);
+
+	@NotNull
+	default ItemStack getResultItem(@NotNull RECIPE recipe, @NotNull HolderLookup.Provider provider)
+	{
+		return ItemStack.EMPTY;
+	}
+
+	@Nullable
+	default ResourceLocation getRecipeId(@NotNull RECIPE recipe)
+	{
+		return null;
+	}
+	
 }

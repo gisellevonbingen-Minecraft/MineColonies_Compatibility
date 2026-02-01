@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -79,6 +80,18 @@ public abstract class MenuRecipeValidatorRecipe<RECIPE extends Recipe<RECIPE_INP
 	{
 		var recipeId = ResourceLocation.parse(tag.getString(TAG_ID));
 		return (RecipeHolder<RECIPE>) this.level.getRecipeManager().byKey(recipeId).orElse(null);
+	}
+
+	@Override
+	public ItemStack getResultItem(RecipeHolder<RECIPE> recipe, HolderLookup.Provider provider)
+	{
+		return recipe.value().getResultItem(provider);
+	}
+
+	@Override
+	public ResourceLocation getRecipeId(RecipeHolder<RECIPE> recipe)
+	{
+		return recipe.id();
 	}
 
 	public abstract RecipeType<RECIPE> getRecipeType();

@@ -14,6 +14,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,7 +23,6 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostMenu;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
@@ -139,12 +139,15 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 			var tags = this.recipes.stream().map(r -> recipeValidator.serialize(player.registryAccess(), StandardFactoryController.getInstance(), r)).toList();
 			PacketDistributor.sendToPlayer(player, new TeachRecipeMenuNewRecipesMessage(tags));
 
-			if (ModuleManager.POLYMORPH.isLoaded())
+			if (show == null)
 			{
-				PolymorphModule.sendRecipesList(player, this);
+				this.setRecipeIndex(0);
+			}
+			else
+			{
+				this.setRecipeIndex(this.recipes.indexOf(show));
 			}
 
-			this.setRecipeIndex(show == null ? 0 : this.recipes.indexOf(show));
 		}
 
 	}
@@ -165,7 +168,7 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 			var tag = recipe != null ? this.getRecipeValidator().serialize(player.registryAccess(), StandardFactoryController.getInstance(), recipe) : null;
 			PacketDistributor.sendToPlayer(player, new TeachRecipeMenuNewResultMessage(tag));
 
-			if (ModuleManager.POLYMORPH.isLoaded() && recipe instanceof RecipeHolder<?>)
+			if (ModuleManager.POLYMORPH.isLoaded())
 			{
 				PolymorphModule.sendRecipesList(player, this);
 			}
@@ -306,7 +309,7 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 
 	public void setRecipeIndex(int index)
 	{
-		if (0 <= index && index < this.getRecipes().size())
+		if (0 <= index && index < this.recipes.size())
 		{
 			this.recipeIndex = index;
 			this.setRecipe(this.recipes.get(index));
@@ -317,6 +320,26 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 			this.setRecipe(null);
 		}
 
+	}
+
+	public int findRecipeIndex(ResourceLocation recipeId)
+	{
+		if (recipeId != null)
+		{
+			var recipeValidator = this.getRecipeValidator();
+
+			for (var i = 0; i < this.recipes.size(); i++)
+			{
+				if (recipeId.equals(recipeValidator.getRecipeId(this.recipes.get(i))))
+				{
+					return i;
+				}
+
+			}
+
+		}
+
+		return -1;
 	}
 
 	public List<RECIPE> getRecipes()

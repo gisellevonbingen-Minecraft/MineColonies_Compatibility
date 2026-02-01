@@ -43,15 +43,16 @@ public class TeachRecipeMenuSelectMessage extends AbstractMessage
 		super.handle(context);
 
 		var player = context.getSender();
-		var recipe = player.level.getRecipeManager().byKey(this.recipeId).orElse(null);
-
-		if (recipe == null)
-		{
-			return;
-		}
 
 		if (player.containerMenu instanceof ContainerCrafting menu)
 		{
+			var recipe = player.level.getRecipeManager().byKey(this.recipeId).orElse(null);
+
+			if (recipe == null)
+			{
+				return;
+			}
+
 			menu.craftResult.setItem(0, ((CraftingRecipe) recipe).assemble(menu.craftMatrix));
 
 			if (ModuleManager.POLYMORPH.isLoaded())
@@ -60,9 +61,9 @@ public class TeachRecipeMenuSelectMessage extends AbstractMessage
 			}
 
 		}
-		else if (player.containerMenu instanceof TeachRecipeMenu<?> menu)
+		else if (player.containerMenu instanceof TeachRecipeMenu menu)
 		{
-			menu.setRecipeIndex(menu.getRecipes().indexOf(recipe));
+			menu.setRecipeIndex(menu.findRecipeIndex(this.recipeId));
 		}
 
 	}

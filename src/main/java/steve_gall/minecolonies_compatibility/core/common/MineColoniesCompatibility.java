@@ -194,6 +194,8 @@ public class MineColoniesCompatibility
 	{
 		CustomizedButcherable.reload(recipeManager);
 		Butcherable.reload();
+
+		ModuleManager.LOADED_MODULES.forEach(m -> m.onRecipeReloaded(recipeManager));
 	}
 
 	public static NetworkChannel network()

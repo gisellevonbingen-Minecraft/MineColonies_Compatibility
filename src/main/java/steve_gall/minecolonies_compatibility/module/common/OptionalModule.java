@@ -2,6 +2,7 @@ package steve_gall.minecolonies_compatibility.module.common;
 
 import java.util.function.Supplier;
 
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_tweaks.api.common.building.module.ModuleRegisterEvent;
@@ -55,6 +56,11 @@ public class OptionalModule<MODULE extends AbstractModule>
 	private void onModuleRegister(ModuleRegisterEvent e)
 	{
 		this.module.onInitBuildingModule();
+	}
+
+	public void onRecipeReloaded(RecipeManager recipeManager)
+	{
+		this.module.onRecipeReloaded(recipeManager);
 	}
 
 	public boolean isLoaded()

@@ -2,6 +2,7 @@ package steve_gall.minecolonies_compatibility.module.common;
 
 import java.util.function.Supplier;
 
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import steve_gall.minecolonies_tweaks.api.common.building.module.ModuleRegisterEvent;
@@ -61,11 +62,12 @@ public class OptionalModule<MODULE extends AbstractModule>
 
 	public void onRegisterNetwork(MessageRegistrar channel)
 	{
-		if (this.isLoaded())
-		{
-			this.module.onRegisterNetwork(channel);
-		}
+		this.module.onRegisterNetwork(channel);
+	}
 
+	public void onRecipeReloaded(RecipeManager recipeManager)
+	{
+		this.module.onRecipeReloaded(recipeManager);
 	}
 
 	public boolean isLoaded()

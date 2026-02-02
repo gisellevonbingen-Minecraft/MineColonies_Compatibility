@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.client.farmersdelight;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
@@ -9,6 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.FarmersDelightModule;
@@ -51,24 +53,19 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 	}
 
 	@Override
-	protected void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY)
+	protected void renderSlotTooltip(GuiGraphics graphics, int mouseX, int mouseY, Slot slot)
 	{
-		if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem())
+		var item = slot.getItem();
+		var tooltip = new ArrayList<>(getTooltipFromItem(this.minecraft, item));
+
+		var resultIndex = this.menu.getResultSlots().indexOf(slot);
+
+		if (resultIndex > -1)
 		{
-			var item = this.hoveredSlot.getItem();
-			var tooltip = getTooltipFromItem(this.minecraft, item);
-			var tooltipImage = item.getTooltipImage();
-
-			var resultIndex = this.menu.getResultSlots().indexOf(this.hoveredSlot);
-
-			if (resultIndex > -1)
-			{
-				tooltip.addAll(1, FarmersDelightModule.getChanceTooltip(this.menu.getResults().get(resultIndex).getChance()));
-			}
-
-			graphics.renderTooltip(this.font, tooltip, tooltipImage, item, mouseX, mouseY);
+			tooltip.addAll(1, FarmersDelightModule.getChanceTooltip(this.menu.getResults().get(resultIndex).getChance()));
 		}
 
+		graphics.renderTooltip(this.font, tooltip, item.getTooltipImage(), item, mouseX, mouseY);
 	}
 
 	@Override

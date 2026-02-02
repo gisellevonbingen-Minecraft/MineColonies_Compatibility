@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.core.client.gui;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.minecolonies.api.crafting.ItemStorage;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
@@ -99,6 +101,41 @@ public abstract class TeachRecipeScreen<MENU extends TeachRecipeMenu<RECIPE>, RE
 	}
 
 	public abstract ResourceLocation getTexture();
+
+	@Override
+	protected void renderTooltip(PoseStack pose, int mouseX, int mouseY)
+	{
+		if (this.hoveredSlot != null)
+		{
+			if (this.menu.getCarried().isEmpty() && this.hoveredSlot.hasItem())
+			{
+				this.renderSlotTooltip(pose, mouseX, mouseY, this.hoveredSlot);
+			}
+			else
+			{
+				var tooltip = this.getEmptySlotTooltip(this.hoveredSlot);
+
+				if (tooltip == null || tooltip.isEmpty())
+				{
+					return;
+				}
+
+				this.renderComponentTooltip(pose, tooltip, mouseX, mouseY);
+			}
+
+		}
+
+	}
+
+	protected void renderSlotTooltip(PoseStack pose, int mouseX, int mouseY, Slot slot)
+	{
+		this.renderTooltip(pose, slot.getItem(), mouseX, mouseY);
+	}
+
+	protected List<Component> getEmptySlotTooltip(Slot slot)
+	{
+		return Collections.emptyList();
+	}
 
 	@Override
 	protected void containerTick()

@@ -7,11 +7,11 @@ import java.util.List;
 import com.lance5057.butchercraft.workstations.grinder.GrinderRecipe;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.crafting.registry.CraftingType;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachCraftingRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.crafting.ItemStorageHelper;
@@ -23,6 +23,9 @@ import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStora
 public class GrinderTeachScreen extends TeachCraftingRecipeScreen<GrinderTeachMenu, GrinderRecipe>
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/butchercraft_grinder_teach.png");
+	public static final List<Component> TEXT_INGREDIENT = Collections.singletonList(Component.translatable(MineColoniesCompatibility.tl("text.butchercraft_grinder.ingredient")));
+	public static final List<Component> TEXT_ATTACHMENT = Collections.singletonList(Component.translatable(MineColoniesCompatibility.tl("text.butchercraft_grinder.attachment")));
+	public static final List<Component> TEXT_CASING = Collections.singletonList(Component.translatable(MineColoniesCompatibility.tl("text.butchercraft_grinder.casing")));
 
 	public GrinderTeachScreen(GrinderTeachMenu menu, Inventory inventory, Component title)
 	{
@@ -58,42 +61,28 @@ public class GrinderTeachScreen extends TeachCraftingRecipeScreen<GrinderTeachMe
 	}
 
 	@Override
-	protected void renderTooltip(PoseStack pose, int mouseX, int mouseY)
+	protected List<Component> getEmptySlotTooltip(Slot slot)
 	{
-		if (this.hoveredSlot != null)
+		if (slot.container == this.menu.getInputContainer())
 		{
-			if (this.menu.getCarried().isEmpty() && this.hoveredSlot.hasItem())
+			var slotIndex = slot.getSlotIndex();
+
+			if (slotIndex == 0)
 			{
-				this.renderTooltip(pose, this.hoveredSlot.getItem(), mouseX, mouseY);
+				return TEXT_INGREDIENT;
 			}
-			else if (this.hoveredSlot.container == this.menu.getInputContainer())
+			else if (slotIndex == 1)
 			{
-				var slotIndex = this.hoveredSlot.getSlotIndex();
-				var tooltip = Collections.<Component> emptyList();
-				var prefix = MineColoniesCompatibility.tl("text.butchercraft_grinder.");
-
-				if (slotIndex == 0)
-				{
-					tooltip = Arrays.asList(Component.translatable(prefix + "ingredient"));
-				}
-				else if (slotIndex == 1)
-				{
-					tooltip = Arrays.asList(Component.translatable(prefix + "attachment"));
-				}
-				else if (slotIndex == 2)
-				{
-					tooltip = Arrays.asList(Component.translatable(prefix + "casing"));
-				}
-
-				if (tooltip.size() > 0)
-				{
-					this.renderComponentTooltip(pose, tooltip, mouseX, mouseY);
-				}
-
+				return TEXT_ATTACHMENT;
+			}
+			else if (slotIndex == 2)
+			{
+				return TEXT_CASING;
 			}
 
 		}
 
+		return super.getEmptySlotTooltip(slot);
 	}
 
 }

@@ -66,7 +66,7 @@ public class CuttingTeachScreen extends TeachCraftingRecipeScreen<CuttingTeachMe
 				tooltip.addAll(1, FarmersDelightModule.getChanceTooltip(this.menu.getResults().get(resultIndex).getChance()));
 			}
 
-			this.renderTooltip(pose, tooltip, tooltipImage, mouseX, mouseY);
+			this.renderTooltip(pose, tooltip, tooltipImage, mouseX, mouseY, item);
 		}
 
 	}

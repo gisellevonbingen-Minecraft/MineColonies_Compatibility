@@ -2,7 +2,6 @@ package steve_gall.minecolonies_compatibility.core.common.util;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class InteractionMessageHelper
@@ -17,7 +16,7 @@ public class InteractionMessageHelper
 	public static String getModDisplayName(Block block)
 	{
 		var key = ForgeRegistries.BLOCKS.getKey(block);
-		return ModList.get().getModContainerById(key.getNamespace()).map(c -> c.getModInfo().getDisplayName()).orElse(key.getNamespace());
+		return ModListUtils.getDisplayName(key.getNamespace());
 	}
 
 	public static Component getWorkingBlockNotFound(Block block)

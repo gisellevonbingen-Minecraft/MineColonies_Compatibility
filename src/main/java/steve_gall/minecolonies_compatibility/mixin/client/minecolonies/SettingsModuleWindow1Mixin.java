@@ -14,11 +14,10 @@ import com.minecolonies.api.colony.buildings.modules.settings.ISetting;
 import com.minecolonies.api.colony.buildings.modules.settings.ISettingKey;
 import com.minecolonies.core.client.gui.modules.building.SettingsModuleWindow;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.fml.ModList;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.util.ModListUtils;
 import steve_gall.minecolonies_compatibility.core.common.util.ReflectionUtils;
 
 @Mixin(targets = "com.minecolonies.core.client.gui.modules.building.SettingsModuleWindow$1", remap = false)
@@ -46,7 +45,7 @@ public class SettingsModuleWindow1Mixin
 					ttBuilder.appendNL(Component.translatable(settingTooltipKey));
 				}
 
-				ttBuilder.appendNL(Component.literal(ModList.get().getModContainerById(id.getNamespace()).get().getModInfo().getDisplayName()).withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC));
+				ttBuilder.appendNL(ModListUtils.getDisplayNameForTooltip(id.getNamespace()));
 				rowDescriptionField.setHoverPane(ttBuilder.build());
 			}
 

@@ -136,6 +136,8 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 		{
 			var recipeValidator = this.getRecipeValidator();
 			this.recipes = new ArrayList<>(recipeValidator.findAll(this.inputContainer, player));
+			this.onRecipesChanged();
+
 			var tags = this.recipes.stream().map(r -> recipeValidator.serialize(player.registryAccess(), StandardFactoryController.getInstance(), r)).toList();
 			PacketDistributor.sendToPlayer(player, new TeachRecipeMenuNewRecipesMessage(tags));
 
@@ -155,7 +157,13 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 	public final void onNewRecipesTransfer(List<RECIPE> recipes)
 	{
 		this.recipes = new ArrayList<>(recipes);
+		this.onRecipesChanged();
 		this.setRecipeIndex(-1);
+	}
+
+	protected void onRecipesChanged()
+	{
+
 	}
 
 	protected void setRecipe(RECIPE recipe)

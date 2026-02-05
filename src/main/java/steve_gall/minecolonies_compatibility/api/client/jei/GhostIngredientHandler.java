@@ -21,7 +21,7 @@ public class GhostIngredientHandler<SCREEN extends AbstractContainerScreen<?>> i
 	{
 		var targets = new ArrayList<Target<I>>();
 
-		if (ingredient.getIngredient() instanceof ItemStack)
+		if (ingredient.getIngredient() instanceof ItemStack item)
 		{
 			var slots = screen.getMenu().slots;
 
@@ -29,7 +29,7 @@ public class GhostIngredientHandler<SCREEN extends AbstractContainerScreen<?>> i
 			{
 				var slot = slots.get(i);
 
-				if (slot instanceof IItemGhostSlot)
+				if (slot instanceof IItemGhostSlot ghostSlot && ghostSlot.canAccept(item))
 				{
 					targets.add((Target<I>) this.createTarget(screen, new ItemGhostSlotTarget(slot, i)));
 				}

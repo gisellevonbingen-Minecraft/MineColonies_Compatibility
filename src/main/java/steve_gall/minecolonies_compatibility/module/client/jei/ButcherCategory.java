@@ -132,6 +132,7 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 	@Override
 	public @NotNull List<Component> getTooltipStrings(@NotNull ButcherableIconCache recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY)
 	{
+		@SuppressWarnings("removal")
 		var tooltips = super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
 		var tableIcons = recipe.getTableIcons();
 

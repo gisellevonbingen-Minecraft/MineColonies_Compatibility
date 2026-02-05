@@ -78,6 +78,7 @@ public class ResearchCategory implements IRecipeCategory<ResearchCache>
 		return null;
 	}
 
+	@SuppressWarnings("removal")
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, ResearchCache cache, IFocusGroup focuses)
 	{

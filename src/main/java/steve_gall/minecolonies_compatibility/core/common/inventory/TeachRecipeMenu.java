@@ -135,6 +135,8 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 		{
 			var recipeValidator = this.getRecipeValidator();
 			this.recipes = new ArrayList<>(recipeValidator.findAll(this.inputContainer, player));
+			this.onRecipesChanged();
+
 			var tags = this.recipes.stream().map(r -> recipeValidator.serialize(StandardFactoryController.getInstance(), r)).toList();
 			MineColoniesCompatibility.network().sendToPlayer(new TeachRecipeMenuNewRecipesMessage(tags), player);
 
@@ -159,7 +161,13 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	public final void onNewRecipesTransfer(List<RECIPE> recipes)
 	{
 		this.recipes = new ArrayList<>(recipes);
+		this.onRecipesChanged();
 		this.setRecipeIndex(-1);
+	}
+
+	protected void onRecipesChanged()
+	{
+
 	}
 
 	protected void setRecipe(RECIPE recipe)

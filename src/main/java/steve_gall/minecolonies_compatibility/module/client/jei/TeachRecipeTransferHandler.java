@@ -64,6 +64,11 @@ public abstract class TeachRecipeTransferHandler<MENU extends TeachRecipeMenu<RE
 		return recipeSlots.getSlotViews(role).stream().map(view -> view.getDisplayedIngredient(VanillaTypes.ITEM_STACK).orElse(ItemStack.EMPTY)).toList();
 	}
 
+	protected List<List<ItemStack>> getItemStacksList(IRecipeSlotsView recipeSlots, RecipeIngredientRole role)
+	{
+		return recipeSlots.getSlotViews(role).stream().map(view -> view.getIngredients(VanillaTypes.ITEM_STACK).toList()).toList();
+	}
+
 	protected abstract RECIPE getRecipe(MENU menu, CATEGORY_RECIPE categoryRecipe, IRecipeSlotsView recipeSlots, Player player);
 
 	protected abstract void serializePayload(MENU menu, RECIPE recipe, IRecipeSlotsView recipeSlots, Player player, CompoundTag tag);

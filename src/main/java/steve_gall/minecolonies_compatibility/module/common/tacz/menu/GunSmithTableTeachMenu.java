@@ -67,7 +67,14 @@ public class GunSmithTableTeachMenu extends TeachRecipeMenu<GunSmithTableRecipe>
 		{
 			var x = i % CRAFTING_COLUMNS;
 			var y = i / CRAFTING_COLUMNS;
-			this.inputSlots.add(this.addSlot(new TeachInputSlot(this.inputContainer, i, CRAFTING_X + x * SLOT_OFFSET, CRAFTING_Y + y * SLOT_OFFSET)));
+			this.inputSlots.add(this.addSlot(new TeachInputSlot(this.inputContainer, i, CRAFTING_X + x * SLOT_OFFSET, CRAFTING_Y + y * SLOT_OFFSET)
+			{
+				@Override
+				public boolean canAccept(ItemStack item)
+				{
+					return false;
+				}
+			}));
 		}
 
 		this.resultContainer = new TeachContainer(this, 1);

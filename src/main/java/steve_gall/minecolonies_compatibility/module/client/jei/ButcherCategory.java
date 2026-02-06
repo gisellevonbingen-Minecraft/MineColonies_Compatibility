@@ -21,12 +21,12 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import steve_gall.minecolonies_compatibility.api.common.butcher.ButcherableIconCache;
 import steve_gall.minecolonies_compatibility.api.common.crafting.ToolOrIngredientStack;
+import steve_gall.minecolonies_compatibility.core.client.Rect;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 
 public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache>
@@ -141,7 +141,7 @@ public class ButcherCategory extends JobBasedRecipeCategory<ButcherableIconCache
 		var tableIcons = recipe.getTableIcons();
 		for (var i = 0; i < tableIcons.size(); i++)
 		{
-			if (new Rect2i(BLOCK_X2 + i * 32, BLOCK_Y2, 24, 24).contains((int) mouseX, (int) mouseY))
+			if (new Rect(BLOCK_X2 + i * 32, BLOCK_Y2, 24, 24).contains(mouseX, mouseY))
 			{
 				tooltips.add(Component.translatable(TranslationConstants.PARTIAL_JEI_INFO + "intermediate.tip", tableIcons.get(i).getBlock().getName()));
 			}

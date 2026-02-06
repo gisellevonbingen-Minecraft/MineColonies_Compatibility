@@ -39,5 +39,5 @@ public interface IMenuRecipeValidator<RECIPE, RECIPE_INPUT>
 	{
 		return null;
 	}
-	
+
 }

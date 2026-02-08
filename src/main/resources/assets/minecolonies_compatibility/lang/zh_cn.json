@@ -136,8 +136,6 @@
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "果农只收获最高生长阶段的水果/作物。",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "跳过血瓶/桶",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood.tooltip": "肢解屠宰工艺的尸体时，跳过获取血瓶/桶的步骤。",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:repair_item": "修复物品",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:repair_item.tooltip": "铁匠将请求可修复（或已损坏）物品和修复资源。\n支持：匠魂",
 	
 	"_comment_interaction": "Interaction Messages",
 	"minecolonies_compatibility.interaction.no_working_block": "我的工作小屋没有任何工作方块！请放置它，这样我就有一些可以用了！",

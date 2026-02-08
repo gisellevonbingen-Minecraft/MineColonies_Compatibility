@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import slimeknights.tconstruct.library.client.materials.MaterialTooltipCache;
 import slimeknights.tconstruct.library.materials.definition.MaterialId;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.util.StreamUtils;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.building.module.RepairMaterialListModule;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.network.RepairMaterialOpenTeachMessage;
 
@@ -136,9 +137,9 @@ public class RepairMaterialListWindow extends AbstractModuleWindow<RepairMateria
 
 		this.currentDisplayedList = new ArrayList<>();
 
-		for (var entry : this.moduleView.entrySet())
+		for (var tuple : StreamUtils.toIterable(this.moduleView.stream()))
 		{
-			var cache = new MaterialCache(entry.getKey(), entry.getValue());
+			var cache = new MaterialCache(tuple.getA(), tuple.getB());
 
 			if (filterPredicate.test(cache))
 			{

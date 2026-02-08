@@ -10,7 +10,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import slimeknights.tconstruct.library.materials.MaterialRegistry;
 import slimeknights.tconstruct.library.materials.definition.IMaterial;
 import slimeknights.tconstruct.library.materials.definition.MaterialVariant;
-import slimeknights.tconstruct.library.materials.definition.MaterialVariantId;
 import slimeknights.tconstruct.library.recipe.TinkerRecipeTypes;
 import slimeknights.tconstruct.library.recipe.material.MaterialRecipe;
 import slimeknights.tconstruct.library.recipe.tinkerstation.ITinkerStationContainer;
@@ -26,9 +25,9 @@ public class TConstructToolHelper
 		return system.isTool(stack) && system.isBroken(stack);
 	}
 
-	public static List<MaterialVariantId> getRepairVariantIds(IToolStackView tool)
+	public static int getRepairRequiredLevel(IToolStackView tool)
 	{
-		return getRepairVariants(tool).stream().map(v -> v.getVariant()).toList();
+		return getRepairVariants(tool).stream().mapToInt(MaterialHelper::getRequiredLevel).max().orElse(-1);
 	}
 
 	public static List<MaterialVariant> getRepairVariants(IToolStackView tool)
@@ -82,7 +81,7 @@ public class TConstructToolHelper
 		return tool;
 	}
 
-	public static int getRepairCount(ItemStack tool, ItemStack material, Level level)
+	public static int getRepairCount(ItemStack tool, ItemStack material, int limit, Level level)
 	{
 		var oldDamage = ToolStack.from(tool).getDamage();
 
@@ -96,6 +95,11 @@ public class TConstructToolHelper
 
 		for (var i = 1;; i++)
 		{
+			if (repairCount >= limit)
+			{
+				break;
+			}
+
 			material = ItemHandlerHelper.copyStackWithSize(material, i);
 			var repairedTool = repair(tool, material, level);
 			var newDamage = ToolStack.from(repairedTool).getDamage();

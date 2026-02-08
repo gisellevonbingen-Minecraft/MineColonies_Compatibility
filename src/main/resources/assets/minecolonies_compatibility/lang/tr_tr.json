@@ -146,8 +146,6 @@
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "Meyve Bahçecisi yalnızca en olgun meyve/ürünleri toplar.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "Kan Şişesi/Kovası Atlanacak",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood.tooltip": "Butchercraft leşlerini parçalayırken kan şişesi/kova alma adımlarını atlar.",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:repair_item": "Eşya Onarımı",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:repair_item.tooltip": "Demirci onarılabilir (veya bozuk) eşyalar ve onarım kaynakları talep eder.\nDesteklenen: Tinkers' Construct",
 	
 	"_comment_interaction": "Interaction Messages",
 	"minecolonies_compatibility.interaction.no_working_block": "Çalışma barınağımda herhangi bir Çalışma Bloğu yok! Lütfen yerleştirin ki kullanabileyim!",

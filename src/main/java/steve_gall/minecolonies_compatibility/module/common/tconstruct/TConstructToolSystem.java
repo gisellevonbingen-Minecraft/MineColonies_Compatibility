@@ -7,7 +7,6 @@ import com.minecolonies.api.equipment.registry.EquipmentTypeEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import slimeknights.tconstruct.library.tools.definition.module.mining.MiningTierToolHook;
 import slimeknights.tconstruct.library.tools.item.IModifiable;
 import slimeknights.tconstruct.library.tools.item.ranged.ModifiableBowItem;
 import slimeknights.tconstruct.library.tools.item.ranged.ModifiableCrossbowItem;
@@ -72,22 +71,11 @@ public class TConstructToolSystem extends CustomizedToolSystem
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public int getLevelUnclamped(@NotNull ItemStack stack)
 	{
 		var tool = ToolStack.from(stack);
-
-		if (tool.getStats().hasStat(ToolStats.HARVEST_TIER))
-		{
-			var tier = MiningTierToolHook.getTier(tool);
-			return tier.getLevel();
-		}
-		else
-		{
-			var materialVariants = TConstructToolHelper.getRepairVariants(tool);
-			return materialVariants.stream().mapToInt(m -> m.get().getTier()).max().orElse(-1);
-		}
-
+		var materialVariants = TConstructToolHelper.getRepairVariants(tool);
+		return materialVariants.stream().mapToInt(MaterialHelper::getRequiredLevel).max().orElse(-1);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import slimeknights.tconstruct.library.tools.stat.ToolStats;
 import steve_gall.minecolonies_compatibility.api.common.repair.ToolSystemBrokenItem;
 import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.module.common.tconstruct.init.ModuleBuildingModules;
 
 public class BrokenItem extends ToolSystemBrokenItem
 {
@@ -42,6 +43,19 @@ public class BrokenItem extends ToolSystemBrokenItem
 	public CustomizedToolSystem getToolSystem()
 	{
 		return TConstructToolSystem.INSTANCE;
+	}
+
+	@Override
+	public boolean canRepair(ItemStack stack)
+	{
+		var ai = this.getAI();
+
+		if (ai == null)
+		{
+			return false;
+		}
+
+		return ai.building.getModule(ModuleBuildingModules.REPAIR_MATERIALS).canRepair(ToolStack.from(stack));
 	}
 
 	public static BrokenItem deserialize(IFactoryController controller, CompoundTag tag)

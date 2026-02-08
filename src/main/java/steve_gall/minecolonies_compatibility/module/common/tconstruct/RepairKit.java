@@ -24,13 +24,22 @@ public class RepairKit implements IDeliverableObject
 	public static final Component LONG_DISPLAY_STRING = Component.translatable(MineColoniesCompatibility.tl("tconstruct_repair_kit.desc"));
 
 	private final MaterialVariantId variantId;
+	private final ItemStack item;
 	private final int count;
+	private final boolean legacy;
 	private List<ItemStack> examples;
 
-	public RepairKit(MaterialVariantId variantId, int count)
+	public RepairKit(MaterialVariantId variantId, ItemStack item, int count)
+	{
+		this(variantId, item, count, false);
+	}
+
+	private RepairKit(MaterialVariantId variantId, ItemStack item, int count, boolean legacy)
 	{
 		this.variantId = variantId;
+		this.item = item;
 		this.count = count;
+		this.legacy = legacy;
 	}
 
 	@Override
@@ -42,15 +51,31 @@ public class RepairKit implements IDeliverableObject
 
 	public static RepairKit deserialize(IFactoryController controller, CompoundTag tag)
 	{
+		var item = ItemStack.EMPTY;
 		var variantId = MaterialVariantId.tryParse(tag.getString("variantId"));
+		var legacy = false;
+
+		if (tag.contains("item"))
+		{
+			item = ItemStack.of(tag.getCompound("item"));
+			legacy = tag.getBoolean("legacy");
+		}
+		else
+		{
+			item = TinkerToolParts.repairKit.get().withMaterial(variantId);
+			legacy = true;
+		}
+
 		var count = tag.getInt("count");
-		return new RepairKit(variantId, count);
+		return new RepairKit(variantId, item, count, legacy);
 	}
 
 	public static void serialize(IFactoryController controller, CompoundTag tag, RepairKit request)
 	{
 		tag.putString("variantId", request.variantId.toString());
+		tag.put("item", request.item.serializeNBT());
 		tag.putInt("count", request.count);
+		tag.putBoolean("legacy", request.legacy);
 	}
 
 	@Override
@@ -73,7 +98,7 @@ public class RepairKit implements IDeliverableObject
 	{
 		if (this.examples == null)
 		{
-			this.examples = Collections.singletonList(TinkerToolParts.repairKit.get().withMaterial(this.variantId));
+			this.examples = Collections.singletonList(this.item);
 		}
 
 		return this.examples;
@@ -82,7 +107,7 @@ public class RepairKit implements IDeliverableObject
 	@Override
 	public RepairKit copyWithCount(int newCount)
 	{
-		return new RepairKit(this.variantId, newCount);
+		return new RepairKit(this.variantId, this.item.copy(), newCount, this.legacy);
 	}
 
 	@Override
@@ -100,17 +125,25 @@ public class RepairKit implements IDeliverableObject
 	@Override
 	public boolean matches(@NotNull ItemStack stack)
 	{
-		return isRepairKitItem(stack, this.variantId);
-	}
+		if (this.legacy)
+		{
+			return stack.getItem() instanceof IRepairKitItem item && item.getMaterial(stack).matchesVariant(this.variantId);
+		}
+		else
+		{
+			return ItemStack.isSameItemSameTags(this.item, stack);
+		}
 
-	public static boolean isRepairKitItem(ItemStack stack, MaterialVariantId variantId)
-	{
-		return stack.getItem() instanceof IRepairKitItem item && item.getMaterial(stack).matchesVariant(variantId);
 	}
 
 	public MaterialVariantId getVariantId()
 	{
 		return this.variantId;
+	}
+
+	public ItemStack getItem()
+	{
+		return this.item;
 	}
 
 }

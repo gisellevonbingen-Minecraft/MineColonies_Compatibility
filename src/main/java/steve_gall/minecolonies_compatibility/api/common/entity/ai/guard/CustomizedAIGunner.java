@@ -129,6 +129,17 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 
 	public boolean requestAmmo(@NotNull AbstractEntityCitizen user, boolean spare)
 	{
+		if (spare)
+		{
+			var ammoInBuilding = InventoryUtils.getItemCountInProvider(user.getCitizenData().getWorkBuilding(), this.getAmmoPredicate(user));
+
+			if (ammoInBuilding >= this.getAmmoMinRequestCount(user))
+			{
+				return false;
+			}
+
+		}
+
 		return this.requestAmmo(user, this.getAmmoMinRequestCount(user), spare || this.getBulletMode().canDefault());
 	}
 
@@ -139,7 +150,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 
 	protected int getAmmoMinRequestCount(@NotNull AbstractEntityCitizen user)
 	{
-		return 16;
+		return 64;
 	}
 
 	public boolean takeAmmo(@NotNull AbstractEntityCitizen user)
@@ -147,7 +158,8 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		var citizen = user.getCitizenData();
 		var building = citizen.getWorkBuilding();
 		var inventory = citizen.getInventory();
-		return InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(building, this.getAmmoPredicate(user), 64, inventory);
+		var takeAmount = this.getAmmoMinRequestCount(user);
+		return InventoryUtils.transferXOfFirstSlotInProviderWithIntoNextFreeSlotInItemHandler(building, this.getAmmoPredicate(user), takeAmount, inventory);
 	}
 
 	@Override
@@ -182,17 +194,11 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 			var citizen = user.getCitizenData();
 			this.takeAmmo(user);
 
-			var minCount = this.getAmmoMinRequestCount(user);
 			var ammoCount = InventoryUtils.getItemCountInItemHandler(citizen.getInventory(), this.getAmmoPredicate(user));
-
-			if (ammoCount < minCount)
-			{
-				var async = bulletMode.canDefault();
-				this.requestAmmo(user, minCount, async);
-			}
-
+			this.requestAmmo(user, ammoCount > 0 || bulletMode.canDefault());
 		}
 
+		this.setNeedPrepare(user, false);
 		this.reload(user, false);
 	}
 
@@ -204,9 +210,15 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		{
 			if (this.isNeedRequestAmmo(user))
 			{
-				var async = bulletMode.canDefault();
-				this.requestAmmo(user, async);
-				return async;
+				var canDefault = bulletMode.canDefault();
+
+				if (!canDefault)
+				{
+					this.setNeedPrepare(user, true);
+				}
+
+				this.requestAmmo(user, canDefault);
+				return canDefault;
 			}
 
 		}
@@ -426,6 +438,17 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		this.getOrCreateTag(user).remove("reloadStarted");
 
 		this.onReloadTimerStopped(user, complete);
+	}
+
+	@Override
+	public boolean isNeedPrepare(@NotNull AbstractEntityCitizen user)
+	{
+		return this.getOrEmptyTag(user).getBoolean("needPrepare");
+	}
+
+	protected void setNeedPrepare(@NotNull AbstractEntityCitizen user, boolean needPrepare)
+	{
+		this.getOrCreateTag(user).putBoolean("needPrepare", needPrepare);
 	}
 
 }

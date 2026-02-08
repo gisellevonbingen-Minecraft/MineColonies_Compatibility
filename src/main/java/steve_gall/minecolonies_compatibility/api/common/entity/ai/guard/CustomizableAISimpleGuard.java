@@ -3,6 +3,7 @@ package steve_gall.minecolonies_compatibility.api.common.entity.ai.guard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.entity.ai.statemachine.states.AIWorkerState;
 import com.minecolonies.api.entity.ai.statemachine.states.IState;
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
 import com.minecolonies.api.entity.combat.CombatAIStates;
@@ -71,6 +72,15 @@ public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<
 	@Override
 	protected IState tryAttack()
 	{
+		if (this.getParentAI().getSelectedAI() instanceof CustomizedAIGuard guard)
+		{
+			if (guard.isNeedPrepare(this.user))
+			{
+				return AIWorkerState.PREPARING;
+			}
+
+		}
+
 		var state = super.tryAttack();
 
 		if (state == CombatAIStates.NO_TARGET && this.target != null)

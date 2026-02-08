@@ -27,6 +27,8 @@ public abstract class ToolSystemBrokenItem implements IDeliverableObject
 	@NotNull
 	public abstract CustomizedToolSystem getToolSystem();
 
+	public abstract boolean canRepair(@NotNull ItemStack stack);
+
 	@Override
 	public int getCount()
 	{
@@ -42,7 +44,7 @@ public abstract class ToolSystemBrokenItem implements IDeliverableObject
 		}
 
 		var toolSystem = this.getToolSystem();
-		return toolSystem.isTool(stack) && toolSystem.isBroken(stack) && this.ai.building.getBuildingLevel() >= toolSystem.getLevel(stack);
+		return toolSystem.isTool(stack) && toolSystem.isBroken(stack) && this.canRepair(stack);
 	}
 
 }

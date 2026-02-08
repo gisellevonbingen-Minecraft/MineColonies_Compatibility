@@ -1,13 +1,13 @@
 package steve_gall.minecolonies_compatibility.module.common.tconstruct;
 
-import java.util.Collection;
+import com.minecolonies.api.util.constant.BuildingConstants;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import slimeknights.mantle.recipe.container.ISingleStackContainer;
 import slimeknights.tconstruct.common.TinkerTags;
 import slimeknights.tconstruct.library.materials.definition.IMaterial;
-import slimeknights.tconstruct.library.materials.definition.MaterialVariantId;
+import slimeknights.tconstruct.library.materials.definition.MaterialVariant;
 import slimeknights.tconstruct.library.recipe.TinkerRecipeTypes;
 import slimeknights.tconstruct.library.recipe.casting.material.MaterialCastingLookup;
 import slimeknights.tconstruct.library.recipe.material.IMaterialValue;
@@ -18,32 +18,14 @@ import slimeknights.tconstruct.tools.item.RepairKitItem;
 
 public class MaterialHelper
 {
-	public static boolean anyMatchesVariantId(Collection<MaterialVariantId> materials1, Collection<MaterialVariantId> materials2)
+	public static int getRequiredLevel(MaterialVariant variant)
 	{
-		for (var m1 : materials1)
-		{
-			if (anyMatchesVariantId(materials2, m1))
-			{
-				return true;
-			}
-
-		}
-
-		return false;
+		return getRequiredLevel(variant.get());
 	}
 
-	public static boolean anyMatchesVariantId(Collection<MaterialVariantId> materials, MaterialVariantId material)
+	public static int getRequiredLevel(IMaterial material)
 	{
-		for (var m : materials)
-		{
-			if (m.matchesVariant(material))
-			{
-				return true;
-			}
-
-		}
-
-		return false;
+		return Math.min(material.getTier(), BuildingConstants.CONST_DEFAULT_MAX_BUILDING_LEVEL);
 	}
 
 	public static IMaterialValue getMaterialValue(ItemStack item, Level level)

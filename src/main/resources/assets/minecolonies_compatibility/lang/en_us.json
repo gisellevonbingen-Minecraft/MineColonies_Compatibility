@@ -152,8 +152,6 @@
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "Orchardist harvests only max age fruits/crops.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "Skip Blood Bottle/Bucket",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood.tooltip": "Skip steps what getting blood bottle/bucket when dismember Butchercraft's carcasses.",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:repair_item": "Repair Item",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:repair_item.tooltip": "Blacksmith will requests Repairable(or Broken) items and repair resources.\nSupported: Tinkers' Construct",
 	
 	"_comment_interaction": "Interaction Messages",
 	"minecolonies_compatibility.interaction.no_working_block": "My work hut doesn't have any Working Block! Please place it so I have some I can use!",

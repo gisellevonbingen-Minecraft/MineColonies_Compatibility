@@ -3,7 +3,7 @@ package steve_gall.minecolonies_compatibility.module.common.tconstruct.building.
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Stream;
 
 import com.ldtteam.blockui.views.BOWindow;
 import com.minecolonies.api.colony.buildings.modules.AbstractBuildingModule;
@@ -15,10 +15,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import slimeknights.tconstruct.library.materials.definition.MaterialId;
+import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
 import steve_gall.minecolonies_compatibility.module.client.tconstruct.RepairMaterialListWindow;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.MaterialHelper;
+import steve_gall.minecolonies_compatibility.module.common.tconstruct.TConstructToolHelper;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.network.RepairMaterialUpdateMessage;
 
 public class RepairMaterialListModule extends AbstractBuildingModule implements IPersistentModule
@@ -32,9 +34,33 @@ public class RepairMaterialListModule extends AbstractBuildingModule implements 
 		this.repairMaterials = new HashMap<>();
 	}
 
-	public Set<Map.Entry<MaterialId, ItemStack>> entrySet()
+	public boolean canRepair(IToolStackView tool)
 	{
-		return this.repairMaterials.entrySet();
+		if (this.getBuilding().getBuildingLevel() < TConstructToolHelper.getRepairRequiredLevel(tool))
+		{
+			return false;
+		}
+
+		for (var variant : TConstructToolHelper.getRepairVariants(tool))
+		{
+			if (this.repairMaterials.containsKey(variant.getId()))
+			{
+				return true;
+			}
+
+		}
+
+		return false;
+	}
+
+	public int size()
+	{
+		return this.repairMaterials.size();
+	}
+
+	public Stream<Tuple<MaterialId, ItemStack>> stream()
+	{
+		return this.repairMaterials.entrySet().stream().map(entry -> new Tuple<>(entry.getKey(), entry.getValue()));
 	}
 
 	public ItemStack get(MaterialId materialId)
@@ -106,9 +132,14 @@ public class RepairMaterialListModule extends AbstractBuildingModule implements 
 			this.repairMaterials = new HashMap<>();
 		}
 
-		public Set<Map.Entry<MaterialId, ItemStack>> entrySet()
+		public int size()
 		{
-			return this.repairMaterials.entrySet();
+			return this.repairMaterials.size();
+		}
+
+		public Stream<Tuple<MaterialId, ItemStack>> stream()
+		{
+			return this.repairMaterials.entrySet().stream().map(entry -> new Tuple<>(entry.getKey(), entry.getValue()));
 		}
 
 		public ItemStack get(MaterialId materialId)

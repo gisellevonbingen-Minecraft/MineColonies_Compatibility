@@ -70,7 +70,7 @@ public class RepairMaterialUpdateMessage extends BuildingModuleMessage
 		}
 		else
 		{
-			buffer.writeResourceLocation(this.materialId.getId());
+			buffer.writeResourceLocation(this.materialId);
 		}
 
 	}

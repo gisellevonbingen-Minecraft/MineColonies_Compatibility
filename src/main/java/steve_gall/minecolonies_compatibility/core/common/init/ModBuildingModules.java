@@ -41,7 +41,6 @@ import steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist.En
 public class ModBuildingModules
 {
 	public static final ISettingKey<BoolSetting> REQUEST_FIREWORK_ROCKET = new SettingKey<>(BoolSetting.class, MineColoniesCompatibility.rl("request_firework_rocket"));
-	public static final ISettingKey<BoolSetting> REPAIR_ITEM = new SettingKey<>(BoolSetting.class, MineColoniesCompatibility.rl("repair_item"));
 
 	public static final List<Pair<ISettingKey<?>, ISetting<?>>> GUARD_SETTINGS = Arrays.asList(//
 			Pair.of(REQUEST_FIREWORK_ROCKET, new BoolSetting(false)) //
@@ -124,10 +123,6 @@ public class ModBuildingModules
 	public static final BuildingEntry.ModuleProducer<SmithingCraftingModule, SmithingCraftingModuleView> BLACKSMITH_SMITHING = new BuildingEntry.ModuleProducer<>("blacksmith_smithing", //
 			() -> new SmithingCraftingModule(com.minecolonies.api.colony.jobs.ModJobs.blacksmith.get()), //
 			() -> SmithingCraftingModuleView::new);
-
-	public static final List<Pair<ISettingKey<?>, ISetting<?>>> BLACKSMITH_SETTINGS = Arrays.asList(//
-			Pair.of(REPAIR_ITEM, new BoolSetting(false)) //
-	);
 
 	public static final BuildingEntry.ModuleProducer<WorkerBuildingModule, WorkerBuildingModuleView> BUTCHER_WORK = new BuildingEntry.ModuleProducer<>("butcher_work", //
 			() -> new ButcherWorkerBuildingModule(ModJobs.BUTCHER.get(), Skill.Strength, Skill.Focus, false, b -> CustomizedButcherable.getRegistry().size() > 0 ? 1 : 0), //

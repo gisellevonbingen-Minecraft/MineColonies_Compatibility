@@ -2,6 +2,7 @@ package steve_gall.minecolonies_compatibility.module.common.tconstruct;
 
 import java.util.HashMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,9 +15,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
-import slimeknights.tconstruct.library.materials.definition.MaterialVariantId;
+import slimeknights.tconstruct.library.materials.definition.MaterialId;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
-import slimeknights.tconstruct.tools.TinkerToolParts;
 import steve_gall.minecolonies_compatibility.api.common.repair.CustomizedRepair;
 import steve_gall.minecolonies_compatibility.api.common.repair.EntityContext;
 import steve_gall.minecolonies_compatibility.api.common.repair.RepairTransaction;
@@ -41,64 +41,13 @@ public class TConstructRepair extends CustomizedRepair
 		var worker = context.getWorker();
 		var inventory = worker.getInventoryCitizen();
 		var citizenData = worker.getCitizenData();
-
-		var variantIds = new HashMap<String, MaterialVariantId>();
-		var toolSlots = new Object2IntOpenHashMap<String>();
-
-		for (var i = 0; i < inventory.getSlots(); i++)
-		{
-			var item = inventory.getStackInSlot(i);
-
-			if (TConstructToolHelper.isToolAndBroken(item))
-			{
-				var tool = ToolStack.from(item);
-
-				for (var variantId : TConstructToolHelper.getRepairVariantIds(tool))
-				{
-					variantIds.put(variantId.toString(), variantId);
-					toolSlots.put(variantId.toString(), i);
-				}
-
-			}
-
-		}
-
-		var level = worker.level;
 		var repairMaterialsModule = ai.building.getModule(ModuleBuildingModules.REPAIR_MATERIALS);
-
-		for (var key : variantIds.keySet())
-		{
-			var variantId = variantIds.get(key);
-			var toolSlot = toolSlots.getInt(key);
-			var kitItem = getKitItem(repairMaterialsModule, variantId);
-			Predicate<ItemStack> kitPredicate = stack -> ItemStack.isSameItemSameTags(stack, kitItem);
-
-			var kitSlot = InventoryUtils.findFirstSlotInItemHandlerWith(inventory, kitPredicate);
-
-			if (kitSlot > -1)
-			{
-				return CheckResult.repair(new Transaction(variantId, toolSlot, kitSlot));
-			}
-
-			var tool = inventory.getStackInSlot(toolSlot);
-			var kitCount = TConstructToolHelper.getRepairCount(tool, kitItem, level);
-
-			if (InventoryUtils.hasItemInProvider(ai.building, kitPredicate))
-			{
-				return CheckResult.needsCurrently(new Tuple<>(kitPredicate, kitCount));
-			}
-			else if (!CitizenHelper.isRequested(citizenData, CustomizableDeliverable.TYPE_TOKEN, r -> r.getRequest().getObject() instanceof RepairKit kit && kit.getVariantId().matchesVariant(variantId)))
-			{
-				citizenData.createRequestAsync(new CustomizableDeliverable(new RepairKit(variantId, kitItem, kitCount)));
-			}
-
-		}
-
+		var materialsEmpty = repairMaterialsModule.size() == 0;
 		var any = false;
 
 		for (var request : CitizenHelper.getRequests(citizenData, CustomizableDeliverable.TYPE_TOKEN, r -> r.getRequest().getObject() instanceof BrokenItem))
 		{
-			if (((BrokenItem) request.getRequest().getObject()).getAI() == null)
+			if (materialsEmpty || ((BrokenItem) request.getRequest().getObject()).getAI() == null)
 			{
 				citizenData.getColony().getRequestManager().updateRequestState(request.getId(), RequestState.CANCELLED);
 			}
@@ -109,46 +58,105 @@ public class TConstructRepair extends CustomizedRepair
 
 		}
 
+		if (materialsEmpty)
+		{
+			return null;
+		}
+
+		var buildingLevel = ai.building.getBuildingLevel();
+		var repairKits = new HashMap<MaterialId, ItemStack>();
+		var toolSlots = new Object2IntOpenHashMap<MaterialId>();
+
+		for (var i = 0; i < inventory.getSlots(); i++)
+		{
+			var item = inventory.getStackInSlot(i);
+
+			if (TConstructToolHelper.isToolAndBroken(item))
+			{
+				var tool = ToolStack.from(item);
+
+				for (var variant : TConstructToolHelper.getRepairVariants(tool))
+				{
+					if (buildingLevel < MaterialHelper.getRequiredLevel(variant))
+					{
+						continue;
+					}
+
+					var materialId = variant.getId();
+					var kitItem = repairMaterialsModule.get(materialId);
+
+					if (kitItem.isEmpty())
+					{
+						continue;
+					}
+
+					repairKits.put(materialId, kitItem);
+					toolSlots.put(materialId, i);
+				}
+
+			}
+
+		}
+
+		var level = worker.level;
+
+		for (var materialId : repairKits.keySet())
+		{
+			var toolSlot = toolSlots.getInt(materialId);
+			var kitItem = repairKits.get(materialId);
+			Predicate<ItemStack> kitPredicate = stack -> ItemStack.isSameItemSameTags(stack, kitItem);
+
+			var kitSlot = InventoryUtils.findFirstSlotInItemHandlerWith(inventory, kitPredicate);
+
+			if (kitSlot > -1)
+			{
+				return CheckResult.repair(new Transaction(materialId, toolSlot, kitSlot));
+			}
+
+			var tool = inventory.getStackInSlot(toolSlot);
+
+			if (InventoryUtils.hasItemInProvider(ai.building, kitPredicate))
+			{
+				var kitCount = TConstructToolHelper.getRepairCount(tool, kitItem, Integer.MAX_VALUE, level);
+				return CheckResult.needsCurrently(new Tuple<>(kitPredicate, kitCount));
+			}
+			else if (!CitizenHelper.isRequested(citizenData, CustomizableDeliverable.TYPE_TOKEN, r -> r.getRequest().getObject() instanceof RepairKit kit && kit.getVariantId().getId().equals(materialId)))
+			{
+				var kitCount = TConstructToolHelper.getRepairCount(tool, kitItem, Integer.MAX_VALUE, level);
+				citizenData.createRequestAsync(new CustomizableDeliverable(new RepairKit(materialId, kitItem, kitCount)));
+			}
+
+		}
+
 		if (!any)
 		{
 			citizenData.createRequestAsync(new CustomizableDeliverable(new BrokenItem(ai)));
 		}
 
-		var hasTool = InventoryUtils.hasItemInProvider(ai.building, TConstructToolHelper::isToolAndBroken);
+		var hasTool = InventoryUtils.hasItemInProvider(ai.building, stack -> this.canRepair(repairMaterialsModule, stack));
 
 		if (hasTool)
 		{
-			return CheckResult.needsCurrently(new Tuple<>(TConstructToolHelper::isToolAndBroken, 1));
+			return CheckResult.needsCurrently(new Tuple<>(stack -> this.canRepair(repairMaterialsModule, stack), 1));
 		}
 
 		return null;
 	}
 
-	private static ItemStack getKitItem(RepairMaterialListModule module, MaterialVariantId variantId)
+	private boolean canRepair(RepairMaterialListModule module, ItemStack stack)
 	{
-		if (module != null)
-		{
-			var item = module.get(variantId.getId());
-
-			if (!item.isEmpty())
-			{
-				return item;
-			}
-
-		}
-
-		return TinkerToolParts.repairKit.get().withMaterial(variantId);
+		return TConstructToolHelper.isToolAndBroken(stack) && module.canRepair(ToolStack.from(stack));
 	}
 
 	public class Transaction extends RepairTransaction
 	{
-		private final MaterialVariantId variantId;
+		private final MaterialId materialId;
 		private final int brokenItemSlot;
 		private final int kitSlot;
 
-		public Transaction(MaterialVariantId variantId, int brokenItemSlot, int kitSlot)
+		public Transaction(MaterialId materialId, int brokenItemSlot, int kitSlot)
 		{
-			this.variantId = variantId;
+			this.materialId = materialId;
 			this.brokenItemSlot = brokenItemSlot;
 			this.kitSlot = kitSlot;
 		}
@@ -159,23 +167,23 @@ public class TConstructRepair extends CustomizedRepair
 			var inventory = context.getWorker().getInventoryCitizen();
 			var brokenItem = inventory.getStackInSlot(this.brokenItemSlot);
 
-			if (!TConstructToolHelper.canRepair(brokenItem))
+			if (!TConstructToolSystem.INSTANCE.isTool(brokenItem) || !TConstructToolHelper.canRepair(brokenItem))
 			{
 				return false;
 			}
 
 			var tool = ToolStack.from(brokenItem);
-			var variantIds = TConstructToolHelper.getRepairVariantIds(tool);
 
-			if (!MaterialHelper.anyMatchesVariantId(variantIds, this.variantId))
+			if (!TConstructToolHelper.getRepairVariants(tool).stream().map(i -> i.getId()).collect(Collectors.toSet()).contains(this.materialId))
 			{
 				return false;
 			}
 
-			var repairKit = inventory.getStackInSlot(this.kitSlot);
+			var itemInSlot = inventory.getStackInSlot(this.kitSlot);
 			var repairMaterialsModule = context.getAI().building.getModule(ModuleBuildingModules.REPAIR_MATERIALS);
+			var kitItem = repairMaterialsModule.get(this.materialId);
 
-			if (!ItemStack.isSameItemSameTags(repairKit, getKitItem(repairMaterialsModule, this.variantId)))
+			if (kitItem.isEmpty() || !ItemStack.isSameItemSameTags(itemInSlot, kitItem))
 			{
 				return false;
 			}
@@ -192,25 +200,33 @@ public class TConstructRepair extends CustomizedRepair
 			var repairKit = inventory.getStackInSlot(this.kitSlot);
 
 			var level = context.getWorker().level;
-			var repairCount = Math.min(repairKit.getCount(), TConstructToolHelper.getRepairCount(brokenItem, repairKit, level));
+			var repairCount = TConstructToolHelper.getRepairCount(brokenItem, repairKit, repairKit.getCount(), level);
 			var repaired = TConstructToolHelper.repair(brokenItem, ItemHandlerHelper.copyStackWithSize(repairKit, repairCount), level);
 			inventory.setStackInSlot(this.brokenItemSlot, repaired);
 			repairKit.shrink(repairCount);
 
-			var repairMaterialsModule = context.getAI().building.getModule(ModuleBuildingModules.REPAIR_MATERIALS);
-			var newKit = getKitItem(repairMaterialsModule, this.variantId);
-			Predicate<ItemStack> kitPredicate = stack -> ItemStack.isSameItemSameTags(stack, newKit);
-			var newKitSlot = InventoryUtils.findFirstSlotInItemHandlerWith(inventory, kitPredicate);
-
-			if (newKitSlot == -1 || !TConstructToolHelper.canRepair(repaired))
+			if (!TConstructToolHelper.canRepair(repaired))
 			{
 				return RepairResult.completed();
 			}
-			else
+
+			var repairMaterialsModule = context.getAI().building.getModule(ModuleBuildingModules.REPAIR_MATERIALS);
+			var newKit = repairMaterialsModule.get(this.materialId);
+
+			if (newKit.isEmpty())
 			{
-				return RepairResult.next(new Transaction(this.variantId, this.brokenItemSlot, newKitSlot));
+				return RepairResult.completed();
 			}
 
+			Predicate<ItemStack> kitPredicate = stack -> ItemStack.isSameItemSameTags(stack, newKit);
+			var newKitSlot = InventoryUtils.findFirstSlotInItemHandlerWith(inventory, kitPredicate);
+
+			if (newKitSlot == -1)
+			{
+				return RepairResult.completed();
+			}
+
+			return RepairResult.next(new Transaction(this.materialId, this.brokenItemSlot, newKitSlot));
 		}
 
 	}

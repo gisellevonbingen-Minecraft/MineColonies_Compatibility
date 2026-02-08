@@ -5,12 +5,16 @@ import java.util.List;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
 import com.minecolonies.api.colony.requestsystem.factory.IFactoryController;
+import com.minecolonies.api.util.constant.Constants;
+import com.minecolonies.api.util.constant.TranslationConstants;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
+import slimeknights.tconstruct.library.materials.definition.MaterialVariant;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachContainer;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachInputSlot;
@@ -27,15 +31,19 @@ public class RepairMaterialTeachMenu extends TeachRecipeMenu<RepairValue>
 	public static final int RESULT_X = 17;
 	public static final int RESULT_Y = 36;
 
+	private final int buildingLevel;
+
 	public RepairMaterialTeachMenu(int windowId, Inventory inventory, IBuildingModule module)
 	{
 		super(ModuleMenuTypes.REPAIR_MATERIAL_TEACH.get(), windowId, inventory, module);
+		this.buildingLevel = module.getBuilding().getBuildingLevel();
 		this.setup();
 	}
 
 	public RepairMaterialTeachMenu(int windowId, Inventory inventory, FriendlyByteBuf buffer)
 	{
 		super(ModuleMenuTypes.REPAIR_MATERIAL_TEACH.get(), windowId, inventory, buffer);
+		this.buildingLevel = buffer.readInt();
 		this.setup();
 	}
 
@@ -76,6 +84,40 @@ public class RepairMaterialTeachMenu extends TeachRecipeMenu<RepairValue>
 			}
 
 		};
+	}
+
+	@Override
+	public Component getRecipeError(RepairValue recipe)
+	{
+		var requiredLevel = MaterialHelper.getRequiredLevel(MaterialVariant.of(recipe.material()));
+		var error = this.testRequiredLevel(requiredLevel);
+
+		if (error != null)
+		{
+			return error;
+		}
+
+		return super.getRecipeError(recipe);
+	}
+
+	public Component testRequiredLevel(int requiredLevel)
+	{
+		if (this.buildingLevel < requiredLevel)
+		{
+			var maxLevel = Constants.MAX_BUILDING_LEVEL;
+
+			if (requiredLevel == maxLevel)
+			{
+				return Component.translatable(TranslationConstants.PARTIAL_JEI_INFO + "onelevelrestriction.tip", requiredLevel);
+			}
+			else
+			{
+				return Component.translatable(TranslationConstants.PARTIAL_JEI_INFO + "levelrestriction.tip", requiredLevel, maxLevel);
+			}
+
+		}
+
+		return null;
 	}
 
 	@Override

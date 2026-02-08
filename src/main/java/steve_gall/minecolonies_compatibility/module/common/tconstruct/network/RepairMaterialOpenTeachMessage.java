@@ -38,6 +38,7 @@ public class RepairMaterialOpenTeachMessage extends ModuleMenuOpenMessage
 	protected void toBuffer(FriendlyByteBuf buffer, IBuildingModule module)
 	{
 		super.toBuffer(buffer, module);
+		buffer.writeInt(module.getBuilding().getBuildingLevel());
 	}
 
 }

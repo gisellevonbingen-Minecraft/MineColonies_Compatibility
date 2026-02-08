@@ -23,7 +23,6 @@ import steve_gall.minecolonies_compatibility.api.common.repair.EntityContext;
 import steve_gall.minecolonies_compatibility.api.common.repair.RepairTransaction;
 import steve_gall.minecolonies_compatibility.api.common.repair.RepairTransaction.RepairResult;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AIRepairState;
-import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 
 @Mixin(value = EntityAIWorkBlacksmith.class)
@@ -49,7 +48,7 @@ public abstract class EntityAIWorkBlacksmithMixin extends AbstractEntityAICrafti
 			{
 				var state = this.getState();
 				return state == AIWorkerState.IDLE || state == AIWorkerState.START_WORKING;
-			}, this::checkRepairableItem, 20));
+			}, this::checkRepairableItem, 40));
 			this.registerTarget(new AITarget(AIRepairState.REPAIR, this::repair, HIT_DELAY));
 		}
 
@@ -57,11 +56,6 @@ public abstract class EntityAIWorkBlacksmithMixin extends AbstractEntityAICrafti
 
 	private IAIState checkRepairableItem()
 	{
-		if (!this.building.getSettingValueOrDefault(ModBuildingModules.REPAIR_ITEM, false))
-		{
-			return null;
-		}
-
 		var context = new EntityContext((EntityAIWorkBlacksmith) (Object) this, this.worker);
 
 		for (var repair : CustomizedRepair.getRegistry().values())

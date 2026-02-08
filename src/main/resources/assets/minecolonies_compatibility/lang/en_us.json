@@ -41,8 +41,8 @@
 	"minecolonies_compatibility.butcherable.desc": "Items that the Butcher can process",
 	"minecolonies_compatibility.tconstruct_broken_item": "Broken Items",
 	"minecolonies_compatibility.tconstruct_broken_item.desc": "Tinkers' Construct's Broken Items",
-	"minecolonies_compatibility.tconstruct_repair_kit": "Repair Kits",
-	"minecolonies_compatibility.tconstruct_repair_kit.desc": "Tinkers' Construct's Repair Kits",
+	"minecolonies_compatibility.tconstruct_repair_kit": "Repair Materials",
+	"minecolonies_compatibility.tconstruct_repair_kit.desc": "Tinkers' Construct's Repair Materials",
 	"minecolonies_compatibility.tacz_ammo": "TaCZ Ammo",
 	"minecolonies_compatibility.tacz_ammo.desc": "Timeless & Classics Guns: Zero's Ammo",
 	
@@ -91,6 +91,9 @@
 	"minecolonies_compatibility.text.access_direction.insert_extract": "Insert and Extract",
 	"minecolonies_compatibility.text.pickup_requested": "Pickup Requested",
 	"minecolonies_compatibility.text.delivery_requested": "Delivery Requested",
+	"minecolonies_compatibility.text.teach_repair_material": "Teach Repair Material",
+	"minecolonies_compatibility.text.tconstruct_teach_repair_material.material": "Material",
+	"minecolonies_compatibility.text.tconstruct_teach_repair_material.value": "Value",
 	
 	"_comment_modules": "Modules",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruits",
@@ -139,6 +142,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist": "Butcherables",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.tacz_gun_smith_table": "TaCZ - Gun Smith Table Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.tacz_gun_smith_table.menu": "Gun Smith Table Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials": "Tinkers' Construct - Repair Materials",
+	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials.menu": "Repair Materials",
 	
 	"_comment_module_settings": "Module Settings",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "Request Firework Rocket",

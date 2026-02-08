@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.items.ItemHandlerHelper;
 import slimeknights.tconstruct.library.materials.MaterialRegistry;
 import slimeknights.tconstruct.library.materials.definition.IMaterial;
 import slimeknights.tconstruct.library.materials.definition.MaterialVariant;
 import slimeknights.tconstruct.library.materials.definition.MaterialVariantId;
+import slimeknights.tconstruct.library.recipe.TinkerRecipeTypes;
+import slimeknights.tconstruct.library.recipe.material.MaterialRecipe;
+import slimeknights.tconstruct.library.recipe.tinkerstation.ITinkerStationContainer;
 import slimeknights.tconstruct.library.tools.definition.module.material.ToolMaterialHook;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
-import slimeknights.tconstruct.tools.TinkerToolParts;
-import steve_gall.minecolonies_compatibility.core.common.inventory.EmptyMenu;
 
 public class TConstructToolHelper
 {
@@ -61,51 +63,101 @@ public class TConstructToolHelper
 		return variants;
 	}
 
-	public static ItemStack repair(ItemStack tool, ItemStack repairKit)
+	public static ItemStack repair(ItemStack tool, ItemStack material, Level level)
 	{
-		var container = new CraftingContainer(EmptyMenu.INSTANCE, 1, 2);
-		container.setItem(0, tool);
-		container.setItem(1, repairKit);
-		return TConstructModule.REPAIR_RECIPE.assemble(container);
-	}
+		var container = new RepairTinkerStationContainer(tool, material, level);
+		var recipe = level.getRecipeManager().getRecipeFor(TinkerRecipeTypes.TINKER_STATION.get(), container, level).orElse(null);
 
-	public static int getRepairCount(ItemStack tool, MaterialVariantId variantId)
-	{
-		var repairKit = TinkerToolParts.repairKit.get().withMaterial(variantId);
-		return getRepairCount(tool, repairKit);
-	}
-
-	public static int getRepairCount(ItemStack tool, ItemStack repairKit)
-	{
-		var oldDamage = ToolStack.from(tool).getDamage();
-
-		for (var i = 0;; i++)
+		if (recipe != null)
 		{
-			if (oldDamage == 0)
-			{
-				return i;
-			}
+			var validatedResult = recipe.getValidatedResult(container);
 
-			tool = repair(tool, repairKit);
-
-			var newDamage = ToolStack.from(tool).getDamage();
-
-			if (oldDamage == newDamage)
+			if (validatedResult.isSuccess())
 			{
-				return i;
-			}
-			else
-			{
-				oldDamage = newDamage;
+				return validatedResult.getResult();
 			}
 
 		}
 
+		return tool;
+	}
+
+	public static int getRepairCount(ItemStack tool, ItemStack material, Level level)
+	{
+		var oldDamage = ToolStack.from(tool).getDamage();
+
+		if (oldDamage == 0)
+		{
+			return 0;
+		}
+
+		var maxStackSize = material.getMaxStackSize();
+		var repairCount = 0;
+
+		for (var i = 1;; i++)
+		{
+			material = ItemHandlerHelper.copyStackWithSize(material, i);
+			var repairedTool = repair(tool, material, level);
+			var newDamage = ToolStack.from(repairedTool).getDamage();
+
+			if (newDamage == 0)
+			{
+				repairCount++;
+				break;
+			}
+			else if (oldDamage == newDamage)
+			{
+				break;
+			}
+			else if (i >= maxStackSize)
+			{
+				i -= maxStackSize;
+				tool = repairedTool;
+			}
+
+			oldDamage = newDamage;
+			repairCount++;
+		}
+
+		return repairCount;
 	}
 
 	public static boolean canRepair(ItemStack tool)
 	{
 		return ToolStack.from(tool).getDamage() > 0;
+	}
+
+	private record RepairTinkerStationContainer(ItemStack tinkerableStack, ItemStack input, MaterialRecipe inputMaterial) implements ITinkerStationContainer
+	{
+		public RepairTinkerStationContainer(ItemStack tinkerableStack, ItemStack input, Level level)
+		{
+			this(tinkerableStack, input, MaterialHelper.getMaterialRecipe(input, level));
+		}
+
+		@Override
+		public ItemStack getTinkerableStack()
+		{
+			return this.tinkerableStack;
+		}
+
+		@Override
+		public int getInputCount()
+		{
+			return 1;
+		}
+
+		@Override
+		public ItemStack getInput(int index)
+		{
+			return this.input;
+		}
+
+		@Override
+		public MaterialRecipe getInputMaterial(int index)
+		{
+			return this.inputMaterial;
+		}
+
 	}
 
 	private TConstructToolHelper()

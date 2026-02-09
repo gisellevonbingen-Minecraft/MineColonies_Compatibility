@@ -15,6 +15,11 @@ public abstract class CustomizedAIGuard extends CustomizedAI
 	@NotNull
 	public abstract GuardType getGuardType();
 
+	public boolean isNeedPrepare(@NotNull AbstractEntityCitizen user)
+	{
+		return false;
+	}
+
 	public void atBuildingActions(@NotNull AbstractEntityCitizen user)
 	{
 

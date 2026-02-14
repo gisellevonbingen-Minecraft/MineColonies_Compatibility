@@ -82,7 +82,6 @@ public class CitizenSlaveTile extends BlockEntitySlave implements INetworkStorag
 		if (this.accessDirection != value)
 		{
 			this.accessDirection = value;
-			this.view.requestAll();
 			this.setChanged();
 		}
 

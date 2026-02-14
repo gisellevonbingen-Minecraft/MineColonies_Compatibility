@@ -123,7 +123,6 @@ public class CitizenExtensionTile extends ControllableDrawerTile<CitizenExtensio
 		if (this.accessDirection != value)
 		{
 			this.accessDirection = value;
-			this.view.requestAll();
 			this.setChanged();
 		}
 

@@ -95,7 +95,6 @@ public class CommonNetworkStorageBlockEntity extends BlockEntity implements INet
 		if (this.accessDirection != value)
 		{
 			this.accessDirection = value;
-			this.view.requestAll();
 			this.setChanged();
 		}
 

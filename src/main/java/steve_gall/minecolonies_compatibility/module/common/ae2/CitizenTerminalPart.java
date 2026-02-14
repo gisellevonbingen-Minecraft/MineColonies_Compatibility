@@ -86,7 +86,6 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	protected void onSettingChanged(IConfigManager manager, Setting<?> setting)
 	{
 		this.getHost().markForSave();
-		this.view.requestAll();
 	}
 
 	public boolean hasPermission(SecurityPermissions permissions)

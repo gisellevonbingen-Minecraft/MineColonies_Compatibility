@@ -96,6 +96,16 @@ public class NetworkStorageModule extends AbstractModuleWithExternalWorkingBlock
 		return this.getRegisteredBlocks().stream().flatMap(this::getOwnLinkedViews);
 	}
 
+	public Stream<INetworkStorageView> getRequestableBlocks()
+	{
+		return this.getBlocks().filter(m -> canRequestable(m));
+	}
+
+	public static boolean canRequestable(@Nullable INetworkStorageView view)
+	{
+		return view != null && view.isActive() && view.canRequest();
+	}
+
 	public Stream<INetworkStorageView> getExtractableBlocks()
 	{
 		return this.getBlocks().filter(m -> canExtract(m));

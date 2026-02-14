@@ -45,8 +45,6 @@ import steve_gall.minecolonies_compatibility.core.common.building.module.Network
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.colony.ColonyHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
-import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCrafting;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
 
 public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 {
@@ -354,55 +352,6 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 			markDirty();
 		}
 
-		private NetworkCrafting getNetworkCrafting(NetworkStorageModule module, IToken<?> requestId)
-		{
-			var requestManager = module.getBuilding().getColony().getRequestManager();
-			var request = requestManager.getRequestForToken(requestId);
-
-			if (request == null)
-			{
-				return null;
-			}
-			else if (request.getRequest() instanceof CustomizableRequestable customizable && customizable.getObject() instanceof NetworkCrafting networkCrafting)
-			{
-				return networkCrafting;
-			}
-			else
-			{
-				return null;
-			}
-
-		}
-
-		private IDeliverable getDeliverable(NetworkStorageModule module, IToken<?> requestId)
-		{
-			var requestManager = module.getBuilding().getColony().getRequestManager();
-			var request = requestManager.getRequestForToken(requestId);
-
-			if (request != null)
-			{
-				var parentId = request.getParent();
-
-				if (parentId != null)
-				{
-					var parent = requestManager.getRequestForToken(parentId);
-
-					if (parent != null && parent.getRequest() instanceof IDeliverable deliverable)
-					{
-						return deliverable;
-					}
-
-				}
-				else if (request.getRequest() instanceof IDeliverable deliverable)
-				{
-					return deliverable;
-				}
-
-			}
-
-			return null;
-		}
-
 		@Override
 		public void updateAutocraftings()
 		{
@@ -430,8 +379,8 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 			{
 				var requestId = entry.getKey();
 				var taskHolder = entry.getValue();
-				var networkCrafting = this.getNetworkCrafting(module, requestId);
-				var deliverable = this.getDeliverable(module, requestId);
+				var networkCrafting = this.getNetworkCrafting(requestManager, requestId);
+				var deliverable = this.getDeliverable(requestManager, requestId);
 
 				if (networkCrafting == null || deliverable == null)
 				{

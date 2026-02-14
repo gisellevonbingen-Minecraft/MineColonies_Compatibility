@@ -3,6 +3,9 @@ package steve_gall.minecolonies_compatibility.core.common.building.module;
 import java.util.Optional;
 
 import com.minecolonies.api.MinecoloniesAPIProxy;
+import com.minecolonies.api.colony.requestsystem.manager.IRequestManager;
+import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
+import com.minecolonies.api.colony.requestsystem.token.IToken;
 import com.minecolonies.api.util.BlockPosUtil;
 
 import net.minecraft.core.BlockPos;
@@ -10,6 +13,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
+import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCrafting;
+import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
 
 public abstract class AbstractNetworkStorageView implements INetworkStorageView
 {
@@ -227,6 +232,53 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		}
 
 		return this.module;
+	}
+
+	protected NetworkCrafting getNetworkCrafting(IRequestManager requestManager, IToken<?> requestId)
+	{
+		var request = requestManager.getRequestForToken(requestId);
+
+		if (request == null)
+		{
+			return null;
+		}
+		else if (request.getRequest() instanceof CustomizableRequestable customizable && customizable.getObject() instanceof NetworkCrafting networkCrafting)
+		{
+			return networkCrafting;
+		}
+		else
+		{
+			return null;
+		}
+
+	}
+
+	protected IDeliverable getDeliverable(IRequestManager requestManager, IToken<?> requestId)
+	{
+		var request = requestManager.getRequestForToken(requestId);
+
+		if (request != null)
+		{
+			var parentId = request.getParent();
+
+			if (parentId != null)
+			{
+				var parent = requestManager.getRequestForToken(parentId);
+
+				if (parent != null && parent.getRequest() instanceof IDeliverable deliverable)
+				{
+					return deliverable;
+				}
+
+			}
+			else if (request.getRequest() instanceof IDeliverable deliverable)
+			{
+				return deliverable;
+			}
+
+		}
+
+		return null;
 	}
 
 	public boolean wasActive()

@@ -45,6 +45,18 @@ public interface INetworkStorageView
 	@Nullable
 	NetworkStorageModuleView getLinkedModuleView();
 
+	@NotNull
+	default NetworkCraftingDestination getNetworkCraftingDestination()
+	{
+		return NetworkCraftingDestination.VIEW;
+	}
+
+	default boolean canRequest()
+	{
+		var destination = this.getNetworkCraftingDestination();
+		return (destination == NetworkCraftingDestination.VIEW && this.canExtract()) || destination == NetworkCraftingDestination.BUILDING;
+	}
+
 	boolean canExtract();
 
 	boolean canInsert();

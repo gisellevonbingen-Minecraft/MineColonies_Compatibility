@@ -46,11 +46,9 @@ import steve_gall.minecolonies_compatibility.api.common.building.module.INetwork
 import steve_gall.minecolonies_compatibility.core.common.block.entity.INetworkStorageViewHolder;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
-import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCrafting;
 import steve_gall.minecolonies_compatibility.mixin.common.refinedstorage.AutocraftingNetworkComponentImplAccessor;
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.CitizenGridNetworkNode.ExternalListener;
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.init.ModuleBlockEntities;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableRequestable;
 
 public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBlockEntity<CitizenGridNetworkNode> implements NetworkNodeMenuProvider, INetworkStorageViewHolder
 {
@@ -127,7 +125,6 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 		if (this.accessMode != accessMode)
 		{
 			this.accessMode = accessMode;
-			this.view.requestAll();
 			this.setChanged();
 		}
 
@@ -413,55 +410,6 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 			setChanged();
 		}
 
-		private NetworkCrafting getNetworkCrafting(NetworkStorageModule module, IToken<?> requestId)
-		{
-			var requestManager = module.getBuilding().getColony().getRequestManager();
-			var request = requestManager.getRequestForToken(requestId);
-
-			if (request == null)
-			{
-				return null;
-			}
-			else if (request.getRequest() instanceof CustomizableRequestable customizable && customizable.getObject() instanceof NetworkCrafting networkCrafting)
-			{
-				return networkCrafting;
-			}
-			else
-			{
-				return null;
-			}
-
-		}
-
-		private IDeliverable getDeliverable(NetworkStorageModule module, IToken<?> requestId)
-		{
-			var requestManager = module.getBuilding().getColony().getRequestManager();
-			var request = requestManager.getRequestForToken(requestId);
-
-			if (request != null)
-			{
-				var parentId = request.getParent();
-
-				if (parentId != null)
-				{
-					var parent = requestManager.getRequestForToken(parentId);
-
-					if (parent != null && parent.getRequest() instanceof IDeliverable deliverable)
-					{
-						return deliverable;
-					}
-
-				}
-				else if (request.getRequest() instanceof IDeliverable deliverable)
-				{
-					return deliverable;
-				}
-
-			}
-
-			return null;
-		}
-
 		@Override
 		public void updateAutocraftings()
 		{
@@ -490,8 +438,8 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 			{
 				var requestId = entry.getKey();
 				var taskHolder = entry.getValue();
-				var networkCrafting = this.getNetworkCrafting(module, requestId);
-				var deliverable = this.getDeliverable(module, requestId);
+				var networkCrafting = this.getNetworkCrafting(requestManager, requestId);
+				var deliverable = this.getDeliverable(requestManager, requestId);
 
 				if (networkCrafting == null || deliverable == null)
 				{

@@ -11,6 +11,7 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 	public static final int DEQUEUE_COUNT = 18;
 
 	private final Queue<ItemStack> queue = new ArrayDeque<>();
+	private boolean wasCanRequest = false;
 	private boolean allRequested = false;
 
 	@Override
@@ -27,6 +28,22 @@ public abstract class QueueNetworkStorageView extends AbstractNetworkStorageView
 
 	protected void onActiveTick()
 	{
+		if (this.canRequest())
+		{
+			if (!this.wasCanRequest)
+			{
+				this.requestAll();
+			}
+
+			this.wasCanRequest = true;
+		}
+		else
+		{
+			this.wasCanRequest = false;
+			this.allRequested = false;
+			this.queue.clear();
+		}
+
 		if (this.allRequested)
 		{
 			this.allRequested = false;

@@ -85,7 +85,7 @@ public class NetworkCraftingRequestResolver extends AbstractBuildingDependentReq
 
 		var deliverable = request.getRequest();
 
-		for (var view : module.getExtractableBlocks().toList())
+		for (var view : module.getRequestableBlocks().toList())
 		{
 			var calculated = view.calculateAutocrafting(deliverable);
 
@@ -179,7 +179,7 @@ public class NetworkCraftingRequestResolver extends AbstractBuildingDependentReq
 
 		var deliverable = request.getRequest();
 
-		for (var view : module.getExtractableBlocks().toList())
+		for (var view : module.getRequestableBlocks().toList())
 		{
 			var calculated = view.calculateAutocrafting(deliverable);
 

@@ -86,7 +86,7 @@ public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<
 			}
 
 		}
-		
+
 		var state = super.tryAttack();
 
 		if (state == CombatAIStates.NO_TARGET && this.target != null)

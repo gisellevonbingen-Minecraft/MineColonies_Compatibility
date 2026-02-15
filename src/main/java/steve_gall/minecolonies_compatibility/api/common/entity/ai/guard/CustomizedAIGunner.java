@@ -104,6 +104,11 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	 */
 	public boolean requestAmmo(@NotNull AbstractEntityCitizen user, int minCount, boolean async)
 	{
+		if (!this.getBulletMode().canUse())
+		{
+			return false;
+		}
+
 		var citizen = user.getCitizenData();
 
 		if (!CitizenHelper.isRequested(citizen, CustomizableDeliverable.TYPE_TOKEN, r ->
@@ -127,7 +132,11 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 
 	public boolean requestAmmo(@NotNull AbstractEntityCitizen user, boolean spare)
 	{
-		if (spare)
+		if (!this.getBulletMode().canUse())
+		{
+			return false;
+		}
+		else if (spare)
 		{
 			var ammoInBuilding = InventoryUtils.getItemCountInProvider(user.getCitizenData().getWorkBuilding(), this.getAmmoPredicate(user));
 

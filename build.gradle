@@ -171,6 +171,7 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:${jade_file}")
     implementation fg.deobf("curse.maven:fruits-delight-943774:${fruitsdelgiht_file}")
     implementation fg.deobf("curse.maven:cultural-delights-574622:${culturaldelights_file}")
+    implementation fg.deobf("curse.maven:create-328085:${create_file}")
 
     // Runtime Only
     runtimeOnly fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")

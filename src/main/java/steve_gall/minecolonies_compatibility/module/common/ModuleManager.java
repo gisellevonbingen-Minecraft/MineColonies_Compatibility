@@ -15,6 +15,7 @@ import steve_gall.minecolonies_compatibility.module.common.butchercraft.Butcherc
 import steve_gall.minecolonies_compatibility.module.common.butchersdelight.ButchersDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.cobblemon.CobblemonModule;
 import steve_gall.minecolonies_compatibility.module.common.collectorsreap.CollectorsReapModule;
+import steve_gall.minecolonies_compatibility.module.common.create.CreateModule;
 import steve_gall.minecolonies_compatibility.module.common.croptopia.CroptopiaModule;
 import steve_gall.minecolonies_compatibility.module.common.culturaldelights.CulturalDelightsModule;
 import steve_gall.minecolonies_compatibility.module.common.cyclic.CyclicModule;
@@ -76,6 +77,7 @@ public class ModuleManager
 	public static final OptionalModule<AbstractModule> BUTCHERSDELIGHTFOODS = register("butchersdelightfoods", () -> AbstractModule::new);
 	public static final OptionalModule<CobblemonModule> COBBLEMON = register("cobblemon", () -> CobblemonModule::new);
 	public static final OptionalModule<CollectorsReapModule> COLLECTORSREAP = register("collectorsreap", () -> CollectorsReapModule::new);
+	public static final OptionalModule<CreateModule> CREATE = register("create", () -> CreateModule::new);
 	public static final OptionalModule<CroptopiaModule> CROPTOPIA = register("croptopia", () -> CroptopiaModule::new);
 	public static final OptionalModule<CulturalDelightsModule> CULTURALDELIGHTS = register("culturaldelights", () -> CulturalDelightsModule::new);
 	public static final OptionalModule<CyclicModule> CYCLIC = register("cyclic", () -> CyclicModule::new);

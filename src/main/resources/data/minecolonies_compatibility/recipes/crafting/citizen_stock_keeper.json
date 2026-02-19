@@ -1,0 +1,28 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"conditions": [
+		{
+			"type": "forge:item_exists",
+			"item": "minecolonies_compatibility:citizen_stock_keeper"
+		}
+	],
+	"result": {
+		"item": "minecolonies_compatibility:citizen_stock_keeper"
+	},
+	"pattern": [
+		"k",
+		"c",
+		"d"
+	],
+	"key": {
+		"k": {
+			"item": "minecolonies:blockhutwarehouse"
+		},
+		"d": {
+			"tag": "forge:ingots/gold"
+		},
+		"c": {
+			"item": "create:stock_link"
+		}
+	}
+}

@@ -140,9 +140,10 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		}
 		else if (spare)
 		{
+			var ammoInInventory = InventoryUtils.getItemCountInItemHandler(user.getInventoryCitizen(), this.getAmmoPredicate(user));
 			var ammoInBuilding = InventoryUtils.getItemCountInProvider(user.getCitizenData().getWorkBuilding(), this.getAmmoPredicate(user));
 
-			if (ammoInBuilding >= this.getAmmoMinRequestCount(user))
+			if ((ammoInInventory + ammoInBuilding) >= this.getAmmoMinRequestCount(user))
 			{
 				return false;
 			}

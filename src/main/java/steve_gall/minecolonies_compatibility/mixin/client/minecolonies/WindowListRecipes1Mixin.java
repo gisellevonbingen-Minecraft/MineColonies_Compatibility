@@ -22,7 +22,6 @@ import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibili
 import steve_gall.minecolonies_compatibility.core.common.building.module.SmithingTemplateCraftingModuleView;
 import steve_gall.minecolonies_compatibility.core.common.crafting.BucketFillingRecipeStorage;
 import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingTemplateRecipeStorage;
-import steve_gall.minecolonies_compatibility.core.common.item.ItemStackKey;
 import steve_gall.minecolonies_compatibility.core.common.util.ReflectionUtils;
 import steve_gall.minecolonies_compatibility.module.common.ModuleManager;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.FarmersDelightModule;
@@ -75,7 +74,7 @@ public abstract class WindowListRecipes1Mixin
 			else if (module instanceof SmithingTemplateCraftingModuleView view && impl instanceof SmithingTemplateRecipeStorage smithingTemplate)
 			{
 				var counter = view.getCounter();
-				var currentCount = counter.get(new ItemStackKey(smithingTemplate.getPrimaryOutput()));
+				var currentCount = counter.get(smithingTemplate.getPrimaryOutput());
 				var needCount = smithingTemplate.getInputTemplateCount();
 
 				if (needCount > 0)

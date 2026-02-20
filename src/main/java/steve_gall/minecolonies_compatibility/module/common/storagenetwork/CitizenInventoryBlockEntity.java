@@ -282,7 +282,14 @@ public class CitizenInventoryBlockEntity extends TileConnectable implements INet
 				return ItemStack.EMPTY;
 			}
 
-			return main.request(new ItemStackMatcher(stack), stack.getCount(), simulate);
+			var extracted = main.request(new ItemStackMatcher(stack), stack.getCount(), simulate);
+
+			if (!simulate)
+			{
+				counter.extract(extracted);
+			}
+			
+			return extracted;
 		}
 
 		@Override

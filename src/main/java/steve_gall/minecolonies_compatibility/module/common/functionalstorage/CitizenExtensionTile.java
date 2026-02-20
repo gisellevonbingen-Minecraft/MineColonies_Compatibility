@@ -284,7 +284,14 @@ public class CitizenExtensionTile extends ControllableDrawerTile<CitizenExtensio
 				return ItemStack.EMPTY;
 			}
 
-			return ItemHandlerHelper2.extractItem(controller.inventoryHandler, stack, simulate);
+			var extracted = ItemHandlerHelper2.extractItem(controller.inventoryHandler, stack, simulate);
+
+			if (!simulate)
+			{
+				counter.extract(extracted);
+			}
+
+			return extracted;
 		}
 
 		@Override

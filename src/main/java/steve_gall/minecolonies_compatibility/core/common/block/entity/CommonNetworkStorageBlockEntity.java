@@ -257,7 +257,14 @@ public class CommonNetworkStorageBlockEntity extends BlockEntity implements INet
 		@Override
 		public @NotNull ItemStack extractItem(@NotNull ItemStack stack, boolean simulate)
 		{
-			return ItemHandlerHelper2.extractItem(getCombinedHandler(), stack, simulate);
+			var extracted = ItemHandlerHelper2.extractItem(getCombinedHandler(), stack, simulate);
+
+			if (!simulate)
+			{
+				counter.extract(extracted);
+			}
+
+			return extracted;
 		}
 
 		@Override

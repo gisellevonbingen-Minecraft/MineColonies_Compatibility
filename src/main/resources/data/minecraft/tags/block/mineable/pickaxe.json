@@ -7,6 +7,10 @@
 		{
 			"required": false,
 			"id": "minecolonies_compatibility:citizen_grid"
+		},
+		{
+			"required": false,
+			"id": "minecolonies_compatibility:citizen_stock_keeper"
 		}
 	]
 }

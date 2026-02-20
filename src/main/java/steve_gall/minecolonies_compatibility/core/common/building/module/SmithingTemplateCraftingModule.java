@@ -74,7 +74,7 @@ public class SmithingTemplateCraftingModule extends AbstractCraftingBuildingModu
 
 			if (!stack.isEmpty())
 			{
-				newCounter.insert(new ItemStackKey(stack), stack.getCount());
+				newCounter.insert(stack);
 			}
 
 		}
@@ -138,7 +138,7 @@ public class SmithingTemplateCraftingModule extends AbstractCraftingBuildingModu
 
 		if (storage instanceof CustomizableRecipeStorage crs && crs.getImpl() instanceof SmithingTemplateRecipeStorage recipe)
 		{
-			var count = this.counter.get(new ItemStackKey(recipe.getPrimaryOutput()));
+			var count = this.counter.get(recipe.getPrimaryOutput());
 			return count >= recipe.getInputTemplateCount();
 		}
 

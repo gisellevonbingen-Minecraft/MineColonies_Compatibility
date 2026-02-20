@@ -76,9 +76,19 @@ public class ItemStackCounter
 		prevKeys.forEach(key -> this.set(key, 0L));
 	}
 
+	public long get(ItemStack key)
+	{
+		return this.get(new ItemStackKey(key));
+	}
+
 	public long get(ItemStackKey key)
 	{
 		return this.counter.getOrDefault(key, 0L);
+	}
+
+	public long set(ItemStack key, long count)
+	{
+		return this.set(new ItemStackKey(key), count);
 	}
 
 	public long set(ItemStackKey key, long count)
@@ -95,10 +105,30 @@ public class ItemStackCounter
 		return old;
 	}
 
+	public long extract(ItemStack key)
+	{
+		return this.extract(key, key.getCount());
+	}
+
+	public long extract(ItemStack key, long count)
+	{
+		return this.extract(new ItemStackKey(key), count);
+	}
+
 	public long extract(ItemStackKey key, long count)
 	{
 		var old = this.get(key);
 		return this.set(key, old - count);
+	}
+
+	public long insert(ItemStack key)
+	{
+		return this.insert(key, key.getCount());
+	}
+
+	public long insert(ItemStack key, long count)
+	{
+		return this.insert(new ItemStackKey(key), count);
 	}
 
 	public long insert(ItemStackKey key, long count)

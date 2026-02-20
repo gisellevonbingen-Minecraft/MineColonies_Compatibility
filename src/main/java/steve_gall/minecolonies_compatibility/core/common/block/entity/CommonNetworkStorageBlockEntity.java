@@ -142,8 +142,7 @@ public class CommonNetworkStorageBlockEntity extends BlockEntity implements INet
 				continue;
 			}
 
-			var key = new ItemStackKey(stack);
-			counter.insert(key, stack.getCount());
+			counter.insert(stack);
 		}
 
 		return counter.entrySet();

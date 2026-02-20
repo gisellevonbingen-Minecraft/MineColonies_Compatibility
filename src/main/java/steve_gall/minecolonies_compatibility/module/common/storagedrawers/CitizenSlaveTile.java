@@ -238,7 +238,14 @@ public class CitizenSlaveTile extends BlockEntitySlave implements INetworkStorag
 				return ItemStack.EMPTY;
 			}
 
-			return controller.getItemRepository().extractItem(stack, stack.getCount(), simulate);
+			var extracted = controller.getItemRepository().extractItem(stack, stack.getCount(), simulate);
+
+			if (!simulate)
+			{
+				counter.extract(extracted);
+			}
+
+			return extracted;
 		}
 
 		@Override

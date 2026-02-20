@@ -149,8 +149,7 @@ public class CitizenInventoryBlockEntity extends TileConnectable implements INet
 						continue;
 					}
 
-					var key = new ItemStackKey(stack);
-					counter.insert(key, stack.getCount());
+					counter.insert(stack);
 				}
 
 			}

@@ -134,8 +134,7 @@ public class CitizenSlaveTile extends BlockEntitySlave implements INetworkStorag
 				continue;
 			}
 
-			var key = new ItemStackKey(stack.itemPrototype);
-			counter.insert(key, stack.count);
+			counter.insert(stack.itemPrototype, stack.count);
 		}
 
 		return counter.entrySet();

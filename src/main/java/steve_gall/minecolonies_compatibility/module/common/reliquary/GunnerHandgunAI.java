@@ -26,12 +26,12 @@ import reliquary.item.MagazineItem;
 import reliquary.util.potions.XRPotionHelper;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGunner;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.GunnerAmmo;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDelayConfig;
 import steve_gall.minecolonies_compatibility.mixin.common.reliquary.HandgunItemAccessor;
 import steve_gall.minecolonies_compatibility.module.common.reliquary.ReliquaryConfig.JobConfig.GunnerHandgunConfig;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
 public class GunnerHandgunAI extends CustomizedAIGunner
 {
@@ -70,13 +70,13 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 
 	@Override
 	@Nullable
-	protected IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
+	protected GunnerAmmo createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
 	{
 		return new Magazine(minCount);
 	}
 
 	@Override
-	protected boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull IDeliverableObject object)
+	protected boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull GunnerAmmo object)
 	{
 		return object instanceof Magazine;
 	}

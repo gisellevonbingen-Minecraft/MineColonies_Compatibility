@@ -14,10 +14,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGunner;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.GunnerAmmo;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDelayConfig;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.BulletMode;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
 public class GunnerGunAI extends CustomizedAIGunner
 {
@@ -79,7 +79,7 @@ public class GunnerGunAI extends CustomizedAIGunner
 
 	@Override
 	@Nullable
-	protected IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
+	protected GunnerAmmo createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
 	{
 		var weapon = this.getMainHandItem(user);
 
@@ -107,7 +107,7 @@ public class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull IDeliverableObject object)
+	protected boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull GunnerAmmo object)
 	{
 		var weapon = this.getMainHandItem(user);
 

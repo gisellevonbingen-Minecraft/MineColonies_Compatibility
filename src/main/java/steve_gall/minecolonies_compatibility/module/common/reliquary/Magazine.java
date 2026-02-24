@@ -13,10 +13,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import reliquary.init.ModItems;
 import reliquary.item.MagazineItem;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.GunnerAmmo;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
-public class Magazine implements IDeliverableObject
+public class Magazine implements GunnerAmmo
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("reliquary_magazine");
 	public static final Component SHORT_DISPLAY_STRING = Component.translatable(MineColoniesCompatibility.tl("reliquary_magazine"));

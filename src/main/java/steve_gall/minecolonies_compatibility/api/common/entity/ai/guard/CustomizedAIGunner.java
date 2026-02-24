@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.colony.guardtype.GuardType;
 import com.minecolonies.api.colony.jobs.registry.JobEntry;
+import com.minecolonies.api.colony.requestsystem.request.RequestState;
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 import com.minecolonies.api.util.DamageSourceKeys;
 import com.minecolonies.api.util.InventoryUtils;
@@ -31,7 +32,6 @@ import steve_gall.minecolonies_compatibility.core.common.entity.ai.guard.GunnerC
 import steve_gall.minecolonies_compatibility.core.common.init.ModGuardTypes;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliverable;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
 public abstract class CustomizedAIGunner extends CustomizedAIGuard
 {
@@ -115,7 +115,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 
 		if (!CitizenHelper.isRequested(citizen, CustomizableDeliverable.TYPE_TOKEN, r ->
 		{
-			return this.isAmmoRequest(user, r.getRequest().getObject())//
+			return r.getRequest().getObject() instanceof GunnerAmmo ammo && this.isAmmoRequest(user, ammo)//
 					&& async == citizen.getJob().getAsyncRequests().contains(r.getId());
 		}))
 		{
@@ -154,9 +154,9 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	}
 
 	@Nullable
-	protected abstract IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount);
+	protected abstract GunnerAmmo createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount);
 
-	protected abstract boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull IDeliverableObject object);
+	protected abstract boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull GunnerAmmo object);
 
 	protected int getAmmoMinRequestCount(@NotNull AbstractEntityCitizen user)
 	{
@@ -177,7 +177,24 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	{
 		super.onSelected(user);
 
+		this.cancelExcessiveRequests(user);
 		this.checkAmmo(user);
+	}
+
+	private void cancelExcessiveRequests(@NotNull AbstractEntityCitizen user)
+	{
+		var citizen = user.getCitizenData();
+		var requests = CitizenHelper.getRequests(citizen, CustomizableDeliverable.TYPE_TOKEN, r ->
+		{
+			return r.getRequest().getObject() instanceof GunnerAmmo;
+		});
+
+		var requestManager = citizen.getColony().getRequestManager();
+		for (var i = 2; i < requests.size(); i++)
+		{
+			requestManager.updateRequestState(requests.get(i).getId(), RequestState.CANCELLED);
+		}
+
 	}
 
 	@Override

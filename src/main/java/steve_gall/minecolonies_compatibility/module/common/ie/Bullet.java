@@ -13,10 +13,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.GunnerAmmo;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
-public class Bullet implements IDeliverableObject
+public class Bullet implements GunnerAmmo
 {
 	public static final ResourceLocation ID = MineColoniesCompatibility.rl("ie_bullet");
 	public static final Component SHORT_DISPLAY_STRING = Component.translatable(MineColoniesCompatibility.tl("ie_bullet"));

@@ -17,11 +17,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGunner;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.GunnerAmmo;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AttackDelayConfig;
 import steve_gall.minecolonies_compatibility.module.common.ewewukeks_musketmod.ewewukekMusketConfig.JobConfig.GunnerGunConfig;
-import steve_gall.minecolonies_tweaks.api.common.requestsystem.IDeliverableObject;
 
 public abstract class GunnerGunAI extends CustomizedAIGunner
 {
@@ -92,13 +92,13 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 
 	@Override
 	@Nullable
-	protected IDeliverableObject createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
+	protected GunnerAmmo createAmmoRequest(@NotNull AbstractEntityCitizen user, int minCount)
 	{
 		return new Cartridge(minCount);
 	}
 
 	@Override
-	protected boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull IDeliverableObject object)
+	protected boolean isAmmoRequest(@NotNull AbstractEntityCitizen user, @NotNull GunnerAmmo object)
 	{
 		return object instanceof Cartridge;
 	}

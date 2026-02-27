@@ -519,7 +519,7 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 				var stack = found.stack.copy();
 				var requestableCount = Math.min(found.count, holder.requestCount - holder.requested.getTotalCount());
 				var order = PackageOrderWithCrafts.simple(Collections.singletonList(new BigItemStack(stack, requestableCount)));
-				var result = stockTicker.broadcastPackageRequest(RequestType.RESTOCK, order, null, address);
+				var result = stockTicker.broadcastPackageRequest(RequestType.REDSTONE, order, null, address);
 
 				if (result)
 				{

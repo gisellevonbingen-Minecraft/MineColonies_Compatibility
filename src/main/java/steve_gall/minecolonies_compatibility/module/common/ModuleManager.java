@@ -12,6 +12,7 @@ import steve_gall.minecolonies_compatibility.module.common.ars_nouveau.ArsNouvea
 import steve_gall.minecolonies_compatibility.module.common.atmospheric.AtmosphericModule;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.ButchercraftModule;
 import steve_gall.minecolonies_compatibility.module.common.cobblemon.CobblemonModule;
+import steve_gall.minecolonies_compatibility.module.common.create.CreateModule;
 import steve_gall.minecolonies_compatibility.module.common.croptopia.CroptopiaModule;
 import steve_gall.minecolonies_compatibility.module.common.culturaldelights.CulturalDelightsModule;
 import steve_gall.minecolonies_compatibility.module.common.ewewukeks_musketmod.ewewukekMusketModule;
@@ -54,6 +55,7 @@ public class ModuleManager
 	public static final OptionalModule<ArsNouveauModule> ARS_NOUVEAU = register("ars_nouveau", () -> ArsNouveauModule::new);
 	public static final OptionalModule<AtmosphericModule> ATMOSPHERIC = register("atmospheric", () -> AtmosphericModule::new);
 	public static final OptionalModule<CobblemonModule> COBBLEMON = register("cobblemon", () -> CobblemonModule::new);
+	public static final OptionalModule<CreateModule> CREATE = register("create", () -> CreateModule::new);
 	public static final OptionalModule<CroptopiaModule> CROPTOPIA = register("croptopia", () -> CroptopiaModule::new);
 	public static final OptionalModule<CulturalDelightsModule> CULTURALDELIGHTS = register("culturaldelights", () -> CulturalDelightsModule::new);
 	public static final OptionalModule<ewewukekMusketModule> EWEWUKEK_MUSKET = register("musketmod", () -> ewewukekMusketModule::new);

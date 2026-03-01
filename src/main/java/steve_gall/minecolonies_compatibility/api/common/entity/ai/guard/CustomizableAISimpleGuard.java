@@ -1,5 +1,7 @@
 package steve_gall.minecolonies_compatibility.api.common.entity.ai.guard;
 
+import java.util.ArrayList;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,8 +42,11 @@ public abstract class CustomizableAISimpleGuard<T extends AbstractEntityAIGuard<
 	{
 		super(owner, stateMachine);
 
-		stateMachine.addTransitionGroup(BehaviourStateGroup.GUARD_ABORT_AND_FIGHT, new TickingTransition(this::checkForTarget, () -> CombatAIStates.ATTACKING, 5).withName("busy_checkTarget"));
-		stateMachine.addTransitionGroup(BehaviourStateGroup.GUARD_ABORT_AND_FIGHT, new TickingTransition(this::searchNearbyTarget, () -> CombatAIStates.ATTACKING, 80).withName("busy_searchTarget"));
+		var guardAbortAndFight = new ArrayList<>(BehaviourStateGroup.GUARD_ABORT_AND_FIGHT);
+		guardAbortAndFight.remove(AIWorkerState.NEEDS_ITEM);
+
+		stateMachine.addTransitionGroup(guardAbortAndFight, new TickingTransition(this::checkForTarget, () -> CombatAIStates.ATTACKING, 5).withName("busy_checkTarget"));
+		stateMachine.addTransitionGroup(guardAbortAndFight, new TickingTransition(this::searchNearbyTarget, () -> CombatAIStates.ATTACKING, 80).withName("busy_searchTarget"));
 
 		this.parentAI = parentAI;
 	}

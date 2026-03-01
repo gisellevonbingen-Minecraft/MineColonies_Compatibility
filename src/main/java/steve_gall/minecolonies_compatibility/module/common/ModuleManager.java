@@ -30,6 +30,7 @@ import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphMo
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.RefinedStorageModule;
 import steve_gall.minecolonies_compatibility.module.common.regions_unexplored.RegionsUnexploredModule;
 import steve_gall.minecolonies_compatibility.module.common.reliquary.ReliquaryModule;
+import steve_gall.minecolonies_compatibility.module.common.tacz.TACZModule;
 import steve_gall.minecolonies_compatibility.module.common.undergarden.UndergardenModule;
 
 public class ModuleManager
@@ -73,6 +74,7 @@ public class ModuleManager
 	public static final OptionalModule<RefinedStorageModule> REFINEDSTORAGE = register("refinedstorage", () -> RefinedStorageModule::new);
 	public static final OptionalModule<RegionsUnexploredModule> REGIONS_UNEXPLORED = register("regions_unexplored", () -> RegionsUnexploredModule::new);
 	public static final OptionalModule<ReliquaryModule> RELIQUARY = register("reliquary", () -> ReliquaryModule::new);
+	public static final OptionalModule<TACZModule> TACZ = register("tacz", () -> TACZModule::new);
 	public static final OptionalModule<UndergardenModule> UNDERGARDEN = register("undergarden", () -> UndergardenModule::new);
 
 	private static <MODULE extends AbstractModule> OptionalModule<MODULE> register(String modid, Supplier<Supplier<MODULE>> initializer)

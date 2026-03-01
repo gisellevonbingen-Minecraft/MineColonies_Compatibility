@@ -1,0 +1,20 @@
+[
+	{
+		"item": "tacz:modern_kinetic_gun",
+		"checkednbtkeys": [
+			"minecraft:custom_data"
+		]
+	},
+	{
+		"item": "tacz:attachment",
+		"checkednbtkeys": [
+			"minecraft:custom_data"
+		]
+	},
+	{
+		"item": "tacz:ammo",
+		"checkednbtkeys": [
+			"minecraft:custom_data"
+		]
+	}
+]

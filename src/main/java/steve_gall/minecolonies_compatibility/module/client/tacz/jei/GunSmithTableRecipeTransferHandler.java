@@ -1,7 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.client.tacz.jei;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Optional;
 
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
@@ -20,17 +19,15 @@ import net.minecraft.world.item.crafting.SmithingRecipeInput;
 import steve_gall.minecolonies_compatibility.module.client.jei.TeachRecipeTransferHandler;
 import steve_gall.minecolonies_compatibility.module.common.tacz.menu.GunSmithTableTeachMenu;
 
-public class GunSmithTableRecipeTransferHandler extends TeachRecipeTransferHandler<GunSmithTableTeachMenu, RecipeHolder<GunSmithTableRecipe>, SmithingRecipeInput, GunSmithTableRecipe>
+public class GunSmithTableRecipeTransferHandler extends TeachRecipeTransferHandler<GunSmithTableTeachMenu, RecipeHolder<GunSmithTableRecipe>, SmithingRecipeInput, RecipeHolder<GunSmithTableRecipe>>
 {
-	private final RecipeType<GunSmithTableRecipe> recipeType;
-	private final Map<GunSmithTableRecipe, RecipeHolder<GunSmithTableRecipe>> recipeHolderIdMap;
+	private final RecipeType<RecipeHolder<GunSmithTableRecipe>> recipeType;
 
-	public GunSmithTableRecipeTransferHandler(IRecipeTransferHandlerHelper recipeTransferHandlerHelper, RecipeType<GunSmithTableRecipe> recipeType, Map<GunSmithTableRecipe, RecipeHolder<GunSmithTableRecipe>> recipeToHolderMap)
+	public GunSmithTableRecipeTransferHandler(IRecipeTransferHandlerHelper recipeTransferHandlerHelper, RecipeType<RecipeHolder<GunSmithTableRecipe>> recipeType)
 	{
 		super(recipeTransferHandlerHelper);
 
 		this.recipeType = recipeType;
-		this.recipeHolderIdMap = recipeToHolderMap;
 	}
 
 	@Override
@@ -46,15 +43,15 @@ public class GunSmithTableRecipeTransferHandler extends TeachRecipeTransferHandl
 	}
 
 	@Override
-	public RecipeType<GunSmithTableRecipe> getRecipeType()
+	public RecipeType<RecipeHolder<GunSmithTableRecipe>> getRecipeType()
 	{
 		return this.recipeType;
 	}
 
 	@Override
-	protected RecipeHolder<GunSmithTableRecipe> getRecipe(GunSmithTableTeachMenu menu, GunSmithTableRecipe categoryRecipe, IRecipeSlotsView recipeSlots, Player player)
+	protected RecipeHolder<GunSmithTableRecipe> getRecipe(GunSmithTableTeachMenu menu, RecipeHolder<GunSmithTableRecipe> categoryRecipe, IRecipeSlotsView recipeSlots, Player player)
 	{
-		return this.recipeHolderIdMap.get(categoryRecipe);
+		return categoryRecipe;
 	}
 
 	@Override

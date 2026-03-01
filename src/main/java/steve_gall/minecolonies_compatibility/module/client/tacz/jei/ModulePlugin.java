@@ -1,17 +1,13 @@
 package steve_gall.minecolonies_compatibility.module.client.tacz.jei;
 
-import java.util.HashMap;
-
 import com.tacz.guns.GunMod;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.crafting.GunSmithTableRecipe;
-import com.tacz.guns.init.ModRecipe;
 
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import steve_gall.minecolonies_compatibility.module.client.jei.AbstractModulePlugin;
@@ -42,29 +38,21 @@ public class ModulePlugin extends AbstractModulePlugin
 			return;
 		}
 
-		var recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ModRecipe.GUN_SMITH_TABLE_CRAFTING.get());
-		var recipeToHolderMap = new HashMap<GunSmithTableRecipe, RecipeHolder<GunSmithTableRecipe>>();
-
-		for (var recipe : recipes)
-		{
-			recipeToHolderMap.put(recipe.value(), recipe);
-		}
-
 		var transferHelper = registration.getTransferHelper();
 
 		for (var entry : TimelessAPI.getAllCommonBlockIndex())
 		{
 
 			var recipeType = getRecipeType(entry.getKey());
-			var recipeTransferHandler = new GunSmithTableRecipeTransferHandler(transferHelper, recipeType, recipeToHolderMap);
+			var recipeTransferHandler = new GunSmithTableRecipeTransferHandler(transferHelper, recipeType);
 			registration.addRecipeTransferHandler(recipeTransferHandler, recipeType);
 		}
 
 	}
 
-	private RecipeType<GunSmithTableRecipe> getRecipeType(ResourceLocation blockId)
+	private RecipeType<RecipeHolder<GunSmithTableRecipe>> getRecipeType(ResourceLocation blockId)
 	{
-		return RecipeType.create(GunMod.MOD_ID, "gun_smith_table/" + blockId.toString().replace(':', '_'), GunSmithTableRecipe.class);
+		return RecipeType.createRecipeHolderType(ResourceLocation.fromNamespaceAndPath(GunMod.MOD_ID, "gun_smith_table/" + blockId.toString().replace(':', '_')));
 	}
 
 	@Override

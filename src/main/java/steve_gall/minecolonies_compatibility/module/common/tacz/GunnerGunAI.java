@@ -132,7 +132,11 @@ public class GunnerGunAI extends CustomizedAIGunner
 
 		if (weapon.getItem() instanceof IGun gun)
 		{
-			if (gun.hasBulletInBarrel(weapon) || gun.getCurrentAmmoCount(weapon) > 0)
+			if (gun.useInventoryAmmo(weapon))
+			{
+				return super.isNeedPrepare(user);
+			}
+			else if (gun.hasBulletInBarrel(weapon) || gun.getCurrentAmmoCount(weapon) > 0)
 			{
 				return false;
 			}

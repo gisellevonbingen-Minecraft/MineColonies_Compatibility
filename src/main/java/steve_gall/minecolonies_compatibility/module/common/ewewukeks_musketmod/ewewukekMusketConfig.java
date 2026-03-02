@@ -23,6 +23,7 @@ public class ewewukekMusketConfig extends AbstractModuleConfig
 	{
 		public final GunnerGunConfig gunnerPistol;
 		public final GunnerGunConfig gunnerMusket;
+		public final GunnerGunConfig gunnerBlunderbuss;
 
 		public JobConfig(ModConfigSpec.Builder builder)
 		{
@@ -32,6 +33,10 @@ public class ewewukekMusketConfig extends AbstractModuleConfig
 
 			builder.push("gunner_musket");
 			this.gunnerMusket = new GunnerGunConfig(builder);
+			builder.pop();
+
+			builder.push("gunner_blunderbuss");
+			this.gunnerBlunderbuss = new GunnerGunConfig(builder);
 			builder.pop();
 		}
 

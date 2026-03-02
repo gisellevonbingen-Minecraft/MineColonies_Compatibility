@@ -26,6 +26,7 @@ public class ewewukekMusketModule extends AbstractModule
 		{
 			CustomizedAI.register(new GunnerGunAI.Musket());
 			CustomizedAI.register(new GunnerGunAI.Pistol());
+			CustomizedAI.register(new GunnerGunAI.Blunderbuss());
 		});
 	}
 

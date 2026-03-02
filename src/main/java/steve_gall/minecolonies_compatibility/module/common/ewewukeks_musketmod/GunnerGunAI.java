@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
+import ewewukek.musketmod.BlunderbussItem;
 import ewewukek.musketmod.Config;
 import ewewukek.musketmod.GunItem;
 import ewewukek.musketmod.Items;
@@ -73,6 +74,28 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 		public GunnerGunConfig getWeaponConfig()
 		{
 			return MineColoniesCompatibilityConfigServer.INSTANCE.modules.ewewukekMusket.job.gunnerPistol;
+		}
+
+	}
+
+	public static class Blunderbuss extends GunnerGunAI
+	{
+		@Override
+		public boolean test(@NotNull CustomizedAIContext context)
+		{
+			return super.test(context) && context.getWeapon().getItem() instanceof BlunderbussItem;
+		}
+
+		@Override
+		public boolean canMeleeAttack(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
+		{
+			return false;
+		}
+
+		@Override
+		public GunnerGunConfig getWeaponConfig()
+		{
+			return MineColoniesCompatibilityConfigServer.INSTANCE.modules.ewewukekMusket.job.gunnerBlunderbuss;
 		}
 
 	}

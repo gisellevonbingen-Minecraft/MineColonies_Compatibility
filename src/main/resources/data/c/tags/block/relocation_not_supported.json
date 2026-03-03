@@ -1,6 +1,10 @@
 {
 	"replace": false,
 	"values": [
-		"minecolonies_compatibility:common_network_storage"
+		"minecolonies_compatibility:common_network_storage",
+		{
+			"required": false,
+			"id": "minecolonies_compatibility:citizen_stock_keeper"
+		}
 	]
 }

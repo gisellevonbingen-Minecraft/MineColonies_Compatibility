@@ -12,8 +12,8 @@
 	"minecolonies_compatibility:gunner.job.desc": "Distance fighter, deals high damage, but has low survival chance in close combat.",
 	"minecolonies_compatibility:gunner.skills.desc": "Affects speed, accuracy, range, and damage output.",
 	"com.minecolonies_compatibility.job.orchardist": "Orchardist",
-	"minecolonies_compatibility:orchardist.skills.desc": "Affects harvesting and walking speed.",
 	"minecolonies_compatibility:orchardist.job.desc": "Harvests fruits, leaf crops hanging at tree.",
+	"minecolonies_compatibility:orchardist.skills.desc": "Affects harvesting and walking speed.",
 	"com.minecolonies_compatibility.job.fluid_manager": "Fluid Manager",
 	"minecolonies_compatibility:fluid_manager.job.desc": "Fill bucket with fluid and Pickup lava from cauldron.",
 	"minecolonies_compatibility:fluid_manager.skills.desc": "Affects crafting speed and pickup speed.",
@@ -91,7 +91,6 @@
 	"minecolonies_compatibility.text.access_direction.insert_extract": "Insert and Extract",
 	"minecolonies_compatibility.text.pickup_requested": "Pickup Requested",
 	"minecolonies_compatibility.text.delivery_requested": "Delivery Requested",
-	"minecolonies_compatibility.text.teach_repair_material": "Teach Repair Material",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.material": "Material",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.value": "Value",
 	

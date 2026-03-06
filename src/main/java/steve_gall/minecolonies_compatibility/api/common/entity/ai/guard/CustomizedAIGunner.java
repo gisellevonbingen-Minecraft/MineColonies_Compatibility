@@ -246,13 +246,12 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 			if (this.isNeedRequestAmmo(user))
 			{
 				this.requestAmmo(user);
-				return false;
+				return bulletMode.canDefault();
 			}
 
-			return true;
 		}
 
-		return bulletMode.canDefault();
+		return true;
 	}
 
 	protected boolean isNeedRequestAmmo(@NotNull AbstractEntityCitizen user)

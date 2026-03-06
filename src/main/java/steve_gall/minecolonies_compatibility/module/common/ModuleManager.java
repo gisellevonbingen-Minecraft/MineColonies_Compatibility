@@ -12,6 +12,7 @@ import steve_gall.minecolonies_compatibility.module.common.atmospheric.Atmospher
 import steve_gall.minecolonies_compatibility.module.common.blue_skies.BlueSkiesModule;
 import steve_gall.minecolonies_compatibility.module.common.butchercraft.ButchercraftModule;
 import steve_gall.minecolonies_compatibility.module.common.butchersdelight.ButchersDelightModule;
+import steve_gall.minecolonies_compatibility.module.common.cgm.CGMModule;
 import steve_gall.minecolonies_compatibility.module.common.collectorsreap.CollectorsReapModule;
 import steve_gall.minecolonies_compatibility.module.common.croptopia.CroptopiaModule;
 import steve_gall.minecolonies_compatibility.module.common.culturaldelights.CulturalDelightsModule;
@@ -71,6 +72,7 @@ public class ModuleManager
 	public static final OptionalModule<ButchercraftModule> BUTCHERCRAFT = register("butchercraft", () -> ButchercraftModule::new);
 	public static final OptionalModule<ButchersDelightModule> BUTCHERSDELIGHT = register("butchersdelight", () -> ButchersDelightModule::new);
 	public static final OptionalModule<AbstractModule> BUTCHERSDELIGHTFOODS = register("butchersdelightfoods", () -> AbstractModule::new);
+	public static final OptionalModule<CGMModule> CGM  = register("cgm", () -> CGMModule::new);
 	public static final OptionalModule<CollectorsReapModule> COLLECTORSREAP = register("collectorsreap", () -> CollectorsReapModule::new);
 	public static final OptionalModule<CroptopiaModule> CROPTOPIA = register("croptopia", () -> CroptopiaModule::new);
 	public static final OptionalModule<CulturalDelightsModule> CULTURALDELIGHTS = register("culturaldelights", () -> CulturalDelightsModule::new);

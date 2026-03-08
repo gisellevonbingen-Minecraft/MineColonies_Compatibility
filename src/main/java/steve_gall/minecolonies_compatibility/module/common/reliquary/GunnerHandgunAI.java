@@ -87,7 +87,7 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 
 	@Override
 	@Nullable
-	protected AttackDelayConfig getAttackDealyConfig()
+	protected AttackDelayConfig getAttackDealyConfig(AbstractEntityCitizen user)
 	{
 		return this.getWeaponConfig().attackDelay;
 	}

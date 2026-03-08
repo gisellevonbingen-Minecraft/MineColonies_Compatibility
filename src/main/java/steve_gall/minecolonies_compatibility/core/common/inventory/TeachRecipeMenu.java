@@ -146,7 +146,7 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 
 			if (show == null)
 			{
-				this.setRecipeIndex(0);
+				this.setRecipeIndex(Math.max(this.recipes.indexOf(this.recipe), 0));
 			}
 			else
 			{

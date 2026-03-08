@@ -191,7 +191,7 @@ public class GunnerGunAI extends CustomizedAIGunner
 
 	@Override
 	@Nullable
-	protected AttackDelayConfig getAttackDealyConfig()
+	protected AttackDelayConfig getAttackDealyConfig(AbstractEntityCitizen user)
 	{
 		return null;
 	}

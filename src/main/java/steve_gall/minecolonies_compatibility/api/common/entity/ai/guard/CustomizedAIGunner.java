@@ -355,7 +355,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	@Override
 	public int getAttackDelay(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)
 	{
-		var config = this.getAttackDealyConfig();
+		var config = this.getAttackDealyConfig(user);
 
 		if (config != null)
 		{
@@ -369,7 +369,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	}
 
 	@Nullable
-	protected abstract AttackDelayConfig getAttackDealyConfig();
+	protected abstract AttackDelayConfig getAttackDealyConfig(@NotNull AbstractEntityCitizen user);
 
 	@Override
 	public double getAttackDistance(@NotNull AbstractEntityCitizen user, @NotNull LivingEntity target)

@@ -49,16 +49,4 @@ public class GunSmithTableTeachScreen extends TeachCraftingRecipeScreen<GunSmith
 		return new GunSmithTableRecipeStorage(recipe.id(), input, output);
 	}
 
-	@Override
-	public int getSwitchButtonX()
-	{
-		return GunSmithTableTeachMenu.RESULT_X;
-	}
-
-	@Override
-	public int getSwitchButtonY()
-	{
-		return GunSmithTableTeachMenu.RESULT_Y + SWITCH_HEIGHT;
-	}
-
 }

@@ -26,7 +26,7 @@ public class ModulePlugin extends AbstractModulePlugin
 		}
 
 		var types = TimelessAPI.getAllCommonBlockIndex().stream().map(entry -> getRecipeType(entry.getKey())).toArray(RecipeType[]::new);
-		registration.addRecipeClickArea(GunSmithTableTeachScreen.class, 68, 35, 22, 15, types);
+		registration.addRecipeClickArea(GunSmithTableTeachScreen.class, 91, 36, 22, 15, types);
 	}
 
 	@Override

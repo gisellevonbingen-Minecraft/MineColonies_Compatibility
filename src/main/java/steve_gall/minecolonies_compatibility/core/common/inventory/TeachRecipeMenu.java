@@ -143,7 +143,7 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 
 			if (show == null)
 			{
-				this.setRecipeIndex(0);
+				this.setRecipeIndex(Math.max(this.recipes.indexOf(this.recipe), 0));
 			}
 			else
 			{

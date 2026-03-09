@@ -1,11 +1,13 @@
 package steve_gall.minecolonies_compatibility.module.common.tacz;
 
 import com.minecolonies.api.colony.buildings.ModBuildings;
+import com.tacz.guns.api.item.IGun;
 
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
+import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.module.client.tacz.GunSmithTableTeachScreen;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 import steve_gall.minecolonies_compatibility.module.common.tacz.crafting.GunSmithTableRecipeStorage;
@@ -56,6 +58,7 @@ public class TACZModule extends AbstractModule
 		e.enqueueWork(() ->
 		{
 			CustomizedAI.register(new GunnerGunAI());
+			ModToolTypes.GUN.register(item -> item instanceof IGun);
 		});
 
 	}

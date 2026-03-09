@@ -1,8 +1,11 @@
 package steve_gall.minecolonies_compatibility.module.common.ewewukeks_musketmod;
 
+import ewewukek.musketmod.MusketItem;
+import ewewukek.musketmod.PistolItem;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
+import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 import steve_gall.minecolonies_tweaks.api.common.requestsystem.DeliverableObjectRegistry;
 
@@ -25,7 +28,9 @@ public class ewewukekMusketModule extends AbstractModule
 		e.enqueueWork(() ->
 		{
 			CustomizedAI.register(new GunnerGunAI.Musket());
+			ModToolTypes.GUN.register(item -> item instanceof MusketItem);
 			CustomizedAI.register(new GunnerGunAI.Pistol());
+			ModToolTypes.GUN.register(item -> item instanceof PistolItem);
 		});
 	}
 

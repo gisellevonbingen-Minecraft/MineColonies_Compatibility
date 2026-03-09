@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.module.common.cgm;
 
 import com.minecolonies.api.colony.buildings.ModBuildings;
+import com.mrcrayfish.guns.item.GunItem;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -8,6 +9,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.module.client.cgm.WorkbenchTeachScreen;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 import steve_gall.minecolonies_compatibility.module.common.cgm.crafting.WorkbenchRecipeStorage;
@@ -52,6 +54,7 @@ public class CGMModule extends AbstractModule
 		e.enqueueWork(() ->
 		{
 			CustomizedAI.register(new GunnerGunAI());
+			ModToolTypes.GUN.register(item -> item instanceof GunItem);
 		});
 
 	}

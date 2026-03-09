@@ -31,6 +31,42 @@
 		{
 			"required": false,
 			"id": "tacz:modern_kinetic_gun"
+		},
+		{
+			"required": false,
+			"id": "cgm:pistol"
+		},
+		{
+			"required": false,
+			"id": "cgm:shotgun"
+		},
+		{
+			"required": false,
+			"id": "cgm:rifle"
+		},
+		{
+			"required": false,
+			"id": "cgm:grenade_launcher"
+		},
+		{
+			"required": false,
+			"id": "cgm:bazooka"
+		},
+		{
+			"required": false,
+			"id": "cgm:mini_gun"
+		},
+		{
+			"required": false,
+			"id": "cgm:assault_rifle"
+		},
+		{
+			"required": false,
+			"id": "cgm:machine_pistol"
+		},
+		{
+			"required": false,
+			"id": "cgm:heavy_rifle"
 		}
 	]
 }

@@ -10,9 +10,14 @@ public class ContainerHelper
 {
 	public static List<ItemStack> getItemStacks(Container container)
 	{
+		return getItemStacks(container, 0, container.getContainerSize());
+	}
+
+	public static List<ItemStack> getItemStacks(Container container, int start, int end)
+	{
 		var list = new ArrayList<ItemStack>();
 
-		for (var i = 0; i < container.getContainerSize(); i++)
+		for (var i = start; i < end; i++)
 		{
 			list.add(container.getItem(i));
 		}

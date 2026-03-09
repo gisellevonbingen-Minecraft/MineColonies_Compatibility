@@ -194,6 +194,8 @@ dependencies {
     compileOnly fg.deobf("dev.engine-room.flywheel:flywheel-forge-api-${mc_version}:${flywheel_version}")
     runtimeOnly fg.deobf("dev.engine-room.flywheel:flywheel-forge-${mc_version}:${flywheel_version}")
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    implementation fg.deobf("curse.maven:mrcrayfishs-gun-mod-unofficial-945471:${cgm_file}")
+    implementation fg.deobf("curse.maven:framework-549225:${framework_file}")
     implementation fg.deobf("blank:l2harvester:0.1.2")
 
     // Runtime Only

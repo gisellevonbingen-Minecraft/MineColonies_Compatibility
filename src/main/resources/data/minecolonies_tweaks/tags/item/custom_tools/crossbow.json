@@ -2,7 +2,7 @@
 	"values": [
 		{
 			"required": false,
-			"id": "#forge:tools/crossbows"
+			"id": "#c:tools/crossbows"
 		}
 	]
 }

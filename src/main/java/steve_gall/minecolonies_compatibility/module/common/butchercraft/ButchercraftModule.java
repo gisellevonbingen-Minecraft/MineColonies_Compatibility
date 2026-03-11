@@ -22,12 +22,12 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedBucherableRegisterEvent;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.InjectBuildingSettingsModuleEvent;
@@ -57,7 +57,6 @@ public class ButchercraftModule extends AbstractModule
 		network.registerMessage(GrinderOpenTeachMessage.class, GrinderOpenTeachMessage::new);
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
-		forge_bus.addListener(this::onCustomizedBucherableRegister);
 		forge_bus.addListener(this::onInjectBuildingSettingsModule);
 
 		CustomizedRecipeStorageRegistry.INSTANCE.register(GrinderRecipeStorage.ID, GrinderRecipeStorage::serialize, GrinderRecipeStorage::new);
@@ -78,16 +77,16 @@ public class ButchercraftModule extends AbstractModule
 		MenuScreens.register(ModuleMenuTypes.GRINDER_TEACH.get(), GrinderTeachScreen::new);
 	}
 
-	private <RECIPE extends Recipe<CONTAINER>, CONTAINER extends Container, BUTCHERABLE extends CustomizedButcherable> void registerAll(CustomizedBucherableRegisterEvent e, RecipeType<RECIPE> recipeType, Function<RECIPE, Ingredient> ingredientFunc, Function<RECIPE, BUTCHERABLE> butcherableFactory)
+	private <RECIPE extends Recipe<CONTAINER>, CONTAINER extends Container, BUTCHERABLE extends CustomizedButcherable> void registerAll(RecipeManager recipeManager, RecipeType<RECIPE> recipeType, Function<RECIPE, Ingredient> ingredientFunc, Function<RECIPE, BUTCHERABLE> butcherableFactory)
 	{
-		for (var recipe : e.getRecipeManager().getAllRecipesFor(recipeType))
+		for (var recipe : recipeManager.getAllRecipesFor(recipeType))
 		{
 			var ingredient = ingredientFunc.apply(recipe);
 
 			if (Arrays.stream(ingredient.getItems()).allMatch(this::testItem))
 			{
 				var butcherable = butcherableFactory.apply(recipe);
-				e.register(butcherable);
+				CustomizedButcherable.registerVolatile(butcherable);
 			}
 
 		}
@@ -110,10 +109,13 @@ public class ButchercraftModule extends AbstractModule
 		return false;
 	}
 
-	private void onCustomizedBucherableRegister(CustomizedBucherableRegisterEvent e)
+	@Override
+	protected void onRecipeReloaded(RecipeManager recipeManager)
 	{
-		this.registerAll(e, ButchercraftRecipes.BUTCHER_BLOCK.get(), ButcherBlockRecipe::getCarcassIn, ButcherBlockButcherable::new);
-		this.registerAll(e, ButchercraftRecipes.HOOK.get(), HookRecipe::getCarcassIn, HookButcherable::new);
+		super.onRecipeReloaded(recipeManager);
+
+		this.registerAll(recipeManager, ButchercraftRecipes.BUTCHER_BLOCK.get(), ButcherBlockRecipe::getCarcassIn, ButcherBlockButcherable::new);
+		this.registerAll(recipeManager, ButchercraftRecipes.HOOK.get(), HookRecipe::getCarcassIn, HookButcherable::new);
 	}
 
 	private void onInjectBuildingSettingsModule(InjectBuildingSettingsModuleEvent e)

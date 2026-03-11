@@ -24,6 +24,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.building.module.NetworkStorageViewRegistry;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
+import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.requestsystem.IngredientDeliverable;
 import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 import steve_gall.minecolonies_compatibility.core.client.MineColoniesCompatibilityClient;
@@ -212,6 +213,7 @@ public class MineColoniesCompatibility
 	private void reloadRecipeBaseds(RecipeManager recipeManager)
 	{
 		CustomizedButcherable.reload(recipeManager);
+		CustomizedFruit.reload(recipeManager);
 		Butcherable.reload();
 
 		ModuleManager.LOADED_MODULES.forEach(m -> m.onRecipeReloaded(recipeManager));

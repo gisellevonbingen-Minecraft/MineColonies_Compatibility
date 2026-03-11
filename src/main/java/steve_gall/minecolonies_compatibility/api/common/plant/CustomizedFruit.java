@@ -15,14 +15,28 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 public abstract class CustomizedFruit
 {
 	private static final Map<ResourceLocation, CustomizedFruit> REGISTRY = new HashMap<>();
+	private static final Map<ResourceLocation, CustomizedFruit> VOLATILE = new HashMap<>();
 
 	public static void register(@NotNull CustomizedFruit fruit)
 	{
 		REGISTRY.put(fruit.getId(), fruit);
+	}
+
+	public static void registerVolatile(@NotNull CustomizedFruit fruit)
+	{
+		register(fruit);
+		VOLATILE.put(fruit.getId(), fruit);
+	}
+
+	public static void reload(@NotNull RecipeManager recipeManager)
+	{
+		VOLATILE.keySet().forEach(REGISTRY::remove);
+		VOLATILE.clear();
 	}
 
 	public static Map<ResourceLocation, CustomizedFruit> getRegistry()

@@ -16,6 +16,7 @@ import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -88,8 +89,8 @@ public class MineColoniesCompatibility
 
 		var forge_bus = MinecraftForge.EVENT_BUS;
 		forge_bus.addListener(this::onInjectBuildingSettingsModule);
-		forge_bus.addListener(this::onRecipesUpdated);
-		forge_bus.addListener(this::onOnDatapackSync);
+		forge_bus.addListener(EventPriority.HIGHEST, this::onRecipesUpdated);
+		forge_bus.addListener(EventPriority.HIGHEST, this::onOnDatapackSync);
 
 		NETWORK = new NetworkChannel(MOD_ID, "main");
 		ModMessagesRegistrar.register(NETWORK);

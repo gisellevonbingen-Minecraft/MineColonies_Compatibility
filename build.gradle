@@ -196,6 +196,7 @@ dependencies {
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
     implementation fg.deobf("curse.maven:mrcrayfishs-gun-mod-unofficial-945471:${cgm_file}")
     implementation fg.deobf("curse.maven:framework-549225:${framework_file}")
+    implementation fg.deobf("curse.maven:dynamictrees-252818:${dynamictrees_file}")
     implementation fg.deobf("blank:l2harvester:0.1.2")
 
     // Runtime Only

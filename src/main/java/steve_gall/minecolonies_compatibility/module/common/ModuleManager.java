@@ -21,6 +21,7 @@ import steve_gall.minecolonies_compatibility.module.common.croptopia.CroptopiaMo
 import steve_gall.minecolonies_compatibility.module.common.culturaldelights.CulturalDelightsModule;
 import steve_gall.minecolonies_compatibility.module.common.cyclic.CyclicModule;
 import steve_gall.minecolonies_compatibility.module.common.delightful.DelightfulModule;
+import steve_gall.minecolonies_compatibility.module.common.dynamictrees.DynamicTreesModule;
 import steve_gall.minecolonies_compatibility.module.common.ewewukeks_musketmod.ewewukekMusketModule;
 import steve_gall.minecolonies_compatibility.module.common.farmersdelight.FarmersDelightModule;
 import steve_gall.minecolonies_compatibility.module.common.fruitfulfun.FruitfulFunModule;
@@ -84,6 +85,7 @@ public class ModuleManager
 	public static final OptionalModule<CulturalDelightsModule> CULTURALDELIGHTS = register("culturaldelights", () -> CulturalDelightsModule::new);
 	public static final OptionalModule<CyclicModule> CYCLIC = register("cyclic", () -> CyclicModule::new);
 	public static final OptionalModule<DelightfulModule> DELIGHTFUL = register("delightful", () -> DelightfulModule::new);
+	public static final OptionalModule<DynamicTreesModule> DYNAMICTREES = register("dynamictrees", () -> DynamicTreesModule::new);
 	public static final OptionalModule<ewewukekMusketModule> EWEWUKEK_MUSKET = register("musketmod", () -> ewewukekMusketModule::new);
 	public static final OptionalModule<FarmersDelightModule> FARMERSDELIGHT = register("farmersdelight", () -> FarmersDelightModule::new);
 	public static final OptionalModule<FruitfulFunModule> FRUITFULFUN = register("fruitfulfun", () -> FruitfulFunModule::new);

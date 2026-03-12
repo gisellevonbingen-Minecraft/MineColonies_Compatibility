@@ -12,6 +12,7 @@ import com.minecolonies.core.colony.buildings.modules.BuildingModules;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -90,8 +91,8 @@ public class MineColoniesCompatibility
 
 		var forge_bus = NeoForge.EVENT_BUS;
 		forge_bus.addListener(this::onInjectBuildingSettingsModule);
-		forge_bus.addListener(this::onRecipesUpdated);
-		forge_bus.addListener(this::onOnDatapackSync);
+		forge_bus.addListener(EventPriority.HIGHEST, this::onRecipesUpdated);
+		forge_bus.addListener(EventPriority.HIGHEST, this::onOnDatapackSync);
 
 		ModuleManager.initialize();
 

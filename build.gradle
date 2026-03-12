@@ -134,6 +134,7 @@ dependencies {
     compileOnly "dev.engine-room.flywheel:flywheel-neoforge-api-${mc_version}:${flywheel_version}"
     runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${mc_version}:${flywheel_version}"
     implementation "com.tterrag.registrate:Registrate:${registrate_version}"
+    implementation "curse.maven:dynamictrees-252818:${dynamictrees_file}"
     implementation "blank:l2harvester:3.0.0"
 
     // Runtiem Only

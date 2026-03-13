@@ -22,7 +22,7 @@ public class Ammo implements GunnerAmmo
 	public static final Component SHORT_DISPLAY_STRING = Component.translatable(MineColoniesCompatibility.tl("tacz_ammo"));
 	public static final Component LONG_DISPLAY_STRING = Component.translatable(MineColoniesCompatibility.tl("tacz_ammo.desc"));
 
-	private ResourceLocation ammoId;
+	private final ResourceLocation ammoId;
 	private final int count;
 	private final int minCount;
 

@@ -119,7 +119,7 @@ public class ButchercraftModule extends AbstractModule
 	protected void onRecipeReloaded(RecipeManager recipeManager)
 	{
 		super.onRecipeReloaded(recipeManager);
-		
+
 		this.registerAll(recipeManager, ButchercraftRecipes.BUTCHER_BLOCK.get(), ButcherBlockRecipe::carcass, ButcherBlockButcherable::new);
 		this.registerAll(recipeManager, ButchercraftRecipes.HOOK.get(), HookRecipe::carcass, HookButcherable::new);
 	}

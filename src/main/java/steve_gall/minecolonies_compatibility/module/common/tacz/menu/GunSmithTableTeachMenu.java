@@ -142,7 +142,7 @@ public class GunSmithTableTeachMenu extends TeachRecipeMenu<RecipeHolder<GunSmit
 	{
 		super.setContainerByTransfer(provider, recipe, payload);
 
-		var input = new ArrayList<ItemStorage>(StandardFactoryController.getInstance().deserializeList(provider, payload.getList("input", Tag.TAG_COMPOUND)));
+		var input = new ArrayList<>(StandardFactoryController.getInstance().<ItemStorage> deserializeList(provider, payload.getList("input", Tag.TAG_COMPOUND)));
 
 		for (var i = 0; i < CRAFTING_SLOTS; i++)
 		{

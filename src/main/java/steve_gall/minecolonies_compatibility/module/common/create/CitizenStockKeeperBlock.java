@@ -42,7 +42,7 @@ public class CitizenStockKeeperBlock extends BaseEntityBlock implements IWrencha
 	{
 		return RenderShape.MODEL;
 	}
-	
+
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result)
 	{

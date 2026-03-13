@@ -247,7 +247,7 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected int getReloadTimerDuration()
+	protected int getReloadTimerDuration(AbstractEntityCitizen user)
 	{
 		return GunnerGunConfig.RELOAD_DURATION;
 	}

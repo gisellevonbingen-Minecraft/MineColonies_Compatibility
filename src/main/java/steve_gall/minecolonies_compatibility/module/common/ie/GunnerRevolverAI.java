@@ -228,7 +228,7 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
-	protected int getReloadTimerDuration()
+	protected int getReloadTimerDuration(@NotNull AbstractEntityCitizen user)
 	{
 		return this.getWeaponConfig().reloadDuration.get().intValue();
 	}

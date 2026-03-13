@@ -47,6 +47,8 @@
 	"minecolonies_compatibility.tacz_ammo.desc": "Timeless & Classics Guns: Zero's Ammo",
 	"minecolonies_compatibility.cgm_ammo": "Ammo",
 	"minecolonies_compatibility.cgm_ammo.desc": "MrCrayfish's Gun Mod's Ammo",
+	"minecolonies_compatibility.scguns_ammo": "Ammo",
+	"minecolonies_compatibility.scguns_ammo.desc": "Scorched Guns's Ammo",
 	
 	"_comment_blocks": "Blocks",
 	"block.minecolonies_compatibility.common_network_storage": "Common Network Storage",

@@ -45,6 +45,8 @@
 	"minecolonies_compatibility.tconstruct_repair_kit.desc": "Tinkers' Construct 모드 수리 키트",
 	"minecolonies_compatibility.tacz_ammo": "TaCZ 총알",
 	"minecolonies_compatibility.tacz_ammo.desc": "Timeless & Classics Guns: Zero 모드 총알",
+	"minecolonies_compatibility.scguns_ammo": "탄약",
+	"minecolonies_compatibility.scguns_ammo.desc": "Scorched Guns 모드 탄약",
 	
 	"_comment_blocks": "블록",
 	"block.minecolonies_compatibility.common_network_storage": "범용 저장고 네트워크",

@@ -134,6 +134,7 @@ dependencies {
     implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
     implementation fg.deobf("curse.maven:architectury-api-419699:${architectury_api_file}")
     implementation "thedarkcolour:kotlinforforge:${kotlin_for_forge_version}"
+    implementation fg.deobf("curse.maven:geckolib-388172:${geckolib_file}")
     implementation fg.deobf("curse.maven:curios-309927:${curios_file}")
     implementation fg.deobf("curse.maven:patchouli-306770:${patchouli_file}")
     implementation fg.deobf("curse.maven:polymorph-388800:${polymorph_file}")
@@ -197,6 +198,7 @@ dependencies {
     implementation fg.deobf("curse.maven:mrcrayfishs-gun-mod-unofficial-945471:${cgm_file}")
     implementation fg.deobf("curse.maven:framework-549225:${framework_file}")
     implementation fg.deobf("curse.maven:dynamictrees-252818:${dynamictrees_file}")
+    implementation fg.deobf("curse.maven:scorched-guns-802940:${scguns_files}")
     implementation fg.deobf("blank:l2harvester:0.1.2")
 
     // Runtime Only

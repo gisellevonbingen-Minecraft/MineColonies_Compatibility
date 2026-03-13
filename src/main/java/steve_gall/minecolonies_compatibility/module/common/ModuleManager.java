@@ -43,6 +43,7 @@ import steve_gall.minecolonies_compatibility.module.common.polymorph.PolymorphMo
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.RefinedStorageModule;
 import steve_gall.minecolonies_compatibility.module.common.regions_unexplored.RegionsUnexploredModule;
 import steve_gall.minecolonies_compatibility.module.common.reliquary.ReliquaryModule;
+import steve_gall.minecolonies_compatibility.module.common.scguns.ScorchedGunsModule;
 import steve_gall.minecolonies_compatibility.module.common.storagedrawers.StorageDrawersModule;
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.StorageNetworkModule;
 import steve_gall.minecolonies_compatibility.module.common.tacz.TACZModule;
@@ -106,6 +107,7 @@ public class ModuleManager
 	public static final OptionalModule<RefinedStorageModule> REFINEDSTORAGE = register("refinedstorage", () -> RefinedStorageModule::new);
 	public static final OptionalModule<RegionsUnexploredModule> REGIONS_UNEXPLORED = register("regions_unexplored", () -> RegionsUnexploredModule::new);
 	public static final OptionalModule<ReliquaryModule> RELIQUARY = register("reliquary", () -> ReliquaryModule::new);
+	public static final OptionalModule<ScorchedGunsModule> SCORCHED_GUNS = register("scguns", () -> ScorchedGunsModule::new);
 	public static final OptionalModule<StorageNetworkModule> STORAGENETWORK = register("storagenetwork", () -> StorageNetworkModule::new);
 	public static final OptionalModule<StorageDrawersModule> STORAGESDRAWERS = register("storagedrawers", () -> StorageDrawersModule::new);
 	public static final OptionalModule<TACZModule> TACZ = register("tacz", () -> TACZModule::new);

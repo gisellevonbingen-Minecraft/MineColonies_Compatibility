@@ -426,7 +426,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		user.swing(InteractionHand.MAIN_HAND);
 	}
 
-	protected int getReloadTimerDuration()
+	protected int getReloadTimerDuration(@NotNull AbstractEntityCitizen user)
 	{
 		return 0;
 	}
@@ -434,7 +434,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	protected boolean isReloadTimerComplete(@NotNull AbstractEntityCitizen user)
 	{
 		var reloadTime = this.getReloadTimerElapsed(user);
-		var reloadDuration = this.getReloadTimerDuration();
+		var reloadDuration = this.getReloadTimerDuration(user);
 		return reloadTime >= reloadDuration;
 	}
 

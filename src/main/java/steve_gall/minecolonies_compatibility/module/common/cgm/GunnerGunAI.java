@@ -148,7 +148,7 @@ public class GunnerGunAI extends CustomizedAIGunner
 		var ammoSlot = this.getAmmoSlot(user, inventory);
 		var ammoCount = this.getAmmoCount(weapon);
 
-		if (ammoCount == 0 && ammoSlot > -1)
+		if ((ammoCount == 0 || !forRangedAttack) && ammoSlot > -1)
 		{
 			var ammo = inventory.getStackInSlot(ammoSlot);
 			var reloading = Math.min(ammo.getCount(), gun.getGeneral().getMaxAmmo() - ammoCount);

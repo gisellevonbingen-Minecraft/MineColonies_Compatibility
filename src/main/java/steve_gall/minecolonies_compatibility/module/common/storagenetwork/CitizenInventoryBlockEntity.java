@@ -288,7 +288,7 @@ public class CitizenInventoryBlockEntity extends TileConnectable implements INet
 			{
 				counter.extract(extracted);
 			}
-			
+
 			return extracted;
 		}
 

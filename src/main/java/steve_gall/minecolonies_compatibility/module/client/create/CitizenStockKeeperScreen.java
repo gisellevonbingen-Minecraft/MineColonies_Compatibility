@@ -5,9 +5,9 @@ import java.util.List;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.createmod.catnip.gui.widget.AbstractSimiWidget;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -94,7 +94,7 @@ public class CitizenStockKeeperScreen extends AbstractContainerScreen<CitizenSto
 
 		if (!this.addressBox.isFocused() && this.addressBox.isHovered())
 		{
-			guiGraphics.renderComponentTooltip(this.font, List.of(CreateLang.translate("gui.factory_panel.restocker_address").color(ScrollInput.HEADER_RGB).component(), CreateLang.translate("gui.schedule.lmb_edit").style(ChatFormatting.DARK_GRAY).style(ChatFormatting.ITALIC).component()), mouseX, mouseY);
+			guiGraphics.renderComponentTooltip(this.font, List.of(CreateLang.translate("gui.factory_panel.restocker_address").color(AbstractSimiWidget.HEADER_RGB).component(), CreateLang.translate("gui.schedule.lmb_edit").style(ChatFormatting.DARK_GRAY).style(ChatFormatting.ITALIC).component()), mouseX, mouseY);
 		}
 
 	}
@@ -119,6 +119,7 @@ public class CitizenStockKeeperScreen extends AbstractContainerScreen<CitizenSto
 		return super.keyPressed(pKeyCode, pScanCode, pModifiers);
 	}
 
+	@Override
 	public boolean mouseClicked(double pMouseX, double pMouseY, int pButton)
 	{
 		boolean rmb = pButton == GLFW.GLFW_MOUSE_BUTTON_RIGHT;

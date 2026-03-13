@@ -15,7 +15,7 @@ public class CitizenStockKeeperMenu extends BaseMenu
 	{
 		super(ModuleMenuTypes.CITIZEN_STOCK_KEEPER.get(), windowId, inventory);
 		this.blockEntity = blockEntity;
-		
+
 		this.setup();
 	}
 
@@ -44,7 +44,7 @@ public class CitizenStockKeeperMenu extends BaseMenu
 	{
 		return this.blockEntity != null && !this.blockEntity.isRemoved();
 	}
-	
+
 	public CitizenStockKeeperBlockEntity getBlockEntity()
 	{
 		return this.blockEntity;

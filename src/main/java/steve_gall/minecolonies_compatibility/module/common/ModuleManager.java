@@ -77,7 +77,7 @@ public class ModuleManager
 	public static final OptionalModule<ButchercraftModule> BUTCHERCRAFT = register("butchercraft", () -> ButchercraftModule::new);
 	public static final OptionalModule<ButchersDelightModule> BUTCHERSDELIGHT = register("butchersdelight", () -> ButchersDelightModule::new);
 	public static final OptionalModule<AbstractModule> BUTCHERSDELIGHTFOODS = register("butchersdelightfoods", () -> AbstractModule::new);
-	public static final OptionalModule<CGMModule> CGM  = register("cgm", () -> CGMModule::new);
+	public static final OptionalModule<CGMModule> CGM = register("cgm", () -> CGMModule::new);
 	public static final OptionalModule<CobblemonModule> COBBLEMON = register("cobblemon", () -> CobblemonModule::new);
 	public static final OptionalModule<CollectorsReapModule> COLLECTORSREAP = register("collectorsreap", () -> CollectorsReapModule::new);
 	public static final OptionalModule<CreateModule> CREATE = register("create", () -> CreateModule::new);

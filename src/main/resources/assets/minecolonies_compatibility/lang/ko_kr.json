@@ -150,6 +150,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.tacz_gun_smith_table.menu": "총기 제작 테이블 제작법",
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials": "Tinkers' Construct - 수리 재료",
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials.menu": "수리 재료",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.scguns_gun_bench": "Scorched Guns - 총기 작업대 제작법",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.scguns_gun_bench.menu": "총기 작업대 제작법",
 	
 	"_comment_module_settings": "모듈 설정",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "폭죽 로켓 요청",

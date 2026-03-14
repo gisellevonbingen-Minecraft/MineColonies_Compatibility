@@ -40,7 +40,7 @@ public class SimpleGenericRecipe implements IGenericRecipe
 
 	public SimpleGenericRecipe(@NotNull RecipeHolder<?> recipeHolder, @NotNull HolderLookup.Provider provider)
 	{
-		this(recipeHolder.id(), IngredientHelper.getStacksList(recipeHolder.value().getIngredients()), recipeHolder.value().getResultItem(provider));
+		this(recipeHolder.id(), IngredientHelper.getStacksList(IngredientHelper.filterNotEmpty(recipeHolder.value().getIngredients())), recipeHolder.value().getResultItem(provider));
 	}
 
 	public SimpleGenericRecipe(@NotNull ResourceLocation recipeId, @NotNull List<List<ItemStack>> ingredients, @NotNull ItemStack output)

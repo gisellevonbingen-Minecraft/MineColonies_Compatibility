@@ -30,6 +30,11 @@ public class IngredientHelper
 		return Arrays.asList(ingredient.getItems());
 	}
 
+	public static List<Ingredient> filterNotEmpty(List<Ingredient> ingredients)
+	{
+		return ingredients.stream().filter(ingredient -> !ingredient.isEmpty()).toList();
+	}
+
 	public static boolean isTool(@NotNull Ingredient ingredient, @NotNull EquipmentTypeEntry toolType)
 	{
 		return Arrays.stream(ingredient.getItems()).filter(stack -> !ToolTypeTags.isInBlacklist(stack, toolType.getRegistryName())).allMatch(stack -> ItemStackHelper.isTool(stack, toolType));

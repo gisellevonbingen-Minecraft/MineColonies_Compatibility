@@ -69,10 +69,14 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	@Override
 	public boolean reload(@NotNull AbstractEntityCitizen user, boolean forRangedAttack)
 	{
-		if (this.getWeaponConfig().needReload.get().booleanValue() && this.getBulletCount(user) <= 0)
+		if (this.getWeaponConfig().needReload.get().booleanValue())
 		{
-			this.startReloadTimer(user);
-			return false;
+			if (this.getBulletCount(user) <= 0 || !forRangedAttack)
+			{
+				this.startReloadTimer(user);
+				return false;
+			}
+
 		}
 
 		return true;

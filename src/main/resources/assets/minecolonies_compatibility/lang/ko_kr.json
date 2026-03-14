@@ -45,6 +45,8 @@
 	"minecolonies_compatibility.tconstruct_repair_kit.desc": "Tinkers' Construct 모드 수리 키트",
 	"minecolonies_compatibility.tacz_ammo": "TaCZ 총알",
 	"minecolonies_compatibility.tacz_ammo.desc": "Timeless & Classics Guns: Zero 모드 총알",
+	"minecolonies_compatibility.cgm_ammo": "탄환",
+	"minecolonies_compatibility.cgm_ammo.desc": "MrCrayfish's Gun 모드 탄환",
 	
 	"_comment_blocks": "블록",
 	"block.minecolonies_compatibility.common_network_storage": "범용 저장고 네트워크",
@@ -141,6 +143,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.tacz_gun_smith_table.menu": "총기 제작 테이블 제작법",
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials": "Tinkers' Construct - 수리 재료",
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials.menu": "수리 재료",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.cgm_workbench": "MrCrayfish's Gun Mod - 작업대 제작법",
+	"com.minecolonies.coremod.gui.workerhuts.recipe.cgm_workbench.menu": "작업대 제작법",
 	
 	"_comment_module_settings": "모듈 설정",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "폭죽 로켓 요청",

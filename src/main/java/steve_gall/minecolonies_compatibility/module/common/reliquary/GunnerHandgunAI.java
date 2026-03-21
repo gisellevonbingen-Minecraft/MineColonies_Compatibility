@@ -24,7 +24,6 @@ import reliquary.init.ModSounds;
 import reliquary.items.HandgunItem;
 import reliquary.items.MagazineItem;
 import reliquary.util.potions.XRPotionHelper;
-import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGunner;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.GunnerAmmo;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
@@ -45,9 +44,9 @@ public class GunnerHandgunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public boolean test(@NotNull CustomizedAIContext context)
+	public boolean testWeapon(@NotNull ItemStack weapon)
 	{
-		return super.test(context) && context.getWeapon().getItem() instanceof HandgunItem;
+		return weapon.getItem() instanceof HandgunItem;
 	}
 
 	@Override

@@ -12,7 +12,6 @@ import com.tacz.guns.api.item.IGun;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGunner;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.GunnerAmmo;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
@@ -30,9 +29,9 @@ public class GunnerGunAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public boolean test(@NotNull CustomizedAIContext context)
+	public boolean testWeapon(@NotNull ItemStack weapon)
 	{
-		return super.test(context) && context.getWeapon().getItem() instanceof IGun;
+		return weapon.getItem() instanceof IGun;
 	}
 
 	@Override

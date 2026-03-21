@@ -16,7 +16,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.CustomizedAIGunner;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.guard.GunnerAmmo;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
@@ -29,9 +28,9 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	public static class Musket extends GunnerGunAI
 	{
 		@Override
-		public boolean test(@NotNull CustomizedAIContext context)
+		public boolean testWeapon(@NotNull ItemStack weapon)
 		{
-			return super.test(context) && context.getWeapon().getItem() instanceof MusketItem;
+			return weapon.getItem() instanceof MusketItem;
 		}
 
 		@Override
@@ -59,9 +58,9 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	public static class Pistol extends GunnerGunAI
 	{
 		@Override
-		public boolean test(@NotNull CustomizedAIContext context)
+		public boolean testWeapon(@NotNull ItemStack weapon)
 		{
-			return super.test(context) && context.getWeapon().getItem() instanceof PistolItem;
+			return weapon.getItem() instanceof PistolItem;
 		}
 
 		@Override
@@ -81,9 +80,9 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	public static class Blunderbuss extends GunnerGunAI
 	{
 		@Override
-		public boolean test(@NotNull CustomizedAIContext context)
+		public boolean testWeapon(@NotNull ItemStack weapon)
 		{
-			return super.test(context) && context.getWeapon().getItem() instanceof BlunderbussItem;
+			return weapon.getItem() instanceof BlunderbussItem;
 		}
 
 		@Override

@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
 import steve_gall.minecolonies_compatibility.core.common.building.BuildingHelper;
 import steve_gall.minecolonies_compatibility.core.common.colony.CitizenHelper;
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
@@ -36,6 +37,17 @@ import steve_gall.minecolonies_tweaks.api.common.requestsystem.CustomizableDeliv
 
 public abstract class CustomizedAIGunner extends CustomizedAIGuard
 {
+	@Override
+	public boolean test(@NotNull CustomizedAIContext context)
+	{
+		return super.test(context) && this.testWeapon(context.getWeapon());
+	}
+	
+	public boolean testWeapon(@NotNull ItemStack weapon)
+	{
+		return false;
+	}
+
 	@Override
 	@NotNull
 	public GuardType getGuardType()

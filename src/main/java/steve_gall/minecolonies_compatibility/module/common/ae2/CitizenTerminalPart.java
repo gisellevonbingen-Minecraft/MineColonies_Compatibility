@@ -30,6 +30,7 @@ import appeng.api.networking.crafting.ICraftingLink;
 import appeng.api.networking.crafting.ICraftingPlan;
 import appeng.api.networking.crafting.ICraftingSimulationRequester;
 import appeng.api.networking.crafting.ICraftingSubmitResult;
+import appeng.api.networking.crafting.ICraftingWatcherNode;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.IPartModel;
@@ -67,7 +68,7 @@ import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCr
 import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.module.common.ae2.init.ModuleMenuTypes;
 
-public class CitizenTerminalPart extends AbstractDisplayPart implements IStorageWatcherNode, IGridTickable, IConfigurableObject
+public class CitizenTerminalPart extends AbstractDisplayPart implements IStorageWatcherNode, ICraftingWatcherNode, IGridTickable, IConfigurableObject
 {
 	@PartModels
 	public static final ResourceLocation MODEL_OFF = MineColoniesCompatibility.rl("part/citizen_terminal_off");
@@ -104,6 +105,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		var mainNode = this.getMainNode();
 		mainNode.addService(IStorageWatcherNode.class, this);
+		mainNode.addService(ICraftingWatcherNode.class, this);
 		mainNode.addService(IGridTickable.class, this);
 	}
 
@@ -207,6 +209,20 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 			});
 		}
 
+	}
+
+	@Override
+	public void onRequestChange(AEKey what)
+	{
+	}
+
+	@Override
+	public void onCraftableChange(AEKey what)
+	{
+		if (what instanceof AEItemKey itemKey)
+		{
+			this.view.enqueue(itemKey.toStack(Integer.MAX_VALUE));
+		}
 	}
 
 	public static ItemStack toStack(Object2LongMap.Entry<AEKey> entry)
@@ -496,22 +512,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		@Override
 		public Stream<ItemStack> getAllStacks()
 		{
-			var storageStream = StreamSupport.stream(counter.spliterator(), false).map(CitizenTerminalPart::toStack);
-
-			var grid = getMainNode().getGrid();
-
-			if (grid == null)
-			{
-				return storageStream;
-			}
-
-			var craftableStream = grid.getCraftingService()
-				.getCraftables((AEKeyFilter) k -> k instanceof AEItemKey)
-				.stream()
-				.filter(k -> counter.get((AEItemKey) k) <= 0)
-				.map(key -> ((AEItemKey) key).toStack(1));
-
-			return Stream.concat(storageStream, craftableStream);
+			return StreamSupport.stream(counter.spliterator(), false).map(CitizenTerminalPart::toStack);
 		}
 
 		@Override

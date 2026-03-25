@@ -35,8 +35,8 @@ import com.refinedmods.refinedstorage.common.support.resource.ItemResource;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -99,8 +99,8 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 	{
 		super.writeConfiguration(tag, provider);
 
-		tag.put(TAG_LINK, this.view.writeLink());
-		tag.put(TAG_DATA, this.view.writeData());
+		tag.put(TAG_LINK, this.view.writeLink(provider));
+		tag.put(TAG_DATA, this.view.writeData(provider));
 		tag.putInt(TAG_ACCESS_MODE, AccessModeSettings.getAccessMode(this.accessMode));
 	}
 
@@ -111,12 +111,12 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 		if (tag.contains(TAG_LINK))
 		{
-			this.view.readLink(tag.getCompound(TAG_LINK));
+			this.view.readLink(provider, tag.getCompound(TAG_LINK));
 		}
 
 		if (tag.contains(TAG_DATA))
 		{
-			this.view.readData(tag.getCompound(TAG_DATA));
+			this.view.readData(provider, tag.getCompound(TAG_DATA));
 		}
 
 		if (tag.contains(TAG_ACCESS_MODE))
@@ -334,17 +334,16 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 		}
 
 		@Override
-		public void readData(CompoundTag tag)
+		public void readData(HolderLookup.Provider provider, CompoundTag tag)
 		{
-			super.readData(tag);
+			super.readData(provider, tag);
 
 			var factoryController = StandardFactoryController.getInstance();
-			var registryAccess = this.getLevel().registryAccess();
 			this.tasks.clear();
 
 			for (var taskTag : NBTUtils.streamCompound(tag.getList("tasks", Tag.TAG_COMPOUND)).toList())
 			{
-				IToken<?> requestId = factoryController.deserializeTag(registryAccess, taskTag.getCompound("requestId"));
+				IToken<?> requestId = factoryController.deserializeTag(provider, taskTag.getCompound("requestId"));
 				var task = new TaskHolder(taskTag.getCompound("task"));
 				this.tasks.put(requestId, task);
 			}
@@ -352,16 +351,15 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 		}
 
 		@Override
-		public void writeData(CompoundTag tag)
+		public void writeData(HolderLookup.Provider provider, CompoundTag tag)
 		{
-			super.writeData(tag);
+			super.writeData(provider, tag);
 
 			var factoryController = StandardFactoryController.getInstance();
-			var registryAccess = this.getLevel().registryAccess();
 			tag.put("tasks", this.tasks.entrySet().stream().map(entry ->
 			{
 				var taskTag = new CompoundTag();
-				taskTag.put("requestId", factoryController.serializeTag(registryAccess, entry.getKey()));
+				taskTag.put("requestId", factoryController.serializeTag(provider, entry.getKey()));
 				taskTag.put("task", entry.getValue().write());
 				return taskTag;
 			}).collect(NBTUtils.toListNBT()));

@@ -203,23 +203,23 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	}
 
 	@Override
-	public void readFromNBT(CompoundTag data, HolderLookup.Provider registries)
+	public void readFromNBT(CompoundTag data, HolderLookup.Provider provider)
 	{
-		super.readFromNBT(data, registries);
+		super.readFromNBT(data, provider);
 
-		this.view.readLink(data.getCompound(TAG_LINK));
-		this.config.readFromNBT(data.getCompound("config"), registries);
+		this.view.readLink(provider, data.getCompound(TAG_LINK));
+		this.config.readFromNBT(data.getCompound("config"), provider);
 	}
 
 	@Override
-	public void writeToNBT(CompoundTag data, HolderLookup.Provider registries)
+	public void writeToNBT(CompoundTag data, HolderLookup.Provider provider)
 	{
-		super.writeToNBT(data, registries);
+		super.writeToNBT(data, provider);
 
-		data.put(TAG_LINK, this.view.writeLink());
+		data.put(TAG_LINK, this.view.writeLink(provider));
 
 		var configTag = new CompoundTag();
-		this.config.writeToNBT(configTag, registries);
+		this.config.writeToNBT(configTag, provider);
 		data.put("config", configTag);
 	}
 

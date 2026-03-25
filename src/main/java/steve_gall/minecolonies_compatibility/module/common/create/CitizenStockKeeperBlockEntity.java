@@ -155,7 +155,7 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 	public CompoundTag getUpdateTag(HolderLookup.Provider provider)
 	{
 		var tag = new CompoundTag();
-		tag.put(TAG_LINK, this.view.writeLink());
+		tag.put(TAG_LINK, this.view.writeLink(provider));
 		tag.putString(TAG_ADDRESS, this.address);
 		return tag;
 	}
@@ -167,12 +167,12 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 
 		if (tag.contains(TAG_LINK))
 		{
-			this.view.readLink(tag.getCompound(TAG_LINK));
+			this.view.readLink(provider, tag.getCompound(TAG_LINK));
 		}
 
 		if (tag.contains(TAG_DATA))
 		{
-			this.view.readData(tag.getCompound(TAG_DATA));
+			this.view.readData(provider, tag.getCompound(TAG_DATA));
 		}
 
 		if (tag.contains(TAG_ADDRESS))
@@ -187,8 +187,8 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 	{
 		super.saveAdditional(tag, provider);
 
-		tag.put(TAG_LINK, this.view.writeLink());
-		tag.put(TAG_DATA, this.view.writeData());
+		tag.put(TAG_LINK, this.view.writeLink(provider));
+		tag.put(TAG_DATA, this.view.writeData(provider));
 		tag.putString(TAG_ADDRESS, this.address);
 	}
 
@@ -551,9 +551,9 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 		}
 
 		@Override
-		public void readData(CompoundTag tag)
+		public void readData(HolderLookup.Provider provider, CompoundTag tag)
 		{
-			super.readData(tag);
+			super.readData(provider, tag);
 
 			var registryAccess = level.registryAccess();
 			var factoryController = StandardFactoryController.getInstance();
@@ -569,9 +569,9 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 		}
 
 		@Override
-		public void writeData(CompoundTag tag)
+		public void writeData(HolderLookup.Provider provider, CompoundTag tag)
 		{
-			super.writeData(tag);
+			super.writeData(provider, tag);
 
 			var registryAccess = level.registryAccess();
 			var factoryController = StandardFactoryController.getInstance();

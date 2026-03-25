@@ -250,7 +250,7 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 			for (var requestId : new ArrayList<>(this.tasks.keySet()))
 			{
-				this.cancelAutocrafting(requestId);
+				this.cancelAutocrafting0(requestId);
 
 				var request = requestManager.getRequestForToken(requestId);
 
@@ -262,6 +262,8 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
 			}
 
+			setChanged();
+			requestManager.markDirty();
 		}
 
 		public boolean hasPermission(Permission permission)
@@ -422,12 +424,19 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 		{
 			super.cancelAutocrafting(requestId);
 
+			if (this.cancelAutocrafting0(requestId))
+			{
+				setChanged();
+			}
+
+		}
+
+		private boolean cancelAutocrafting0(IToken<?> requestId)
+		{
 			var taskHolder = this.tasks.remove(requestId);
 
 			if (taskHolder != null)
 			{
-				setChanged();
-
 				var network = mainNetworkNode.getNetwork();
 
 				if (network != null)
@@ -441,8 +450,10 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 				}
 
+				return true;
 			}
 
+			return false;
 		}
 
 		@Override
@@ -534,19 +545,23 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 			}
 
-			for (var requestId : toRemove)
+			if (toRemove.size() > 0)
 			{
-				var request = requestManager.getRequestForToken(requestId);
-				this.tasks.remove(requestId);
-				setChanged();
-
-				if (request == null)
+				for (var requestId : toRemove)
 				{
-					continue;
+					var request = requestManager.getRequestForToken(requestId);
+					this.tasks.remove(requestId);
+
+					if (request == null)
+					{
+						continue;
+					}
+
+					requestManager.updateRequestState(requestId, RequestState.CANCELLED);
 				}
 
-				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
 				requestManager.markDirty();
+				setChanged();
 			}
 
 		}

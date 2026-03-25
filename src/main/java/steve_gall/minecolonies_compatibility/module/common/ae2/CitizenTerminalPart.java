@@ -10,6 +10,7 @@ import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableSet;
 import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.request.RequestState;
 import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
@@ -27,6 +28,7 @@ import appeng.api.networking.crafting.CalculationStrategy;
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.networking.crafting.ICraftingLink;
 import appeng.api.networking.crafting.ICraftingPlan;
+import appeng.api.networking.crafting.ICraftingRequester;
 import appeng.api.networking.crafting.ICraftingWatcherNode;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IStorageWatcherNode;
@@ -39,6 +41,7 @@ import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.api.storage.AEKeyFilter;
+import appeng.api.storage.StorageHelper;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import appeng.items.parts.PartModels;
@@ -68,7 +71,7 @@ import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesComp
 import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCrafting;
 import steve_gall.minecolonies_compatibility.module.common.ae2.init.ModuleMenuTypes;
 
-public class CitizenTerminalPart extends AbstractDisplayPart implements IStorageWatcherNode, ICraftingWatcherNode, IGridTickable, IConfigurableObject
+public class CitizenTerminalPart extends AbstractDisplayPart implements IStorageWatcherNode, ICraftingWatcherNode, IGridTickable, IConfigurableObject, ICraftingRequester
 {
 	@PartModels
 	public static final ResourceLocation MODEL_OFF = MineColoniesCompatibility.rl("part/citizen_terminal_off");
@@ -103,6 +106,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		mainNode.addService(IStorageWatcherNode.class, this);
 		mainNode.addService(ICraftingWatcherNode.class, this);
 		mainNode.addService(IGridTickable.class, this);
+		mainNode.addService(ICraftingRequester.class, this);
 	}
 
 	protected void onSettingChanged(IConfigManager manager, Setting<?> setting)
@@ -319,21 +323,40 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		public TaskHolder(CompoundTag tag, HolderLookup.Provider provider)
 		{
+			if (tag.contains("craftingLink"))
+			{
+				this.craftingLink = StorageHelper.loadCraftingLink(tag.getCompound("craftingLink"), CitizenTerminalPart.this);
+			}
+
 			if (tag.contains("outputKey"))
 			{
 				this.outputKey = AEItemKey.fromTag(provider, tag.getCompound("outputKey"));
 			}
 
+			this.calculationStartTick = tag.getLong("calculationStartTick");
+			this.lastProgressValue = tag.getLong("lastProgressValue");
+			this.noProgressChecks = tag.getInt("noProgressChecks");
 		}
 
 		public CompoundTag write(HolderLookup.Provider provider)
 		{
 			var tag = new CompoundTag();
 
+			if (this.craftingLink != null)
+			{
+				var craftingLinkTag = new CompoundTag();
+				this.craftingLink.writeToNBT(craftingLinkTag);
+				tag.put("craftingLink", craftingLinkTag);
+			}
+
 			if (this.outputKey != null)
 			{
 				tag.put("outputKey", this.outputKey.toTag(provider));
 			}
+
+			tag.putLong("calculationStartTick", this.calculationStartTick);
+			tag.putLong("lastProgressValue", this.lastProgressValue);
+			tag.putInt("noProgressChecks", this.noProgressChecks);
 
 			return tag;
 		}
@@ -788,7 +811,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 							return false;
 						}
 
-						var result = grid.getCraftingService().submitJob(plan, null, null, false, action);
+						var result = grid.getCraftingService().submitJob(plan, CitizenTerminalPart.this, null, false, action);
 
 						if (result != null && result.successful())
 						{
@@ -880,6 +903,24 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		}
 
+	}
+
+	@Override
+	public ImmutableSet<ICraftingLink> getRequestedJobs()
+	{
+		return ImmutableSet.copyOf(this.view.tasks.values().stream().map(taskHolder -> taskHolder.craftingLink).toArray(ICraftingLink[]::new));
+	}
+
+	@Override
+	public long insertCraftedItems(ICraftingLink link, AEKey what, long amount, Actionable mode)
+	{
+		return 0;
+	}
+
+	@Override
+	public void jobStateChange(ICraftingLink link)
+	{
+		System.out.println(link);
 	}
 
 }

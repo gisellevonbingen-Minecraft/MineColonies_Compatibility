@@ -50,7 +50,7 @@ import com.minecolonies.api.colony.requestsystem.token.IToken;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -225,25 +225,25 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	}
 
 	@Override
-	public void readFromNBT(CompoundTag data, HolderLookup.Provider registries)
+	public void readFromNBT(CompoundTag data, Provider provider)
 	{
-		super.readFromNBT(data, registries);
+		super.readFromNBT(data, provider);
 
 		this.view.readLink(data.getCompound(TAG_LINK));
-		this.view.readData(data.getCompound(TAG_TASKS), registries);
-		this.config.readFromNBT(data.getCompound("config"), registries);
+		this.view.readData(data.getCompound(TAG_TASKS), provider);
+		this.config.readFromNBT(data.getCompound("config"), provider);
 	}
 
 	@Override
-	public void writeToNBT(CompoundTag data, HolderLookup.Provider registries)
+	public void writeToNBT(CompoundTag data, Provider provider)
 	{
-		super.writeToNBT(data, registries);
+		super.writeToNBT(data, provider);
 
 		data.put(TAG_LINK, this.view.writeLink());
-		data.put(TAG_TASKS, this.view.writeData(registries));
+		data.put(TAG_TASKS, this.view.writeData(provider));
 
 		var configTag = new CompoundTag();
-		this.config.writeToNBT(configTag, registries);
+		this.config.writeToNBT(configTag, provider);
 		data.put("config", configTag);
 	}
 
@@ -291,21 +291,21 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 			this.craftingLink = null;
 		}
 
-		public TaskHolder(CompoundTag tag, HolderLookup.Provider registries)
+		public TaskHolder(CompoundTag tag, Provider provider)
 		{
 			if (tag.contains("outputKey"))
 			{
-				this.outputKey = AEItemKey.fromTag(registries, tag.getCompound("outputKey"));
+				this.outputKey = AEItemKey.fromTag(provider, tag.getCompound("outputKey"));
 			}
 		}
 
-		public CompoundTag write(HolderLookup.Provider registries)
+		public CompoundTag write(Provider provider)
 		{
 			var tag = new CompoundTag();
 
 			if (this.outputKey != null)
 			{
-				tag.put("outputKey", this.outputKey.toTag(registries));
+				tag.put("outputKey", this.outputKey.toTag(provider));
 			}
 
 			return tag;
@@ -615,29 +615,29 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		}
 
-		public void readData(CompoundTag tag, HolderLookup.Provider registries)
+		public void readData(CompoundTag tag, Provider provider)
 		{
 			var factoryController = StandardFactoryController.getInstance();
 			this.tasks.clear();
 
 			for (var taskTag : NBTUtils.streamCompound(tag.getList("tasks", Tag.TAG_COMPOUND)).toList())
 			{
-				IToken<?> requestId = factoryController.deserializeTag(registries, taskTag.getCompound("requestId"));
-				var taskHolder = new TaskHolder(taskTag.getCompound("task"), registries);
+				IToken<?> requestId = factoryController.deserializeTag(provider, taskTag.getCompound("requestId"));
+				var taskHolder = new TaskHolder(taskTag.getCompound("task"), provider);
 				this.tasks.put(requestId, taskHolder);
 			}
 
 		}
 
-		public CompoundTag writeData(HolderLookup.Provider registries)
+		public CompoundTag writeData(Provider provider)
 		{
 			var tag = new CompoundTag();
 			var factoryController = StandardFactoryController.getInstance();
 			tag.put("tasks", this.tasks.entrySet().stream().map(entry ->
 			{
 				var taskTag = new CompoundTag();
-				taskTag.put("requestId", factoryController.serializeTag(registries, entry.getKey()));
-				taskTag.put("task", entry.getValue().write(registries));
+				taskTag.put("requestId", factoryController.serializeTag(provider, entry.getKey()));
+				taskTag.put("task", entry.getValue().write(provider));
 				return taskTag;
 			}).collect(NBTUtils.toListNBT()));
 			return tag;

@@ -320,12 +320,19 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 		{
 			super.cancelAutocrafting(requestId);
 
+			if (this.cancelAutocrafting0(requestId))
+			{
+				markDirty();
+			}
+
+		}
+
+		private boolean cancelAutocrafting0(IToken<?> requestId)
+		{
 			var taskHolder = this.tasks.remove(requestId);
 
 			if (taskHolder != null)
 			{
-				markDirty();
-
 				var network = getNetwork();
 
 				if (network != null)
@@ -339,8 +346,10 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 
 				}
 
+				return true;
 			}
 
+			return false;
 		}
 
 		@Override
@@ -438,18 +447,22 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 
 			}
 
-			for (var requestId : toRemove)
+			if (toRemove.size() > 0)
 			{
-				var request = requestManager.getRequestForToken(requestId);
-				this.tasks.remove(requestId);
-				markDirty();
-
-				if (request == null)
+				for (var requestId : toRemove)
 				{
-					continue;
+					var request = requestManager.getRequestForToken(requestId);
+					this.tasks.remove(requestId);
+
+					if (request == null)
+					{
+						continue;
+					}
+
+					requestManager.updateRequestState(requestId, RequestState.CANCELLED);
 				}
 
-				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
+				markDirty();
 				requestManager.markDirty();
 			}
 
@@ -548,7 +561,7 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 
 			for (var requestId : new ArrayList<>(this.tasks.keySet()))
 			{
-				this.cancelAutocrafting(requestId);
+				this.cancelAutocrafting0(requestId);
 
 				var request = requestManager.getRequestForToken(requestId);
 
@@ -560,6 +573,8 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
 			}
 
+			markDirty();
+			requestManager.markDirty();
 		}
 
 		@Override

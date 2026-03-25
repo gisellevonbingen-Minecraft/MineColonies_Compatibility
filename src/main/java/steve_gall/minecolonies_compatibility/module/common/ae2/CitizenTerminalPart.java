@@ -613,6 +613,21 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		{
 			super.cancelAutocrafting(requestId);
 
+			if (this.cancelAutocrafting0(requestId))
+			{
+				var host = getHost();
+
+				if (host != null)
+				{
+					host.markForSave();
+				}
+
+			}
+
+		}
+
+		private boolean cancelAutocrafting0(IToken<?> requestId)
+		{
 			var taskHolder = this.tasks.remove(requestId);
 
 			if (taskHolder != null)
@@ -631,22 +646,10 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 					link.cancel();
 				}
 
-				var module = this.getLinkedModule();
-
-				if (module != null)
-				{
-					module.getBuilding().getColony().getRequestManager().markDirty();
-				}
-
-				var host = getHost();
-
-				if (host != null)
-				{
-					host.markForSave();
-				}
-
+				return true;
 			}
 
+			return false;
 		}
 
 		@Override
@@ -889,7 +892,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 			for (var requestId : new ArrayList<>(this.tasks.keySet()))
 			{
-				this.cancelAutocrafting(requestId);
+				this.cancelAutocrafting0(requestId);
 
 				var request = requestManager.getRequestForToken(requestId);
 
@@ -901,6 +904,14 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
 			}
 
+			var host = getHost();
+
+			if (host != null)
+			{
+				host.markForSave();
+			}
+
+			requestManager.markDirty();
 		}
 
 	}

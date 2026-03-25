@@ -81,8 +81,12 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	private static final String TAG_LINK = "link";
 	private static final String TAG_TASKS = "tasks";
 
+	private static final int CRAFTABLE_NOTIFY_INTERVAL = 100;
+
 	private final StorageView view;
 	private final KeyCounter counter;
+	private boolean craftableUpdatePending = false;
+	private int craftableNotifyTick = 0;
 	private final IActionSource action;
 	private final IConfigManager config;
 
@@ -163,6 +167,17 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	@Override
 	public TickRateModulation tickingRequest(IGridNode node, int ticksSinceLastCall)
 	{
+		if (this.craftableUpdatePending)
+		{
+			this.craftableUpdatePending = false;
+			this.view.requestAll();
+		}
+		else if (++this.craftableNotifyTick >= CRAFTABLE_NOTIFY_INTERVAL)
+		{
+			this.craftableNotifyTick = 0;
+			this.view.requestAll();
+		}
+
 		this.view.tick();
 		return TickRateModulation.SAME;
 	}
@@ -217,6 +232,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 				if (prev < amount)
 				{
 					this.view.enqueue(toStack(itemKey, amount));
+					this.craftableUpdatePending = true;
 				}
 
 			});
@@ -480,7 +496,22 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		@Override
 		public Stream<ItemStack> getAllStacks()
 		{
-			return StreamSupport.stream(counter.spliterator(), false).map(CitizenTerminalPart::toStack);
+			var storageStream = StreamSupport.stream(counter.spliterator(), false).map(CitizenTerminalPart::toStack);
+
+			var grid = getMainNode().getGrid();
+
+			if (grid == null)
+			{
+				return storageStream;
+			}
+
+			var craftableStream = grid.getCraftingService()
+				.getCraftables((AEKeyFilter) k -> k instanceof AEItemKey)
+				.stream()
+				.filter(k -> counter.get((AEItemKey) k) <= 0)
+				.map(key -> ((AEItemKey) key).toStack(1));
+
+			return Stream.concat(storageStream, craftableStream);
 		}
 
 		@Override

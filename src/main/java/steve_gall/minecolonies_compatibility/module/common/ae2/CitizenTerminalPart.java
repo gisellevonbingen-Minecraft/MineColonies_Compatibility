@@ -229,8 +229,8 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	{
 		super.readFromNBT(data, provider);
 
-		this.view.readLink(data.getCompound(TAG_LINK));
-		this.view.readData(data.getCompound(TAG_TASKS), provider);
+		this.view.readLink(provider, data.getCompound(TAG_LINK));
+		this.view.readData(provider, data.getCompound(TAG_TASKS));
 		this.config.readFromNBT(data.getCompound("config"), provider);
 	}
 
@@ -239,7 +239,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	{
 		super.writeToNBT(data, provider);
 
-		data.put(TAG_LINK, this.view.writeLink());
+		data.put(TAG_LINK, this.view.writeLink(provider));
 		data.put(TAG_TASKS, this.view.writeData(provider));
 
 		var configTag = new CompoundTag();
@@ -615,7 +615,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		}
 
-		public void readData(CompoundTag tag, Provider provider)
+		public void readData(Provider provider, CompoundTag tag)
 		{
 			var factoryController = StandardFactoryController.getInstance();
 			this.tasks.clear();

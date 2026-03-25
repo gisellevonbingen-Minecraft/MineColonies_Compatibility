@@ -9,6 +9,7 @@ import com.minecolonies.api.colony.requestsystem.token.IToken;
 import com.minecolonies.api.util.BlockPosUtil;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import steve_gall.minecolonies_compatibility.api.common.building.module.INetworkStorageView;
@@ -104,7 +105,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 
 	}
 
-	public boolean readLink(CompoundTag tag)
+	public boolean readLink(HolderLookup.Provider provider, CompoundTag tag)
 	{
 		var colonyId = this.colonyId;
 		var warehousePos = this.warehousePos;
@@ -115,7 +116,7 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		return this.colonyId != colonyId || !this.warehousePos.equals(warehousePos);
 	}
 
-	public CompoundTag writeLink()
+	public CompoundTag writeLink(HolderLookup.Provider provider)
 	{
 		var tag = new CompoundTag();
 		tag.putInt(TAG_COLONY_ID, this.colonyId);
@@ -139,19 +140,19 @@ public abstract class AbstractNetworkStorageView implements INetworkStorageView
 		buffer.writeOptional(this.warehousePos, RegistryFriendlyByteBuf::writeBlockPos);
 	}
 
-	public void readData(CompoundTag tag)
+	public void readData(HolderLookup.Provider provider, CompoundTag tag)
 	{
 
 	}
 
-	public CompoundTag writeData()
+	public CompoundTag writeData(HolderLookup.Provider provider)
 	{
 		var tag = new CompoundTag();
-		this.writeData(tag);
+		this.writeData(provider, tag);
 		return tag;
 	}
 
-	public void writeData(CompoundTag tag)
+	public void writeData(HolderLookup.Provider provider, CompoundTag tag)
 	{
 
 	}

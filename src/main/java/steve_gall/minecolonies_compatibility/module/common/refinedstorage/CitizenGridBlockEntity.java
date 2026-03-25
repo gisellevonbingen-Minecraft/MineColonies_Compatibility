@@ -10,9 +10,11 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.colony.requestsystem.request.RequestState;
 import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
 import com.minecolonies.api.colony.requestsystem.token.IToken;
+import com.minecolonies.api.util.NBTUtils;
 import com.refinedmods.refinedstorage.api.autocrafting.Pattern;
 import com.refinedmods.refinedstorage.api.autocrafting.calculation.CancellationToken;
 import com.refinedmods.refinedstorage.api.autocrafting.task.TaskId;
@@ -33,8 +35,10 @@ import com.refinedmods.refinedstorage.common.support.resource.ItemResource;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -53,6 +57,7 @@ import steve_gall.minecolonies_compatibility.module.common.refinedstorage.init.M
 public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBlockEntity<CitizenGridNetworkNode> implements NetworkNodeMenuProvider, INetworkStorageViewHolder
 {
 	private static final String TAG_LINK = "link";
+	private static final String TAG_DATA = "data";
 	private static final String TAG_ACCESS_MODE = "am";
 
 	private final StorageView view;
@@ -94,7 +99,8 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 	{
 		super.writeConfiguration(tag, provider);
 
-		tag.put(TAG_LINK, this.view.writeLink());
+		tag.put(TAG_LINK, this.view.writeLink(provider));
+		tag.put(TAG_DATA, this.view.writeData(provider));
 		tag.putInt(TAG_ACCESS_MODE, AccessModeSettings.getAccessMode(this.accessMode));
 	}
 
@@ -105,7 +111,12 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 		if (tag.contains(TAG_LINK))
 		{
-			this.view.readLink(tag.getCompound(TAG_LINK));
+			this.view.readLink(provider, tag.getCompound(TAG_LINK));
+		}
+
+		if (tag.contains(TAG_DATA))
+		{
+			this.view.readData(provider, tag.getCompound(TAG_DATA));
 		}
 
 		if (tag.contains(TAG_ACCESS_MODE))
@@ -320,6 +331,39 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 			var inserted = network.getComponent(StorageNetworkComponent.class).insert(ItemResource.ofItemStack(stack), stack.getCount(), simulate ? Action.SIMULATE : Action.EXECUTE, actor);
 			return stack.copyWithCount(stack.getCount() - (int) inserted);
+		}
+
+		@Override
+		public void readData(HolderLookup.Provider provider, CompoundTag tag)
+		{
+			super.readData(provider, tag);
+
+			var factoryController = StandardFactoryController.getInstance();
+			this.tasks.clear();
+
+			for (var taskTag : NBTUtils.streamCompound(tag.getList("tasks", Tag.TAG_COMPOUND)).toList())
+			{
+				IToken<?> requestId = factoryController.deserializeTag(provider, taskTag.getCompound("requestId"));
+				var task = new TaskHolder(taskTag.getCompound("task"));
+				this.tasks.put(requestId, task);
+			}
+
+		}
+
+		@Override
+		public void writeData(HolderLookup.Provider provider, CompoundTag tag)
+		{
+			super.writeData(provider, tag);
+
+			var factoryController = StandardFactoryController.getInstance();
+			tag.put("tasks", this.tasks.entrySet().stream().map(entry ->
+			{
+				var taskTag = new CompoundTag();
+				taskTag.put("requestId", factoryController.serializeTag(provider, entry.getKey()));
+				taskTag.put("task", entry.getValue().write());
+				return taskTag;
+			}).collect(NBTUtils.toListNBT()));
+
 		}
 
 		@Override

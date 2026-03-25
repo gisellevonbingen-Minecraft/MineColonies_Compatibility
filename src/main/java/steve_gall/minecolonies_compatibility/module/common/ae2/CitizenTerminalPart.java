@@ -931,7 +931,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	@Override
 	public void jobStateChange(ICraftingLink link)
 	{
-		System.out.println(link);
+
 	}
 
 }

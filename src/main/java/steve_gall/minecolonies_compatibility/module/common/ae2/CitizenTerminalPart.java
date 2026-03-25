@@ -908,7 +908,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	@Override
 	public ImmutableSet<ICraftingLink> getRequestedJobs()
 	{
-		return ImmutableSet.copyOf(this.view.tasks.values().stream().map(taskHolder -> taskHolder.craftingLink).toArray(ICraftingLink[]::new));
+		return ImmutableSet.copyOf(this.view.tasks.values().stream().map(taskHolder -> taskHolder.getCraftingLink()).toArray(ICraftingLink[]::new));
 	}
 
 	@Override

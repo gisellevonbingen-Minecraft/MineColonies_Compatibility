@@ -1,17 +1,35 @@
 package steve_gall.minecolonies_compatibility.module.common.ae2;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableSet;
+import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
+import com.minecolonies.api.colony.requestsystem.request.RequestState;
+import com.minecolonies.api.colony.requestsystem.requestable.IDeliverable;
+import com.minecolonies.api.colony.requestsystem.token.IToken;
+import com.minecolonies.api.util.NBTUtils;
+
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.Setting;
 import appeng.api.config.Settings;
+import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IStackWatcher;
+import appeng.api.networking.crafting.CalculationStrategy;
+import appeng.api.networking.crafting.ICraftingCPU;
+import appeng.api.networking.crafting.ICraftingLink;
+import appeng.api.networking.crafting.ICraftingPlan;
+import appeng.api.networking.crafting.ICraftingRequester;
+import appeng.api.networking.crafting.ICraftingWatcherNode;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IStorageWatcherNode;
 import appeng.api.networking.ticking.IGridTickable;
@@ -22,6 +40,8 @@ import appeng.api.parts.IPartModel;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
 import appeng.api.stacks.KeyCounter;
+import appeng.api.storage.AEKeyFilter;
+import appeng.api.storage.StorageHelper;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import appeng.items.parts.PartModels;
@@ -33,8 +53,11 @@ import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -44,9 +67,11 @@ import steve_gall.minecolonies_compatibility.api.common.building.module.INetwork
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.NetworkStorageModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
+import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
+import steve_gall.minecolonies_compatibility.core.common.requestsystem.NetworkCrafting;
 import steve_gall.minecolonies_compatibility.module.common.ae2.init.ModuleMenuTypes;
 
-public class CitizenTerminalPart extends AbstractDisplayPart implements IStorageWatcherNode, IGridTickable, IConfigurableObject
+public class CitizenTerminalPart extends AbstractDisplayPart implements IStorageWatcherNode, ICraftingWatcherNode, IGridTickable, IConfigurableObject, ICraftingRequester
 {
 	@PartModels
 	public static final ResourceLocation MODEL_OFF = MineColoniesCompatibility.rl("part/citizen_terminal_off");
@@ -58,6 +83,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_HAS_CHANNEL);
 
 	private static final String TAG_LINK = "link";
+	private static final String TAG_DATA = "data";
 
 	private final StorageView view;
 	private final KeyCounter counter;
@@ -78,7 +104,9 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		var mainNode = this.getMainNode();
 		mainNode.addService(IStorageWatcherNode.class, this);
+		mainNode.addService(ICraftingWatcherNode.class, this);
 		mainNode.addService(IGridTickable.class, this);
+		mainNode.addService(ICraftingRequester.class, this);
 	}
 
 	protected void onSettingChanged(IConfigManager manager, Setting<?> setting)
@@ -172,6 +200,30 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 	}
 
+	@Override
+	public void onRequestChange(AEKey what)
+	{
+
+	}
+
+	@Override
+	public void onCraftableChange(AEKey what)
+	{
+		if (what instanceof AEItemKey itemKey)
+		{
+			var module = this.view.getLinkedModule();
+
+			if (module != null)
+			{
+				var stack = itemKey.toStack();
+				var requestManager = module.getBuilding().getColony().getRequestManager();
+				requestManager.onColonyUpdate(request -> request.getRequest() instanceof IDeliverable deliverable && deliverable.matches(stack));
+			}
+
+		}
+
+	}
+
 	public static ItemStack toStack(Object2LongMap.Entry<AEKey> entry)
 	{
 		return toStack((AEItemKey) entry.getKey(), entry.getLongValue());
@@ -203,20 +255,22 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	}
 
 	@Override
-	public void readFromNBT(CompoundTag data, HolderLookup.Provider provider)
+	public void readFromNBT(CompoundTag data, Provider provider)
 	{
 		super.readFromNBT(data, provider);
 
 		this.view.readLink(provider, data.getCompound(TAG_LINK));
+		this.view.readData(provider, data.getCompound(TAG_DATA));
 		this.config.readFromNBT(data.getCompound("config"), provider);
 	}
 
 	@Override
-	public void writeToNBT(CompoundTag data, HolderLookup.Provider provider)
+	public void writeToNBT(CompoundTag data, Provider provider)
 	{
 		super.writeToNBT(data, provider);
 
 		data.put(TAG_LINK, this.view.writeLink(provider));
+		data.put(TAG_DATA, this.view.writeData(provider));
 
 		var configTag = new CompoundTag();
 		this.config.writeToNBT(configTag, provider);
@@ -251,8 +305,154 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		return this.config;
 	}
 
+	public class TaskHolder
+	{
+		private Future<ICraftingPlan> calculationFuture;
+		private ICraftingLink craftingLink;
+		private AEItemKey outputKey;
+
+		private long calculationStartTick = -1;
+		private long lastProgressValue = -1;
+		private int noProgressChecks = 0;
+
+		public TaskHolder()
+		{
+			this.calculationFuture = null;
+			this.craftingLink = null;
+		}
+
+		public TaskHolder(CompoundTag tag, HolderLookup.Provider provider)
+		{
+			if (tag.contains("craftingLink"))
+			{
+				this.craftingLink = StorageHelper.loadCraftingLink(tag.getCompound("craftingLink"), CitizenTerminalPart.this);
+			}
+
+			if (tag.contains("outputKey"))
+			{
+				this.outputKey = AEItemKey.fromTag(provider, tag.getCompound("outputKey"));
+			}
+
+			this.calculationStartTick = tag.getLong("calculationStartTick");
+			this.lastProgressValue = tag.getLong("lastProgressValue");
+			this.noProgressChecks = tag.getInt("noProgressChecks");
+		}
+
+		public CompoundTag write(HolderLookup.Provider provider)
+		{
+			var tag = new CompoundTag();
+
+			if (this.craftingLink != null)
+			{
+				var craftingLinkTag = new CompoundTag();
+				this.craftingLink.writeToNBT(craftingLinkTag);
+				tag.put("craftingLink", craftingLinkTag);
+			}
+
+			if (this.outputKey != null)
+			{
+				tag.put("outputKey", this.outputKey.toTag(provider));
+			}
+
+			tag.putLong("calculationStartTick", this.calculationStartTick);
+			tag.putLong("lastProgressValue", this.lastProgressValue);
+			tag.putInt("noProgressChecks", this.noProgressChecks);
+
+			return tag;
+		}
+
+		public Future<ICraftingPlan> getCalculationFuture()
+		{
+			return calculationFuture;
+		}
+
+		public void setCalculationFuture(Future<ICraftingPlan> calculationFuture)
+		{
+			this.calculationFuture = calculationFuture;
+		}
+
+		public ICraftingLink getCraftingLink()
+		{
+			return craftingLink;
+		}
+
+		public void setCraftingLink(ICraftingLink craftingLink)
+		{
+			this.craftingLink = craftingLink;
+			this.lastProgressValue = -1;
+			this.noProgressChecks = 0;
+		}
+
+		public AEItemKey getOutputKey()
+		{
+			return this.outputKey;
+		}
+
+		public void setOutputKey(AEItemKey outputKey)
+		{
+			this.outputKey = outputKey;
+		}
+
+		public void setCalculationStartTick(long tick)
+		{
+			this.calculationStartTick = tick;
+		}
+
+		public boolean isCalculationTimedOut(long currentTick)
+		{
+			return this.calculationStartTick >= 0 && (currentTick - this.calculationStartTick) > MineColoniesCompatibilityConfigServer.INSTANCE.modules.AE2.citizenTerminal_calculationTimeoutTicks.get();
+		}
+
+		public boolean checkLinkStalled(Iterable<ICraftingCPU> cpus)
+		{
+			if (this.outputKey == null)
+			{
+				return false;
+			}
+
+			long currentProgress = -1;
+
+			for (var cpu : cpus)
+			{
+				if (!cpu.isBusy())
+				{
+					continue;
+				}
+
+				var status = cpu.getJobStatus();
+
+				if (status != null && this.outputKey.equals(status.crafting().what()))
+				{
+					currentProgress = status.progress();
+					break;
+				}
+
+			}
+
+			if (currentProgress < 0)
+			{
+				return false;
+			}
+
+			if (currentProgress != this.lastProgressValue)
+			{
+				this.lastProgressValue = currentProgress;
+				this.noProgressChecks = 0;
+			}
+			else
+			{
+				this.noProgressChecks++;
+			}
+
+			return this.noProgressChecks >= MineColoniesCompatibilityConfigServer.INSTANCE.modules.AE2.citizenTerminal_linkNoProgressChecks.get();
+		}
+
+	}
+
 	public class StorageView extends QueueNetworkStorageView
 	{
+		private final Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
+
 		@Override
 		public Level getLevel()
 		{
@@ -302,6 +502,8 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		public void unlink()
 		{
 			super.unlink();
+
+			this.tasks.clear();
 
 			var host = getHost();
 
@@ -379,6 +581,356 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 			}
 
 		}
+
+		@Override
+		public @NotNull ItemStack calculateAutocrafting(@NotNull IDeliverable deliverable)
+		{
+			var grid = getMainNode().getGrid();
+
+			if (grid == null)
+			{
+				return ItemStack.EMPTY;
+			}
+
+			var craftingService = grid.getCraftingService();
+
+			for (var key : craftingService.getCraftables((AEKeyFilter) k -> k instanceof AEItemKey))
+			{
+				var stack = ((AEItemKey) key).toStack();
+
+				if (deliverable.matches(stack))
+				{
+					return stack;
+				}
+
+			}
+
+			return ItemStack.EMPTY;
+		}
+
+		@Override
+		public void cancelAutocrafting(@NotNull IToken<?> requestId)
+		{
+			super.cancelAutocrafting(requestId);
+
+			if (this.cancelAutocrafting0(requestId))
+			{
+				var host = getHost();
+
+				if (host != null)
+				{
+					host.markForSave();
+				}
+
+			}
+
+		}
+
+		private boolean cancelAutocrafting0(IToken<?> requestId)
+		{
+			var taskHolder = this.tasks.remove(requestId);
+
+			if (taskHolder != null)
+			{
+				var future = taskHolder.getCalculationFuture();
+
+				if (future != null)
+				{
+					future.cancel(true);
+				}
+
+				var link = taskHolder.getCraftingLink();
+
+				if (link != null)
+				{
+					link.cancel();
+				}
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public void createAutocrafting(@NotNull IToken<?> requestId)
+		{
+			super.createAutocrafting(requestId);
+
+			this.tasks.put(requestId, new TaskHolder());
+
+			var host = getHost();
+
+			if (host != null)
+			{
+				host.markForSave();
+			}
+
+		}
+
+		public void readData(HolderLookup.Provider provider, CompoundTag tag)
+		{
+			var factoryController = StandardFactoryController.getInstance();
+			this.tasks.clear();
+
+			for (var taskTag : NBTUtils.streamCompound(tag.getList("tasks", Tag.TAG_COMPOUND)).toList())
+			{
+				IToken<?> requestId = factoryController.deserializeTag(provider, taskTag.getCompound("requestId"));
+				var taskHolder = new TaskHolder(taskTag.getCompound("task"), provider);
+				this.tasks.put(requestId, taskHolder);
+			}
+
+		}
+
+		public CompoundTag writeData(HolderLookup.Provider provider)
+		{
+			var tag = new CompoundTag();
+			var factoryController = StandardFactoryController.getInstance();
+			tag.put("tasks", this.tasks.entrySet().stream().map(entry ->
+			{
+				var taskTag = new CompoundTag();
+				taskTag.put("requestId", factoryController.serializeTag(provider, entry.getKey()));
+				taskTag.put("task", entry.getValue().write(provider));
+				return taskTag;
+			}).collect(NBTUtils.toListNBT()));
+			return tag;
+		}
+
+		@Override
+		public void updateAutocraftings()
+		{
+			super.updateAutocraftings();
+
+			var module = this.getLinkedModule();
+
+			if (module == null)
+			{
+				return;
+			}
+
+			var grid = getMainNode().getGrid();
+
+			if (grid == null)
+			{
+				return;
+			}
+
+			var requestManager = module.getBuilding().getColony().getRequestManager();
+			var toRemove = new ArrayList<IToken<?>>();
+
+			for (var entry : this.tasks.entrySet())
+			{
+				var requestId = entry.getKey();
+				var taskHolder = entry.getValue();
+				var networkCrafting = this.getNetworkCrafting(requestManager, requestId);
+				var deliverable = this.getDeliverable(requestManager, requestId);
+
+				if (networkCrafting == null || deliverable == null)
+				{
+					toRemove.add(requestId);
+					continue;
+				}
+
+				if (!this.updateTaskHolder(grid, taskHolder, networkCrafting, deliverable))
+				{
+					toRemove.add(requestId);
+					continue;
+				}
+
+			}
+
+			var host = getHost();
+
+			for (var requestId : toRemove)
+			{
+				var request = requestManager.getRequestForToken(requestId);
+				this.tasks.remove(requestId);
+
+				if (host != null)
+				{
+					host.markForSave();
+				}
+
+				if (request == null)
+				{
+					continue;
+				}
+
+				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
+				requestManager.markDirty();
+			}
+
+		}
+
+		private boolean updateTaskHolder(IGrid grid, TaskHolder taskHolder, NetworkCrafting networkCrafting, IDeliverable deliverable)
+		{
+			var link = taskHolder.getCraftingLink();
+
+			if (link != null)
+			{
+				var cpus = grid.getCraftingService().getCpus();
+
+				if (link.isDone() || link.isCanceled() || taskHolder.checkLinkStalled(cpus))
+				{
+					if (!link.isDone() && !link.isCanceled())
+					{
+						link.cancel();
+					}
+
+					return false;
+				}
+				else
+				{
+					networkCrafting.setText(Component.literal("CRAFTING"));
+				}
+
+				return true;
+			}
+
+			var future = taskHolder.getCalculationFuture();
+
+			if (future != null)
+			{
+				var currentTick = CitizenTerminalPart.this.getLevel().getGameTime();
+
+				if (taskHolder.isCalculationTimedOut(currentTick))
+				{
+					future.cancel(true);
+					networkCrafting.setText(Component.literal("ERROR: CALCULATION_TIMEOUT"));
+					return false;
+				}
+
+				if (future.isDone())
+				{
+					taskHolder.setCalculationFuture(null);
+
+					try
+					{
+						var plan = future.get();
+
+						if (plan == null)
+						{
+							networkCrafting.setText(Component.literal("ERROR: NO_PLAN"));
+							return false;
+						}
+
+						var result = grid.getCraftingService().submitJob(plan, CitizenTerminalPart.this, null, false, action);
+
+						if (result != null && result.successful())
+						{
+							var craftingLink = result.link();
+
+							if (craftingLink != null)
+							{
+								taskHolder.setCraftingLink(craftingLink);
+								networkCrafting.setText(Component.literal("CRAFTING"));
+							}
+							else
+							{
+								networkCrafting.setText(Component.literal("ERROR: SUBMISSION_FAILED"));
+							}
+
+						}
+						else
+						{
+							networkCrafting.setText(Component.literal("ERROR: " + result.errorCode()));
+						}
+
+					}
+					catch (Exception e)
+					{
+						networkCrafting.setText(Component.literal("ERROR: " + e));
+						return false;
+					}
+
+				}
+				else
+				{
+					networkCrafting.setText(Component.literal("CALCULATING"));
+				}
+
+				return true;
+			}
+
+			var output = this.calculateAutocrafting(deliverable);
+
+			if (output.isEmpty())
+			{
+				return false;
+			}
+
+			var outputKey = AEItemKey.of(output);
+			taskHolder.setOutputKey(outputKey);
+			taskHolder.setCalculationStartTick(this.getLevel().getGameTime());
+			var inventory = grid.getStorageService().getInventory();
+			var alreadyAvailable = inventory.extract(outputKey, deliverable.getCount(), Actionable.SIMULATE, action);
+			var craftingCount = deliverable.getCount() - alreadyAvailable;
+
+			if (craftingCount <= 0)
+			{
+				return false;
+			}
+
+			var calculationFuture = grid.getCraftingService().beginCraftingCalculation(//
+					this.getLevel(), //
+					() -> action, //
+					outputKey, //
+					craftingCount, //
+					CalculationStrategy.REPORT_MISSING_ITEMS//
+			);
+			taskHolder.setCalculationFuture(calculationFuture);
+			networkCrafting.setText(Component.literal("CALCULATING"));
+			return true;
+		}
+
+		@Override
+		protected void onUnlink(NetworkStorageModule module)
+		{
+			super.onUnlink(module);
+
+			var requestManager = module.getBuilding().getColony().getRequestManager();
+
+			for (var requestId : new ArrayList<>(this.tasks.keySet()))
+			{
+				this.cancelAutocrafting0(requestId);
+
+				var request = requestManager.getRequestForToken(requestId);
+
+				if (request == null)
+				{
+					continue;
+				}
+
+				requestManager.updateRequestState(requestId, RequestState.CANCELLED);
+			}
+
+			var host = getHost();
+
+			if (host != null)
+			{
+				host.markForSave();
+			}
+
+			requestManager.markDirty();
+		}
+
+	}
+
+	@Override
+	public ImmutableSet<ICraftingLink> getRequestedJobs()
+	{
+		return ImmutableSet.copyOf(this.view.tasks.values().stream().map(taskHolder -> taskHolder.getCraftingLink()).toArray(ICraftingLink[]::new));
+	}
+
+	@Override
+	public long insertCraftedItems(ICraftingLink link, AEKey what, long amount, Actionable mode)
+	{
+		return 0;
+	}
+
+	@Override
+	public void jobStateChange(ICraftingLink link)
+	{
 
 	}
 

@@ -1,8 +1,10 @@
 package steve_gall.minecolonies_compatibility.module.common.ae2;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.Future;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -179,6 +181,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 		if (newWatcher != null)
 		{
 			newWatcher.reset();
+			newWatcher.add(AEItemKey.of(this.view.getIcon()));
 			newWatcher.setWatchAll(true);
 
 			this.counter.clear();
@@ -211,15 +214,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	{
 		if (what instanceof AEItemKey itemKey)
 		{
-			var module = this.view.getLinkedModule();
-
-			if (module != null)
-			{
-				var stack = itemKey.toStack();
-				var requestManager = module.getBuilding().getColony().getRequestManager();
-				requestManager.onColonyUpdate(request -> request.getRequest() instanceof IDeliverable deliverable && deliverable.matches(stack));
-			}
-
+			this.view.patternQueue.add(itemKey);
 		}
 
 	}
@@ -452,6 +447,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	public class StorageView extends QueueNetworkStorageView
 	{
 		private final Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
+		private final Queue<AEItemKey> patternQueue = new ArrayDeque<>();
 
 		@Override
 		public Level getLevel()
@@ -881,6 +877,67 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 			taskHolder.setCalculationFuture(calculationFuture);
 			networkCrafting.setText(Component.literal("CALCULATING"));
 			return true;
+		}
+
+		@Override
+		protected void onActiveChanged(boolean isActive)
+		{
+			super.onActiveChanged(isActive);
+
+			if (isActive)
+			{
+				this.requestAllPattern();
+			}
+
+		}
+
+		@Override
+		public void tick()
+		{
+			super.tick();
+
+			var module = this.getLinkedModule();
+
+			if (module != null)
+			{
+				for (var i = 0; i < DEQUEUE_COUNT; i++)
+				{
+					var what = this.patternQueue.poll();
+
+					if (what == null)
+					{
+						break;
+					}
+
+					var stack = what.toStack();
+					var requestManager = module.getBuilding().getColony().getRequestManager();
+					requestManager.onColonyUpdate(request -> request.getRequest() instanceof IDeliverable deliverable && deliverable.matches(stack));
+				}
+
+			}
+			else
+			{
+				this.patternQueue.clear();
+			}
+
+		}
+
+		private void requestAllPattern()
+		{
+			this.patternQueue.clear();
+
+			var grid = getMainNode().getGrid();
+
+			if (grid == null)
+			{
+				return;
+			}
+
+			for (var what : grid.getCraftingService().getCraftables(key -> key instanceof AEItemKey))
+			{
+				this.patternQueue.add((AEItemKey) what);
+			}
+
 		}
 
 		@Override

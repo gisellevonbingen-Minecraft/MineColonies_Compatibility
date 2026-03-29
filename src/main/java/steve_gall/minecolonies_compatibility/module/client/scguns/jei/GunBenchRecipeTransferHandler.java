@@ -70,9 +70,9 @@ public class GunBenchRecipeTransferHandler extends TeachRecipeTransferHandler<Gu
 		var ingredients = new ArrayList<ItemStack>();
 		var inputIndex = 0;
 
-		for (var i = 0; i < originalIngredients.size(); i++)
+		for (var originalIngredient : originalIngredients)
 		{
-			if (originalIngredients.get(i).isEmpty())
+			if (originalIngredient.isEmpty())
 			{
 				ingredients.add(ItemStack.EMPTY);
 			}
@@ -80,7 +80,7 @@ public class GunBenchRecipeTransferHandler extends TeachRecipeTransferHandler<Gu
 			{
 				ingredients.add(input.get(inputIndex++));
 			}
-			
+
 		}
 
 		NBTUtils2.serializeCollection(tag, "ingredients", ingredients, ItemStack::serializeNBT);

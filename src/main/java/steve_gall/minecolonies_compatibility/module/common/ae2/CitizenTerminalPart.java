@@ -664,6 +664,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		}
 
+		@Override
 		public void readData(HolderLookup.Provider provider, CompoundTag tag)
 		{
 			var factoryController = StandardFactoryController.getInstance();
@@ -678,6 +679,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 
 		}
 
+		@Override
 		public CompoundTag writeData(HolderLookup.Provider provider)
 		{
 			var tag = new CompoundTag();
@@ -721,13 +723,7 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 				var networkCrafting = this.getNetworkCrafting(requestManager, requestId);
 				var deliverable = this.getDeliverable(requestManager, requestId);
 
-				if (networkCrafting == null || deliverable == null)
-				{
-					toRemove.add(requestId);
-					continue;
-				}
-
-				if (!this.updateTaskHolder(grid, taskHolder, networkCrafting, deliverable))
+				if (networkCrafting == null || deliverable == null || !this.updateTaskHolder(grid, taskHolder, networkCrafting, deliverable))
 				{
 					toRemove.add(requestId);
 					continue;

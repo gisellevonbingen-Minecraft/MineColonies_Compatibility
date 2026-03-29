@@ -39,7 +39,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	{
 		return super.test(context) && this.testWeapon(context.getWeapon());
 	}
-	
+
 	public boolean testWeapon(@NotNull ItemStack weapon)
 	{
 		return false;

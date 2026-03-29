@@ -39,6 +39,8 @@
 		"minecolonies.TileEntityWareHouseMixin",
 		"minecolonies.TinkersToolHelperMixin",
 		
+		"ae2.CraftingServiceMixin",
+		"ae2.NetworkCraftingProvidersMixin",
 		"blue_skies.BrewberryBushBlockAccessor",
 		"butchercraft.ButcherBlockBlockEntityAccessor",
 		"butchercraft.MeatHookBlockEntityAccessor",

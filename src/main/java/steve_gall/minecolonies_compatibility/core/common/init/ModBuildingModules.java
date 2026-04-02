@@ -7,6 +7,7 @@ import com.minecolonies.api.colony.buildings.HiringMode;
 import com.minecolonies.api.colony.buildings.modules.settings.ISetting;
 import com.minecolonies.api.colony.buildings.modules.settings.ISettingKey;
 import com.minecolonies.api.colony.buildings.registry.BuildingEntry;
+import com.minecolonies.api.colony.jobs.registry.JobEntry;
 import com.minecolonies.api.entity.citizen.Skill;
 import com.minecolonies.core.colony.buildings.modules.CraftingWorkerBuildingModule;
 import com.minecolonies.core.colony.buildings.modules.GuardBuildingModule;
@@ -46,23 +47,24 @@ public class ModBuildingModules
 	public static final ISettingKey<BoolSetting> REQUEST_FIREWORK_ROCKET = new SettingKey<>(BoolSetting.class, MineColoniesCompatibility.rl("request_firework_rocket"));
 	public static final ISettingKey<BoolSetting> REPAIR_ITEM = new SettingKey<>(BoolSetting.class, MineColoniesCompatibility.rl("repair_item"));
 
+	public static final boolean testHireCustomizedAI(JobEntry jobEntry)
+	{
+		return CustomizedAI.getValues().stream().filter(e -> e.getJobEntry() == jobEntry).findAny().isPresent();
+	}
+
 	public static final List<Pair<ISettingKey<?>, ISetting<?>>> GUARD_SETTINGS = Arrays.asList(//
 			Pair.of(REQUEST_FIREWORK_ROCKET, new BoolSetting(false)) //
 	);
 
 	public static final BuildingEntry.ModuleProducer<GuardBuildingModule, CombinedHiringLimitModuleView> GUNNER_TOWER_WORK = new BuildingEntry.ModuleProducer<>("gunner_tower_work", //
-			() -> new GuardBuildingModule(ModGuardTypes.GUNNER.get(), true, b ->
-			{
-				var jobEntry = ModJobs.GUNNER.get();
-				return CustomizedAI.getValues().stream().filter(e -> e.getJobEntry() == jobEntry).findAny().isPresent() ? 1 : 0;
-			}), //
+			() -> new GuardBuildingModule(ModGuardTypes.GUNNER.get(), true, b -> testHireCustomizedAI(ModJobs.GUNNER.get()) ? 1 : 0), //
 			() -> CombinedHiringLimitModuleView::new);
 	public static final BuildingEntry.ModuleProducer<GuardBuildingModule, CombinedHiringLimitModuleView> GUNNER_BARRACKS_WORK = new BuildingEntry.ModuleProducer<>("gunner_barracks_work", //
-			() -> new GuardBuildingModule(ModGuardTypes.GUNNER.get(), true, b ->
-			{
-				var jobEntry = ModJobs.GUNNER.get();
-				return CustomizedAI.getValues().stream().filter(e -> e.getJobEntry() == jobEntry).findAny().isPresent() ? b.getBuildingLevel() : 0;
-			}), () -> CombinedHiringLimitModuleView::new);
+			() -> new GuardBuildingModule(ModGuardTypes.GUNNER.get(), true, b -> testHireCustomizedAI(ModJobs.GUNNER.get()) ? b.getBuildingLevel() : 0), //
+			() -> CombinedHiringLimitModuleView::new);
+	public static final BuildingEntry.ModuleProducer<GuardBuildingModule, CombinedHiringLimitModuleView> GUNNER_GATE_WORK = new BuildingEntry.ModuleProducer<>("gunner_gate_work", //
+			() -> new GuardBuildingModule(ModGuardTypes.GUNNER.get(), true, b -> testHireCustomizedAI(ModJobs.GUNNER.get()) ? 2 : 0), //
+			() -> CombinedHiringLimitModuleView::new);
 
 	public static final BuildingEntry.ModuleProducer<WorkerBuildingModule, WorkerBuildingModuleView> ORCHARDIST_WORK = new BuildingEntry.ModuleProducer<>("orchardist_work", //
 			() ->

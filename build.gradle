@@ -50,7 +50,8 @@ minecraft {
 
         client {
             taskName "forge_client"
-
+            property "mixin.env.remapRefMap", "true"
+            property "mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg"
             property "forge.enabledGameTestNamespaces", "${mod_id}, testmod"
         }
 

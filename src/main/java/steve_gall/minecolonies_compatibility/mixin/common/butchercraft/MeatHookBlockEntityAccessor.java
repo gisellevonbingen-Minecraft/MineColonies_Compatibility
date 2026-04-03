@@ -1,11 +1,13 @@
 package steve_gall.minecolonies_compatibility.mixin.common.butchercraft;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 import com.lance5057.butchercraft.workstations.hook.HookRecipe;
 import com.lance5057.butchercraft.workstations.hook.MeatHookBlockEntity;
 
+@Pseudo
 @Mixin(value = MeatHookBlockEntity.class, remap = false)
 public interface MeatHookBlockEntityAccessor
 {

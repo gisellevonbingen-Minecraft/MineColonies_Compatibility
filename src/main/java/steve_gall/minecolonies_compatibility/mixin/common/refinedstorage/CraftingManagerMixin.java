@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -12,6 +13,7 @@ import com.refinedmods.refinedstorage.apiimpl.autocrafting.CraftingManager;
 
 import steve_gall.minecolonies_compatibility.module.common.refinedstorage.ICraftingManagerExtension;
 
+@Pseudo
 @Mixin(value = CraftingManager.class, remap = false)
 public abstract class CraftingManagerMixin implements ICraftingManagerExtension
 {

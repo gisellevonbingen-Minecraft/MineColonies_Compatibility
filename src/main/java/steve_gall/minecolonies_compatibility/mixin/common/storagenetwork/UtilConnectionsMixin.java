@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.mixin.common.storagenetwork;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -10,6 +11,7 @@ import com.lothrazar.storagenetwork.util.UtilConnections;
 import net.minecraft.world.level.block.state.BlockState;
 import steve_gall.minecolonies_compatibility.module.common.storagenetwork.init.ModuleBlocks;
 
+@Pseudo
 @Mixin(value = UtilConnections.class, remap = false)
 public abstract class UtilConnectionsMixin
 {

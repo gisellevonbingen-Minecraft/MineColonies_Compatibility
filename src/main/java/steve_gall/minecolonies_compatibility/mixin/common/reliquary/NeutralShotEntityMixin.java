@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.mixin.common.reliquary;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -14,6 +15,7 @@ import reliquary.entities.shot.NeutralShotEntity;
 import reliquary.entities.shot.ShotEntityBase;
 import steve_gall.minecolonies_compatibility.module.common.reliquary.GunnerHandgunAI;
 
+@Pseudo
 @Mixin(value = NeutralShotEntity.class, remap = false)
 public abstract class NeutralShotEntityMixin extends ShotEntityBase
 {

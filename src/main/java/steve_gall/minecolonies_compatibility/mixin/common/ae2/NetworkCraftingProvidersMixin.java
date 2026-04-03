@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,6 +15,7 @@ import appeng.api.stacks.AEKey;
 import appeng.me.service.helpers.NetworkCraftingProviders;
 import steve_gall.minecolonies_compatibility.module.common.ae2.INetworkCraftingProvidersExtensions;
 
+@Pseudo
 @Mixin(value = NetworkCraftingProviders.class, remap = false)
 public abstract class NetworkCraftingProvidersMixin implements INetworkCraftingProvidersExtensions
 {

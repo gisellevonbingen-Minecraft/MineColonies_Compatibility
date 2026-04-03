@@ -3,11 +3,13 @@ package steve_gall.minecolonies_compatibility.mixin.common.reliquary;
 import java.util.Map;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import reliquary.items.HandgunItem;
 import reliquary.items.HandgunItem.IShotEntityFactory;
 
+@Pseudo
 @Mixin(value = HandgunItem.class, remap = false)
 public interface HandgunItemAccessor
 {

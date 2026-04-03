@@ -1,12 +1,14 @@
 package steve_gall.minecolonies_compatibility.mixin.common.cyclic;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import com.lothrazar.cyclic.block.apple.AppleCropBlock;
 
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
+@Pseudo
 @Mixin(value = AppleCropBlock.class, remap = false)
 public interface AppleCropBlockAccessor
 {

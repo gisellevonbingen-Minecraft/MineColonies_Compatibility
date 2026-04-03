@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.mixin.common.ae;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -8,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import appeng.blockentity.networking.CableBusBlockEntity;
 import steve_gall.minecolonies_compatibility.module.common.ae2.CableBusBlockEntityExtension;
 
+@Pseudo
 @Mixin(value = CableBusBlockEntity.class, remap = false)
 public abstract class CableBusBlockEntityMixin implements CableBusBlockEntityExtension
 {

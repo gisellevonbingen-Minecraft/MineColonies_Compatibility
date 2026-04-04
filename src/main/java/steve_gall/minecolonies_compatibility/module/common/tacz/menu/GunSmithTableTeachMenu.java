@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.jetbrains.annotations.NotNull;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
+import com.minecolonies.api.crafting.ItemStorage;
 import com.tacz.guns.crafting.GunSmithTableRecipe;
 import com.tacz.guns.init.ModRecipe;
 
@@ -26,6 +27,7 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSl
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
 import steve_gall.minecolonies_compatibility.module.common.tacz.init.ModuleMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.util.SerializationHelper;
 
 public class GunSmithTableTeachMenu extends TeachRecipeMenu<GunSmithTableRecipe>
 {
@@ -129,11 +131,11 @@ public class GunSmithTableTeachMenu extends TeachRecipeMenu<GunSmithTableRecipe>
 	{
 		super.setContainerByTransfer(recipe, payload);
 
-		var input = NBTUtils2.deserializeList(payload, "input", ItemStack::of);
+		var input = NBTUtils2.deserializeList(payload, "input", SerializationHelper.<ItemStorage> deserializerTag());
 
 		for (var i = 0; i < CRAFTING_SLOTS; i++)
 		{
-			this.inputContainer.setItem(i, i < input.size() ? input.get(i) : ItemStack.EMPTY);
+			this.inputContainer.setItem(i, i < input.size() ? input.get(i).getItemStack() : ItemStack.EMPTY);
 		}
 
 	}

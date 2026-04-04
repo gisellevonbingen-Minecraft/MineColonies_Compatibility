@@ -37,7 +37,7 @@ public class GunSmithTableCraftingModule extends AbstractCraftingModuleWithExter
 	@Override
 	public boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
 	{
-		return level.getBlockState(pos).getBlock() instanceof AbstractGunSmithTableBlock;
+		return state.getBlock() instanceof AbstractGunSmithTableBlock;
 	}
 
 	@Override

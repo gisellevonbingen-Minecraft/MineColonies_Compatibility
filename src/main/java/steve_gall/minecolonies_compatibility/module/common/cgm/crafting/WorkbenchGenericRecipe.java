@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.cgm.crafting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import com.mrcrayfish.guns.init.ModBlocks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.items.ItemHandlerHelper;
 import steve_gall.minecolonies_compatibility.api.common.crafting.SimpleGenericRecipe;
 import steve_gall.minecolonies_compatibility.core.common.crafting.IngredientHelper;
 
@@ -19,13 +21,11 @@ public class WorkbenchGenericRecipe extends SimpleGenericRecipe
 	{
 		this(recipe.getId(), recipe.getMaterials().stream().map(material ->
 		{
-			var stacks = IngredientHelper.getStacks(material);
+			List<ItemStack> stacks = new ArrayList<>();
 
-			for (var i = 0; i < stacks.size(); i++)
+			for (var stack : IngredientHelper.getStacks(material))
 			{
-				var stack = stacks.get(i).copy();
-				stack.setCount(material.getCount());
-				stacks.set(i, stack);
+				stacks.add(ItemHandlerHelper.copyStackWithSize(stack, material.getCount()));
 			}
 
 			return stacks;

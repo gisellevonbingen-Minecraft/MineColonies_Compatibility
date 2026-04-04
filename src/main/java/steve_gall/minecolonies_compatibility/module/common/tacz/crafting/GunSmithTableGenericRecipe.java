@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.tacz.crafting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import com.tacz.guns.init.ModBlocks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.items.ItemHandlerHelper;
 import steve_gall.minecolonies_compatibility.api.common.crafting.SimpleGenericRecipe;
 import steve_gall.minecolonies_compatibility.core.common.crafting.IngredientHelper;
 
@@ -19,13 +21,11 @@ public class GunSmithTableGenericRecipe extends SimpleGenericRecipe
 	{
 		this(recipe.getId(), recipe.getInputs().stream().map(input ->
 		{
-			var stacks = IngredientHelper.getStacks(input.getIngredient());
+			List<ItemStack> stacks = new ArrayList<>();
 
-			for (var i = 0; i < stacks.size(); i++)
+			for (var stack : IngredientHelper.getStacks(input.getIngredient()))
 			{
-				var stack = stacks.get(i).copy();
-				stack.setCount(input.getCount());
-				stacks.set(i, stack);
+				stacks.add(ItemHandlerHelper.copyStackWithSize(stack, input.getCount()));
 			}
 
 			return stacks;

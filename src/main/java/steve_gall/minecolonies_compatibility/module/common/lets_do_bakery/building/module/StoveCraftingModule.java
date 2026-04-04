@@ -15,7 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.bakery.block.entity.StoveBlockEntity;
+import net.satisfy.bakery.block.StoveBlock;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.module.common.lets_do_bakery.init.ModuleCraftingTypes;
 
@@ -35,7 +35,7 @@ public class StoveCraftingModule extends AbstractCraftingModuleWithExternalWorki
 	@Override
 	public boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
 	{
-		return level.getBlockEntity(pos) instanceof StoveBlockEntity;
+		return state.getBlock() instanceof StoveBlock;
 	}
 
 	@Override

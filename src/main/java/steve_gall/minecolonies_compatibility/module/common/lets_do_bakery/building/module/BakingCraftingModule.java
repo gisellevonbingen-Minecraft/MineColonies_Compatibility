@@ -37,7 +37,7 @@ public class BakingCraftingModule extends AbstractCraftingModuleWithExternalWork
 	@Override
 	public boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
 	{
-		return level.getBlockState(pos).getBlock() instanceof BakerStationBlock;
+		return state.getBlock() instanceof BakerStationBlock;
 	}
 
 	@Override

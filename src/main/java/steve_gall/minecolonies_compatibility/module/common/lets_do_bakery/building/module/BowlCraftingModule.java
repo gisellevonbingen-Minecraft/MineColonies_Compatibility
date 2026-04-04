@@ -15,7 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.bakery.block.entity.CraftingBowlBlockEntity;
+import net.satisfy.bakery.block.CraftingBowlBlock;
 import net.satisfy.bakery.registry.ObjectRegistry;
 import steve_gall.minecolonies_compatibility.api.common.building.module.AbstractCraftingModuleWithExternalWorkingBlocks;
 import steve_gall.minecolonies_compatibility.core.common.util.InteractionMessageHelper;
@@ -37,7 +37,7 @@ public class BowlCraftingModule extends AbstractCraftingModuleWithExternalWorkin
 	@Override
 	public boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
 	{
-		return level.getBlockEntity(pos) instanceof CraftingBowlBlockEntity;
+		return state.getBlock() instanceof CraftingBowlBlock;
 	}
 
 	@Override

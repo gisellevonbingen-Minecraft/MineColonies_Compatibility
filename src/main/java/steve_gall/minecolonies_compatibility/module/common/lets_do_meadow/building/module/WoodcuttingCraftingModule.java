@@ -37,7 +37,7 @@ public class WoodcuttingCraftingModule extends AbstractCraftingModuleWithExterna
 	@Override
 	public boolean isWorkingBlock(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state)
 	{
-		return level.getBlockState(pos).getBlock() instanceof WoodcutterBlock;
+		return state.getBlock() instanceof WoodcutterBlock;
 	}
 
 	@Override

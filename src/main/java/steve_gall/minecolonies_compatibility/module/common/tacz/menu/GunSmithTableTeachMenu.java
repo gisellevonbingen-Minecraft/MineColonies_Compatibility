@@ -130,11 +130,6 @@ public class GunSmithTableTeachMenu extends TeachRecipeMenu<GunSmithTableRecipe>
 
 		var input = NBTUtils2.deserializeList(payload, "input", ItemStack::of);
 
-		for (var stack : input)
-		{
-			stack.setCount(1);
-		}
-
 		for (var i = 0; i < CRAFTING_SLOTS; i++)
 		{
 			this.inputContainer.setItem(i, i < input.size() ? input.get(i) : ItemStack.EMPTY);

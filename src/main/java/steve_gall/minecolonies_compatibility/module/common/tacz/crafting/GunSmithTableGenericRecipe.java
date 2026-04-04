@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.tacz.crafting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,13 +22,11 @@ public class GunSmithTableGenericRecipe extends SimpleGenericRecipe
 	{
 		this(recipe.id(), recipe.value().getInputs().stream().map(input ->
 		{
-			var stacks = IngredientHelper.getStacks(input.getIngredient());
+			List<ItemStack> stacks = new ArrayList<>();
 
-			for (var i = 0; i < stacks.size(); i++)
+			for (var stack : IngredientHelper.getStacks(input.getIngredient()))
 			{
-				var stack = stacks.get(i).copy();
-				stack.setCount(input.getCount());
-				stacks.set(i, stack);
+				stacks.add(stack.copyWithCount(input.getCount()));
 			}
 
 			return stacks;

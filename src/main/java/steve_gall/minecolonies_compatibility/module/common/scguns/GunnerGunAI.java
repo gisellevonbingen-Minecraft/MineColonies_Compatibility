@@ -207,6 +207,11 @@ public class GunnerGunAI extends CustomizedAIGunner
 				shrink = reloading;
 			}
 
+			if (reloading <= 0)
+			{
+				return true;
+			}
+
 			ammo.shrink(shrink);
 			this.setAmmoCount(weapon, ammoCount + reloading);
 			this.handleReloadByproduct(user, weapon, gun, shrink);

@@ -3,14 +3,12 @@ package steve_gall.minecolonies_compatibility.module.common.tacz.menu;
 import java.util.ArrayList;
 
 import com.minecolonies.api.colony.buildings.modules.IBuildingModule;
-import com.minecolonies.api.colony.requestsystem.StandardFactoryController;
 import com.minecolonies.api.crafting.ItemStorage;
 import com.tacz.guns.crafting.GunSmithTableRecipe;
 import com.tacz.guns.init.ModRecipe;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -27,7 +25,9 @@ import steve_gall.minecolonies_compatibility.core.common.inventory.TeachInputSlo
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachResultSlot;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
+import steve_gall.minecolonies_compatibility.core.common.util.NBTUtils2;
 import steve_gall.minecolonies_compatibility.module.common.tacz.init.ModuleMenuTypes;
+import steve_gall.minecolonies_tweaks.core.common.util.SerializationHelper;
 
 public class GunSmithTableTeachMenu extends TeachRecipeMenu<RecipeHolder<GunSmithTableRecipe>, SmithingRecipeInput>
 {
@@ -142,7 +142,7 @@ public class GunSmithTableTeachMenu extends TeachRecipeMenu<RecipeHolder<GunSmit
 	{
 		super.setContainerByTransfer(provider, recipe, payload);
 
-		var input = new ArrayList<>(StandardFactoryController.getInstance().<ItemStorage> deserializeList(provider, payload.getList("input", Tag.TAG_COMPOUND)));
+		var input = NBTUtils2.deserializeList(payload, "input", SerializationHelper.<ItemStorage> deserializerTag(provider));
 
 		for (var i = 0; i < CRAFTING_SLOTS; i++)
 		{

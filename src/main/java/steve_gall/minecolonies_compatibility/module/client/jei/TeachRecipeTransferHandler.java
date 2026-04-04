@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.minecolonies.api.crafting.ItemStorage;
+
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
@@ -67,6 +69,16 @@ public abstract class TeachRecipeTransferHandler<MENU extends TeachRecipeMenu<RE
 	protected List<List<ItemStack>> getItemStacksList(IRecipeSlotsView recipeSlots, RecipeIngredientRole role)
 	{
 		return recipeSlots.getSlotViews(role).stream().map(view -> view.getIngredients(VanillaTypes.ITEM_STACK).toList()).toList();
+	}
+
+	protected List<ItemStorage> getDisplayedItemStorages(IRecipeSlotsView recipeSlots, RecipeIngredientRole role)
+	{
+		return this.getDisplayedItemStacks(recipeSlots, role).stream().map(stack -> new ItemStorage(stack.copyWithCount(1), stack.getCount())).toList();
+	}
+
+	protected List<List<ItemStorage>> getItemStoragesList(IRecipeSlotsView recipeSlots, RecipeIngredientRole role)
+	{
+		return this.getItemStacksList(recipeSlots, role).stream().map(l -> l.stream().map(stack -> new ItemStorage(stack.copyWithCount(1), stack.getCount())).toList()).toList();
 	}
 
 	protected abstract RECIPE getRecipe(MENU menu, CATEGORY_RECIPE categoryRecipe, IRecipeSlotsView recipeSlots, Player player);

@@ -1,5 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.cgm.crafting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,13 +21,11 @@ public class WorkbenchGenericRecipe extends SimpleGenericRecipe
 	{
 		this(recipe.getId(), recipe.getMaterials().stream().map(material ->
 		{
-			var stacks = IngredientHelper.getStacks(material);
+			List<ItemStack> stacks = new ArrayList<>();
 
-			for (var i = 0; i < stacks.size(); i++)
+			for (var stack : IngredientHelper.getStacks(material))
 			{
-				var stack = stacks.get(i).copy();
-				stack.setCount(material.getCount());
-				stacks.set(i, stack);
+				stacks.add(stack.copyWithCount(material.getCount()));
 			}
 
 			return stacks;

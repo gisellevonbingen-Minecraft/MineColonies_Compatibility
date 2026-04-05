@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
-import net.regions_unexplored.block.RuBlocks;
-import net.regions_unexplored.item.RuItems;
+import net.regions_unexplored.registry.RUBlocks;
+import net.regions_unexplored.registry.RUItems;
 import net.regions_unexplored.world.level.block.plant.food.SalmonBerryBushBlock;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
@@ -23,25 +23,25 @@ public class SalmonBerryFruit extends CustomizedFruit
 	@Override
 	public @NotNull ResourceLocation getId()
 	{
-		return BuiltInRegistries.BLOCK.getKey(RuBlocks.SALMONBERRY_BUSH.get());
+		return BuiltInRegistries.BLOCK.getKey(RUBlocks.SALMONBERRY_BUSH.get());
 	}
 
 	@Override
 	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(new ItemStack(RuItems.SALMONBERRY.get()));
+		return Arrays.asList(new ItemStack(RUItems.SALMONBERRY.get()));
 	}
 
 	@Override
 	public @NotNull List<ItemStack> getItemIcons()
 	{
-		return Arrays.asList(new ItemStack(RuItems.SALMONBERRY.get()));
+		return Arrays.asList(new ItemStack(RUItems.SALMONBERRY.get()));
 	}
 
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getBlock() == RuBlocks.SALMONBERRY_BUSH.get();
+		return context.getState().getBlock() == RUBlocks.SALMONBERRY_BUSH.get();
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class SalmonBerryFruit extends CustomizedFruit
 			level.setBlock(context.getPosition(), state.setValue(SalmonBerryBushBlock.AGE, 1), Block.UPDATE_CLIENTS);
 		}
 
-		return Collections.singletonList(new ItemStack(RuItems.SALMONBERRY.get(), flag ? 2 : 1));
+		return Collections.singletonList(new ItemStack(RUItems.SALMONBERRY.get(), flag ? 2 : 1));
 	}
 
 }

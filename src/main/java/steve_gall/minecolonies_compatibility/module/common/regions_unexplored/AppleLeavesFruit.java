@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
-import net.regions_unexplored.block.RuBlocks;
+import net.regions_unexplored.registry.RUBlocks;
 import net.regions_unexplored.world.level.block.leaves.AppleLeavesBlock;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
@@ -23,13 +23,13 @@ public class AppleLeavesFruit extends CustomizedFruit
 	@Override
 	public @NotNull ResourceLocation getId()
 	{
-		return BuiltInRegistries.BLOCK.getKey(RuBlocks.APPLE_OAK_NATURAL_SET.getLeaves());
+		return BuiltInRegistries.BLOCK.getKey(RUBlocks.APPLE_OAK_NATURAL_SET.getLeaves());
 	}
 
 	@Override
 	public @NotNull List<ItemStack> getBlockIcons()
 	{
-		return Arrays.asList(new ItemStack(RuBlocks.APPLE_OAK_NATURAL_SET.getSapling()), new ItemStack(RuBlocks.APPLE_OAK_NATURAL_SET.getLeaves()));
+		return Arrays.asList(new ItemStack(RUBlocks.APPLE_OAK_NATURAL_SET.getSapling()), new ItemStack(RUBlocks.APPLE_OAK_NATURAL_SET.getLeaves()));
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class AppleLeavesFruit extends CustomizedFruit
 	@Override
 	public boolean test(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getBlock() == RuBlocks.APPLE_OAK_NATURAL_SET.getLeaves();
+		return context.getState().getBlock() == RUBlocks.APPLE_OAK_NATURAL_SET.getLeaves();
 	}
 
 	@Override

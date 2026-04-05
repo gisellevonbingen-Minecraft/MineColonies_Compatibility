@@ -135,6 +135,8 @@ dependencies {
     runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${mc_version}:${flywheel_version}"
     implementation "com.tterrag.registrate:Registrate:${registrate_version}"
     implementation "curse.maven:dynamictrees-252818:${dynamictrees_file}"
+    implementation "curse.maven:biolith-852512:${biolith_file}"
+    implementation "curse.maven:lithostitched-936015:${lithostitched_file}"
     implementation "blank:l2harvester:3.0.0"
 
     // Runtiem Only

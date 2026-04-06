@@ -18,7 +18,7 @@ import steve_gall.minecolonies_compatibility.core.common.building.module.Network
 
 public interface INetworkStorageView
 {
-	@NotNull
+	@Nullable
 	Level getLevel();
 
 	@NotNull

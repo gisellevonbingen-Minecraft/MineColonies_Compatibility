@@ -191,8 +191,8 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 	public class StorageView extends QueueNetworkStorageView implements ExternalListener
 	{
-		private Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
-		private Queue<Pattern> patternQueue = new ArrayDeque<>();
+		private final Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
+		private final Queue<Pattern> patternQueue = new ArrayDeque<>();
 
 		@Override
 		public Level getLevel()

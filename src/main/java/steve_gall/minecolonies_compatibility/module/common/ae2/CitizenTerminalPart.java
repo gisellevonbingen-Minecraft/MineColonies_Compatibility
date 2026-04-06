@@ -832,7 +832,6 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 					catch (Exception e)
 					{
 						networkCrafting.setText(Component.literal("ERROR: " + e));
-						return false;
 					}
 
 				}

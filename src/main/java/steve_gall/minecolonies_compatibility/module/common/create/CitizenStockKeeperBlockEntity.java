@@ -228,7 +228,7 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 
 	private class StorageView extends QueueNetworkStorageView
 	{
-		private Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
+		private final Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
 		private final ItemStackCounter counter = new ItemStackCounter();
 		private StockTickerBlockEntity lastStockTicker;
 

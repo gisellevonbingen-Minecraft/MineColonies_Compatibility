@@ -228,8 +228,8 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 
 	public class StorageView extends QueueNetworkStorageView
 	{
-		private Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
-		private Queue<ICraftingPattern> patternQueue = new ArrayDeque<>();
+		private final Map<IToken<?>, TaskHolder> tasks = new HashMap<>();
+		private final Queue<ICraftingPattern> patternQueue = new ArrayDeque<>();
 
 		public INetwork getNetwork()
 		{

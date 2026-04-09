@@ -972,10 +972,10 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	@Override
 	public ImmutableSet<ICraftingLink> getRequestedJobs()
 	{
-		return this.view.tasks.values().stream()
-			.map(taskHolder -> taskHolder.getCraftingLink())
-			.filter(Objects::nonNull)
-			.collect(ImmutableSet.toImmutableSet());
+		return this.view.tasks.values().stream()//
+				.map(TaskHolder::getCraftingLink)//
+				.filter(Objects::nonNull)//
+				.collect(ImmutableSet.toImmutableSet());
 	}
 
 	@Override

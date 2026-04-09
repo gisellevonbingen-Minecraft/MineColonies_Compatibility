@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.Future;
 import java.util.stream.Stream;
@@ -966,7 +967,10 @@ public class CitizenTerminalPart extends AbstractDisplayPart implements IStorage
 	@Override
 	public ImmutableSet<ICraftingLink> getRequestedJobs()
 	{
-		return ImmutableSet.copyOf(this.view.tasks.values().stream().map(taskHolder -> taskHolder.getCraftingLink()).toArray(ICraftingLink[]::new));
+		return this.view.tasks.values().stream()//
+				.map(TaskHolder::getCraftingLink)//
+				.filter(Objects::nonNull)//
+				.collect(ImmutableSet.toImmutableSet());
 	}
 
 	@Override

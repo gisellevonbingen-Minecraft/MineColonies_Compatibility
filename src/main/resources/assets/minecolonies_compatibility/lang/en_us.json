@@ -93,6 +93,7 @@
 	"minecolonies_compatibility.text.access_direction.insert_extract": "Insert and Extract",
 	"minecolonies_compatibility.text.pickup_requested": "Pickup Requested",
 	"minecolonies_compatibility.text.delivery_requested": "Delivery Requested",
+	"minecolonies_compatibility.text.teach_repair_material": "Teach Repair Material",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.material": "Material",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.value": "Value",
 	

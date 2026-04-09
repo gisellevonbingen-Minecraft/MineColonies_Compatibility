@@ -96,6 +96,7 @@
 	"minecolonies_compatibility.text.access_direction.insert_extract": "입출력",
 	"minecolonies_compatibility.text.pickup_requested": "픽업 요청됨",
 	"minecolonies_compatibility.text.delivery_requested": "배달 요청됨",
+	"minecolonies_compatibility.text.teach_repair_material": "수리 재료 가르치기",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.material": "재료",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.value": "능력치",
 	

@@ -29,6 +29,7 @@ import steve_gall.minecolonies_compatibility.module.common.tconstruct.network.Re
 public class RepairMaterialListWindow extends AbstractModuleWindow<RepairMaterialListModule.View>
 {
 	public static final Component TEXT_REMOVE = Component.translatable("com.minecolonies.coremod.gui.recipe.remove");
+	public static final Component TEXT_SURELY = Component.translatable("minecolonies_tweaks.gui.surely").withStyle(ChatFormatting.RED);
 
 	protected final ScrollingList resourceList;
 
@@ -118,7 +119,7 @@ public class RepairMaterialListWindow extends AbstractModuleWindow<RepairMateria
 			else
 			{
 				this.confirmButton = button;
-				this.confirmButton.setText(Component.translatable("minecolonies_tweaks.gui.surely").withStyle(ChatFormatting.RED));
+				this.confirmButton.setText(TEXT_SURELY);
 			}
 
 		}

@@ -79,10 +79,10 @@ public class TConstructToolSystem extends CustomizedToolSystem
 	}
 
 	@Override
-	public double getAttackDamage(@NotNull ItemStack stack)
+	public float getAttackDamage(@NotNull ItemStack stack)
 	{
 		var tool = ToolStack.from(stack);
-		return tool.getStats().get(ToolStats.ATTACK_DAMAGE).doubleValue();
+		return tool.getStats().get(ToolStats.ATTACK_DAMAGE).floatValue();
 	}
 
 }

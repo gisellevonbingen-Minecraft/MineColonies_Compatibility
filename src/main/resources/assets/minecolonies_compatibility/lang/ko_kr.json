@@ -47,6 +47,8 @@
 	"minecolonies_compatibility.tacz_ammo.desc": "Timeless & Classics Guns: Zero 모드 총알",
 	"minecolonies_compatibility.cgm_ammo": "탄환",
 	"minecolonies_compatibility.cgm_ammo.desc": "MrCrayfish's Gun 모드 탄환",
+	"minecolonies_compatibility.silentgear_broken_item": "부서진 도구",
+	"minecolonies_compatibility.silentgear_broken_item.desc": "Silent Gear 모드 부서진 도구",
 	
 	"_comment_blocks": "블록",
 	"block.minecolonies_compatibility.common_network_storage": "범용 저장고 네트워크",
@@ -94,9 +96,15 @@
 	"minecolonies_compatibility.text.pickup_requested": "픽업 요청됨",
 	"minecolonies_compatibility.text.delivery_requested": "배달 요청됨",
 	"minecolonies_compatibility.text.teach_repair_material": "수리 재료 가르치기",
+	"minecolonies_compatibility.text.can_use_higher": "상위 티어 사용 허용",
+	"minecolonies_compatibility.text.can_use_higher.tooptip": "하위 티어 도구를 수리하기 위해 상위 티어 재료를 사용할 수 있습니다.",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.material": "재료",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.tier": "티어",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.value": "능력치",
+	"minecolonies_compatibility.text.silentgear_repair_kit_inventory": "수리 키트 보관함",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.tier": "티어",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.material": "재료",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.value": "값",
 	
 	"_comment_modules": "모듈",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "과일 목록",
@@ -147,6 +155,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials.menu": "수리 재료",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.cgm_workbench": "MrCrayfish's Gun Mod - 작업대 제작법",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.cgm_workbench.menu": "작업대 제작법",
+	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list": "Silent Gear - 수리 재료",
+	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list.menu": "수리 재료",
 	
 	"_comment_module_settings": "모듈 설정",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "폭죽 로켓 요청",

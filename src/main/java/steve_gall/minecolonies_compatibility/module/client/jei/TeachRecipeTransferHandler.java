@@ -81,7 +81,7 @@ public abstract class TeachRecipeTransferHandler<MENU extends TeachRecipeMenu<RE
 	{
 		return this.getItemStacksList(recipeSlots, role).stream().map(l -> l.stream().map(stack -> new ItemStorage(ItemHandlerHelper.copyStackWithSize(stack, 1), stack.getCount(), false)).toList()).toList();
 	}
-	
+
 	protected abstract RECIPE getRecipe(MENU menu, CATEGORY_RECIPE categoryRecipe, IRecipeSlotsView recipeSlots, Player player);
 
 	protected abstract void serializePayload(MENU menu, RECIPE recipe, IRecipeSlotsView recipeSlots, Player player, CompoundTag tag);

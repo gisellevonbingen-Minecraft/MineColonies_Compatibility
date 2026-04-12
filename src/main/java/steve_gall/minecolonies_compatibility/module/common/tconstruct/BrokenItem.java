@@ -88,10 +88,7 @@ public class BrokenItem extends ToolSystemBrokenItem
 	{
 		if (EXAMPLES == null)
 		{
-			EXAMPLES = MinecoloniesAPIProxy.getInstance().getColonyManager().getCompatibilityManager().getListOfAllItems().stream().filter(TConstructToolSystem.INSTANCE::isTool).map(stack ->
-			{
-				return getBroken(stack);
-			}).toList();
+			EXAMPLES = MinecoloniesAPIProxy.getInstance().getColonyManager().getCompatibilityManager().getListOfAllItems().stream().filter(this.getToolSystem()::isTool).map(this::getBroken).toList();
 		}
 
 		return EXAMPLES;

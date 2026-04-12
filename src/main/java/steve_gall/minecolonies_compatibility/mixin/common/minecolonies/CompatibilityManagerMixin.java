@@ -31,7 +31,7 @@ public abstract class CompatibilityManagerMixin
 	@Inject(method = "discoverAllItems", remap = false, at = @At(value = "TAIL"), cancellable = false)
 	private void discoverAllItems(Level level, CallbackInfo ci)
 	{
-		var list = new ArrayList<ItemStack>(allItems);
+		var list = new ArrayList<>(allItems);
 
 		MinecraftForge.EVENT_BUS.post(new DiscoverAllItemsEvent((stack, tab) ->
 		{

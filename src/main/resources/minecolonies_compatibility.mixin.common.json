@@ -21,6 +21,7 @@
 		"minecolonies.AnimalHerdingModuleMixin",
 		"minecolonies.AttackMoveAIMixin",
 		"minecolonies.BuildingEntryMixin",
+		"minecolonies.CompatibilityManagerMixin",
 		"minecolonies.ContainerCraftingMixin",
 		"minecolonies.EntityAIArcherTrainingMixin",
 		"minecolonies.EntityAIWorkBlacksmithMixin",

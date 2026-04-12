@@ -52,5 +52,5 @@ public abstract class CustomizedToolSystem
 
 	public abstract int getLevelUnclamped(@NotNull ItemStack stack);
 
-	public abstract double getAttackDamage(@NotNull ItemStack stack);
+	public abstract float getAttackDamage(@NotNull ItemStack stack);
 }

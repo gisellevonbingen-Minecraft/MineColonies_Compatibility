@@ -86,7 +86,7 @@ public abstract class TinkersToolHelperMixin
 		}
 		else
 		{
-			cir.setReturnValue(system.getAttackDamage(stack));
+			cir.setReturnValue((double) system.getAttackDamage(stack));
 		}
 
 	}

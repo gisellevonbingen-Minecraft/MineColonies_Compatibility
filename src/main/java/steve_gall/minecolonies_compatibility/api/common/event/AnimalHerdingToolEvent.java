@@ -2,6 +2,8 @@ package steve_gall.minecolonies_compatibility.api.common.event;
 
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.minecolonies.api.util.constant.IToolType;
 
 import net.minecraft.world.entity.animal.Animal;
@@ -13,21 +15,24 @@ import net.minecraftforge.eventbus.api.Event;
  */
 public class AnimalHerdingToolEvent extends Event
 {
+	@NotNull
 	private final Animal animal;
+	@NotNull
 	private final Consumer<IToolType> register;
 
-	public AnimalHerdingToolEvent(Animal recipe, Consumer<IToolType> register)
+	public AnimalHerdingToolEvent(@NotNull Animal recipe, @NotNull Consumer<IToolType> register)
 	{
 		this.animal = recipe;
 		this.register = register;
 	}
 
+	@NotNull
 	public Animal getAnimal()
 	{
 		return this.animal;
 	}
 
-	public void register(IToolType toolType)
+	public void register(@NotNull IToolType toolType)
 	{
 		this.register.accept(toolType);
 	}

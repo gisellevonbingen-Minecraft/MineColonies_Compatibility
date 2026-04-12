@@ -201,6 +201,8 @@ dependencies {
     implementation fg.deobf("curse.maven:dynamictrees-252818:${dynamictrees_file}")
     implementation fg.deobf("curse.maven:scorched-guns-802940:${scguns_files}")
     implementation fg.deobf("blank:l2harvester:0.1.2")
+    implementation fg.deobf("curse.maven:silent-lib-242998:${silentlib_file}")
+    implementation fg.deobf("curse.maven:silent-gear-297039:${silentgear_file}")
 
     // Runtime Only
     runtimeOnly fg.deobf("mekanism:Mekanism:${mc_version}-${mekanism_version}")

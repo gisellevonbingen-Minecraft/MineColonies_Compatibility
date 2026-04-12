@@ -1,0 +1,24 @@
+<window size="190 244" pause="false" lightbox="false">
+	<image
+		source="minecolonies:textures/gui/builderhut/builder_paper.png"
+		size="190 244" />
+	<text id="desc" size="130 11" pos="30 14" color="black"
+		textalign="MIDDLE" />
+	<input id="input" size="150 18" pos="20 30" maxlength="25" />
+
+	<list id="resources" size="167 136" pos="13 50">
+		<box size="100% 25" linewidth="1">
+			<itemicon id="outputIcon" size="16 16" pos="2 4" />
+			<text id="materialName" size="93 12" pos="20 1" color="black" />
+			<text id="itemName" size="93 12" pos="20 13" color="black" />
+			<button
+				label="$(com.minecolonies.coremod.gui.recipe.remove)" id="switch"
+				pos="113 5" size="45 15"
+				source="minecolonies:textures/gui/builderhut/builder_button_very_small.png"
+				color="black" />
+		</box>
+	</list>
+	<button id="crafting" size="129 17" pos="30 200" color="black"
+		source="minecolonies:textures/gui/builderhut/builder_button_medium_large.png"
+		label="$(minecolonies_compatibility.text.teach_repair_material)" />
+</window>

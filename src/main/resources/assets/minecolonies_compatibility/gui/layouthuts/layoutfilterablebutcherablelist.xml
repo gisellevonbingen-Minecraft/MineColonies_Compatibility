@@ -2,14 +2,14 @@
 	<image
 		source="minecolonies:textures/gui/builderhut/builder_paper.png"
 		size="190 244" />
-	<text id="desc" size="130 11" pos="30 14" color="black"
+	<label id="desc" size="130 11" pos="30 14" color="black"
 		textalign="MIDDLE" />
 	<input id="input" size="150 18" pos="20 30" maxlength="25" />
 
 	<list id="resources" size="167 136" pos="13 50">
 		<box size="100% 17" linewidth="1">
 			<itemicon id="outputIcon" size="16 16" pos="0 0" />
-			<text id="outputName" size="109 12" pos="20 1" color="white" />
+			<label id="outputName" size="109 12" pos="20 1" color="white" />
 			<button
 				label="$(com.minecolonies.coremod.gui.workerhuts.retrieveOn)"
 				id="switch" pos="129 1" size="29 15"

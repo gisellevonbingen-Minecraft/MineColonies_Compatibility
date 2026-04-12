@@ -1,13 +1,20 @@
 package steve_gall.minecolonies_compatibility.module.common.tacz;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import com.minecolonies.api.colony.buildings.ModBuildings;
+import com.tacz.guns.api.item.GunTabType;
 import com.tacz.guns.api.item.IGun;
+import com.tacz.guns.api.item.gun.AbstractGunItem;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
+import steve_gall.minecolonies_compatibility.api.common.event.DiscoverAllItemsEvent;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 import steve_gall.minecolonies_compatibility.module.client.tacz.GunSmithTableTeachScreen;
@@ -15,7 +22,6 @@ import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 import steve_gall.minecolonies_compatibility.module.common.tacz.crafting.GunSmithTableRecipeStorage;
 import steve_gall.minecolonies_compatibility.module.common.tacz.init.ModuleBuildingModules;
 import steve_gall.minecolonies_compatibility.module.common.tacz.init.ModuleCraftingTypes;
-import steve_gall.minecolonies_compatibility.module.common.tacz.init.ModuleItems;
 import steve_gall.minecolonies_compatibility.module.common.tacz.init.ModuleMenuTypes;
 import steve_gall.minecolonies_compatibility.module.common.tacz.network.GunSmithTableOpenTeachMessage;
 import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizedRecipeStorageRegistry;
@@ -29,9 +35,11 @@ public class TACZModule extends AbstractModule
 		super.onLoad();
 
 		var fml_bus = FMLJavaModLoadingContext.get().getModEventBus();
-		ModuleItems.REGISTER.register(fml_bus);
 		ModuleCraftingTypes.REGISTER.register(fml_bus);
 		ModuleMenuTypes.REGISTER.register(fml_bus);
+
+		var forge_bus = MinecraftForge.EVENT_BUS;
+		forge_bus.addListener(this::onDiscoverAllItems);
 
 		var network = MineColoniesCompatibility.network();
 		network.registerMessage(GunSmithTableOpenTeachMessage.class, GunSmithTableOpenTeachMessage::new);
@@ -67,6 +75,11 @@ public class TACZModule extends AbstractModule
 		super.onFMLClientSetup(e);
 
 		MenuScreens.register(ModuleMenuTypes.GUN_SMITH_TABLE_TEACH.get(), GunSmithTableTeachScreen::new);
+	}
+
+	private void onDiscoverAllItems(DiscoverAllItemsEvent e)
+	{
+		Arrays.stream(GunTabType.values()).map(AbstractGunItem::fillItemCategory).flatMap(Collection::stream).forEach(e::register);
 	}
 
 }

@@ -22,7 +22,6 @@ import steve_gall.minecolonies_compatibility.api.common.repair.EntityContext;
 import steve_gall.minecolonies_compatibility.api.common.repair.RepairTransaction;
 import steve_gall.minecolonies_compatibility.api.common.repair.RepairTransaction.RepairResult;
 import steve_gall.minecolonies_compatibility.core.common.entity.ai.AIRepairState;
-import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 
 @Mixin(value = EntityAIWorkBlacksmith.class)
 public abstract class EntityAIWorkBlacksmithMixin extends AbstractEntityAICrafting<JobBlacksmith, BuildingBlacksmith>
@@ -51,11 +50,6 @@ public abstract class EntityAIWorkBlacksmithMixin extends AbstractEntityAICrafti
 
 	private IAIState checkRepairableItem()
 	{
-		if (!this.building.getSettingValueOrDefault(ModBuildingModules.REPAIR_ITEM, false))
-		{
-			return null;
-		}
-
 		var context = new EntityContext((EntityAIWorkBlacksmith) (Object) this, this.worker);
 
 		for (var repair : CustomizedRepair.getRegistry().values())

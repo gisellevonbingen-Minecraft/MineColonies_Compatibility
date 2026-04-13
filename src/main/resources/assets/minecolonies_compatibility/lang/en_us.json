@@ -98,6 +98,7 @@
 	"minecolonies_compatibility.text.delivery_requested": "Delivery Requested",
 	"minecolonies_compatibility.text.teach_repair_material": "Teach Repair Material",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.material": "Material",
+	"minecolonies_compatibility.text.tconstruct_teach_repair_material.tier": "Tier",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.value": "Value",
 	
 	"_comment_modules": "Modules",

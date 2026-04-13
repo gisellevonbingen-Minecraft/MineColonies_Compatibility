@@ -10,8 +10,10 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import slimeknights.tconstruct.library.client.materials.MaterialTooltipCache;
+import slimeknights.tconstruct.library.materials.definition.MaterialVariant;
 import steve_gall.minecolonies_compatibility.core.client.gui.TeachRecipeScreen;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
+import steve_gall.minecolonies_compatibility.module.common.tconstruct.MaterialHelper;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.RepairValue;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.menu.RepairMaterialTeachMenu;
 import steve_gall.minecolonies_compatibility.module.common.tconstruct.network.RepairMaterialUpdateMessage;
@@ -20,10 +22,12 @@ public class RepairMaterialTeachScreen extends TeachRecipeScreen<RepairMaterialT
 {
 	public static final ResourceLocation TEXTURE = MineColoniesCompatibility.rl("textures/gui/tconstruct_repair_material_teach.png");
 	public static final MutableComponent TEXT_MATERIAL_PREFIX = Component.translatable("minecolonies_compatibility.text.tconstruct_teach_repair_material.material");
+	public static final MutableComponent TEXT_TIER_PREFIX = Component.translatable("minecolonies_compatibility.text.tconstruct_teach_repair_material.tier");
 	public static final MutableComponent TEXT_VALUE_PREFIX = Component.translatable("minecolonies_compatibility.text.tconstruct_teach_repair_material.value");
 
 	private RepairValue lastRecipe = null;
 	private Component materialText = null;
+	private Component tierText = null;
 	private Component valueText = null;
 
 	public RepairMaterialTeachScreen(RepairMaterialTeachMenu menu, Inventory inventory, Component title)
@@ -60,6 +64,7 @@ public class RepairMaterialTeachScreen extends TeachRecipeScreen<RepairMaterialT
 			if (recipe != null)
 			{
 				this.materialText = Component.translatable("%s: %s", TEXT_MATERIAL_PREFIX, MaterialTooltipCache.getDisplayName(recipe.material().getId()));
+				this.tierText = Component.translatable("%s: %s", TEXT_TIER_PREFIX, MaterialHelper.getRequiredLevel(MaterialVariant.of(recipe.material())));
 
 				if (recipe.needed() > 1)
 				{
@@ -77,9 +82,13 @@ public class RepairMaterialTeachScreen extends TeachRecipeScreen<RepairMaterialT
 		if (this.lastRecipe != null)
 		{
 			var x = this.leftPos + 46;
-			var y = this.topPos + 36;
+			var y = this.topPos + 31;
 			graphics.drawString(this.font, this.materialText, x, y, 0xFFFFFFFF);
-			graphics.drawString(this.font, this.valueText, x, y + this.font.lineHeight, 0xFFFFFFFF);
+			y += this.font.lineHeight;
+			graphics.drawString(this.font, this.tierText, x, y, 0xFFFFFFFF);
+			y += this.font.lineHeight;
+			graphics.drawString(this.font, this.valueText, x, y, 0xFFFFFFFF);
+			y += this.font.lineHeight;
 		}
 
 	}

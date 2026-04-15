@@ -7,6 +7,9 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.minecolonies.api.entity.ai.statemachine.tickratestatemachine.ITickRateStateMachine;
 import com.minecolonies.api.util.constant.GuardConstants;
 import com.minecolonies.api.util.constant.ToolType;
@@ -20,6 +23,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
 @Mixin(value = KnightCombatAI.class, remap = false)
@@ -42,6 +47,22 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 		var base = GuardConstants.BASE_PHYSICAL_DAMAGE;
 		var amount = this.getAdditionsAmount(stack, Attributes.ATTACK_DAMAGE);
 		return base + amount;
+	}
+
+	@WrapOperation(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "net/minecraft/world/item/SwordItem.getDamage"))
+	private float getAttackDamage_getDamage(SwordItem item, Operation<Float> operation, @Local ItemStack heldItem)
+	{
+		var system = CustomizedToolSystem.select(heldItem);
+
+		if (system == null)
+		{
+			return operation.call(item);
+		}
+		else
+		{
+			return system.getAttackDamage(heldItem);
+		}
+
 	}
 
 	@ModifyConstant(method = "getAttackDelay", remap = false, constant = @Constant(intValue = 32))

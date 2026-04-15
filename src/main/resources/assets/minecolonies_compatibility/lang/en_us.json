@@ -47,6 +47,8 @@
 	"minecolonies_compatibility.tacz_ammo.desc": "Timeless & Classics Guns: Zero's Ammo",
 	"minecolonies_compatibility.cgm_ammo": "Ammo",
 	"minecolonies_compatibility.cgm_ammo.desc": "MrCrayfish's Gun Mod's Ammo",
+	"minecolonies_compatibility.silentgear_broken_item": "Broken Items",
+	"minecolonies_compatibility.silentgear_broken_item.desc": "Silent Gear's Broken Items",
 	
 	"_comment_blocks": "Blocks",
 	"block.minecolonies_compatibility.common_network_storage": "Common Network Storage",
@@ -94,9 +96,15 @@
 	"minecolonies_compatibility.text.pickup_requested": "Pickup Requested",
 	"minecolonies_compatibility.text.delivery_requested": "Delivery Requested",
 	"minecolonies_compatibility.text.teach_repair_material": "Teach Repair Material",
+	"minecolonies_compatibility.text.can_use_higher": "Allow use higher tier",
+	"minecolonies_compatibility.text.can_use_higher.tooptip": "Can use higher tier material for repair lower tier tool.",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.material": "Material",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.tier": "Tier",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.value": "Value",
+	"minecolonies_compatibility.text.silentgear_repair_kit_inventory": "Repair Kit Inventory",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.tier": "Tier",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.material": "Material",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.value": "Value",
 	
 	"_comment_modules": "Modules",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruits",
@@ -147,6 +155,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials.menu": "Repair Materials",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.cgm_workbench": "MrCrayfish's Gun Mod - Workbench Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.recipe.cgm_workbench.menu": "Workbench Recipes",
+	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list": "Silent Gear - Repair Materials",
+	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list.menu": "Repair Materials",
 	
 	"_comment_module_settings": "Module Settings",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "Request Firework Rocket",

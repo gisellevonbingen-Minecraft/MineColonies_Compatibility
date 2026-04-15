@@ -45,6 +45,8 @@
 	"minecolonies_compatibility.tconstruct_repair_kit.desc": "Tinkers' Construct's Repair Materials",
 	"minecolonies_compatibility.tacz_ammo": "TaCZ Ammo",
 	"minecolonies_compatibility.tacz_ammo.desc": "Timeless & Classics Guns: Zero's Ammo",
+	"minecolonies_compatibility.silentgear_broken_item": "Broken Items",
+	"minecolonies_compatibility.silentgear_broken_item.desc": "Silent Gear's Broken Items",
 	
 	"_comment_blocks": "Blocks",
 	"block.minecolonies_compatibility.common_network_storage": "Common Network Storage",
@@ -95,6 +97,9 @@
 	"minecolonies_compatibility.text.teach_repair_material": "Teach Repair Material",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.material": "Material",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.value": "Value",
+	"minecolonies_compatibility.text.silentgear_repair_kit_inventory": "Repair Kit Inventory",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.tier": "Tier",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.material": "Material",
 	
 	"_comment_modules": "Modules",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "Fruits",
@@ -149,6 +154,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.tacz_gun_smith_table.menu": "Gun Smith Table Recipes",
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials": "Tinkers' Construct - Repair Materials",
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials.menu": "Repair Materials",
+	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list": "Silent Gear - Repair Materials",
+	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list.menu": "Repair Materials",
 	
 	"_comment_module_settings": "Module Settings",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "Request Firework Rocket",

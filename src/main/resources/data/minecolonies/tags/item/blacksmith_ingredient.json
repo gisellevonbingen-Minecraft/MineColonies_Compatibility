@@ -3,6 +3,14 @@
 		{
 			"required": false,
 			"id": "reliquary:bullets/neutral_bullet"
+		},
+		{
+			"required": false,
+			"id": "silentgear:blueprint_paper"
+		},
+		{
+			"required": false,
+			"id": "silentgear:template_board"
 		}
 	]
 }

@@ -45,6 +45,8 @@
 	"minecolonies_compatibility.tconstruct_repair_kit.desc": "Tinkers' Construct 모드 수리 키트",
 	"minecolonies_compatibility.tacz_ammo": "TaCZ 총알",
 	"minecolonies_compatibility.tacz_ammo.desc": "Timeless & Classics Guns: Zero 모드 총알",
+	"minecolonies_compatibility.silentgear_broken_item": "부서진 도구",
+	"minecolonies_compatibility.silentgear_broken_item.desc": "Silent Gear 모드 부서진 도구",
 	
 	"_comment_blocks": "블록",
 	"block.minecolonies_compatibility.common_network_storage": "범용 저장고 네트워크",
@@ -95,6 +97,9 @@
 	"minecolonies_compatibility.text.teach_repair_material": "수리 재료 가르치기",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.material": "재료",
 	"minecolonies_compatibility.text.tconstruct_teach_repair_material.value": "능력치",
+	"minecolonies_compatibility.text.silentgear_repair_kit_inventory": "수리 키트 보관함",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.tier": "티어",
+	"minecolonies_compatibility.text.silentgear_teach_repair_material.material": "재료",
 	
 	"_comment_modules": "모듈",
 	"com.minecolonies.coremod.gui.workerhuts.fruitlist_blacklist": "과일 목록",
@@ -149,6 +154,8 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.tacz_gun_smith_table.menu": "총기 제작 테이블 제작법",
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials": "Tinkers' Construct - 수리 재료",
 	"com.minecolonies.coremod.gui.workerhuts.tconstruct_repair_materials.menu": "수리 재료",
+	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list": "Silent Gear - 수리 재료",
+	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list.menu": "수리 재료",
 	
 	"_comment_module_settings": "모듈 설정",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "폭죽 로켓 요청",

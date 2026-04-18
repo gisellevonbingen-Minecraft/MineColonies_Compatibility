@@ -535,7 +535,14 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 			{
 				for (var requestId : toRemoveds)
 				{
+					var request = requestManager.getRequestForToken(requestId);
 					this.tasks.remove(requestId);
+
+					if (request == null)
+					{
+						continue;
+					}
+
 					requestManager.updateRequestState(requestId, RequestState.CANCELLED);
 				}
 

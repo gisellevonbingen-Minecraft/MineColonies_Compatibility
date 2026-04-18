@@ -36,7 +36,7 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 		super(owner, stateMachine);
 	}
 
-	@WrapOperation(method = "canAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/InventoryUtils.getFirstSlotOfItemHandlerContainingEquipment"))
+	@WrapOperation(method = "canAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/InventoryUtils.getFirstSlotOfItemHandlerContainingEquipment", remap = false))
 	private int canAttack_getFirstSlotOfItemHandlerContainingEquipment(IItemHandler itemHandler, EquipmentTypeEntry equipmentType, int minimalLevel, int maximumLevel, Operation<Integer> operation)
 	{
 		if (equipmentType == ModEquipmentTypes.sword.get())
@@ -47,7 +47,7 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 		return operation.call(itemHandler, equipmentType, minimalLevel, maximumLevel);
 	}
 
-	@Redirect(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/compatibility/tinkers/TinkersToolHelper.getDamage"))
+	@Redirect(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/compatibility/tinkers/TinkersToolHelper.getDamage", remap = false))
 	private double getAttackDamage_getDamage(ItemStack stack)
 	{
 		if (stack.getItem() instanceof DiggerItem)

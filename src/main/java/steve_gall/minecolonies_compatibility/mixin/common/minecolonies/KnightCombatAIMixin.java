@@ -36,7 +36,7 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 		super(owner, stateMachine);
 	}
 
-	@WrapOperation(method = "canAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/InventoryUtils.getFirstSlotOfItemHandlerContainingEquipment"))
+	@WrapOperation(method = "canAttack", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/util/InventoryUtils.getFirstSlotOfItemHandlerContainingEquipment", remap = false))
 	private int canAttack_getFirstSlotOfItemHandlerContainingEquipment(IItemHandler itemHandler, EquipmentTypeEntry equipmentType, int minimalLevel, int maximumLevel, Operation<Integer> operation)
 	{
 		if (equipmentType == ModEquipmentTypes.sword.get())
@@ -47,7 +47,7 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 		return operation.call(itemHandler, equipmentType, minimalLevel, maximumLevel);
 	}
 
-	@Redirect(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/compatibility/tinkers/TinkersToolHelper.getDamage"))
+	@Redirect(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "com/minecolonies/api/compatibility/tinkers/TinkersToolHelper.getDamage", remap = false))
 	private double getAttackDamage_getDamage(ItemStack stack)
 	{
 		var base = GuardConstants.BASE_PHYSICAL_DAMAGE;
@@ -55,7 +55,7 @@ public abstract class KnightCombatAIMixin extends AttackMoveAI<EntityCitizen>
 		return base + amount;
 	}
 
-	@WrapOperation(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "net/minecraft/world/item/SwordItem.getDamage"))
+	@WrapOperation(method = "getAttackDamage", remap = false, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/SwordItem;getDamage()F", remap = true))
 	private float getAttackDamage_getDamage(SwordItem item, Operation<Float> operation, @Local ItemStack heldItem)
 	{
 		var system = CustomizedToolSystem.select(heldItem);

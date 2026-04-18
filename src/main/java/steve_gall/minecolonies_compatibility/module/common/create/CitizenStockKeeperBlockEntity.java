@@ -42,7 +42,7 @@ import steve_gall.minecolonies_compatibility.core.common.building.module.Network
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackCounter;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackKey;
-import steve_gall.minecolonies_compatibility.core.common.item.WrappedItemHandler;
+import steve_gall.minecolonies_compatibility.core.common.item.LazyWrappedItemHandler;
 import steve_gall.minecolonies_compatibility.module.common.create.init.ModuleBlockEntities;
 import steve_gall.minecolonies_compatibility.module.common.create.init.ModuleBlocks;
 
@@ -109,41 +109,30 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 
 				if (module != null)
 				{
-					var internal = module.getBuilding().getCapability(cap, side);
-
-					if (internal.isPresent())
+					return LazyOptional.of(() ->
 					{
-						var handler = (IItemHandler) internal.orElse(null);
-
-						return LazyOptional.of(() ->
+						return new LazyWrappedItemHandler(() -> (IItemHandler) module.getBuilding().getCapability(cap, side).orElse(null))
 						{
-							return new WrappedItemHandler(handler)
+							@Override
+							public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
 							{
-								@Override
-								public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+								var remaining = super.insertItem(slot, stack, simulate);
+
+								if (!simulate && stack.getCount() > remaining.getCount())
 								{
-									var remaining = super.insertItem(slot, stack, simulate);
-
-									if (!simulate && stack.getCount() > remaining.getCount())
-									{
-										onInventoryInserted(slot, stack.copyWithCount(stack.getCount() - remaining.getCount()));
-									}
-
-									return remaining;
+									onInventoryInserted(slot, stack.copyWithCount(stack.getCount() - remaining.getCount()));
 								}
 
-								@Override
-								public ItemStack extractItem(int slot, int amount, boolean simulate)
-								{
-									return ItemStack.EMPTY;
-								}
-							};
-						}).cast();
-					}
-					else
-					{
-						return internal;
-					}
+								return remaining;
+							}
+
+							@Override
+							public ItemStack extractItem(int slot, int amount, boolean simulate)
+							{
+								return ItemStack.EMPTY;
+							}
+						};
+					}).cast();
 
 				}
 

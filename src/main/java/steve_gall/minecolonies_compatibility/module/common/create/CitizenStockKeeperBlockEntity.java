@@ -42,7 +42,7 @@ import steve_gall.minecolonies_compatibility.core.common.building.module.Network
 import steve_gall.minecolonies_compatibility.core.common.building.module.QueueNetworkStorageView;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackCounter;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackKey;
-import steve_gall.minecolonies_compatibility.core.common.item.WrappedItemHandler;
+import steve_gall.minecolonies_compatibility.core.common.item.LazyWrappedItemHandler;
 import steve_gall.minecolonies_compatibility.module.common.create.init.ModuleBlockEntities;
 import steve_gall.minecolonies_compatibility.module.common.create.init.ModuleBlocks;
 
@@ -120,7 +120,7 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 			return null;
 		}
 
-		return new WrappedItemHandler(handler)
+		return new LazyWrappedItemHandler(() -> handler)
 		{
 			@Override
 			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)

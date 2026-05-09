@@ -1,0 +1,12 @@
+{
+	"values": [
+		{
+			"required": false,
+			"id": "silentgear:fluffy_puff"
+		},
+		{
+			"required": false,
+			"id": "silentgear:fluffy_feather"
+		}
+	]
+}

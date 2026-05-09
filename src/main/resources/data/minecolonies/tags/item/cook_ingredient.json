@@ -1,0 +1,32 @@
+{
+	"values": [
+		{
+			"required": false,
+			"id": "farmersdelight:ham"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:smoked_ham"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:kelp_roll_slice"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:salmon_roll"
+		},
+		{
+			"required": false,
+			"id": "farmersdelight:cod_roll"
+		},
+		{
+			"required": false,
+			"id": "nethersdelight:hoglin_loin"
+		},
+		{
+			"required": false,
+			"id": "mynethersdelight:hoglin_loin"
+		}
+	]
+}

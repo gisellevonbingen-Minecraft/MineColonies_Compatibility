@@ -153,7 +153,15 @@ public class SmithingCraftingType extends CraftingType
 		{
 			for (var addition : additions)
 			{
-				list.add(recipe.value().assemble(new SmithingRecipeInput(template, base, addition), registryAccess));
+				try
+				{
+					list.add(recipe.value().assemble(new SmithingRecipeInput(template, base, addition), registryAccess));
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+
 			}
 
 		}

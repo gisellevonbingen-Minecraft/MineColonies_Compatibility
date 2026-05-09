@@ -1,8 +1,13 @@
 {
 	"values": [
+		"#c:doughs",
 		{
 			"required": false,
 			"id": "bakery:yeast"
+		},
+		{
+			"required": false,
+			"id": "mynethersdelight:bread_loaf"
 		}
 	]
 }

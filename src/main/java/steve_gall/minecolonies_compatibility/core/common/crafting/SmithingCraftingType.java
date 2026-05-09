@@ -152,11 +152,19 @@ public class SmithingCraftingType extends CraftingType
 		{
 			for (var addition : additions)
 			{
-				var container = new SimpleContainer(3);
-				container.setItem(0, template);
-				container.setItem(1, base);
-				container.setItem(2, addition);
-				list.add(recipe.assemble(container, registryAccess));
+				try
+				{
+					var container = new SimpleContainer(3);
+					container.setItem(0, template);
+					container.setItem(1, base);
+					container.setItem(2, addition);
+					list.add(recipe.assemble(container, registryAccess));
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+
 			}
 
 		}

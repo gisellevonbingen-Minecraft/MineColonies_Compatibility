@@ -151,7 +151,7 @@ public class FarmersDelightModule extends AbstractModule
 
 	public static Component createChanceTooltip(float chance)
 	{
-		return Component.translatable("farmersdelight.jei.chance", chance < 0.01 ? "<1" : (int) (chance * 100)).withStyle(ChatFormatting.GOLD);
+		return Component.translatable("jei.farmersdelight.chance", chance < 0.01 ? "<1" : (int) (chance * 100)).withStyle(ChatFormatting.GOLD);
 	}
 
 }

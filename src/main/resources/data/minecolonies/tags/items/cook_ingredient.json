@@ -27,6 +27,18 @@
 		{
 			"required": false,
 			"id": "mynethersdelight:hoglin_loin"
+		},
+		{
+			"required": false,
+			"id": "culturaldelight:chicken_roll_slice"
+		},
+		{
+			"required": false,
+			"id": "culturaldelight:tropical_roll"
+		},
+		{
+			"required": false,
+			"id": "culturaldelight:pufferfish_roll"
 		}
 	]
 }

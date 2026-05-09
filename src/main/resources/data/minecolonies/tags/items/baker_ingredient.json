@@ -1,0 +1,9 @@
+{
+	"values": [
+		"#forge:dough",
+		{
+			"required": false,
+			"id": "farmersdelight:pie_crust"
+		}
+	]
+}

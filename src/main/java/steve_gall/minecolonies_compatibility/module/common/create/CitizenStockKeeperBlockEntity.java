@@ -562,14 +562,13 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 		{
 			super.readData(provider, tag);
 
-			var registryAccess = level.registryAccess();
 			var factoryController = StandardFactoryController.getInstance();
 			this.tasks.clear();
 
 			for (var taskTag : NBTUtils.streamCompound(tag.getList("tasks", Tag.TAG_COMPOUND)).toList())
 			{
-				IToken<?> requestId = factoryController.deserializeTag(registryAccess, taskTag.getCompound("requestId"));
-				var holder = new TaskHolder(registryAccess, taskTag.getCompound("value"));
+				IToken<?> requestId = factoryController.deserializeTag(provider, taskTag.getCompound("requestId"));
+				var holder = new TaskHolder(provider, taskTag.getCompound("value"));
 				this.tasks.put(requestId, holder);
 			}
 
@@ -580,13 +579,12 @@ public class CitizenStockKeeperBlockEntity extends BlockEntity implements INetwo
 		{
 			super.writeData(provider, tag);
 
-			var registryAccess = level.registryAccess();
 			var factoryController = StandardFactoryController.getInstance();
 			tag.put("tasks", this.tasks.entrySet().stream().map(entry ->
 			{
 				var taskTag = new CompoundTag();
-				taskTag.put("requestId", factoryController.serializeTag(registryAccess, entry.getKey()));
-				taskTag.put("value", entry.getValue().serializeTag(registryAccess));
+				taskTag.put("requestId", factoryController.serializeTag(provider, entry.getKey()));
+				taskTag.put("value", entry.getValue().serializeTag(provider));
 				return taskTag;
 			}).collect(NBTUtils.toListNBT()));
 

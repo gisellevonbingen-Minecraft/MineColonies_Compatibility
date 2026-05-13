@@ -139,6 +139,8 @@ dependencies {
     implementation "curse.maven:lithostitched-936015:${lithostitched_file}"
     implementation "curse.maven:silent-lib-242998:${silentlib_file}"
     implementation "curse.maven:silent-gear-297039:${silentgear_file}"
+    implementation "curse.maven:framework-549225:${framework_file}"
+    implementation "curse.maven:scorched-guns-neoforged-1538807:${scguns_file}"
     implementation "blank:l2harvester:3.0.0"
 
     // Runtiem Only

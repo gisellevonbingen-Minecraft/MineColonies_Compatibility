@@ -13,13 +13,13 @@ public class CustomizedAIContext
 	private final AbstractEntityCitizen user;
 	@NotNull
 	private final IToolType toolType;
-	private final int weaponSlot;
+	private final int toolSlot;
 
-	public CustomizedAIContext(@NotNull AbstractEntityCitizen user, @NotNull IToolType toolType, int weaponSlot)
+	public CustomizedAIContext(@NotNull AbstractEntityCitizen user, @NotNull IToolType toolType, int toolSlot)
 	{
 		this.user = user;
 		this.toolType = toolType;
-		this.weaponSlot = weaponSlot;
+		this.toolSlot = toolSlot;
 	}
 
 	@NotNull
@@ -34,15 +34,15 @@ public class CustomizedAIContext
 		return this.toolType;
 	}
 
-	public int getWeaponSlot()
+	public int getToolSlot()
 	{
-		return this.weaponSlot;
+		return this.toolSlot;
 	}
 
 	@NotNull
-	public ItemStack getWeapon()
+	public ItemStack getTool()
 	{
-		return this.getUser().getCitizenData().getInventory().getStackInSlot(this.getWeaponSlot());
+		return this.getUser().getCitizenData().getInventory().getStackInSlot(this.getToolSlot());
 	}
 
 }

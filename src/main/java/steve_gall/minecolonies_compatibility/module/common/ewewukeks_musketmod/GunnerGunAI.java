@@ -28,9 +28,9 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	public static class Musket extends GunnerGunAI
 	{
 		@Override
-		public boolean testWeapon(@NotNull ItemStack weapon)
+		public boolean testTool(@NotNull ItemStack tool)
 		{
-			return weapon.getItem() instanceof MusketItem;
+			return tool.getItem() instanceof MusketItem;
 		}
 
 		@Override
@@ -58,9 +58,9 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	public static class Pistol extends GunnerGunAI
 	{
 		@Override
-		public boolean testWeapon(@NotNull ItemStack weapon)
+		public boolean testTool(@NotNull ItemStack tool)
 		{
-			return weapon.getItem() instanceof PistolItem;
+			return tool.getItem() instanceof PistolItem;
 		}
 
 		@Override
@@ -80,9 +80,9 @@ public abstract class GunnerGunAI extends CustomizedAIGunner
 	public static class Blunderbuss extends GunnerGunAI
 	{
 		@Override
-		public boolean testWeapon(@NotNull ItemStack weapon)
+		public boolean testTool(@NotNull ItemStack tool)
 		{
-			return weapon.getItem() instanceof BlunderbussItem;
+			return tool.getItem() instanceof BlunderbussItem;
 		}
 
 		@Override

@@ -45,7 +45,12 @@ public abstract class CustomizedAI
 	public boolean test(@NotNull CustomizedAIContext context)
 	{
 		var jobEntry = CitizenHelper.getJobEntry(context.getUser().getCitizenData());
-		return this.getJobEntry() == jobEntry;
+		return this.getJobEntry() == jobEntry && this.testTool(context.getTool());
+	}
+
+	public boolean testTool(@NotNull ItemStack tool)
+	{
+		return false;
 	}
 
 	public void onSelected(@NotNull AbstractEntityCitizen user)

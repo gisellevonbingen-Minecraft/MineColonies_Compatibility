@@ -35,9 +35,9 @@ public class GunnerRevolverAI extends CustomizedAIGunner
 	}
 
 	@Override
-	public boolean testWeapon(@NotNull ItemStack weapon)
+	public boolean testTool(@NotNull ItemStack tool)
 	{
-		return weapon.getItem() instanceof RevolverItem;
+		return tool.getItem() instanceof RevolverItem;
 	}
 
 	@Override

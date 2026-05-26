@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.minecolonies.api.util.ItemStackUtils;
 import com.minecolonies.core.colony.buildings.AbstractBuilding;
 import com.minecolonies.core.colony.jobs.AbstractJob;
 import com.minecolonies.core.entity.ai.workers.AbstractAISkeleton;
@@ -16,7 +17,6 @@ import com.minecolonies.core.entity.ai.workers.AbstractEntityAIBasic;
 import com.minecolonies.core.util.citizenutils.CitizenItemUtils;
 
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAIContext;
@@ -35,7 +35,7 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 	@Unique
 	private int minecolonies_compatibility$lastSlot = -1;
 	@Unique
-	private Item minecolonies_compatibility$lastItem = null;
+	private ItemStack minecolonies_compatibility$lastItem = null;
 
 	protected AbstractEntityAIBasicMixin(@NotNull J job)
 	{
@@ -51,7 +51,7 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 
 		this.minecolonies_compatibility$selectedAI = toolSlot == -1 ? null : CustomizedAI.select(context);
 		this.minecolonies_compatibility$lastSlot = toolSlot;
-		this.minecolonies_compatibility$lastItem = worker.getInventoryCitizen().getStackInSlot(toolSlot).getItem();
+		this.minecolonies_compatibility$lastItem = worker.getInventoryCitizen().getStackInSlot(toolSlot);
 
 		if (this.minecolonies_compatibility$selectedAI != null)
 		{
@@ -104,10 +104,6 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 			{
 				this.updateAI(self);
 			}
-			else
-			{
-				CitizenItemUtils.setHeldItem(this.worker, InteractionHand.MAIN_HAND, this.minecolonies_compatibility$lastSlot);
-			}
 
 			return this.minecolonies_compatibility$selectedAI;
 		}
@@ -126,7 +122,14 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 		{
 			return true;
 		}
-		else if (this.worker.getInventoryCitizen().getStackInSlot(slot).getItem() != this.minecolonies_compatibility$lastItem)
+
+		var stackInSlot = this.worker.getInventoryCitizen().getStackInSlot(slot);
+
+		if (stackInSlot == this.minecolonies_compatibility$lastItem)
+		{
+			return false;
+		}
+		else if (!ItemStackUtils.compareItemStacksIgnoreStackSize(stackInSlot, this.minecolonies_compatibility$lastItem, false, true))
 		{
 			return true;
 		}

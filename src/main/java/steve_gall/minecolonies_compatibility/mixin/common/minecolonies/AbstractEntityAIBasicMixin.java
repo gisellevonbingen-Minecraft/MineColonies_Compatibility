@@ -45,8 +45,9 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 	private void updateAI(ICustomizableEntityAI self)
 	{
 		var worker = this.worker;
-		var toolSlot = CitizenHelper.getMaxLevelToolSlot(worker.getCitizenData(), self.getHandToolType());
-		var context = new CustomizedAIContext(worker, toolSlot);
+		var toolType = self.getHandToolType();
+		var toolSlot = CitizenHelper.getMaxLevelToolSlot(worker.getCitizenData(), toolType);
+		var context = new CustomizedAIContext(worker, toolType, toolSlot);
 
 		this.minecolonies_compatibility$selectedAI = toolSlot == -1 ? null : CustomizedAI.select(context);
 		this.minecolonies_compatibility$lastSlot = toolSlot;

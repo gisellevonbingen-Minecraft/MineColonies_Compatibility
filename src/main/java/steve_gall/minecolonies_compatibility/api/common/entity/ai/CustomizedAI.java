@@ -53,6 +53,11 @@ public abstract class CustomizedAI
 		return false;
 	}
 
+	public void onDeselected(@NotNull AbstractEntityCitizen user)
+	{
+
+	}
+
 	public void onSelected(@NotNull AbstractEntityCitizen user)
 	{
 

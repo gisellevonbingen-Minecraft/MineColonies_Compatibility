@@ -46,16 +46,33 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 		var worker = this.worker;
 		var toolType = self.getHandToolType();
 		var toolSlot = CitizenHelper.getMaxLevelToolSlot(worker.getCitizenData(), toolType);
+		var tool = worker.getInventoryCitizen().getStackInSlot(toolSlot);
 		var context = new CustomizedAIContext(worker, toolType, toolSlot);
+		var ai = toolSlot == -1 ? null : CustomizedAI.select(context);
+		var changed = (this.minecolonies_compatibility$lastSlot != toolSlot || this.testToolChanged(tool)) || (this.minecolonies_compatibility$selectedAI != ai);
 
-		this.minecolonies_compatibility$selectedAI = toolSlot == -1 ? null : CustomizedAI.select(context);
+		if (this.minecolonies_compatibility$selectedAI != null)
+		{
+			if (changed)
+			{
+				this.minecolonies_compatibility$selectedAI.onDeselected(worker);
+			}
+
+		}
+
+		this.minecolonies_compatibility$selectedAI = ai;
 		this.minecolonies_compatibility$lastSlot = toolSlot;
-		this.minecolonies_compatibility$lastItem = worker.getInventoryCitizen().getStackInSlot(toolSlot);
+		this.minecolonies_compatibility$lastItem = tool;
 
 		if (this.minecolonies_compatibility$selectedAI != null)
 		{
 			worker.getCitizenItemHandler().setHeldItem(InteractionHand.MAIN_HAND, toolSlot);
-			this.minecolonies_compatibility$selectedAI.onSelected(worker);
+
+			if (changed)
+			{
+				this.minecolonies_compatibility$selectedAI.onSelected(worker);
+			}
+
 		}
 		else
 		{
@@ -123,17 +140,17 @@ public abstract class AbstractEntityAIBasicMixin<J extends AbstractJob<?, J>, B 
 		}
 
 		var stackInSlot = this.worker.getInventoryCitizen().getStackInSlot(slot);
+		return this.testToolChanged(stackInSlot);
+	}
 
-		if (stackInSlot == this.minecolonies_compatibility$lastItem)
+	private boolean testToolChanged(ItemStack tool)
+	{
+		if (tool == this.minecolonies_compatibility$lastItem)
 		{
 			return false;
 		}
-		else if (!ItemStackUtils.compareItemStacksIgnoreStackSize(stackInSlot, this.minecolonies_compatibility$lastItem, false, true))
-		{
-			return true;
-		}
 
-		return false;
+		return !ItemStackUtils.compareItemStacksIgnoreStackSize(tool, this.minecolonies_compatibility$lastItem, false, true);
 	}
 
 }

@@ -183,15 +183,23 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 	}
 
 	@Override
+	public void onDeselected(@NotNull AbstractEntityCitizen user)
+	{
+		super.onDeselected(user);
+
+		this.cancelRequests(user, 0);
+	}
+
+	@Override
 	public void onSelected(@NotNull AbstractEntityCitizen user)
 	{
 		super.onSelected(user);
 
-		this.cancelExcessiveRequests(user);
+		this.cancelRequests(user, 2);
 		this.checkAmmo(user);
 	}
 
-	private void cancelExcessiveRequests(@NotNull AbstractEntityCitizen user)
+	private void cancelRequests(@NotNull AbstractEntityCitizen user, int keepCount)
 	{
 		var citizen = user.getCitizenData();
 		var requests = CitizenHelper.getRequests(citizen, CustomizableDeliverable.TYPE_TOKEN, r ->
@@ -200,7 +208,7 @@ public abstract class CustomizedAIGunner extends CustomizedAIGuard
 		});
 
 		var requestManager = citizen.getColony().getRequestManager();
-		for (var i = 2; i < requests.size(); i++)
+		for (var i = keepCount; i < requests.size(); i++)
 		{
 			requestManager.updateRequestState(requests.get(i).getId(), RequestState.CANCELLED);
 		}

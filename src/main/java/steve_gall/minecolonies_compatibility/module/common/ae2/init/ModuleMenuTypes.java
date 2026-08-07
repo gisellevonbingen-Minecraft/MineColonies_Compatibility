@@ -20,7 +20,7 @@ public class ModuleMenuTypes
 
 	private static <MENU extends AEBaseMenu> DeferredHolder<MenuType<?>, MenuType<MENU>> register(String name, Supplier<MenuTypeBuilder<MENU, ?>> builderSupplier)
 	{
-		return REGISTER.register(name, () -> builderSupplier.get().build(name));
+		return REGISTER.register(name, () -> builderSupplier.get().buildUnregistered(MineColoniesCompatibility.rl(name)));
 	}
 
 	private ModuleMenuTypes()

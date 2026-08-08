@@ -167,12 +167,9 @@ public class MineColoniesCompatibility
 
 	private void onCustomToolTypeRegister(CustomToolTypeRegisterEvent e)
 	{
-		e.register(ModToolTypes.CROSSBOW);
 		e.register(ModToolTypes.GUN);
 		e.register(ModToolTypes.KNIFE);
 
-		e.register(ModToolTypes.RANGER_WEAPON);
-		e.register(ModToolTypes.KNIGHT_WEAPON);
 		e.register(ModToolTypes.BUTCHER_TOOL);
 	}
 
@@ -189,15 +186,7 @@ public class MineColoniesCompatibility
 	{
 		var buildingType = e.getBuilding().getBuildingType();
 
-		if (buildingType == ModBuildings.guardTower.get())
-		{
-			e.register(BuildingModules.GUARD_SETTINGS, ModBuildingModules.GUARD_SETTINGS);
-		}
-		else if (buildingType == ModBuildings.barracksTower.get())
-		{
-			e.register(BuildingModules.GUARD_SETTINGS, ModBuildingModules.GUARD_SETTINGS);
-		}
-		else if (buildingType == ModBuildings.lumberjack.get())
+		if (buildingType == ModBuildings.lumberjack.get())
 		{
 			e.register(BuildingModules.FORESTER_SETTINGS, ModBuildingModules.ORCHARDIST_SETTINGS);
 		}

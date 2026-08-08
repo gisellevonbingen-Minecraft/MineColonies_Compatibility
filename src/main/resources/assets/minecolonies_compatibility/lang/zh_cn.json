@@ -1,10 +1,7 @@
 {
 	"_comment_tools": "Tools",
-	"minecolonies_tweaks.custom_tooltype.crossbow": "弩",
 	"minecolonies_tweaks.custom_tooltype.gun": "枪",
 	"minecolonies_tweaks.custom_tooltype.knife": "刀",
-	"minecolonies_tweaks.custom_tooltype.ranger_weapon": "远程武器",
-	"minecolonies_tweaks.custom_tooltype.knight_weapon": "近战武器",
 	"minecolonies_tweaks.custom_tooltype.butcher_tool": "屠夫工具",
 	
 	"_comment_jobs": "Jobs",
@@ -130,8 +127,6 @@
 	"com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist": "可屠宰",
 	
 	"_comment_module_settings": "Module Settings",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "请求烟花火箭",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket.tooltip": "如果弓箭手使用的是弩，则需要烟花火箭作为弹药。\n需要研究“消耗箭”。",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "只在最高生长阶段收获",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "果农只收获最高生长阶段的水果/作物。",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "跳过血瓶/桶",

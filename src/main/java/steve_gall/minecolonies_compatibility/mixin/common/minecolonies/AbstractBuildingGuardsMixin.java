@@ -27,8 +27,6 @@ public abstract class AbstractBuildingGuardsMixin extends AbstractBuilding
 	@Inject(method = "<init>", remap = false, at = @At(value = "TAIL"), cancellable = false)
 	private void init(IColony c, BlockPos l, CallbackInfo ci)
 	{
-		this.keepX.put(itemStack -> ItemStackUtils.hasEquipmentLevel(itemStack, ModToolTypes.RANGER_WEAPON.getToolType(), EquipmentLevelConstants.TOOL_LEVEL_WOOD_OR_GOLD, this.getMaxEquipmentLevel()), new Tuple<>(1, true));
-		this.keepX.put(itemStack -> ItemStackUtils.hasEquipmentLevel(itemStack, ModToolTypes.KNIGHT_WEAPON.getToolType(), EquipmentLevelConstants.TOOL_LEVEL_WOOD_OR_GOLD, this.getMaxEquipmentLevel()), new Tuple<>(1, true));
 		this.keepX.put(itemStack -> ItemStackUtils.hasEquipmentLevel(itemStack, ModToolTypes.GUN.getToolType(), EquipmentLevelConstants.TOOL_LEVEL_WOOD_OR_GOLD, this.getMaxEquipmentLevel()), new Tuple<>(1, true));
 	}
 

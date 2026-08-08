@@ -13,7 +13,6 @@ import com.minecolonies.core.colony.buildings.modules.CraftingWorkerBuildingModu
 import com.minecolonies.core.colony.buildings.modules.GuardBuildingModule;
 import com.minecolonies.core.colony.buildings.modules.WorkerBuildingModule;
 import com.minecolonies.core.colony.buildings.modules.settings.BoolSetting;
-import com.minecolonies.core.colony.buildings.modules.settings.SettingKey;
 import com.minecolonies.core.colony.buildings.moduleviews.CombinedHiringLimitModuleView;
 import com.minecolonies.core.colony.buildings.moduleviews.WorkerBuildingModuleView;
 import com.mojang.datafixers.util.Pair;
@@ -21,7 +20,6 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.chat.Component;
 import steve_gall.minecolonies_compatibility.api.common.butcher.CustomizedButcherable;
 import steve_gall.minecolonies_compatibility.api.common.entity.ai.CustomizedAI;
-import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
 import steve_gall.minecolonies_compatibility.core.common.building.module.BucketFillingCraftingModule;
 import steve_gall.minecolonies_compatibility.core.common.building.module.BucketFillingCraftingModuleView;
 import steve_gall.minecolonies_compatibility.core.common.building.module.ButcherWorkerBuildingModule;
@@ -44,16 +42,10 @@ import steve_gall.minecolonies_compatibility.core.common.entity.ai.orchardist.En
 
 public class ModBuildingModules
 {
-	public static final ISettingKey<BoolSetting> REQUEST_FIREWORK_ROCKET = new SettingKey<>(BoolSetting.class, MineColoniesCompatibility.rl("request_firework_rocket"));
-
 	public static final boolean testHireCustomizedAI(JobEntry jobEntry)
 	{
 		return CustomizedAI.getValues().stream().filter(e -> e.getJobEntry() == jobEntry).findAny().isPresent();
 	}
-
-	public static final List<Pair<ISettingKey<?>, ISetting<?>>> GUARD_SETTINGS = Arrays.asList(//
-			Pair.of(REQUEST_FIREWORK_ROCKET, new BoolSetting(false)) //
-	);
 
 	public static final BuildingEntry.ModuleProducer<GuardBuildingModule, CombinedHiringLimitModuleView> GUNNER_TOWER_WORK = new BuildingEntry.ModuleProducer<>("gunner_tower_work", //
 			() -> new GuardBuildingModule(ModGuardTypes.GUNNER.get(), true, b -> testHireCustomizedAI(ModJobs.GUNNER.get()) ? 1 : 0), //

@@ -1,10 +1,7 @@
 {
 	"_comment_tools": "Tools",
-	"minecolonies_tweaks.custom_tooltype.crossbow": "Crossbow",
 	"minecolonies_tweaks.custom_tooltype.gun": "Gun",
 	"minecolonies_tweaks.custom_tooltype.knife": "Knife",
-	"minecolonies_tweaks.custom_tooltype.ranger_weapon": "Ranged Weapon",
-	"minecolonies_tweaks.custom_tooltype.knight_weapon": "Melee Weapon",
 	"minecolonies_tweaks.custom_tooltype.butcher_tool": "Butcher Tool",
 	
 	"_comment_jobs": "Jobs",
@@ -170,8 +167,6 @@
 	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list.menu": "Repair Materials",
 	
 	"_comment_module_settings": "Module Settings",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "Request Firework Rocket",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket.tooltip": "If Archer is using Crossbow, requests Firework Rocket as ammo.\nNeed to research 'Consume Arrows'.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "Harvest Only Max Age",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "Orchardist harvests only max age fruits/crops.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "Skip Blood Bottle/Bucket",

@@ -16,7 +16,6 @@ import slimeknights.tconstruct.tools.TinkerTools;
 import slimeknights.tconstruct.tools.item.ModifiableSwordItem;
 import steve_gall.minecolonies_compatibility.api.common.tool.CustomizedToolSystem;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
-import steve_gall.minecolonies_compatibility.core.common.init.ModToolTypes;
 
 public class TConstructToolSystem extends CustomizedToolSystem
 {
@@ -54,7 +53,7 @@ public class TConstructToolSystem extends CustomizedToolSystem
 		}
 		else if (stack.getItem() instanceof ModifiableCrossbowItem)
 		{
-			return toolType == ModToolTypes.CROSSBOW.getToolType();
+			return toolType == ModEquipmentTypes.crossbow.get();
 		}
 		else if (stack.is(TinkerTools.flintAndBrick.get()))
 		{

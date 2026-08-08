@@ -16,8 +16,6 @@ import com.minecolonies.core.colony.buildings.moduleviews.SettingsModuleView;
 import com.mojang.datafixers.util.Pair;
 
 import steve_gall.minecolonies_compatibility.core.common.building.BuildingViewHelper;
-import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigCommon;
-import steve_gall.minecolonies_compatibility.core.common.config.MineColoniesCompatibilityConfigServer;
 import steve_gall.minecolonies_compatibility.core.common.init.ModBuildingModules;
 import steve_gall.minecolonies_compatibility.core.common.init.ModJobs;
 
@@ -30,24 +28,7 @@ public abstract class SettingsModuleViewMixin extends AbstractBuildingModuleView
 	{
 		var buildingType = this.buildingView.getBuildingType();
 
-		if (buildingType == ModBuildings.guardTower.get())
-		{
-			var canUseCrossbow = MineColoniesCompatibilityConfigCommon.INSTANCE.jobs.canUseCrossbow;
-			var canShootFireworkRocket = MineColoniesCompatibilityConfigServer.INSTANCE.jobs.ranger.canShootFireworkRocket;
-
-			if (canUseCrossbow.get().booleanValue() && canShootFireworkRocket.get().booleanValue())
-			{
-
-			}
-			else
-			{
-				var list = new ArrayList<>(cir.getReturnValue());
-				list.remove(ModBuildingModules.REQUEST_FIREWORK_ROCKET);
-				cir.setReturnValue(list);
-			}
-
-		}
-		else if (buildingType == ModBuildings.lumberjack.get())
+		if (buildingType == ModBuildings.lumberjack.get())
 		{
 			var anyOrchardist = !BuildingViewHelper.getAssignedCitizens(this.buildingView, ModJobs.ORCHARDIST.get()).isEmpty();
 

@@ -1,10 +1,7 @@
 {
 	"_comment_tools": "Tools",
-	"minecolonies_tweaks.custom_tooltype.crossbow": "Arbalet",
 	"minecolonies_tweaks.custom_tooltype.gun": "Tüfek",
 	"minecolonies_tweaks.custom_tooltype.knife": "Bıçak",
-	"minecolonies_tweaks.custom_tooltype.ranger_weapon": "Menzil Silahı",
-	"minecolonies_tweaks.custom_tooltype.knight_weapon": "Yakın Dövüş Silahı",
 	"minecolonies_tweaks.custom_tooltype.butcher_tool": "Kasap Aleti",
 	
 	"_comment_jobs": "Jobs",
@@ -140,8 +137,6 @@
 	"com.minecolonies.coremod.gui.workerhuts.recipe.tacz_gun_smith_table.menu": "Silah Ustası Masası Tarifleri",
 	
 	"_comment_module_settings": "Module Settings",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "Havai Fişek Roketi Talep Et",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket.tooltip": "Okçu arbalet kullanıyorsa, mermi olarak Havai Fişek Roketi ister.\n'Okları Harca' araştırılması gerekir.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "Sadece Maksimum Olgunluk Hasadı",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "Meyve Bahçecisi yalnızca en olgun meyve/ürünleri toplar.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "Kan Şişesi/Kovası Atlanacak",

@@ -1,10 +1,7 @@
 {
 	"_comment_tools": "Outils",
-	"minecolonies_tweaks.custom_tooltype.crossbow": "Arbalète",
 	"minecolonies_tweaks.custom_tooltype.gun": "Fusil",
 	"minecolonies_tweaks.custom_tooltype.knife": "Couteau",
-	"minecolonies_tweaks.custom_tooltype.ranger_weapon": "Arme à distance",
-	"minecolonies_tweaks.custom_tooltype.knight_weapon": "Arme de mêlée",
 	"minecolonies_tweaks.custom_tooltype.butcher_tool": "Outil de boucher",
 	
 	"_comment_jobs": "Métiers",
@@ -117,8 +114,6 @@
 	"com.minecolonies.coremod.gui.workerhuts.butcherablelist_blacklist": "Animaux Abattables",
 	
 	"_comment_module_settings": "Paramètres du Module",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "Demander une Fusée de Feu d'Artifice",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket.tooltip": "Si l'archer utilise une arbalète, il demandera une fusée de feu d'artifice comme munition.\nNécessite la recherche 'Consommer des flèches'.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "Récolter Uniquement à Maturité",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "L'arboriculteur récolte uniquement les fruits/cultures à maturité.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "Ignorer le Sang en Bouteille/Seau",

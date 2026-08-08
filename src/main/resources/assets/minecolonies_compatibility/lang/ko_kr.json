@@ -1,10 +1,7 @@
 {
 	"_comment_tools": "도구",
-	"minecolonies_tweaks.custom_tooltype.crossbow": "석궁",
 	"minecolonies_tweaks.custom_tooltype.gun": "총",
 	"minecolonies_tweaks.custom_tooltype.knife": "식칼",
-	"minecolonies_tweaks.custom_tooltype.ranger_weapon": "원거리 무기",
-	"minecolonies_tweaks.custom_tooltype.knight_weapon": "근거리 무기",
 	"minecolonies_tweaks.custom_tooltype.butcher_tool": "도축 도구",
 	
 	"_comment_jobs": "직업",
@@ -170,8 +167,6 @@
 	"com.minecolonies.coremod.gui.workerhuts.silentgear_repair_material_list.menu": "수리 재료",
 	
 	"_comment_module_settings": "모듈 설정",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket": "폭죽 로켓 요청",
-	"com.minecolonies.coremod.setting.minecolonies_compatibility:request_firework_rocket.tooltip": "궁수가 쇠뇌를 사용하고 있다면, 폭죽 로켓을 요청합니다.\n'화살 소모'를 연구해야 합니다.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest": "최대 성장만 수확",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:need_max_harvest.tooltip": "과수재배꾼이 최대로 성장한 과일/작물만 수확합니다.",
 	"com.minecolonies.coremod.setting.minecolonies_compatibility:butchercraft_skip_blood": "Butchercraft - 피 병/양동이 생략하기",

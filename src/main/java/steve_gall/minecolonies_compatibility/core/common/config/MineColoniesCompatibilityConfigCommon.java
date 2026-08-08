@@ -1,7 +1,6 @@
 package steve_gall.minecolonies_compatibility.core.common.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import steve_gall.minecolonies_compatibility.core.common.entity.ai.CommonJobConfig;
 
 public class MineColoniesCompatibilityConfigCommon
 {
@@ -15,13 +14,9 @@ public class MineColoniesCompatibilityConfigCommon
 		SPEC = common.getRight();
 	}
 
-	public final CommonJobConfig jobs;
-
 	public MineColoniesCompatibilityConfigCommon(ForgeConfigSpec.Builder builder)
 	{
-		builder.push("jobs");
-		this.jobs = new CommonJobConfig(builder);
-		builder.pop();
+
 	}
 
 }

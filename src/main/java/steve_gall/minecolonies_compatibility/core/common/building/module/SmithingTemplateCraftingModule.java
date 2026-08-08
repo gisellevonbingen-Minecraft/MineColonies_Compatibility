@@ -23,7 +23,7 @@ import steve_gall.minecolonies_compatibility.core.common.crafting.SmithingTempla
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackCounter;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackHelper;
 import steve_gall.minecolonies_compatibility.core.common.item.ItemStackKey;
-import steve_gall.minecolonies_tweaks.api.common.crafting.CustomizableRecipeStorage;
+import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizableRecipeStorage;
 
 public class SmithingTemplateCraftingModule extends AbstractCraftingBuildingModule.Crafting implements IBuildingEventsModule
 {
@@ -137,7 +137,7 @@ public class SmithingTemplateCraftingModule extends AbstractCraftingBuildingModu
 		var recipeManager = IMinecoloniesAPI.getInstance().getColonyManager().getRecipeManager();
 		var storage = recipeManager.getRecipe(token);
 
-		if (storage instanceof CustomizableRecipeStorage crs && crs.getImpl() instanceof SmithingTemplateRecipeStorage recipe)
+		if (storage instanceof ICustomizableRecipeStorage crs && crs.getImpl() instanceof SmithingTemplateRecipeStorage recipe)
 		{
 			var count = this.counter.get(recipe.getPrimaryOutput());
 			return count >= recipe.getInputTemplateCount();

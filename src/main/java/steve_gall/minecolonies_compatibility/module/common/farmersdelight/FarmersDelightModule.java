@@ -112,7 +112,7 @@ public class FarmersDelightModule extends AbstractModule
 	{
 		var type = e.getAnimal().getType();
 
-		if (type == EntityType.PIG || type == EntityType.HOGLIN)
+		if (type == EntityType.PIG)
 		{
 			e.register(ModToolTypes.KNIFE.getToolType());
 		}
@@ -123,11 +123,11 @@ public class FarmersDelightModule extends AbstractModule
 	{
 		var type = e.getRecipe().getRequiredEntity().getType();
 
-		if (type == EntityType.PIG || type == EntityType.HOGLIN)
+		if (type == EntityType.PIG)
 		{
 			if (e.getRecipe().getRequiredTool() == ModToolTypes.KNIFE.getToolType())
 			{
-				e.register(new LootTableAnalyzer.LootDrop(Collections.singletonList(new ItemStack(ModItems.HAM.get())), 0.5F, 1, false));
+				e.register(new LootTableAnalyzer.LootDrop(Collections.singletonList(new ItemStack(ModItems.HAM.get())), 0.5F, 1, true));
 			}
 
 		}

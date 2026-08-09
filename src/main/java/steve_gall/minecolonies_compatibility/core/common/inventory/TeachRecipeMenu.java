@@ -24,6 +24,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostMenu;
+import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostSlot;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
 import steve_gall.minecolonies_compatibility.core.common.MineColoniesCompatibility;
@@ -39,6 +40,9 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 
 	protected TeachContainer inputContainer;
 	protected List<Slot> inputSlots;
+
+	protected TeachContainer catalystContainer;
+	protected List<Slot> catalystSlots;
 
 	protected Container resultContainer;
 	protected List<Slot> resultSlots;
@@ -63,9 +67,11 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	private void setup()
 	{
 		this.inputSlots = new ArrayList<>();
+		this.catalystSlots = new ArrayList<>();
 		this.resultSlots = new ArrayList<>();
 
 		this.inputContainer = null;
+		this.catalystContainer = null;
 		this.resultContainer = null;
 
 		this.recipeValidator = null;
@@ -99,6 +105,12 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 	protected void setContainerByTransfer(@NotNull RECIPE recipe, @NotNull CompoundTag payload)
 	{
 		this.inputContainer.clearContent();
+
+		if (this.catalystContainer != null)
+		{
+			this.catalystContainer.clearContent();
+		}
+
 	}
 
 	@Override
@@ -228,7 +240,7 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 		{
 			var slot = this.slots.get(slotNumber);
 
-			if (slot.container == this.inputContainer || slot.container == this.resultContainer)
+			if (slot.container == this.inputContainer || slot.container == this.catalystContainer)
 			{
 				if (mode == ClickType.PICKUP || mode == ClickType.PICKUP_ALL || mode == ClickType.SWAP)
 				{
@@ -250,11 +262,16 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 
 	public void handleSlotClick(Slot slot, ItemStack stack)
 	{
-		if (slot.container == this.inputContainer)
+		if (stack.isEmpty())
 		{
-			this.setSlot(slot, stack);
+
+		}
+		else if (slot instanceof IItemGhostSlot ghostSlot && !ghostSlot.canAccept(stack))
+		{
+			return;
 		}
 
+		this.setSlot(slot, stack);
 	}
 
 	protected void setSlot(Slot slot, ItemStack stack)
@@ -295,9 +312,19 @@ public abstract class TeachRecipeMenu<RECIPE> extends ModuleMenu implements IIte
 		return this.inputContainer;
 	}
 
-	public List<Slot> getCraftSlots()
+	public List<Slot> getInputSlots()
 	{
 		return Collections.unmodifiableList(this.inputSlots);
+	}
+
+	public TeachContainer getCatalystContainer()
+	{
+		return this.catalystContainer;
+	}
+
+	public List<Slot> getCatalystSlots()
+	{
+		return Collections.unmodifiableList(this.catalystSlots);
 	}
 
 	public Container getResultContainer()

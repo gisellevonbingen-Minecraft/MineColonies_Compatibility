@@ -73,7 +73,7 @@ public class PlantBlockContext extends PlantPositonContext
 		return this.state;
 	}
 
-	public static void replant(@NotNull PlantBlockContext context, @NotNull List<ItemStack> drops, BlockState replantState)
+	public static boolean replant(@NotNull PlantBlockContext context, @NotNull List<ItemStack> drops, BlockState replantState)
 	{
 		var block = context.getState().getBlock();
 		var canReplant = false;
@@ -102,6 +102,7 @@ public class PlantBlockContext extends PlantPositonContext
 			level.setBlock(context.getPosition(), canReplant ? replantState : Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
 		}
 
+		return canReplant;
 	}
 
 }

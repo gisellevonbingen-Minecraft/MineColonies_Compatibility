@@ -43,7 +43,7 @@ public class DelightfulModule extends AbstractModule
 
 			if (type != null && type.is(DelightfulEntityTags.FATTY_ANIMALS))
 			{
-				e.register(new LootTableAnalyzer.LootDrop(Collections.singletonList(new ItemStack(DelightfulItems.ANIMAL_FAT.get())), 0.6F, 1, false));
+				e.register(new LootTableAnalyzer.LootDrop(Collections.singletonList(new ItemStack(DelightfulItems.ANIMAL_FAT.get())), 0.7F, 1, true));
 			}
 
 		}

@@ -25,6 +25,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostMenu;
+import steve_gall.minecolonies_compatibility.api.common.inventory.IItemGhostSlot;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IRecipeTransferableMenu;
 import steve_gall.minecolonies_compatibility.core.common.network.message.TeachRecipeMenuNewRecipesMessage;
@@ -39,6 +40,9 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 
 	protected TeachContainer inputContainer;
 	protected List<Slot> inputSlots;
+
+	protected TeachContainer catalystContainer;
+	protected List<Slot> catalystSlots;
 
 	protected Container resultContainer;
 	protected List<Slot> resultSlots;
@@ -63,6 +67,7 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 	private void setup()
 	{
 		this.inputSlots = new ArrayList<>();
+		this.catalystSlots = new ArrayList<>();
 		this.resultSlots = new ArrayList<>();
 
 		this.inputContainer = null;
@@ -100,6 +105,12 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 	protected void setContainerByTransfer(@NotNull HolderLookup.Provider provider, @NotNull RECIPE recipe, @NotNull CompoundTag payload)
 	{
 		this.inputContainer.clearContent();
+
+		if (this.catalystContainer != null)
+		{
+			this.catalystContainer.clearContent();
+		}
+
 	}
 
 	@Override
@@ -218,7 +229,7 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 		{
 			var slot = this.slots.get(slotNumber);
 
-			if (slot.container == this.inputContainer || slot.container == this.resultContainer)
+			if (slot.container == this.inputContainer || slot.container == this.catalystContainer)
 			{
 				if (mode == ClickType.PICKUP || mode == ClickType.PICKUP_ALL || mode == ClickType.SWAP)
 				{
@@ -240,11 +251,16 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 
 	public void handleSlotClick(Slot slot, ItemStack stack)
 	{
-		if (slot.container == this.inputContainer)
+		if (stack.isEmpty())
 		{
-			this.setSlot(slot, stack);
+
+		}
+		else if (slot instanceof IItemGhostSlot ghostSlot && !ghostSlot.canAccept(stack))
+		{
+			return;
 		}
 
+		this.setSlot(slot, stack);
 	}
 
 	protected void setSlot(Slot slot, ItemStack stack)
@@ -290,9 +306,19 @@ public abstract class TeachRecipeMenu<RECIPE, RECIPE_INPUT> extends ModuleMenu i
 		return this.inputContainer;
 	}
 
-	public List<Slot> getCraftSlots()
+	public List<Slot> getInputSlots()
 	{
 		return Collections.unmodifiableList(this.inputSlots);
+	}
+
+	public TeachContainer getCatalystContainer()
+	{
+		return this.catalystContainer;
+	}
+
+	public List<Slot> getCatalystSlots()
+	{
+		return Collections.unmodifiableList(this.catalystSlots);
 	}
 
 	public Container getResultContainer()

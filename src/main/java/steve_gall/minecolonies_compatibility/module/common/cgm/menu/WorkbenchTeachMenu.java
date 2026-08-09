@@ -15,7 +15,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -150,29 +149,6 @@ public class WorkbenchTeachMenu extends TeachRecipeMenu<WorkbenchRecipe>
 			}
 
 		};
-	}
-
-	@Override
-	public void handleSlotClick(Slot slot, ItemStack stack)
-	{
-		if (slot.container == this.inputContainer)
-		{
-			if (slot.getSlotIndex() == CRAFTING_SLOTS)
-			{
-				if (stack.isEmpty())
-				{
-
-				}
-				else if (!this.canDye(stack))
-				{
-					return;
-				}
-
-			}
-
-		}
-
-		super.handleSlotClick(slot, stack);
 	}
 
 	@Override

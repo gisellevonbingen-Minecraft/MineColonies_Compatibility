@@ -9,7 +9,7 @@ import com.minecolonies.core.entity.ai.workers.crafting.AbstractEntityAICrafting
 @Mixin(value = AbstractEntityAICrafting.class, remap = false)
 public interface AbstractEntityAICraftingAccessor
 {
-	@Accessor(value = "HIT_DELAY ", remap = false)
+	@Accessor(value = "HIT_DELAY", remap = false)
 	static int getHitDelay()
 	{
 		return 0;

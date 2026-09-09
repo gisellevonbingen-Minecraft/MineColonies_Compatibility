@@ -402,6 +402,13 @@ public class CitizenGridNetworkNode extends NetworkNode implements IAccessType
 				if (taskId == null)
 				{
 					var output = this.findMatchedOutput(deliverable);
+
+					if (output.isEmpty())
+					{
+						toRemove.add(requestId);
+						continue;
+					}
+
 					var extracting = network.extractItem(output, deliverable.getCount(), Action.SIMULATE);
 					var craftingCount = deliverable.getCount() - extracting.getCount();
 

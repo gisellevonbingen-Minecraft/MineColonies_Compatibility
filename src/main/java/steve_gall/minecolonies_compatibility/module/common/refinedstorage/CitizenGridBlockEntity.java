@@ -506,7 +506,15 @@ public class CitizenGridBlockEntity extends AbstractBaseNetworkNodeContainerBloc
 
 				if (taskId == null)
 				{
-					var output = ItemResource.ofItemStack(this.findMatchedOutput(deliverable));
+					var found = this.findMatchedOutput(deliverable);
+
+					if (found.isEmpty())
+					{
+						toRemove.add(requestId);
+						continue;
+					}
+
+					var output = ItemResource.ofItemStack(found);
 					var extracting = storage.extract(output, deliverable.getCount(), Action.SIMULATE, actor);
 					var craftingCount = deliverable.getCount() - extracting;
 

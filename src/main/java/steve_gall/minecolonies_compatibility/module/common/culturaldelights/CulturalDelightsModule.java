@@ -1,7 +1,6 @@
 package steve_gall.minecolonies_compatibility.module.common.culturaldelights;
 
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedCrop;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.module.common.AbstractModule;
 
@@ -19,7 +18,6 @@ public class CulturalDelightsModule extends AbstractModule
 		super.onFMLCommonSetup(e);
 		e.enqueueWork(() ->
 		{
-			CustomizedCrop.register(new CornCrop());
 			CustomizedFruit.register(new AvocadoFruit());
 		});
 	}

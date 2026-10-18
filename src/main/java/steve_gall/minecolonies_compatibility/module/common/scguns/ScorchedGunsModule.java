@@ -34,7 +34,7 @@ public class ScorchedGunsModule extends AbstractModule
 
 		DeliverableObjectRegistry.INSTANCE.register(Ammo.ID, Ammo::serialize, Ammo::deserialize);
 	}
-	
+
 	@Override
 	protected void onRegisterNetwork(MessageRegistrar channel)
 	{
@@ -62,7 +62,7 @@ public class ScorchedGunsModule extends AbstractModule
 		});
 
 	}
-	
+
 	@Override
 	protected void onRegisterMenuScreens(RegisterMenuScreensEvent e)
 	{

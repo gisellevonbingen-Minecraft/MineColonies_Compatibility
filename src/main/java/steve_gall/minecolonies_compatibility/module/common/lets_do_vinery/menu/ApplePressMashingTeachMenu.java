@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.satisfy.vinery.core.recipe.ApplePressMashingRecipe;
 import net.satisfy.vinery.core.recipe.input.ApplePressMashingRecipeInput;
-import net.satisfy.vinery.core.registry.RecipeTypesRegistry;
+import net.satisfy.vinery.core.registry.RecipeTypeRegistry;
 import steve_gall.minecolonies_compatibility.api.common.inventory.IMenuRecipeValidator;
 import steve_gall.minecolonies_compatibility.api.common.inventory.MenuRecipeValidatorRecipe;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachContainer;
@@ -64,7 +64,7 @@ public class ApplePressMashingTeachMenu extends TeachRecipeMenu<RecipeHolder<App
 			@Override
 			public RecipeType<ApplePressMashingRecipe> getRecipeType()
 			{
-				return RecipeTypesRegistry.APPLE_PRESS_MASHING_RECIPE_TYPE.get();
+				return RecipeTypeRegistry.APPLE_PRESS_MASHING_RECIPE_TYPE.get();
 			}
 
 			@Override

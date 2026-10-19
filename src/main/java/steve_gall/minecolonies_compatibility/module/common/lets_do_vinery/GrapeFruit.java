@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.satisfy.vinery.core.block.GrapeBush;
-import net.satisfy.vinery.core.util.GrapeType;
+import net.satisfy.vinery.core.block.GrapeBushBlock;
+import net.satisfy.vinery.core.wine.GrapeType;
 import steve_gall.minecolonies_compatibility.api.common.plant.CustomizedFruit;
 import steve_gall.minecolonies_compatibility.api.common.plant.HarvesterContext;
 import steve_gall.minecolonies_compatibility.api.common.plant.PlantBlockContext;
@@ -55,13 +55,13 @@ public class GrapeFruit extends CustomizedFruit
 	@Override
 	public boolean canHarvest(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getValue(GrapeBush.AGE) > 1;
+		return context.getState().getValue(GrapeBushBlock.AGE) > 1;
 	}
 
 	@Override
 	public boolean isMaxHarvest(@NotNull PlantBlockContext context)
 	{
-		return context.getState().getValue(GrapeBush.AGE) == 3;
+		return context.getState().getValue(GrapeBushBlock.AGE) == 3;
 	}
 
 	@Override
@@ -70,10 +70,10 @@ public class GrapeFruit extends CustomizedFruit
 		if (context.getLevel() instanceof ServerLevel level)
 		{
 			var state = context.getState();
-			var newState = state.setValue(GrapeBush.AGE, 1);
+			var newState = state.setValue(GrapeBushBlock.AGE, 1);
 			level.setBlock(context.getPosition(), newState, Block.UPDATE_CLIENTS);
 
-			var i = state.getValue(GrapeBush.AGE);
+			var i = state.getValue(GrapeBushBlock.AGE);
 			var bl = i == 3;
 			var x = level.random.nextInt(2);
 			var item = this.grapeType.getFruit();

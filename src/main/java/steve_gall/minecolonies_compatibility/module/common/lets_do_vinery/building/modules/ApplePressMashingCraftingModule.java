@@ -47,7 +47,7 @@ public class ApplePressMashingCraftingModule extends AbstractCraftingModuleWithE
 	@Override
 	public @NotNull String getId()
 	{
-		return "lets_do_vinery_apple_press";
+		return "lets_do_vinery_apple_press_mashing";
 	}
 
 	@Override

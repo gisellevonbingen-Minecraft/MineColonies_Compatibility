@@ -128,6 +128,7 @@ dependencies {
     implementation "curse.maven:tacz-1-21-1-1353462:${tacz_file}"
     implementation "curse.maven:jade-324717:${jade_file}"
     implementation "curse.maven:fruits-delight-943774:${fruitsdelgiht_file}"
+    implementation "curse.maven:cooks-collection-1222140:${cooks_collection_file}"
     implementation "curse.maven:cultural-delights-574622:${culturaldelights_file}"
     implementation ("com.simibubi.create:create-${mc_version}:${create_version}:slim") { transitive = false }
     implementation "net.createmod.ponder:Ponder-NeoForge-${mc_version}:${ponder_version}"

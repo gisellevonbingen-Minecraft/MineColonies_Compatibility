@@ -6,12 +6,12 @@ import com.minecolonies.api.crafting.ItemStorage;
 import com.minecolonies.api.crafting.registry.CraftingType;
 import com.minecolonies.api.util.constant.TranslationConstants;
 import com.minecolonies.core.colony.buildings.moduleviews.CraftingModuleView;
-import com.minecolonies.core.network.messages.server.colony.building.worker.AddRemoveRecipeMessage;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 import steve_gall.minecolonies_compatibility.core.common.inventory.TeachRecipeMenu;
+import steve_gall.minecolonies_compatibility.core.common.network.message.AddRemoveRecipeMessage2;
 import steve_gall.minecolonies_tweaks.api.common.crafting.ICustomizedRecipeStorage;
 
 public abstract class TeachCraftingRecipeScreen<MENU extends TeachRecipeMenu<RECIPE, ?>, RECIPE> extends TeachRecipeScreen<MENU, RECIPE>
@@ -42,7 +42,7 @@ public abstract class TeachCraftingRecipeScreen<MENU extends TeachRecipeMenu<REC
 	protected void onDone(RECIPE recipe, List<ItemStorage> input)
 	{
 		var storage = this.createRecipeStorage(recipe, input).wrap();
-		PacketDistributor.sendToServer(new AddRemoveRecipeMessage(this.module.getBuildingView(), false, storage, this.module.getProducer().getRuntimeID()));
+		PacketDistributor.sendToServer(new AddRemoveRecipeMessage2(this.module, false, storage));
 	}
 
 	public abstract CraftingType getCraftingType();

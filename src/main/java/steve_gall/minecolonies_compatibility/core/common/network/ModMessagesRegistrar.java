@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.core.common.network;
 
 import steve_gall.minecolonies_compatibility.core.common.network.message.AccessDirectionMessage;
+import steve_gall.minecolonies_compatibility.core.common.network.message.AddRemoveRecipeMessage2;
 import steve_gall.minecolonies_compatibility.core.common.network.message.BlockEntityRequestModelDataUpdateMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.BucketFillingOpenTeachMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptFluidMessage;
@@ -41,6 +42,7 @@ public class ModMessagesRegistrar
 		channel.playToServer(AccessDirectionMessage.TYPE, AccessDirectionMessage::new);
 		channel.playToServer(StonecutterOpenTeachMessage.TYPE, StonecutterOpenTeachMessage::new);
 		channel.playToClient(BlockEntityRequestModelDataUpdateMessage.TYPE, BlockEntityRequestModelDataUpdateMessage::new);
+		channel.playToServer(AddRemoveRecipeMessage2.TYPE, AddRemoveRecipeMessage2::new);
 
 		ModuleManager.LOADED_MODULES.forEach(m -> m.onRegisterNetwork(channel));
 	}

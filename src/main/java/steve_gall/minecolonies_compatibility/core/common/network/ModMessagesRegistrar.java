@@ -1,6 +1,7 @@
 package steve_gall.minecolonies_compatibility.core.common.network;
 
 import steve_gall.minecolonies_compatibility.core.common.network.message.AccessDirectionMessage;
+import steve_gall.minecolonies_compatibility.core.common.network.message.AddRemoveRecipeMessage2;
 import steve_gall.minecolonies_compatibility.core.common.network.message.BucketFillingOpenTeachMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptFluidMessage;
 import steve_gall.minecolonies_compatibility.core.common.network.message.JEIGhostAcceptItemMessage;
@@ -38,6 +39,7 @@ public class ModMessagesRegistrar
 		channel.registerMessage(SmithingTemplateOpenInventoryMessage.class, SmithingTemplateOpenInventoryMessage::new);
 		channel.registerMessage(AccessDirectionMessage.class, AccessDirectionMessage::new);
 		channel.registerMessage(StonecutterOpenTeachMessage.class, StonecutterOpenTeachMessage::new);
+		channel.registerMessage(AddRemoveRecipeMessage2.class, AddRemoveRecipeMessage2::new);
 	}
 
 	private ModMessagesRegistrar()

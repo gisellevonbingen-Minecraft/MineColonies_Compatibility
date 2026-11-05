@@ -48,7 +48,7 @@ public class PolymorphModule extends AbstractModule
 							public Slot getOutputSlot()
 							{
 								var menu = this.containerScreen.getMenu();
-								return menu.getSlot(0);
+								return menu.slots.isEmpty() ? null : menu.getSlot(0);
 							}
 
 							@Override
@@ -66,7 +66,8 @@ public class PolymorphModule extends AbstractModule
 							public Slot getOutputSlot()
 							{
 								var menu = (TeachRecipeMenu<?>) this.containerScreen.getMenu();
-								return menu.getResultSlots().get(0);
+								var slots = menu.getResultSlots();
+								return slots.isEmpty() ? null : slots.get(0);
 							}
 
 							@Override
